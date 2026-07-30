@@ -31,7 +31,7 @@ const DATA = [
   {phrase:"जिसने किसी दूसरे का स्थान अस्थाई रूप से ग्रहण किया हो", answer:"स्थानापन्न", phraseAudio:"assets/audio/vakyansh-30.mp3", wordAudio:"assets/audio/vakyansh-30-ans.mp3"}
 ];
 
-const DEFAULT_HINT = 'वाक्यांश सुनें, फिर नीचे कार्ड खोलें';
+const DEFAULT_HINT = "वाक्यांश सुनें, फिर नीचे कार्ड खोलें";
 const OPTION_COUNT = 6;
 
 let shuffledData = [];
@@ -40,6 +40,9 @@ let isLocked = false;
 let wrongOptionEl = null;
 let cardLottieAnimation = null;
 let feedbackLottieAnimation = null;
+let soundPlayed = false;
+let currentQuestionHadWrong = false;
+let firstTryCorrectCount = 0;
 
 function shuffle(arr) {
   const a = [...arr];
@@ -48,6 +51,20 @@ function shuffle(arr) {
     [a[i], a[j]] = [a[j], a[i]];
   }
   return a;
+}
+
+function updateProgress() {
+  const total = shuffledData.length;
+  const pct = Math.round((currentIndex / total) * 100);
+  const current = Math.min(currentIndex + 1, total);
+
+  const fillEl = document.getElementById('progressFill');
+  const knobEl = document.getElementById('progressKnob');
+  const labelEl = document.getElementById('progressLabel');
+
+  if (fillEl) fillEl.style.width = pct + '%';
+  if (knobEl) knobEl.style.left = pct + '%';
+  if (labelEl) labelEl.textContent = current + ' of ' + total;
 }
 
 function getOptionWords(q) {
@@ -60,23 +77,25 @@ function getOptionWords(q) {
 }
 
 function loadQuestion() {
-  if (currentIndex >= shuffledData.length) {
-    shuffledData = shuffle(DATA);
-    currentIndex = 0;
-  }
-
   isLocked = false;
   wrongOptionEl = null;
+  soundPlayed = false;
+  currentQuestionHadWrong = false;
 
   const q = shuffledData[currentIndex];
 
   document.getElementById('phrase').textContent = q.phrase;
   document.getElementById('itext').textContent = DEFAULT_HINT;
 
+  updateProgress();
   hideFeedbackLottie();
 
   const retryBtn = document.getElementById('show-example-btn');
-  if (retryBtn) retryBtn.disabled = true;
+  if (retryBtn) {
+    retryBtn.disabled = true;
+    retryBtn.classList.add('disabled');
+    retryBtn.classList.remove('blink');
+  }
 
   const options = getOptionWords(q);
   options.forEach((opt, i) => {
@@ -92,10 +111,11 @@ function loadQuestion() {
 }
 
 function selectOption(opt, el, q) {
-  if (isLocked) return;
+  if (!soundPlayed || isLocked) return;
 
   if (opt.correct) {
     isLocked = true;
+    if (!currentQuestionHadWrong) firstTryCorrectCount++;
     el.classList.add('correct');
     document.querySelectorAll('.card-txt').forEach(c => c.classList.add('disabled'));
     document.getElementById('itext').textContent = 'शाबाश! सही जवाब!';
@@ -103,16 +123,28 @@ function selectOption(opt, el, q) {
     playWordAudio(q);
 
     const retryBtn = document.getElementById('show-example-btn');
-    if (retryBtn) retryBtn.disabled = true;
+    if (retryBtn) {
+      retryBtn.disabled = true;
+      retryBtn.classList.add('disabled');
+      retryBtn.classList.remove('blink');
+    }
   } else {
     isLocked = true;
+    currentQuestionHadWrong = true;
     el.classList.add('wrong', 'disabled');
     wrongOptionEl = el;
     document.getElementById('itext').textContent = 'गलत! फिर से कोशिश करो!';
     playFeedbackLottie('incorrect', el);
 
+    const wrongEntry = DATA.find(d => d.answer === opt.word);
+    if (wrongEntry) playWordAudio(wrongEntry);
+
     const retryBtn = document.getElementById('show-example-btn');
-    if (retryBtn) retryBtn.disabled = false;
+    if (retryBtn) {
+      retryBtn.disabled = false;
+      retryBtn.classList.remove('disabled');
+      retryBtn.classList.add('blink');
+    }
   }
 }
 
@@ -123,11 +155,61 @@ function retryOptions() {
   hideFeedbackLottie();
   isLocked = false;
   document.getElementById('itext').textContent = DEFAULT_HINT;
-  if (retryBtn) retryBtn.disabled = true;
+  if (retryBtn) {
+    retryBtn.disabled = true;
+    retryBtn.classList.add('disabled');
+    retryBtn.classList.remove('blink');
+  }
 }
 
 function resetSentence() {
   currentIndex++;
+  if (currentIndex >= shuffledData.length) {
+    showResults();
+    return;
+  }
+  loadQuestion();
+}
+
+function showResults() {
+  const total = shuffledData.length;
+  const pct = Math.round((firstTryCorrectCount / total) * 10000) / 100;
+
+  const wrapper = document.getElementById('resul-wrapper');
+  const allCorrectEl = document.getElementById('all-correct');
+  const allNotCorrectEl = document.getElementById('all-not-corret');
+  const resultNumbersEl = document.getElementById('result-numbers');
+
+  if (resultNumbersEl) resultNumbersEl.textContent = pct + '%';
+
+  const isPerfect = firstTryCorrectCount === total;
+  if (allCorrectEl) allCorrectEl.classList.toggle('hidden', !isPerfect);
+  if (allNotCorrectEl) allNotCorrectEl.classList.toggle('hidden', isPerfect);
+
+  if (wrapper) wrapper.style.display = 'block';
+
+  document.querySelectorAll('.content-wrapper').forEach(function (el) {
+    el.classList.add('hidden');
+  });
+
+  const buttonRow = document.querySelector('.button-controls');
+  if (buttonRow) buttonRow.style.display = 'none';
+}
+
+function restartGame() {
+  const wrapper = document.getElementById('resul-wrapper');
+  if (wrapper) wrapper.style.display = 'none';
+
+  document.querySelectorAll('.content-wrapper').forEach(function (el) {
+    el.classList.remove('hidden');
+  });
+
+  const buttonRow = document.querySelector('.button-controls');
+  if (buttonRow) buttonRow.style.display = 'flex';
+
+  firstTryCorrectCount = 0;
+  shuffledData = shuffle(DATA);
+  currentIndex = 0;
   loadQuestion();
 }
 
@@ -195,6 +277,7 @@ function hideFeedbackLottie() {
 function playPhraseAudio() {
   const q = shuffledData[currentIndex];
   if (!q) return;
+  soundPlayed = true;
   try {
     const audio = new Audio(q.phraseAudio);
     audio.play().catch(function(){});
@@ -211,6 +294,53 @@ function playWordAudio(q) {
 document.addEventListener('DOMContentLoaded', function () {
   shuffledData = shuffle(DATA);
   currentIndex = 0;
+  firstTryCorrectCount = 0;
   loadQuestion();
 });
+
+// Debug helper: steps through every question, missing `wrongCount` of them
+// (spread evenly across the run) before answering correctly, then advances
+// to the results screen. Drives the real click handlers/functions rather
+// than duplicating game logic, so it exercises the same code path a user would.
+window.debugAutoPlay = function (wrongCount = 30, delay = 0) {
+  const total = shuffledData.length;
+  const wrongIndices = new Set();
+  for (let i = 0; i < wrongCount && i < total; i++) {
+    wrongIndices.add(Math.floor(i * total / wrongCount));
+  }
+
+  function playOne() {
+    if (currentIndex >= shuffledData.length) return;
+
+    const q = shuffledData[currentIndex];
+    playPhraseAudio();
+
+    const cardEls = Array.from(document.querySelectorAll('.card-txt'));
+    const correctEl = cardEls.find(el => el.querySelector('.card-txt-word').textContent === q.answer);
+    const wrongEl = cardEls.find(el => el.querySelector('.card-txt-word').textContent !== q.answer);
+    const missFirst = wrongIndices.has(currentIndex) && wrongEl;
+
+    if (missFirst) {
+      wrongEl.click();
+      setTimeout(function () {
+        retryOptions();
+        setTimeout(function () {
+          if (correctEl) correctEl.click();
+          setTimeout(function () {
+            resetSentence();
+            setTimeout(playOne, delay);
+          }, delay);
+        }, delay);
+      }, delay);
+    } else if (correctEl) {
+      correctEl.click();
+      setTimeout(function () {
+        resetSentence();
+        setTimeout(playOne, delay);
+      }, delay);
+    }
+  }
+
+  playOne();
+};
 
