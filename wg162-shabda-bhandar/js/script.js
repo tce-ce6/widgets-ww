@@ -27,21 +27,20 @@ const DATA = [
 
 const BUBBLE_SIZES = [250, 250, 250];
 const BUBBLE_POSITIONS = [
-  {top:150, left:120},
-  {top:40, left:440},
-  {top:150, right:80}
+  {top:120, left:95},
+  {top:22, left:427},
+  {top:80, right:123}
 ];
+const TANK_LOTTIE_PATH = './lottie/tank.json';
 const BUBBLE_LOTTIE_PATH = './lottie/bubbles.json';
-const BUBBLE_LOTTIE_HOLD_SECONDS = 1;
-const BUBBLE_REVEAL_DELAY_SECONDS = 3;
 
 let currentIndex = 0;
 let score = 0;
 let isLocked = false;
 let shuffledData = [];
+let tankLottieAnimation = null;
 let bubbleLottieAnimation = null;
-let bubbleRevealTimeout = null;
-let bubbleIntroCompleteHandler = null;
+let bubbleAnimationDone = false;
 
 function shuffle(arr) {
   const a = [...arr];
@@ -51,8 +50,6 @@ function shuffle(arr) {
   }
   return a;
 }
-
-getBubbleLottieAnimation();
 
 function startGame() {
   shuffledData = shuffle(DATA);
@@ -64,6 +61,7 @@ function startGame() {
   const backdrop = document.getElementById('backdrop');
   if (backdrop) backdrop.style.display = 'none';
   buildProgress();
+  restartLottieAnimations();
   loadQuestion();
 }
 
@@ -96,71 +94,112 @@ function getWrongOptions(correctAnswer) {
   return shuffled.slice(0, 2);
 }
 
-function getBubbleLottieAnimation() {
-  const container = document.getElementById('lottieContainer');
-  if (!container || typeof lottie === 'undefined') return null;
-  if (bubbleLottieAnimation) return bubbleLottieAnimation;
+// bubbles.json embeds an audio layer. Without a Howler-compatible audio
+// factory, lottie's built-in fallback stub is missing .pause() and throws
+// ("this.audio.pause is not a function"), which kills the whole render loop
+// for both animations. Wrap a native <audio> element in the interface lottie
+// expects (play/pause/seek/playing/volume/rate).
+function lottieAudioFactory(asset) {
+    // asset can be a base64 data URI or a normal file path
+    const src =
+        typeof asset === "string"
+            ? asset
+            : asset?.p || asset?.path || "";
 
-  bubbleLottieAnimation = lottie.loadAnimation({
-    container: container,
-    renderer: 'svg',
-    loop: false,
-    autoplay: false,
-    path: BUBBLE_LOTTIE_PATH
-  });
+    const audio = new Audio(src);
 
-  return bubbleLottieAnimation;
+    return {
+        play() {
+            audio.play().catch(() => {});
+        },
+        pause() {
+            audio.pause();
+        },
+        stop() {
+            audio.pause();
+            audio.currentTime = 0;
+        },
+        seek(time) {
+            if (typeof time === "number") {
+                audio.currentTime = time;
+            }
+            return audio.currentTime;
+        },
+        playing() {
+            return !audio.paused;
+        },
+        volume(v) {
+            if (typeof v === "number") {
+                audio.volume = v;
+            }
+            return audio.volume;
+        },
+        rate(r) {
+            if (typeof r === "number") {
+                audio.playbackRate = r;
+            }
+            return audio.playbackRate;
+        }
+    };
 }
 
-function getBubbleLottieHoldFrame() {
-  const animation = getBubbleLottieAnimation();
-  if (!animation) return 30;
+// Lottie instances are destroyed and recreated on every play rather than
+// reused + goToAndPlay(0) — restarting a still-playing instance (bubbles.json
+// runs ~4s, longer than most answer times) doesn't reliably reset it.
+function restartLottieAnimations() {
 
-  const frameRate = animation.frameRate || 30;
-  const totalFrames = animation.totalFrames || 181;
-  return Math.min(Math.round(frameRate * BUBBLE_LOTTIE_HOLD_SECONDS), Math.max(totalFrames - 1, 0));
-}
-
-function playBubbleLottieIntro(q) {
-  const animation = getBubbleLottieAnimation();
-  if (!animation) {
-    bubbleRevealTimeout = setTimeout(function() { showBubbles(q); }, BUBBLE_REVEAL_DELAY_SECONDS * 1000);
-    return;
-  }
-
-  animation.loop = false;
-
-  function runIntroSegment() {
-    animation.removeEventListener('DOMLoaded', runIntroSegment);
-    if (bubbleIntroCompleteHandler) {
-      animation.removeEventListener('complete', bubbleIntroCompleteHandler);
+    if (tankLottieAnimation) {
+        tankLottieAnimation.stop();
+        tankLottieAnimation.destroy();
+        tankLottieAnimation = null;
     }
 
-    bubbleIntroCompleteHandler = function onIntroComplete() {
-      animation.removeEventListener('complete', onIntroComplete);
-      bubbleIntroCompleteHandler = null;
-      bubbleRevealTimeout = setTimeout(function() { showBubbles(q); }, BUBBLE_REVEAL_DELAY_SECONDS * 1000);
-    };
-    animation.addEventListener('complete', bubbleIntroCompleteHandler);
+    if (bubbleLottieAnimation) {
+        bubbleLottieAnimation.stop();
+        bubbleLottieAnimation.destroy();
+        bubbleLottieAnimation = null;
+    }
 
-    animation.playSegments([0, getBubbleLottieHoldFrame()], true);
-  }
+    const tankContainer = document.getElementById("lottieContainer");
+    const bubbleContainer = document.getElementById("bubbleLottieContainer");
 
-  if (animation.isLoaded) {
-    runIntroSegment();
-  } else {
-    animation.addEventListener('DOMLoaded', runIntroSegment);
-  }
+    tankContainer.innerHTML = "";
+    bubbleContainer.innerHTML = "";
+
+    bubbleAnimationDone = false;
+
+    requestAnimationFrame(() => {
+
+        tankLottieAnimation = lottie.loadAnimation({
+            container: tankContainer,
+            renderer: "svg",
+            loop: false,
+            autoplay: true,
+            path: "./lottie/tank.json"
+        });
+
+        bubbleLottieAnimation = lottie.loadAnimation({
+            container: bubbleContainer,
+            renderer: "svg",
+            loop: false,
+            autoplay: true,
+            audioFactory: lottieAudioFactory,
+            path: "./lottie/bubbles.json"
+        });
+
+        bubbleLottieAnimation.addEventListener('complete', function() {
+            bubbleAnimationDone = true;
+            revealAnswerBubbles();
+        });
+
+    });
+
 }
 
-function playBubbleLottieRemainder() {
-  const animation = getBubbleLottieAnimation();
-  if (!animation || !animation.isLoaded) return;
-
-  const startFrame = getBubbleLottieHoldFrame();
-  const endFrame = Math.max((animation.totalFrames || 181) - 1, startFrame);
-  animation.loop = false;
-  animation.playSegments([startFrame, endFrame], true);
+function revealAnswerBubbles() {
+  document.querySelectorAll('.bubble').forEach(function(b) {
+    b.classList.remove('bubble-hidden');
+  });
 }
 
 function loadQuestion() {
@@ -173,7 +212,7 @@ function loadQuestion() {
   const q = shuffledData[currentIndex];
 
   document.getElementById('phraseText').textContent = q.phrase;
-  document.getElementById('hintText').textContent = 'सही बुलबुले को टैप करके फोड़ो!';
+  document.getElementById('hintText').textContent = 'वाक्यांश पढ़ो और ऑडियो सुनो। सही शब्द बबल को टैप करो।';
 
   updateProgress();
   hideOverlays();
@@ -187,8 +226,7 @@ function loadQuestion() {
   const zone = document.getElementById('bubbleZone');
   zone.querySelectorAll('.bubble').forEach(b => b.remove());
 
-  clearTimeout(bubbleRevealTimeout);
-  playBubbleLottieIntro(q);
+  showBubbles(q);
 }
 
 function showBubbles(q) {
@@ -200,7 +238,7 @@ function showBubbles(q) {
   options.forEach((word, i) => {
     const bub = document.createElement('div');
     const size = BUBBLE_SIZES[i];
-    bub.className = 'bubble bubble-colors-' + i;
+    bub.className = 'bubble bubble-colors-' + i + (bubbleAnimationDone ? '' : ' bubble-hidden');
     bub.style.width = size + 'px';
     bub.style.height = size + 'px';
 
@@ -219,8 +257,6 @@ function showBubbles(q) {
     bub.onclick = function() { handleBubbleClick(word, bub); };
     zone.appendChild(bub);
   });
-
-  playBubbleLottieRemainder();
 }
 
 function handleBubbleClick(word, bubbleEl) {
@@ -240,6 +276,12 @@ function handleBubbleClick(word, bubbleEl) {
 function showCorrect(q) {
   const overlay = document.getElementById('correctOverlay');
   overlay.style.display = 'flex';
+
+  document.getElementById('bubbleLottieContainer').classList.add('lottie-hidden');
+
+  document.querySelectorAll('.bubble').forEach(function(b) {
+    b.classList.add('bubble-hidden');
+  });
 
   document.getElementById('correctWord').textContent = q.answer;
 
@@ -279,12 +321,18 @@ function retryQuestion() {
 
 function nextQuestion() {
   currentIndex++;
+  if (currentIndex >= shuffledData.length) {
+    loadQuestion();
+    return;
+  }
+  restartLottieAnimations();
   loadQuestion();
 }
 
 function hideOverlays() {
   document.getElementById('correctOverlay').style.display = 'none';
   document.getElementById('wrongOverlay').style.display = 'none';
+  document.getElementById('bubbleLottieContainer').classList.remove('lottie-hidden');
 }
 
 function playPhraseAudio() {
@@ -304,18 +352,57 @@ function playWordAudio(q) {
 }
 
 function endGame() {
-  document.getElementById('gameArea').classList.add('hidden');
-  const endScreen = document.getElementById('endScreen');
-  endScreen.classList.remove('hidden');
+    document.getElementById('gameArea').classList.add('hidden');
 
-  const total = shuffledData.length;
-  const pct = Math.round((score / total) * 100);
-  let msg = '';
-  if (pct === 100) msg = 'उत्कृष्ट! सभी सही!';
-  else if (pct >= 75) msg = 'बहुत अच्छा!';
-  else if (pct >= 50) msg = 'अच्छा प्रयास!';
-  else msg = 'और अभ्यास करो!';
+    if (bubbleLottieAnimation) {
+        bubbleLottieAnimation.stop();
+        bubbleLottieAnimation.destroy();
+        bubbleLottieAnimation = null;
+    }
 
-  document.getElementById('endScore').textContent =
-    'स्कोर: ' + score + ' / ' + total + ' (' + pct + '%) — ' + msg;
+    if (tankLottieAnimation) {
+        tankLottieAnimation.stop();
+        tankLottieAnimation.destroy();
+        tankLottieAnimation = null;
+    }
+
+    const endScreen = document.getElementById('endScreen');
+    endScreen.classList.remove('hidden');
+
+    // Hide the button row
+    const btnRow = document.getElementById('btnRow');
+    if (btnRow) {
+        btnRow.style.display = 'none';
+    }
+
+    const backdrop = document.getElementById('backdrop');
+    if (backdrop) backdrop.style.display = 'block';
 }
+
+window.debugEndGame = function () {
+    // If the game hasn't started, start it first
+    if (!shuffledData.length) {
+        startGame();
+    }
+
+    // Pretend all questions have been completed
+    currentIndex = shuffledData.length;
+    score = shuffledData.length; // optional: show 100% score
+
+    endGame();
+};
+
+window.debugAutoPlay = function () {
+    if (!shuffledData.length) {
+        startGame();
+    }
+
+    const timer = setInterval(() => {
+        score++;
+        nextQuestion();
+
+        if (currentIndex >= shuffledData.length) {
+            clearInterval(timer);
+        }
+    }, 100);
+};

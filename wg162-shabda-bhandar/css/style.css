@@ -91,9 +91,8 @@ svg * {
   background: #ff002682 !important;
   border: 11px solid #ff0000 !important;
   color: #C62828 !important;
-  animation: shake 0.4s ease !important;
-  height: 240px;
-  width: 240px;
+  height: 242px;
+  width: 252px;
   position: absolute;
   border-radius: 50%;
 }
@@ -382,13 +381,18 @@ svg * {
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  bottom: -210px;
+  bottom: -200px;
 }
 
 .lottie-container svg {
   width: 100%;
   height: 100%;
 }
+
+.lottie-container.lottie-hidden {
+  display: none;
+}
+
 .bubble {
   position: absolute;
   z-index: 2;
@@ -401,9 +405,11 @@ svg * {
   transition: transform .15s;
   user-select: none;
   -webkit-user-select: none;
-  background-image: url("../assets/bubble.svg");
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
+
+}
+
+.bubble.bubble-hidden {
+  display: none;
 }
 
 .bubble-word {
@@ -448,6 +454,9 @@ svg * {
   position: relative;
   margin-bottom: 10px;
   margin: 10px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #ccc;
 }
 
 .img-reveal.placeholder {
@@ -504,9 +513,10 @@ svg * {
   align-items: center;
   justify-content: center;
   margin-bottom: 10px;
-  animation: shake .4s ease
 }
-
+#role-image{
+  width: 100%;
+}
 .wrong-icon-big svg {
   width: 32px;
   height: 32px;
@@ -576,60 +586,38 @@ svg * {
 
 .game-end {
   text-align: center;
-  padding: 30px 20px
-}
-
-.end-stars {
-  font-size: 40px;
-  margin-bottom: 12px;
-  letter-spacing: 4px
-}
-
-.end-stars svg {
-  width: 40px;
-  height: 40px;
-  fill: #F5A623;
-  margin: 0 2px
+    padding: 30px 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .end-title {
-  font-size: 24px;
-  font-weight: 700;
-  color: #1565C0;
+  font-size: 30px;
+  color: #fff;
   margin-bottom: 8px
 }
 
-.end-score {
-  font-size: 18px;
-  color: #5C6BC0;
-  margin-bottom: 20px;
-  font-weight: 500
-}
-
 .btn-replay {
-  background: #1E88E5;
+      background-color: #ff9b00;
+    border-radius: 50px;
+    font-size: 30px;
+    padding: 30px 50px;
   color: #fff;
-  padding: 12px 32px;
-  border-radius: 12px;
   border: none;
   font-family: inherit;
-  font-size: 16px;
   font-weight: 600;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  transition: transform .15s
+  transition: transform .15s;
+  margin-top: 30px;
 }
 
 .btn-replay:hover {
   transform: scale(1.03)
-}
-
-.btn-replay svg {
-  width: 20px;
-  height: 20px;
-  fill: #fff
 }
 
 .btn-start {
@@ -664,7 +652,7 @@ svg * {
 
 .start-screen {
   position: absolute;
-  top: 40%;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
@@ -688,29 +676,7 @@ svg * {
   }
 }
 
-@keyframes shake {
 
-  0%,
-  100% {
-    transform: translateX(0)
-  }
-
-  20% {
-    transform: translateX(-12px)
-  }
-
-  40% {
-    transform: translateX(12px)
-  }
-
-  60% {
-    transform: translateX(-8px)
-  }
-
-  80% {
-    transform: translateX(8px)
-  }
-}
 
 @keyframes pulse {
 
