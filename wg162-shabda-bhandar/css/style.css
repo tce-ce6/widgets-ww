@@ -379,7 +379,7 @@ svg * {
   font-size: 30px;
   color: #fff;
   margin-bottom: 10px;
-  font-weight: 600;
+  font-weight: 500;
   margin-bottom: 20px;
 }
 
@@ -438,7 +438,6 @@ svg * {
   line-height: 1.3;
   padding: 4px;
   z-index: 1;
-      font-weight: 300;
 }
 
 .result-overlay {
