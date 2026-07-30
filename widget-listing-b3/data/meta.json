@@ -9,7 +9,7 @@
       "author": "tce-ashishg"
     },
     "wg162-shabda-bhandar": {
-      "updatedAt": "2026-07-30T12:28:40+05:30",
+      "updatedAt": "2026-07-30T13:03:02+05:30",
       "author": "tce-nitinc"
     },
     "wg164-don-akshari-shabad": {
@@ -32,12 +32,25 @@
       "updatedAt": "2026-07-24T17:27:13+05:30",
       "author": "tce-ashishg"
     },
+    "wg176-vakyansh-se-shabda-tak": {
+      "updatedAt": "2026-07-30T13:03:02+05:30",
+      "author": "tce-nitinc"
+    },
     "wg179-decentralisation-explorer": {
       "updatedAt": "2026-07-30T12:35:29+05:30",
       "author": "tce-ashishg"
     }
   },
   "commits": [
+    {
+      "date": "2026-07-30T13:03:02+05:30",
+      "author": "tce-nitinc",
+      "message": "added 176",
+      "widgets": [
+        162,
+        176
+      ]
+    },
     {
       "date": "2026-07-30T12:35:29+05:30",
       "author": "tce-ashishg",
@@ -473,14 +486,6 @@
     },
     {
       "date": "2026-06-26T12:47:37+05:30",
-      "author": "tce-ashishg",
-      "message": "file name updated",
-      "widgets": [
-        77
-      ]
-    },
-    {
-      "date": "2026-06-26T12:45:22+05:30",
       "author": "tce-ashishg",
       "message": "file name updated",
       "widgets": [
