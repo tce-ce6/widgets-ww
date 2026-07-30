@@ -1,321 +1,280 @@
-const DATA = [
-  {phrase:"कपड़े धोने का काम करने वाला", answer:"धोबी", phraseAudio:"assets/audio/dhobi.mp3", wordAudio:"assets/audio/dhobi.mp3", image:"assets/image/dhobi.svg"},
-  {phrase:"बीमार लोगों का इलाज करने वाला", answer:"चिकित्सक", phraseAudio:"assets/audio/chikitsak.mp3", wordAudio:"assets/audio/chikitsak.mp3", image:"assets/image/chikitsak.svg"},
-  {phrase:"पत्र बाँटने वाला", answer:"डाकिया", phraseAudio:"assets/audio/dakiya.mp3", wordAudio:"assets/audio/dakiya.mp3", image:"assets/image/dakiya.svg"},
-  {phrase:"खाना बनाने वाला", answer:"रसोइया", phraseAudio:"assets/audio/rasoiya.mp3", wordAudio:"assets/audio/rasoiya.mp3", image:"assets/image/rasoiya.svg"},
-  {phrase:"मछली पकड़ने वाला", answer:"मछुआरा", phraseAudio:"assets/audio/machuara.mp3", wordAudio:"assets/audio/machuara.mp3", image:"assets/image/machuara.svg"},
-  {phrase:"लकड़ी का सामान बनाने वाला", answer:"बढ़ई", phraseAudio:"assets/audio/badhai.mp3", wordAudio:"assets/audio/badhai.mp3", image:"assets/image/badhai.svg"},
-  {phrase:"मिट्टी के बर्तन बनाने वाला", answer:"कुम्हार", phraseAudio:"assets/audio/kumhar.mp3", wordAudio:"assets/audio/kumhar.mp3", image:"assets/image/kumhar.svg"},
-  {phrase:"कपड़े सिलने वाला", answer:"दर्जी", phraseAudio:"assets/audio/darji.mp3", wordAudio:"assets/audio/darji.mp3", image:"assets/image/darji.svg"},
-  {phrase:"सोने-चाँदी के गहने बनाने वाला", answer:"सुनार", phraseAudio:"assets/audio/sunar.mp3", wordAudio:"assets/audio/sunar.mp3", image:"assets/image/sunar.svg"},
-  {phrase:"जूते बनाने और ठीक करने वाला", answer:"मोची", phraseAudio:"assets/audio/mochi.mp3", wordAudio:"assets/audio/mochi.mp3", image:"assets/image/mochi.svg"},
-  {phrase:"बगीचे की देखभाल करने वाला", answer:"माली", phraseAudio:"assets/audio/mali.mp3", wordAudio:"assets/audio/mali.mp3", image:"assets/image/mali.svg"},
-  {phrase:"गाना गाने वाला", answer:"गायक", phraseAudio:"assets/audio/gayak.mp3", wordAudio:"assets/audio/gayak.mp3", image:"assets/image/gayak.svg"},
-  {phrase:"चित्र बनाने वाला", answer:"चित्रकार", phraseAudio:"assets/audio/chitrakar.mp3", wordAudio:"assets/audio/chitrakar.mp3", image:"assets/image/chitrakar.svg"},
-  {phrase:"बच्चों को पढ़ाने वाला", answer:"शिक्षक", phraseAudio:"assets/audio/shikshak.mp3", wordAudio:"assets/audio/shikshak.mp3", image:"assets/image/shikshak.svg"},
-  {phrase:"नाव चलाने वाला", answer:"नाविक", phraseAudio:"assets/audio/navik.mp3", wordAudio:"assets/audio/navik.mp3", image:"assets/image/navik.svg"},
-  {phrase:"संगीत जानने वाला", answer:"संगीतज्ञ", phraseAudio:"assets/audio/sangitagya.mp3", wordAudio:"assets/audio/sangitagya.mp3", image:"assets/image/sangitatnya.svg"},
-  {phrase:"खेत में खेती करने वाला", answer:"किसान", phraseAudio:"assets/audio/kisan.mp3", wordAudio:"assets/audio/kisan.mp3", image:"assets/image/kisan.svg"},
-  {phrase:"घर बनाने वाला", answer:"मिस्त्री", phraseAudio:"assets/audio/mistri.mp3", wordAudio:"assets/audio/mistri.mp3", image:"assets/image/mistri.svg"},
-  {phrase:"लोहे का सामान बनाने वाला", answer:"लोहार", phraseAudio:"assets/audio/lohar.mp3", wordAudio:"assets/audio/lohar.mp3", image:"assets/image/lohar.svg"},
-  {phrase:"वाहन चलाने वाला", answer:"चालक", phraseAudio:"assets/audio/chalak.mp3", wordAudio:"assets/audio/chalak.mp3", image:"assets/image/chalak.svg"},
-  {phrase:"विमान उड़ाने वाला", answer:"पायलट", phraseAudio:"assets/audio/paylat.mp3", wordAudio:"assets/audio/paylat.mp3", image:"assets/image/pilot.svg"},
-  {phrase:"समाचार लिखने वाला", answer:"पत्रकार", phraseAudio:"assets/audio/patrakar.mp3", wordAudio:"assets/audio/patrakar.mp3", image:"assets/image/patrakar.svg"},
-  {phrase:"जो देश की रक्षा करता हो", answer:"सैनिक", phraseAudio:"assets/audio/sainik.mp3", wordAudio:"assets/audio/sainik.mp3", image:"assets/image/sainik.svg"},
-  {phrase:"जो बाल काटता हो", answer:"नाई", phraseAudio:"assets/audio/naai.mp3", wordAudio:"assets/audio/naai.mp3", image:"assets/image/naai.svg"}
-];
+document.addEventListener('DOMContentLoaded', () => {
+  const startButton = document.getElementById('startButton');
+  const introContainer = document.querySelector('.intro-page-container');
+  const mainContainer = document.querySelector('.main-page-container');
+  const foodStepImages = document.querySelectorAll('#foodFlow .step-image');
 
-const BUBBLE_SIZES = [250, 250, 250];
-const BUBBLE_POSITIONS = [
-  {top:150, left:120},
-  {top:40, left:440},
-  {top:150, right:80}
-];
-const BUBBLE_LOTTIE_PATH = './lottie/bubbles.json';
-const BUBBLE_LOTTIE_HOLD_SECONDS = 1;
-const BUBBLE_REVEAL_DELAY_SECONDS = 3;
+  // Map of organ selections to their matching blanks, data, and step indexes
+  const organMap = {
+    'mouth-organ': { blankId: 'mouth-blank', name: 'Mouth', imgSrc: 'assets/image/mouth.svg', stepIndex: 0 },
+    'oesophagus-organ': { blankId: 'osephagus-blank', name: 'Oesophagus', imgSrc: 'assets/image/oesophagus.svg', stepIndex: 1 },
+    'stomach-organ': { blankId: 'stomach-blank', name: 'Stomach', imgSrc: 'assets/image/stomach.svg', stepIndex: 2 },
+    'small-intestine-organ': { blankId: 'small-intestine-blank', name: 'Small Intestine', imgSrc: 'assets/image/small-intestine.svg', stepIndex: 3 },
+    'large-intestine-organ': { blankId: 'large-intestine-blank', name: 'Large Intestine', imgSrc: 'assets/image/large-intestine.svg', stepIndex: 4 },
+    'rectum-organ': { blankId: 'rectum-blank', name: 'Rectum', imgSrc: 'assets/image/rectum.svg', stepIndex: 5 }
+  };
 
-let currentIndex = 0;
-let score = 0;
-let isLocked = false;
-let shuffledData = [];
-let bubbleLottieAnimation = null;
-let bubbleRevealTimeout = null;
-let bubbleIntroCompleteHandler = null;
+  let selectedOrgan = null;
+  let correctCount = 0;
 
-function shuffle(arr) {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
-
-getBubbleLottieAnimation();
-
-function startGame() {
-  shuffledData = shuffle(DATA);
-  currentIndex = 0;
-  score = 0;
-  document.getElementById('startScreen').classList.add('hidden');
-  document.getElementById('endScreen').classList.add('hidden');
-  document.getElementById('gameArea').classList.remove('hidden');
-  const backdrop = document.getElementById('backdrop');
-  if (backdrop) backdrop.style.display = 'none';
-  buildProgress();
-  loadQuestion();
-}
-
-function restartGame() {
-  document.getElementById('endScreen').classList.add('hidden');
-  document.getElementById('startScreen').classList.remove('hidden');
-}
-
-function buildProgress() {
-  updateProgress();
-}
-
-function updateProgress() {
-  const total = shuffledData.length || 1;
-  const pct = Math.round((currentIndex / total) * 100);
-  const badgeVal = Math.min(currentIndex + 1, total);
-
-  const badgeEl = document.getElementById('progressBadge');
-  const percentEl = document.getElementById('progressPercent');
-  const fillEl = document.getElementById('progressFill');
-
-  if (badgeEl) badgeEl.textContent = badgeVal;
-  if (percentEl) percentEl.textContent = pct + '%';
-  if (fillEl) fillEl.style.width = pct + '%';
-}
-
-function getWrongOptions(correctAnswer) {
-  const allAnswers = DATA.map(d => d.answer).filter(a => a !== correctAnswer);
-  const shuffled = shuffle(allAnswers);
-  return shuffled.slice(0, 2);
-}
-
-function getBubbleLottieAnimation() {
-  const container = document.getElementById('lottieContainer');
-  if (!container || typeof lottie === 'undefined') return null;
-  if (bubbleLottieAnimation) return bubbleLottieAnimation;
-
-  bubbleLottieAnimation = lottie.loadAnimation({
-    container: container,
-    renderer: 'svg',
-    loop: false,
-    autoplay: false,
-    path: BUBBLE_LOTTIE_PATH
+  // Programmatically hide the ugly red debug borders on foreignObjects
+  document.querySelectorAll('foreignObject').forEach(fo => {
+    fo.style.border = 'none';
   });
 
-  return bubbleLottieAnimation;
-}
-
-function getBubbleLottieHoldFrame() {
-  const animation = getBubbleLottieAnimation();
-  if (!animation) return 30;
-
-  const frameRate = animation.frameRate || 30;
-  const totalFrames = animation.totalFrames || 181;
-  return Math.min(Math.round(frameRate * BUBBLE_LOTTIE_HOLD_SECONDS), Math.max(totalFrames - 1, 0));
-}
-
-function playBubbleLottieIntro(q) {
-  const animation = getBubbleLottieAnimation();
-  if (!animation) {
-    bubbleRevealTimeout = setTimeout(function() { showBubbles(q); }, BUBBLE_REVEAL_DELAY_SECONDS * 1000);
-    return;
+  // Start button transition
+  if (startButton) {
+    startButton.addEventListener('click', () => {
+      if (introContainer) introContainer.style.display = 'none';
+      if (mainContainer) mainContainer.style.display = 'block';
+    });
   }
 
-  animation.loop = false;
+  // Create a floating image follower element for custom organ cursor
+  const follower = document.createElement('div');
+  follower.id = 'organ-follower';
+  follower.style.position = 'fixed';
+  follower.style.pointerEvents = 'none';
+  follower.style.zIndex = '99999';
+  follower.style.width = '70px';
+  follower.style.height = '70px';
+  follower.style.display = 'none';
+  follower.style.transform = 'translate(-50%, -50%)';
+  follower.innerHTML = `<img src="" style="width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.35));" />`;
+  document.body.appendChild(follower);
 
-  function runIntroSegment() {
-    animation.removeEventListener('DOMLoaded', runIntroSegment);
-    if (bubbleIntroCompleteHandler) {
-      animation.removeEventListener('complete', bubbleIntroCompleteHandler);
+  // Manage custom cursor hides/shows on desktop & touch
+  function setCustomCursor(active) {
+    if (active) {
+      document.body.style.cursor = 'none';
+      document.querySelectorAll('.organ-blank, .organ-container').forEach(el => {
+        el.style.cursor = 'none';
+      });
+    } else {
+      document.body.style.cursor = 'default';
+      document.querySelectorAll('.organ-blank').forEach(el => {
+        el.style.cursor = 'pointer';
+      });
+      document.querySelectorAll('.organ-container').forEach(el => {
+        if (!el.classList.contains('disabled')) {
+          el.style.cursor = 'pointer';
+        } else {
+          el.style.cursor = 'not-allowed';
+        }
+      });
+    }
+  }
+
+  // Update floating follower position on screen
+  function updateFollowerPosition(e) {
+    if (selectedOrgan) {
+      const x = e.touches ? e.touches[0].clientX : e.clientX;
+      const y = e.touches ? e.touches[0].clientY : e.clientY;
+      follower.style.left = `${x}px`;
+      follower.style.top = `${y}px`;
+    }
+  }
+  window.addEventListener('mousemove', updateFollowerPosition);
+  window.addEventListener('touchmove', updateFollowerPosition, { passive: true });
+
+  // Handle organ selections in the chart
+  document.querySelectorAll('.organ-container').forEach(container => {
+    container.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const organId = container.id;
+
+      // If clicked organ is already selected, deselect it
+      if (selectedOrgan === organId) {
+        deselectOrgan();
+        return;
+      }
+
+      // If already disabled/completed, do nothing
+      if (container.classList.contains('disabled')) {
+        return;
+      }
+
+      deselectOrgan();
+      selectedOrgan = organId;
+      container.classList.add('selected');
+
+      const organData = organMap[organId];
+      if (organData) {
+        follower.querySelector('img').src = organData.imgSrc;
+        follower.style.display = 'block';
+        
+        // Put the follower exactly where the cursor clicked immediately
+        const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+        const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+        if (clientX && clientY) {
+          follower.style.left = `${clientX}px`;
+          follower.style.top = `${clientY}px`;
+        }
+        
+        setCustomCursor(true);
+      }
+    });
+  });
+
+  function deselectOrgan() {
+    selectedOrgan = null;
+    document.querySelectorAll('.organ-container').forEach(c => c.classList.remove('selected'));
+    follower.style.display = 'none';
+    setCustomCursor(false);
+  }
+
+  // Deselect selected organ if user clicks anywhere else
+  document.addEventListener('click', (e) => {
+    if (selectedOrgan && !e.target.closest('.organ-container') && !e.target.closest('.organ-blank')) {
+      deselectOrgan();
+    }
+  });
+
+  // Handle slot tapping
+  document.querySelectorAll('.organ-blank').forEach(blank => {
+    blank.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (!selectedOrgan) return;
+
+      const organData = organMap[selectedOrgan];
+      if (!organData) return;
+
+      if (blank.id === organData.blankId) {
+        handleCorrectMatch(blank, selectedOrgan);
+      } else {
+        handleWrongMatch(blank);
+      }
+    });
+  });
+
+  function handleCorrectMatch(blankEl, organId) {
+    const organData = organMap[organId];
+
+    // Show contents in blank slot
+    blankEl.classList.add('correct');
+    blankEl.innerHTML = `
+      <div class="filled-content">
+        <img src="${organData.imgSrc}" alt="${organData.name}" />
+        <span class="organ-name">${organData.name}</span>
+        <span class="checkmark">✔</span>
+      </div>
+    `;
+
+    // Disable matched organ in selection chart
+    const organContainer = document.getElementById(organId);
+    if (organContainer) {
+      organContainer.classList.remove('selected');
+      organContainer.classList.add('disabled');
     }
 
-    bubbleIntroCompleteHandler = function onIntroComplete() {
-      animation.removeEventListener('complete', onIntroComplete);
-      bubbleIntroCompleteHandler = null;
-      bubbleRevealTimeout = setTimeout(function() { showBubbles(q); }, BUBBLE_REVEAL_DELAY_SECONDS * 1000);
-    };
-    animation.addEventListener('complete', bubbleIntroCompleteHandler);
+    // Reveal step image in the food flow
+    if (foodStepImages[organData.stepIndex]) {
+      foodStepImages[organData.stepIndex].style.visibility = 'visible';
+    }
 
-    animation.playSegments([0, getBubbleLottieHoldFrame()], true);
+    deselectOrgan();
+    correctCount++;
+
+    // Trigger success when all 6 organs match
+    if (correctCount === 6) {
+      setTimeout(showSuccessScreen, 600);
+    }
   }
 
-  if (animation.isLoaded) {
-    runIntroSegment();
-  } else {
-    animation.addEventListener('DOMLoaded', runIntroSegment);
-  }
-}
-
-function playBubbleLottieRemainder() {
-  const animation = getBubbleLottieAnimation();
-  if (!animation || !animation.isLoaded) return;
-
-  const startFrame = getBubbleLottieHoldFrame();
-  const endFrame = Math.max((animation.totalFrames || 181) - 1, startFrame);
-  animation.loop = false;
-  animation.playSegments([startFrame, endFrame], true);
-}
-
-function loadQuestion() {
-  if (currentIndex >= shuffledData.length) {
-    endGame();
-    return;
+  function handleWrongMatch(blankEl) {
+    blankEl.classList.add('shake');
+    setTimeout(() => {
+      blankEl.classList.remove('shake');
+    }, 400);
   }
 
-  isLocked = false;
-  const q = shuffledData[currentIndex];
+  // Reset complete game state
+  function resetGame() {
+    correctCount = 0;
+    deselectOrgan();
 
-  document.getElementById('phraseText').textContent = q.phrase;
-  document.getElementById('hintText').textContent = 'सही बुलबुले को टैप करके फोड़ो!';
+    // Reset all blanks
+    document.querySelectorAll('.organ-blank').forEach(blank => {
+      blank.classList.remove('correct', 'shake');
+      blank.innerHTML = '';
+    });
 
-  updateProgress();
-  hideOverlays();
-  const btnRow = document.getElementById('btnRow');
-  btnRow.style.display = 'flex';
-  btnRow.className = 'btn-row';
-  btnRow.innerHTML =
-    '<button id="btnRetry" class="game-btn btn-retry disabled" disabled onclick="retryQuestion()">फिर से प्रयास करें</button>' +
-    '<button id="btnNext" class="game-btn btn-next disabled" disabled onclick="nextQuestion()">अगला वाक्यांश</button>';
+    // Reset selection chart
+    document.querySelectorAll('.organ-container').forEach(c => {
+      c.classList.remove('disabled', 'selected');
+    });
 
-  const zone = document.getElementById('bubbleZone');
-  zone.querySelectorAll('.bubble').forEach(b => b.remove());
+    // Hide food flow step images
+    foodStepImages.forEach(img => {
+      img.style.visibility = 'hidden';
+    });
 
-  clearTimeout(bubbleRevealTimeout);
-  playBubbleLottieIntro(q);
-}
-
-function showBubbles(q) {
-  const wrongOpts = getWrongOptions(q.answer);
-  const options = shuffle([q.answer, ...wrongOpts]);
-
-  const zone = document.getElementById('bubbleZone');
-
-  options.forEach((word, i) => {
-    const bub = document.createElement('div');
-    const size = BUBBLE_SIZES[i];
-    bub.className = 'bubble bubble-colors-' + i;
-    bub.style.width = size + 'px';
-    bub.style.height = size + 'px';
-
-    const pos = BUBBLE_POSITIONS[i];
-    bub.style.top = pos.top + 'px';
-    if (pos.left !== undefined) bub.style.left = pos.left + 'px';
-    if (pos.right !== undefined) bub.style.right = pos.right + 'px';
-
-    bub.style.animationDelay = (i * 0.3) + 's';
-
-    const span = document.createElement('span');
-    span.className = 'bubble-word';
-    span.textContent = word;
-    bub.appendChild(span);
-
-    bub.onclick = function() { handleBubbleClick(word, bub); };
-    zone.appendChild(bub);
-  });
-
-  playBubbleLottieRemainder();
-}
-
-function handleBubbleClick(word, bubbleEl) {
-  if (isLocked) return;
-  isLocked = true;
-
-  const q = shuffledData[currentIndex];
-
-  if (word === q.answer) {
-    score++;
-    showCorrect(q);
-  } else {
-    showWrong(bubbleEl);
-  }
-}
-
-function showCorrect(q) {
-  const overlay = document.getElementById('correctOverlay');
-  overlay.style.display = 'flex';
-
-  document.getElementById('correctWord').textContent = q.answer;
-
-  const roleImg = document.getElementById('role-image');
-  if (roleImg) {
-    roleImg.src = q.image;
+    // Go back to intro screen
+    if (introContainer) introContainer.style.display = 'block';
+    if (mainContainer) mainContainer.style.display = 'none';
   }
 
-  document.getElementById('hintText').textContent = 'शाबाश! सही जवाब!';
+  // Display success modal with clean HTML layout
+  function showSuccessScreen() {
+    const overlay = document.createElement('div');
+    overlay.id = 'success-overlay';
+    overlay.style.position = 'fixed';
+    overlay.style.top = '0';
+    overlay.style.left = '0';
+    overlay.style.width = '100vw';
+    overlay.style.height = '100vh';
+    overlay.style.backgroundColor = 'rgba(15, 23, 42, 0.85)';
+    overlay.style.display = 'flex';
+    overlay.style.flexDirection = 'column';
+    overlay.style.alignItems = 'center';
+    overlay.style.justifyContent = 'center';
+    overlay.style.zIndex = '999999';
+    overlay.style.color = '#fff';
+    overlay.style.fontFamily = '"Roboto", sans-serif';
+    overlay.style.backdropFilter = 'blur(8px)';
+    overlay.style.webkitBackdropFilter = 'blur(8px)';
 
-  playWordAudio(q);
+    const card = document.createElement('div');
+    card.style.position = 'relative';
+    card.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+    card.style.padding = '48px 64px';
+    card.style.borderRadius = '32px';
+    card.style.textAlign = 'center';
+    card.style.boxShadow = '0 25px 50px -12px rgba(0, 0, 0, 0.5)';
+    card.style.border = '4px solid rgba(255, 255, 255, 0.4)';
+    card.style.maxWidth = '550px';
+    card.style.width = '90%';
+    card.style.transform = 'scale(0.8)';
+    card.style.opacity = '0';
+    card.style.transition = 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
 
-  const nextBtn = document.getElementById('btnNext');
-  if (nextBtn) {
-    nextBtn.classList.remove('disabled');
-    nextBtn.removeAttribute('disabled');
+    card.innerHTML = `
+      <div style="font-size: 64px; margin-bottom: 16px;">🎉</div>
+      <h1 style="font-size: 38px; margin: 0 0 12px 0; font-weight: 900; letter-spacing: -0.5px; text-shadow: 0 4px 6px rgba(0,0,0,0.15);">Fantastic Job!</h1>
+      <p style="font-size: 18px; color: #ecfdf5; margin: 0 0 32px 0; font-weight: 500; line-height: 1.5;">You successfully mapped all parts of the digestive system!</p>
+      <button id="restart-btn" style="background-color: #fff; color: #059669; font-size: 18px; font-weight: 800; padding: 16px 44px; border-radius: 50px; border: none; cursor: pointer; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); transition: all 0.2s ease;">Play Again</button>
+    `;
+
+    overlay.appendChild(card);
+    document.body.appendChild(overlay);
+
+    requestAnimationFrame(() => {
+      card.style.transform = 'scale(1)';
+      card.style.opacity = '1';
+    });
+
+    const restartBtn = card.querySelector('#restart-btn');
+    restartBtn.addEventListener('mouseenter', () => {
+      restartBtn.style.transform = 'scale(1.05)';
+      restartBtn.style.boxShadow = '0 10px 20px rgba(0,0,0,0.15)';
+    });
+    restartBtn.addEventListener('mouseleave', () => {
+      restartBtn.style.transform = 'scale(1)';
+      restartBtn.style.boxShadow = '0 10px 15px -3px rgba(0,0,0,0.1)';
+    });
+    restartBtn.addEventListener('click', () => {
+      overlay.remove();
+      resetGame();
+    });
   }
-}
-
-function showWrong(bubbleEl) {
-  if (bubbleEl) {
-    bubbleEl.classList.add('wrong');
-  }
-
-  document.getElementById('hintText').textContent = 'गलत! फिर से कोशिश करो!';
-
-  const retryBtn = document.getElementById('btnRetry');
-  if (retryBtn) {
-    retryBtn.classList.remove('disabled');
-    retryBtn.removeAttribute('disabled');
-  }
-}
-
-function retryQuestion() {
-  loadQuestion();
-}
-
-function nextQuestion() {
-  currentIndex++;
-  loadQuestion();
-}
-
-function hideOverlays() {
-  document.getElementById('correctOverlay').style.display = 'none';
-  document.getElementById('wrongOverlay').style.display = 'none';
-}
-
-function playPhraseAudio() {
-  const q = shuffledData[currentIndex];
-  if (!q) return;
-  try {
-    const audio = new Audio(q.phraseAudio);
-    audio.play().catch(function(){});
-  } catch(e) {}
-}
-
-function playWordAudio(q) {
-  try {
-    const audio = new Audio(q.wordAudio);
-    audio.play().catch(function(){});
-  } catch(e) {}
-}
-
-function endGame() {
-  document.getElementById('gameArea').classList.add('hidden');
-  const endScreen = document.getElementById('endScreen');
-  endScreen.classList.remove('hidden');
-
-  const total = shuffledData.length;
-  const pct = Math.round((score / total) * 100);
-  let msg = '';
-  if (pct === 100) msg = 'उत्कृष्ट! सभी सही!';
-  else if (pct >= 75) msg = 'बहुत अच्छा!';
-  else if (pct >= 50) msg = 'अच्छा प्रयास!';
-  else msg = 'और अभ्यास करो!';
-
-  document.getElementById('endScore').textContent =
-    'स्कोर: ' + score + ' / ' + total + ' (' + pct + '%) — ' + msg;
-}
+});

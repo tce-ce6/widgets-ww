@@ -31,7 +31,7 @@
           },
           "state": {
             "status": "returned",
-            "text": "State builds state-level facilities. Local playgrounds are a local body responsibility."
+            "text": "The State handles bigger things like highways and hospitals, not a neighbourhood playground."
           },
           "central": {
             "status": "returned",
@@ -50,11 +50,11 @@
           },
           "state": {
             "status": "returned",
-            "text": "State manages large water projects. A neighbourhood tank is a local body responsibility."
+            "text": "The State manages large water projects like dams and canals, not a single neighbourhood tank."
           },
           "central": {
             "status": "returned",
-            "text": "Central launches national water missions. Individual tank cleaning is not managed from Delhi."
+            "text": "The Centre runs national water missions, not the cleaning of a single tank."
           }
         }
       },
@@ -88,11 +88,11 @@
           },
           "state": {
             "status": "returned",
-            "text": "State frames building regulations. Checking individual constructions locally is a local body responsibility."
+            "text": "The State frames the overall building regulations and codes, not individual construction sites."
           },
           "central": {
             "status": "returned",
-            "text": "Central has no role in local building permissions. This is handled by the local body."
+            "text": "The Centre deals with matters like national infrastructure policy, not checking a single construction site."
           }
         }
       },
@@ -107,11 +107,11 @@
           },
           "state": {
             "status": "returned",
-            "text": "State electricity board supplies power. Maintaining individual streetlights is a local body responsibility."
+            "text": "The State electricity board handles power supply and generation, not fixing individual streetlights."
           },
           "central": {
             "status": "returned",
-            "text": "Central frames national energy policy. Local streetlight maintenance is not managed from Delhi."
+            "text": "The Centre frames national energy policy, not the repair of a single streetlight."
           }
         }
       }
@@ -133,7 +133,7 @@
           },
           "central": {
             "status": "returned",
-            "text": "Central agencies handle national-level crimes. Local extortion cases are handled by state police."
+            "text": "Central agencies handle crimes with a national or cross-border angle, not a local extortion case."
           }
         }
       },
@@ -152,7 +152,7 @@
           },
           "central": {
             "status": "returned",
-            "text": "Central frames environmental laws. River pollution enforcement within a state is handled by the state."
+            "text": "Central frames national environmental laws, not for routine pollution cases like this."
           }
         }
       },
@@ -163,7 +163,7 @@
         "governments": {
           "local": {
             "status": "returned",
-            "text": "Local bodies maintain streetlights. Electricity supply networks are managed by the state."
+            "text": "Local bodies maintain small things like streetlights, not the electricity network for an entire area."
           },
           "state": {
             "status": "resolved",
@@ -171,7 +171,7 @@
           },
           "central": {
             "status": "returned",
-            "text": "Central frames national energy policy. Power supply to areas is managed by the state electricity board."
+            "text": "Central frames national energy policy, not the repair of a specific power outage."
           }
         }
       },
@@ -182,7 +182,7 @@
         "governments": {
           "local": {
             "status": "returned",
-            "text": "Local bodies manage school buildings. Teacher appointments are made by the state education department."
+            "text": "Local bodies look after school buildings and facilities, not teacher appointments."
           },
           "state": {
             "status": "resolved",
@@ -190,7 +190,7 @@
           },
           "central": {
             "status": "returned",
-            "text": "Central frames national education policy. Individual teacher postings are managed by the state."
+            "text": "Central frames national education policy, not the posting of individual teachers."
           }
         }
       },
@@ -220,7 +220,7 @@
         "governments": {
           "local": {
             "status": "returned",
-            "text": "Local bodies manage primary health posts. District hospital supplies are managed by the state."
+            "text": "Local bodies manage smaller primary health posts, not a district-level hospital."
           },
           "state": {
             "status": "resolved",
@@ -228,7 +228,7 @@
           },
           "central": {
             "status": "returned",
-            "text": "Central frames national health policy. District hospital medicine supply is managed by the state."
+            "text": "Central mainly funds and frames national health schemes, not the day-to-day medicine dispatch to one hospital."
           }
         }
       },
@@ -239,7 +239,7 @@
         "governments": {
           "local": {
             "status": "returned",
-            "text": "Local bodies can help in their area. District-wide disaster response is managed by the state."
+            "text": "Local bodies can offer some help, but a district-wide disaster needs bigger resources and coordination."
           },
           "state": {
             "status": "resolved",
@@ -247,7 +247,7 @@
           },
           "central": {
             "status": "returned",
-            "text": "Central deploys national teams for very large disasters. District-level flood response is managed by the state."
+            "text": "Central sends national teams mainly for very large-scale disasters, not routine district-level flooding."
           }
         }
       }
@@ -261,11 +261,11 @@
         "governments": {
           "local": {
             "status": "returned",
-            "text": "Local bodies have no security forces. Border defence is a central government responsibility."
+            "text": "Local bodies handle civic matters, not armed threats or national security."
           },
           "state": {
             "status": "returned",
-            "text": "State police handle law and order within the state. Border defence is a central government responsibility."
+            "text": "State police handle everyday law and order, not defending the country's border."
           },
           "central": {
             "status": "resolved",
@@ -322,7 +322,7 @@
           },
           "state": {
             "status": "returned",
-            "text": "State manages services within its borders. Postal services are a central government responsibility."
+            "text": "State manages services within its own borders, not something that applies uniformly across the whole country."
           },
           "central": {
             "status": "resolved",
@@ -337,11 +337,11 @@
         "governments": {
           "local": {
             "status": "returned",
-            "text": "Local bodies have no role in immigration. Entry of people from other countries is a central government responsibility."
+            "text": "Local bodies handle civic services in one area, not the entry of people from other countries."
           },
           "state": {
             "status": "returned",
-            "text": "State has no authority over immigration. Entry of people from other countries is a central government responsibility."
+            "text": "State governments only have authority within their own state, not over who enters the country."
           },
           "central": {
             "status": "resolved",
