@@ -52,7 +52,7 @@ const LOTTIE_ANIMATION_MAP = {
     "दगड": "dagad.json",
     "नमन": "naman.json",
     "नगर": "nagar.json",
-    "फणस": "phanas.json",
+    "फणस": "fanas.json",
     "मगर": "magar.json",
     "बदक": "badak.json",
     "रबर": "rabar.json",
@@ -90,8 +90,10 @@ const WORD_AUDIO_MAP = {
 };
 
 let currentLottieInstance = null;
+let isLottieReady = false;
+let shouldPlayLottieWhenReady = false;
 
-const ANIMATION_PATH_BASE = 'assets/lottie-json/'; // Adjust this path if necessary
+const ANIMATION_PATH_BASE = 'assets/JSON/'; // Adjust this path if necessary
 const LOTTIE_CONTAINER_ID = 'lottie-wrapper'; // ID of the SVG group/DIV where Lottie renders
 let lettersDiv = document.getElementById('lettersDiv');
 let dashLine = document.getElementById('Group 212');
@@ -113,6 +115,8 @@ function loadInitialLottie(word) {
         currentLottieInstance.destroy();
         currentLottieInstance = null;
     }
+    isLottieReady = false;
+    shouldPlayLottieWhenReady = false;
 
     // 2. Find file path
     const fileName = LOTTIE_ANIMATION_MAP[word];
@@ -126,18 +130,25 @@ function loadInitialLottie(word) {
     console.log(animationPath);
 
     // 3. Create the animation instance
-    currentLottieInstance = lottie.loadAnimation({
+    const lottieInstance = lottie.loadAnimation({
         container: container,
         renderer: 'svg',
         loop: false,
         autoplay: false, // Start paused
         path: animationPath
     });
+    currentLottieInstance = lottieInstance;
 
     // 4. Go to frame 0 immediately upon loading to show the initial state (the image)
-    currentLottieInstance.addEventListener('DOMLoaded', () => {
+    lottieInstance.addEventListener('DOMLoaded', () => {
         requestAnimationFrame(() => {
-             currentLottieInstance.goToAndStop(0, true);
+            if (currentLottieInstance !== lottieInstance) return;
+
+            isLottieReady = true;
+            lottieInstance.goToAndStop(0, true);
+            if (shouldPlayLottieWhenReady) {
+                lottieInstance.goToAndPlay(0, true);
+            }
         });
     });
 }
@@ -146,10 +157,12 @@ function loadInitialLottie(word) {
  * Starts playing the Lottie animation. (Replaces showFinalImage visual logic)
  */
 function playLottieAnimation() {
-    if (currentLottieInstance) {
-        // Ensure it starts from the beginning and play!
-        currentLottieInstance.goToAndStop(0, true);
-        currentLottieInstance.play();
+    // Remember the request because the Lottie JSON may still be loading.
+    shouldPlayLottieWhenReady = true;
+
+    if (currentLottieInstance && isLottieReady) {
+        // Each answer reveal starts the current word's animation from frame 0.
+        currentLottieInstance.goToAndPlay(0, true);
     }
 }
 
@@ -162,9 +175,19 @@ function hideLottieAnimation() {
         currentLottieInstance.destroy();
         currentLottieInstance = null;
     }
+    isLottieReady = false;
     const container = document.getElementById(LOTTIE_CONTAINER_ID);
     if (container) {
         container.innerHTML = '';
+    }
+    shouldPlayLottieWhenReady = false;
+}
+
+function pauseLottieAnimation() {
+    shouldPlayLottieWhenReady = false;
+    if (currentLottieInstance && isLottieReady) {
+        // Restore the static starting image when the answer is hidden.
+        currentLottieInstance.goToAndStop(0, true);
     }
 }
 
@@ -333,11 +356,11 @@ function showFinalImage() {
 }
 
 /**
- * Hides the final image and shows puzzled images (NOW DESTROYS LOTTIE ANIMATION)
+ * Hides the final image and restores the Lottie animation's initial state.
  */
 function hideFinalImage() {
-    // --- LOTTIE INTEGRATION POINT 3: Destroy/Hide the animation ---
-    hideLottieAnimation();
+    // Keep the instance, but reset it to its initial frame for the next reveal.
+    pauseLottieAnimation();
 }
 
 
@@ -513,6 +536,7 @@ function showAnswer() {
         wordBox.style.display = 'none';
         completeWord.style.display = 'none';
         lettersDiv.style.display = 'block';
+        hideFinalImage();
         if (showAnswerBtn) showAnswerBtn.textContent = 'उत्तर पहा';
         return;
     }
