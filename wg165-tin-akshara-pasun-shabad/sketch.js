@@ -5,7 +5,7 @@ const words = [
     { "word": "नमन", "letters": ["न", "ग", "म", "भ", "ण", "न"], "answer": ["न", "म", "न"] },
     { "word": "नगर", "letters": ["ण", "न", "घ", "ध", "ग", "र"], "answer": ["न", "ग", "र"] },
     { "word": "फणस", "letters": ["ष", "ण", "स", "व", "क", "फ"], "answer": ["फ", "ण", "स"] },
-    { "word": "मगर", "letters": ["प", "ल", "ळ", "भ", "श", "स"], "answer": ["म", "ग", "र"] },
+    { "word": "मगर", "letters": ["भ","म","ळ", "र", "स", "ग"], "answer": ["म", "ग", "र"] },
     { "word": "बदक", "letters": ["व", "ब", "ड", "द", "ख", "क"], "answer": ["ब", "द", "क"] },
     { "word": "रबर", "letters": ["म", "र", "भ", "ब", "ट", "र"], "answer": ["र", "ब", "र"] },
     { "word": "चरण", "letters": ["ण", "म", "च", "ल", "र", "न"], "answer": ["च", "र", "ण"] },
@@ -103,7 +103,7 @@ let completeWord = document.getElementById('completeWord');
 /**
  * Loads the Lottie animation for the current word and sets it to the initial state (Frame 0).
  */
-function loadInitialLottie(word) {
+function loadInitialLottie(word, playWhenReady = false) {
     const container = document.getElementById(LOTTIE_CONTAINER_ID);
     if (!container) {
         console.error(`Lottie container with ID "${LOTTIE_CONTAINER_ID}" not found.`);
@@ -116,7 +116,7 @@ function loadInitialLottie(word) {
         currentLottieInstance = null;
     }
     isLottieReady = false;
-    shouldPlayLottieWhenReady = false;
+    shouldPlayLottieWhenReady = playWhenReady;
 
     // 2. Find file path
     const fileName = LOTTIE_ANIMATION_MAP[word];
@@ -161,8 +161,9 @@ function playLottieAnimation() {
     shouldPlayLottieWhenReady = true;
 
     if (currentLottieInstance && isLottieReady) {
-        // Each answer reveal starts the current word's animation from frame 0.
-        currentLottieInstance.goToAndPlay(0, true);
+        // Restart the active word's one-shot animation from its first frame.
+        currentLottieInstance.goToAndStop(0, true);
+        currentLottieInstance.play();
     }
 }
 
@@ -340,7 +341,7 @@ function showFinalImage() {
     const showAnswerBtn = document.getElementById('show-example-btn');
     if (showAnswerBtn) showAnswerBtn.textContent = 'उत्तर लपवा';
 
-    // --- LOTTIE INTEGRATION POINT 2: Play the animation ---
+    // --- LOTTIE INTEGRATION POINT 2: Restart the animation ---
     playLottieAnimation();
 
     // Play word sound after a small delay to sync with animation start
@@ -359,8 +360,11 @@ function showFinalImage() {
  * Hides the final image and restores the Lottie animation's initial state.
  */
 function hideFinalImage() {
-    // Keep the instance, but reset it to its initial frame for the next reveal.
-    pauseLottieAnimation();
+    // Recreate the one-shot player after an answer is hidden. This prevents a
+    // completed animation from retaining its terminal state when the learner
+    // subsequently completes the word themselves.
+    hideLottieAnimation();
+    loadInitialLottie(currentWord.word);
 }
 
 
