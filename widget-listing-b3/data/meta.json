@@ -5,7 +5,7 @@
       "author": "tce-ashishg"
     },
     "wg161-where-does-my-food-go": {
-      "updatedAt": "2026-07-30T17:25:22+05:30",
+      "updatedAt": "2026-07-31T11:07:37+05:30",
       "author": "tce-ashishg"
     },
     "wg162-shabda-bhandar": {
@@ -17,7 +17,7 @@
       "author": "tce-ashishg"
     },
     "wg165-tin-akshara-pasun-shabad": {
-      "updatedAt": "2026-07-28T17:32:09+05:30",
+      "updatedAt": "2026-07-31T11:07:37+05:30",
       "author": "tce-ashishg"
     },
     "wg172-map-your-neighbourhood": {
@@ -42,6 +42,15 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-07-31T11:07:37+05:30",
+      "author": "tce-ashishg",
+      "message": "wg165 issue related to lottie resolved",
+      "widgets": [
+        161,
+        165
+      ]
+    },
     {
       "date": "2026-07-30T18:56:48+05:30",
       "author": "tce-nitinc",
@@ -282,14 +291,6 @@
       "date": "2026-07-18T14:14:21+05:30",
       "author": "tce-ashishg",
       "message": "audio play logic improved",
-      "widgets": [
-        164
-      ]
-    },
-    {
-      "date": "2026-07-18T13:33:07+05:30",
-      "author": "tce-ashishg",
-      "message": "file name updated",
       "widgets": [
         164
       ]
