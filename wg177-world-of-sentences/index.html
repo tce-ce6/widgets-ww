@@ -1,0 +1,161 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>World of Sentences</title>
+
+
+  <link rel="stylesheet" href="./css/global_style.css">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body id="sentece-wrapper">
+  <div class="container">
+    <div class="mainContainerOuter">
+      <div class="wdgetTitle">
+        <h2>World of Sentences</h2>
+        <span id="versionId" class="versionText">b4_wg177_260731</span>
+      </div>
+      <div class="svg-container" id="svg-container">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" fill="none">
+          <g id="Web 1920 â 1 1" clip-path="url(#clip0_5016_123)">
+            <rect style="display: none;" id="backdrop" x="-500" y="-500" width="5000" height="5000" fill="rgb(0 ,0 ,0 ,.64)"></rect>
+            <g id="Clip path group">
+              <mask id="mask0_5016_123" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="0" width="1920"
+                height="1080">
+                <g id="clip-Web_1920_1">
+                  <path id="Vector" d="M1920 0H0V1080H1920V0Z" fill="white" />
+                </g>
+              </mask>
+              <g mask="url(#mask0_5016_123)">
+                <g id="Web 1920 â€“ 1">
+                  <foreignObject class="content-wrapper" x="333" y="99.7" width="1254" height="875.3"
+                    style="overflow: visible;">
+                    <div class="wrap">
+                      <div id="homeView" class="view active">
+                        <div class="hdr">
+                          <p>Follow Arjun's travel diary!</p>
+                        </div>
+                        <div class="meta-bar">Choose a destination and see the world through Arjun's eyes.</div>
+                        <div class="grid" id="cardGrid"></div>
+                      </div>
+
+                      <div id="entryView" class="view">
+                        <div id="entry-head">
+                          <div class="hdr">
+                            <p>Follow Arjun's travel diary!</p>
+                          </div>
+                          <div class="meta-bar">Choose a destination and see the world through Arjun's eyes.</div>
+                        </div>
+                        <div class="entry-header">
+                          <div>
+                            <div style="display: none;" class="entry-title" id="eTitle"></div>
+                            <div style="display: none;" class="entry-loc" id="eLoc"></div>
+                            <img src="./assets/india.svg" alt="" id="eImg">
+                          </div>
+                        </div>
+                        <!-- <div class="entry-meta">
+                          <div class="entry-instruction">Select a highlighter, then tap each sentence to classify it.
+                          </div>
+                          <div class="entry-legend">
+                            <div class="li">
+                              <div class="ld" style="background:#378ADD"></div>Declarative
+                            </div>
+                            <div class="li">
+                              <div class="ld" style="background:#EF9F27"></div>Exclamatory
+                            </div>
+                            <div class="li">
+                              <div class="ld" style="background:#639922"></div>Interrogative
+                            </div>
+                          </div>
+                        </div> -->
+                        
+                        <div class="main-wrapper" id="main-wrapper">
+                          <div class="tools-bar" id="toolsBar">
+                            <span class="tools-label">Tools</span>
+                            <button class="tool-btn" id="toolD" onclick="selectTool('d')"><img width="55.91" height="75.32" src="./assets/blue-pen.svg" alt=""> Declarative</button>
+                            <button class="tool-btn" id="toolE" onclick="selectTool('e')"><img width="55.91" height="75.32" src="./assets/yellow-pen.svg" alt=""> Exclamatory</button>
+                            <button class="tool-btn" id="toolI" onclick="selectTool('i')"><img width="55.91" height="75.32" src="./assets/green-pen.svg" alt=""> Interrogative</button>
+                            <img class="tool-doodle" src="./assets/tool-doodle.svg" alt="">
+                            <img class="tool-doodle bottom" src="./assets/tool-doodle-bottom.svg" alt="">
+                          </div>
+                          <div class="scroll-wrap">
+                            <div class="scroll-label">
+                              <img class="scroll-label-img" src="./assets/small-paper.svg" alt="">
+                              <span class="scroll-note">Arjun's Travel Diary</span></div>
+                            <div id="sentenceList"></div>
+                          </div>
+                          <div class="progress-wrapper">
+                            <img class="progress-paper" src="./assets/progress-paper.svg" alt="">
+                            <div class="prog-bar" id="progBar"></div>
+                            <div class="prog-count" id="progCount">0 of 5 sentences highlighted</div>
+                          </div>
+                          <img src="./assets/close-btn.svg" class="close-btn" id="close-btn" alt="" onclick="backToEdit()">
+                        </div>
+
+                        
+                        <div class="results-card" id="resultsCard">
+                          <div class="result-wrap">
+                            <div class="result-col">
+                              <img src="./assets/result-paper.svg" alt="">
+                              <div class="results-title" id="resultsTitle"></div>
+                              <div class="results-stars" id="resultsStars"></div>
+                            </div>
+                            <div class="result-col">
+                              <img src="./assets/score.svg" alt="">
+                              <span class="result-label">Score</span>
+                              <span class="result-value" id="resultsScore"></span>
+                            </div>
+                            <div class="result-col">
+                              <img src="./assets/goal.svg" alt="">
+                              <span class="result-label">Accuracy</span>
+                              <span class="result-value" id="resultsAccuracy"></span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <img class="legend-img" src="./assets/legend.svg" alt="">
+                      </div>
+                    </div>
+                  </foreignObject>
+                </g>
+              </g>
+            </g>
+          </g>
+
+        </svg>
+      </div>
+      <div class="flexContainer button-controls">
+        <div class="flexItem flexItemFirst">
+          <button class="btn btn-primary" id="show-example-btn" style="background-color:#FF6C36; color:white;"
+            onclick="goHome()" onfocus="
+            document.querySelectorAll('.btn').forEach(b=> {
+            b.style.outline = 'none';
+            b.style.outlineOffset = '0';
+            });
+            this.style.outline = '3px solid #4caf50';
+            this.style.outlineOffset = '3px';
+            " onblur="this.style.outline='none'; this.style.outlineOffset='0';">
+            Back to postcards
+          </button>
+
+          <button class="btn btn-primary" id="checkBtn" style="background-color:#2196F3; color:white;" disabled
+            onclick="checkAnswers()" onfocus="
+                document.querySelectorAll('.btn').forEach(b => {
+                  b.style.outline = 'none';
+                  b.style.outlineOffset = '0';
+                });
+                this.style.outline = '3px solid #1e6bef';
+                this.style.outlineOffset = '3px';
+              " onblur="this.style.outline='none'; this.style.outlineOffset='0';">Check Answer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./js/lottie.min.js"></script>
+  <script src="./js/script.js"></script>
+</body>
+
+</html>
