@@ -190,18 +190,28 @@ img.step-image {
 }
 
 .food-flow {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 30px;
-  justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+    flex-direction: column;
+    position: absolute;
+    top: 110px;
+    left: -20px;
 }
 
 .organ-chart {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 30px;
-  justify-content: center;
-  padding: 120px 50px 50px 50px;
+      display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+    padding: 120px 50px 50px 50px;
+    position: absolute;
+    top: 0;
+    z-index: 1;
+    width: 700px;
+    right: -90px;
+    row-gap: 19px;
 }
 
 .organ-container {
@@ -210,18 +220,45 @@ img.step-image {
 
 }
 .organ-container img{
-  height: 100px;
-  width: auto;
-  display:block;
-  margin: 20px auto 0 auto;
+      height: 100px;
+    width: auto;
+    display: block;
+    margin: 0px auto 30px auto;
+
 }
 
 #organFlow {
-  position: relative;
-  width: 100%;
-  height: 100%;
-}
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 490px;
 
+}
+.feedbackMessage{
+      position: absolute;
+    top: 180px;
+    left: 430px;
+    font-size: 51px;
+    max-width: 490px;
+    line-height: 1.2;
+
+}
+.cross-image{
+  position: absolute;
+  top: 0;
+  right: 0;
+      height: 70px;
+    width: 70px;
+    cursor: pointer;
+}
+.feedback-div{
+      position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 99;
+}
 .organ-blank {
   position: absolute;
   width: 361px;
@@ -269,8 +306,6 @@ img.step-image {
   height: 202px;
   width: 253px;
   cursor: pointer;
-  background-color: rgba(255, 255, 255, 0.9);
-  border: 3px solid #e2e8f0;
   border-radius: 16px;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
@@ -280,12 +315,6 @@ img.step-image {
   align-items: center;
 }
 
-.organ-container:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 15px -3px rgba(9, 158, 237, 0.15);
-  border-color: #099eed;
-  background-color: #f0f9ff;
-}
 
 .organ-container.selected {
   border-color: #099eed;
