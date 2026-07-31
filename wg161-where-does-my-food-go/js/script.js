@@ -1,7 +1,7 @@
 FEEDBACKDATA = [
   {
     "organ": "Mouth",
-    "dialogue": "😋 Crunch! Thanks! I can finally begin!"
+    "dialogue": "Crunch! Thanks! I can finally begin!"
   },
   {
     "organ": "Oesophagus",
@@ -9,19 +9,19 @@ FEEDBACKDATA = [
   },
   {
     "organ": "Stomach",
-    "dialogue": "😂 This is a tummy washing machine!"
+    "dialogue": "This is a tummy washing machine!"
   },
   {
     "organ": "Small Intestine",
-    "dialogue": "✨ Wow! The body is collecting nutrients!"
+    "dialogue": "Wow! The body is collecting nutrients!"
   },
   {
     "organ": "Large Intestine",
-    "dialogue": "💧 The body is saving water."
+    "dialogue": "The body is saving water."
   },
   {
     "organ": "Rectum",
-    "dialogue": "👋 Goodbye!"
+    "dialogue": "Goodbye!"
   }
 ];
 
@@ -87,6 +87,14 @@ window.addEventListener('load', () => {
         selectedOrgan = null;
     };
 
+    const highlightOrganChoices = () => {
+        const availableOrgans = document.querySelectorAll('.organ-container:not(.disabled)');
+        availableOrgans.forEach((organ) => organ.classList.add('selection-hint'));
+        setTimeout(() => {
+            availableOrgans.forEach((organ) => organ.classList.remove('selection-hint'));
+        }, 450);
+    };
+
     document.querySelectorAll('.organ-container').forEach((organ) => {
         organ.addEventListener('click', () => {
             if (organ.classList.contains('disabled')) return;
@@ -102,13 +110,18 @@ window.addEventListener('load', () => {
         if (!blank) return;
 
         blank.addEventListener('click', () => {
-            if (!selectedOrgan || blank.classList.contains('correct')) return;
+            if (blank.classList.contains('correct')) return;
+            if (!selectedOrgan) {
+                highlightOrganChoices();
+                return;
+            }
 
             const [expectedOrganKey] = organSequence[currentStepIndex] || [];
             if (selectedOrgan !== expectedOrganKey || organKey !== expectedOrganKey) {
                 blank.classList.remove('shake');
                 void blank.offsetWidth;
                 blank.classList.add('shake');
+                setTimeout(() => blank.classList.remove('shake'), 400);
                 showFeedback(false);
                 clearSelection();
                 return;
@@ -123,7 +136,10 @@ window.addEventListener('load', () => {
                 </div>`;
             document.getElementById(`${organKey}-organ`)?.classList.add('disabled');
             if (step) step.style.visibility = 'visible';
-            const dialogue = feedbackData.find((feedback) => feedback.organ === pair.name)?.dialogue;
+            const normalizedOrganName = pair.name.toLowerCase();
+            const dialogue = feedbackData.find(
+                (feedback) => feedback.organ.toLowerCase() === normalizedOrganName
+            )?.dialogue;
             showFeedback(true, dialogue);
             clearSelection();
             currentStepIndex += 1;
