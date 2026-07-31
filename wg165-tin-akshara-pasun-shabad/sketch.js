@@ -5,7 +5,7 @@ const words = [
     { "word": "नमन", "letters": ["न", "ग", "म", "भ", "ण", "न"], "answer": ["न", "म", "न"] },
     { "word": "नगर", "letters": ["ण", "न", "घ", "ध", "ग", "र"], "answer": ["न", "ग", "र"] },
     { "word": "फणस", "letters": ["ष", "ण", "स", "व", "क", "फ"], "answer": ["फ", "ण", "स"] },
-    { "word": "मगर", "letters": ["प", "ल", "ळ", "भ", "श", "स"], "answer": ["म", "ग", "र"] },
+    { "word": "मगर", "letters": ["भ","म","ळ", "र", "स", "ग"], "answer": ["म", "ग", "र"] },
     { "word": "बदक", "letters": ["व", "ब", "ड", "द", "ख", "क"], "answer": ["ब", "द", "क"] },
     { "word": "रबर", "letters": ["म", "र", "भ", "ब", "ट", "र"], "answer": ["र", "ब", "र"] },
     { "word": "चरण", "letters": ["ण", "म", "च", "ल", "र", "न"], "answer": ["च", "र", "ण"] },
@@ -52,7 +52,7 @@ const LOTTIE_ANIMATION_MAP = {
     "दगड": "dagad.json",
     "नमन": "naman.json",
     "नगर": "nagar.json",
-    "फणस": "phanas.json",
+    "फणस": "fanas.json",
     "मगर": "magar.json",
     "बदक": "badak.json",
     "रबर": "rabar.json",
@@ -90,8 +90,10 @@ const WORD_AUDIO_MAP = {
 };
 
 let currentLottieInstance = null;
+let isLottieReady = false;
+let shouldPlayLottieWhenReady = false;
 
-const ANIMATION_PATH_BASE = 'assets/lottie-json/'; // Adjust this path if necessary
+const ANIMATION_PATH_BASE = 'assets/JSON/'; // Adjust this path if necessary
 const LOTTIE_CONTAINER_ID = 'lottie-wrapper'; // ID of the SVG group/DIV where Lottie renders
 let lettersDiv = document.getElementById('lettersDiv');
 let dashLine = document.getElementById('Group 212');
@@ -101,7 +103,7 @@ let completeWord = document.getElementById('completeWord');
 /**
  * Loads the Lottie animation for the current word and sets it to the initial state (Frame 0).
  */
-function loadInitialLottie(word) {
+function loadInitialLottie(word, playWhenReady = false) {
     const container = document.getElementById(LOTTIE_CONTAINER_ID);
     if (!container) {
         console.error(`Lottie container with ID "${LOTTIE_CONTAINER_ID}" not found.`);
@@ -113,6 +115,8 @@ function loadInitialLottie(word) {
         currentLottieInstance.destroy();
         currentLottieInstance = null;
     }
+    isLottieReady = false;
+    shouldPlayLottieWhenReady = playWhenReady;
 
     // 2. Find file path
     const fileName = LOTTIE_ANIMATION_MAP[word];
@@ -126,18 +130,25 @@ function loadInitialLottie(word) {
     console.log(animationPath);
 
     // 3. Create the animation instance
-    currentLottieInstance = lottie.loadAnimation({
+    const lottieInstance = lottie.loadAnimation({
         container: container,
         renderer: 'svg',
         loop: false,
         autoplay: false, // Start paused
         path: animationPath
     });
+    currentLottieInstance = lottieInstance;
 
     // 4. Go to frame 0 immediately upon loading to show the initial state (the image)
-    currentLottieInstance.addEventListener('DOMLoaded', () => {
+    lottieInstance.addEventListener('DOMLoaded', () => {
         requestAnimationFrame(() => {
-             currentLottieInstance.goToAndStop(0, true);
+            if (currentLottieInstance !== lottieInstance) return;
+
+            isLottieReady = true;
+            lottieInstance.goToAndStop(0, true);
+            if (shouldPlayLottieWhenReady) {
+                lottieInstance.goToAndPlay(0, true);
+            }
         });
     });
 }
@@ -146,8 +157,11 @@ function loadInitialLottie(word) {
  * Starts playing the Lottie animation. (Replaces showFinalImage visual logic)
  */
 function playLottieAnimation() {
-    if (currentLottieInstance) {
-        // Ensure it starts from the beginning and play!
+    // Remember the request because the Lottie JSON may still be loading.
+    shouldPlayLottieWhenReady = true;
+
+    if (currentLottieInstance && isLottieReady) {
+        // Restart the active word's one-shot animation from its first frame.
         currentLottieInstance.goToAndStop(0, true);
         currentLottieInstance.play();
     }
@@ -162,9 +176,19 @@ function hideLottieAnimation() {
         currentLottieInstance.destroy();
         currentLottieInstance = null;
     }
+    isLottieReady = false;
     const container = document.getElementById(LOTTIE_CONTAINER_ID);
     if (container) {
         container.innerHTML = '';
+    }
+    shouldPlayLottieWhenReady = false;
+}
+
+function pauseLottieAnimation() {
+    shouldPlayLottieWhenReady = false;
+    if (currentLottieInstance && isLottieReady) {
+        // Restore the static starting image when the answer is hidden.
+        currentLottieInstance.goToAndStop(0, true);
     }
 }
 
@@ -317,7 +341,7 @@ function showFinalImage() {
     const showAnswerBtn = document.getElementById('show-example-btn');
     if (showAnswerBtn) showAnswerBtn.textContent = 'उत्तर लपवा';
 
-    // --- LOTTIE INTEGRATION POINT 2: Play the animation ---
+    // --- LOTTIE INTEGRATION POINT 2: Restart the animation ---
     playLottieAnimation();
 
     // Play word sound after a small delay to sync with animation start
@@ -333,11 +357,14 @@ function showFinalImage() {
 }
 
 /**
- * Hides the final image and shows puzzled images (NOW DESTROYS LOTTIE ANIMATION)
+ * Hides the final image and restores the Lottie animation's initial state.
  */
 function hideFinalImage() {
-    // --- LOTTIE INTEGRATION POINT 3: Destroy/Hide the animation ---
+    // Recreate the one-shot player after an answer is hidden. This prevents a
+    // completed animation from retaining its terminal state when the learner
+    // subsequently completes the word themselves.
     hideLottieAnimation();
+    loadInitialLottie(currentWord.word);
 }
 
 
@@ -513,6 +540,7 @@ function showAnswer() {
         wordBox.style.display = 'none';
         completeWord.style.display = 'none';
         lettersDiv.style.display = 'block';
+        hideFinalImage();
         if (showAnswerBtn) showAnswerBtn.textContent = 'उत्तर पहा';
         return;
     }
