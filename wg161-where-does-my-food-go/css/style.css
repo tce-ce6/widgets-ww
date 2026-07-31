@@ -355,4 +355,17 @@ img.step-image {
   animation: shake 0.4s ease-in-out;
   border: 3px solid #ef4444 !important;
   background-color: rgba(254, 242, 242, 0.95);
-}
+}
+.intro-page{
+  position: relative;
+}
+.start-button{
+  position: absolute;
+  bottom: -36px;
+  right: 42%;
+  transform: translateX(50%);
+  background-color: #E7107B;
+  padding: 30px 50px;
+  font-size: 35px;
+  border-radius: 50px;
+}
