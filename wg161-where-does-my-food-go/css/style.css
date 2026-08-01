@@ -240,8 +240,9 @@ img.step-image {
     top: 180px;
     left: 430px;
     font-size: 51px;
-    max-width: 490px;
+    width: 490px;
     line-height: 1.2;
+    text-align: center;
 
 }
 .cross-image{
@@ -317,34 +318,39 @@ img.step-image {
 
 
 .organ-container.selected {
-  border-color: #099eed;
-  background-color: #e0f2fe;
-  box-shadow: 0 0 0 4px rgba(9, 158, 237, 0.3);
+  border-color: #00c000;
+  background-color: #fff;
+  box-shadow: 0 0 0 4px #00c000;
   transform: translateY(-2px) scale(1.02);
+  border-radius: 50px;
 }
 
 .organ-container.selection-hint {
   border-color: #22c55e;
   background-color: #dcfce7;
   box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.35);
+  border-radius: 50px;
 }
 
 .organ-container.disabled {
-  opacity: 0.35;
+  opacity: 0.2;
   cursor: not-allowed;
   pointer-events: none;
   background-color: #f1f5f9;
   border-color: #cbd5e1;
   transform: none;
   box-shadow: none;
+  border-radius: 50px;
 }
 
 /* Correct state */
 .organ-blank.correct {
-  border: 3px solid #10b981 !important;
+  border: 6px solid #00c000 !important;
   background-color: rgba(240, 253, 244, 0.95);
   box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.1);
   pointer-events: none;
+  border-radius: 40px;
+  transform: translateX(3px);
 }
 
 /* Filled layout */
@@ -394,7 +400,7 @@ img.step-image {
 .intro-page{
   position: relative;
 }
-.start-button{
+.global-button{
   position: absolute;
   bottom: -36px;
   right: 42%;
@@ -402,5 +408,17 @@ img.step-image {
   background-color: #E7107B;
   padding: 30px 50px;
   font-size: 35px;
+  font-weight: 600;
+  border-radius: 50px;
+}
+
+#restartButton{
+  position: absolute;
+  bottom: -20px;
+  right: 42%;
+  transform: translateX(50%);
+  background-color: #E7107B;
+  padding: 30px 50px;
+  font-size: 30px;
   border-radius: 50px;
 }
