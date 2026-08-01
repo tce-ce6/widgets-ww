@@ -244,7 +244,7 @@ svg * {
   height: 100%;
   display: flex;
   gap: 43px 65px;
-  padding: 53px 145px 55px 125px;
+  padding: 53px 145px 55px 127px;
   flex-wrap: wrap;
 
 }
@@ -267,7 +267,7 @@ svg * {
 }
 
 .card-txt.correct {
-  border: 5px solid #2e7d32;
+  border: 5px solid #65f51f;
 }
 
 .card-txt.wrong {
