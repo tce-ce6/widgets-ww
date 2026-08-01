@@ -32,6 +32,7 @@ window.addEventListener('load', () => {
     const introPage = document.querySelector('.intro-page-container');
     const mainPage = document.querySelector('.main-page-container');
     const startButton = document.getElementById('startButton');
+    const restartButton = document.getElementById('restartButton');
 
     if (!introPage || !mainPage || !startButton) return;
 
@@ -61,6 +62,29 @@ window.addEventListener('load', () => {
     let currentStepIndex = 0;
     let selectedOrgan = null;
 
+    const resetGame = () => {
+        currentStepIndex = 0;
+        clearSelection();
+        if (feedbackContainer) feedbackContainer.style.display = 'none';
+
+        organSequence.forEach(([organKey, pair], index) => {
+            const blank = document.getElementById(pair.blankId);
+            const organ = document.getElementById(`${organKey}-organ`);
+            const step = document.querySelector(`#foodFlow #${pair.stepId}`);
+
+            blank?.classList.remove('correct', 'shake');
+            if (blank) blank.innerHTML = '';
+            organ?.classList.remove('disabled', 'selected', 'selection-hint');
+            if (step) step.style.visibility = index === 0 ? 'visible' : 'hidden';
+        });
+    };
+
+    restartButton?.addEventListener('click', () => {
+        resetGame();
+        mainPage.style.display = 'none';
+        introPage.style.display = 'block';
+    });
+
     const showFeedback = (isCorrect, correctDialogue = '') => {
         if (!feedbackContainer || !feedbackImage) return;
 
@@ -69,8 +93,9 @@ window.addEventListener('load', () => {
             : 'assets/image/wrong-feedback.svg';
         feedbackImage.alt = isCorrect ? 'Correct answer' : 'Try again';
         if (feedbackMessage) {
+            const message = correctDialogue || 'Crunch! Thanks! I can finally begin!';
             feedbackMessage.textContent = isCorrect
-                ? correctDialogue || '"Crunch! Thanks! I can finally begin!"'
+                ? `"${message.replace(/^"|"$/g, '')}"`
                 : '"Hmm... I don\'t think I can jump there yet."';
         }
         feedbackContainer.style.display = 'block';
@@ -92,7 +117,7 @@ window.addEventListener('load', () => {
         availableOrgans.forEach((organ) => organ.classList.add('selection-hint'));
         setTimeout(() => {
             availableOrgans.forEach((organ) => organ.classList.remove('selection-hint'));
-        }, 450);
+        }, 500);
     };
 
     document.querySelectorAll('.organ-container').forEach((organ) => {
