@@ -273,7 +273,7 @@ svg * {
 .scroll-wrap::before{content: "";background-image: url("../assets/scroll-doodle.svg");position: absolute;bottom: -24px;left: 70px;width: 99.64;height: 36.98;background-repeat: no-repeat;}
 .scroll-label{font-size:20px;color:#000;margin-bottom:40px;}
 
-.sentence-block{margin-bottom:60px;}
+.sentence-block{margin-bottom:50px;}
 .main-wrapper.review-sec .sentence-block{ margin-bottom: 10px;}
 .main-wrapper.review-sec .scroll-label{position: absolute;top: -13px;left: 130px;}
 .main-wrapper.review-sec .progress-wrapper{display:none;}
