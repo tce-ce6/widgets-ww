@@ -37,7 +37,7 @@
       "author": "tce-nitinc"
     },
     "wg177-world-of-sentences": {
-      "updatedAt": "2026-07-31T17:08:40+05:30",
+      "updatedAt": "2026-08-02T20:21:04+05:30",
       "author": "tce-nitinc"
     },
     "wg179-decentralisation-explorer": {
@@ -46,6 +46,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-08-02T20:21:04+05:30",
+      "author": "tce-nitinc",
+      "message": "wg-177",
+      "widgets": [
+        177
+      ]
+    },
     {
       "date": "2026-08-01T23:06:40+05:30",
       "author": "tce-ashishg",
@@ -290,14 +298,6 @@
       "widgets": [
         164,
         172
-      ]
-    },
-    {
-      "date": "2026-07-20T19:14:03+05:30",
-      "author": "tce-ashishg",
-      "message": "text color changed",
-      "widgets": [
-        164
       ]
     }
   ]
