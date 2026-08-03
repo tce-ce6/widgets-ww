@@ -387,8 +387,10 @@ svg * {
   color: #fff;
 }
 .trophy-img{
-  margin: 0 auto 70px auto;
+  margin: 0 auto 20px auto;
   display: block;
+  width: 468px;
+  height: 451px;
 }
 .game-over-btn.play-again{
   background-color: #57B045;
@@ -396,4 +398,17 @@ svg * {
 .mb-20{
   margin-bottom: 30px;
       border-radius: 10px;
+}
+.btn.blink{
+  position: relative;
+}
+.btn.blink::after{
+content: "";
+    position: absolute;
+    top: -6px;
+    left: -6px;
+    border: 3px solid #ffffff;
+    height: 52px;
+    width: 173px;
+    border-radius: 60px;
 }

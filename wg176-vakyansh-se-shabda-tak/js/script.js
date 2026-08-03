@@ -40,6 +40,7 @@ let isLocked = false;
 let wrongOptionEl = null;
 let cardLottieAnimation = null;
 let feedbackLottieAnimation = null;
+let trophyLottieAnimation = null;
 let soundPlayed = false;
 let currentQuestionHadWrong = false;
 let firstTryCorrectCount = 0;
@@ -90,6 +91,9 @@ function loadQuestion() {
   updateProgress();
   hideFeedbackLottie();
 
+  const nextBtn = document.getElementById('next-btn');
+  if (nextBtn) nextBtn.disabled = false;
+
   const retryBtn = document.getElementById('show-example-btn');
   if (retryBtn) {
     retryBtn.disabled = true;
@@ -127,6 +131,19 @@ function selectOption(opt, el, q) {
       retryBtn.disabled = true;
       retryBtn.classList.add('disabled');
       retryBtn.classList.remove('blink');
+    }
+
+    if (currentIndex >= shuffledData.length - 1) {
+      const nextBtn = document.getElementById('next-btn');
+      if (nextBtn) nextBtn.disabled = true;
+
+      if (feedbackLottieAnimation) {
+        feedbackLottieAnimation.addEventListener('complete', function () {
+          resetSentence();
+        });
+      } else {
+        resetSentence();
+      }
     }
   } else {
     isLocked = true;
@@ -194,6 +211,33 @@ function showResults() {
 
   const buttonRow = document.querySelector('.button-controls');
   if (buttonRow) buttonRow.style.display = 'none';
+
+  playTrophyLottie();
+}
+
+function playTrophyLottie() {
+  hideTrophyLottie();
+
+  const container = document.getElementById('trophy-img');
+  if (!container) return;
+
+  trophyLottieAnimation = lottie.loadAnimation({
+    container: container,
+    renderer: 'svg',
+    loop: true,
+    autoplay: true,
+    path: './lottie/trophy.json'
+  });
+}
+
+function hideTrophyLottie() {
+  if (trophyLottieAnimation) {
+    trophyLottieAnimation.stop();
+    trophyLottieAnimation.destroy();
+    trophyLottieAnimation = null;
+  }
+  const container = document.getElementById('trophy-img');
+  if (container) container.innerHTML = '';
 }
 
 function restartGame() {
@@ -206,6 +250,8 @@ function restartGame() {
 
   const buttonRow = document.querySelector('.button-controls');
   if (buttonRow) buttonRow.style.display = 'flex';
+
+  hideTrophyLottie();
 
   firstTryCorrectCount = 0;
   shuffledData = shuffle(DATA);
