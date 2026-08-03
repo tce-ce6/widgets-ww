@@ -340,7 +340,18 @@ function showWrong(bubbleEl) {
 }
 
 function retryQuestion() {
-  loadQuestion();
+  isLocked = false;
+  document.getElementById('hintText').textContent = 'वाक्यांश पढ़ो और ऑडियो सुनो। सही शब्द बबल को टैप करो।';
+
+  document.querySelectorAll('.bubble').forEach(function(b) {
+    b.classList.remove('wrong');
+  });
+
+  const retryBtn = document.getElementById('btnRetry');
+  if (retryBtn) {
+    retryBtn.classList.add('disabled');
+    retryBtn.setAttribute('disabled', 'disabled');
+  }
 }
 
 function nextQuestion() {
