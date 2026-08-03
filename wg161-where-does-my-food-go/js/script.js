@@ -21,10 +21,9 @@ FEEDBACKDATA = [
   },
   {
     "organ": "Rectum",
-    "dialogue": "Goodbye!"
+    "dialogue": "Congratulations! You helped Sammy complete his amazing journey! You are true Digestive Detective! 🏅"
   }
 ];
-
 
 // Intro screen and organ-matching controller
 
@@ -54,6 +53,8 @@ window.addEventListener('load', () => {
         rectum: { blankId: 'rectum-blank', stepId: 'step-6', image: 'assets/image/rectum.svg', name: 'Rectum' }
     };
     const feedbackContainer = document.querySelector('.feedback-div');
+    const feedbackModal = document.querySelector('.modal-wrapper');
+    const backgroundOverlay = document.getElementById('bg-rect');
     const feedbackImage = document.getElementById('feedbackImage');
     const feedbackMessage = document.getElementById('feedbackMessage');
     const closeFeedbackButton = document.getElementById('cross-btn');
@@ -62,10 +63,16 @@ window.addEventListener('load', () => {
     let currentStepIndex = 0;
     let selectedOrgan = null;
 
+    const setFeedbackVisibility = (isVisible) => {
+        if (feedbackContainer) feedbackContainer.style.display = isVisible ? 'block' : 'none';
+        if (feedbackModal) feedbackModal.style.display = isVisible ? 'block' : 'none';
+        if (backgroundOverlay) backgroundOverlay.style.display = isVisible ? 'block' : 'none';
+    };
+
     const resetGame = () => {
         currentStepIndex = 0;
         clearSelection();
-        if (feedbackContainer) feedbackContainer.style.display = 'none';
+        setFeedbackVisibility(false);
 
         organSequence.forEach(([organKey, pair], index) => {
             const blank = document.getElementById(pair.blankId);
@@ -98,11 +105,11 @@ window.addEventListener('load', () => {
                 ? `"${message.replace(/^"|"$/g, '')}"`
                 : '"Hmm... I don\'t think I can jump there yet."';
         }
-        feedbackContainer.style.display = 'block';
+        setFeedbackVisibility(true);
     };
 
     closeFeedbackButton?.addEventListener('click', () => {
-        feedbackContainer.style.display = 'none';
+        setFeedbackVisibility(false);
     });
 
     const clearSelection = () => {
