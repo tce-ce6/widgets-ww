@@ -5,7 +5,7 @@
       "author": "tce-ashishg"
     },
     "wg161-where-does-my-food-go": {
-      "updatedAt": "2026-07-31T17:00:52+05:30",
+      "updatedAt": "2026-08-01T23:06:40+05:30",
       "author": "tce-ashishg"
     },
     "wg162-shabda-bhandar": {
@@ -33,11 +33,11 @@
       "author": "tce-ashishg"
     },
     "wg176-vakyansh-se-shabda-tak": {
-      "updatedAt": "2026-07-31T17:08:40+05:30",
+      "updatedAt": "2026-08-03T12:03:29+05:30",
       "author": "tce-nitinc"
     },
     "wg177-world-of-sentences": {
-      "updatedAt": "2026-07-31T17:08:40+05:30",
+      "updatedAt": "2026-08-02T20:25:24+05:30",
       "author": "tce-nitinc"
     },
     "wg179-decentralisation-explorer": {
@@ -46,6 +46,38 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-08-03T12:03:29+05:30",
+      "author": "tce-nitinc",
+      "message": "wg176",
+      "widgets": [
+        176
+      ]
+    },
+    {
+      "date": "2026-08-02T20:25:24+05:30",
+      "author": "tce-nitinc",
+      "message": "wg177",
+      "widgets": [
+        177
+      ]
+    },
+    {
+      "date": "2026-08-02T20:21:04+05:30",
+      "author": "tce-nitinc",
+      "message": "wg-177",
+      "widgets": [
+        177
+      ]
+    },
+    {
+      "date": "2026-08-01T23:06:40+05:30",
+      "author": "tce-ashishg",
+      "message": "wg161 issue related to restart btn resolved",
+      "widgets": [
+        161
+      ]
+    },
     {
       "date": "2026-07-31T17:08:40+05:30",
       "author": "tce-nitinc",
@@ -264,41 +296,6 @@
       "message": "wg174 started and completed",
       "widgets": [
         174
-      ]
-    },
-    {
-      "date": "2026-07-21T19:03:25+05:30",
-      "author": "tce-ashishg",
-      "message": "wg164 folder name and random words",
-      "widgets": [
-        164,
-        179
-      ]
-    },
-    {
-      "date": "2026-07-21T17:44:19+05:30",
-      "author": "tce-ashishg",
-      "message": "wg164 & wg172 minor issues related to alignment done",
-      "widgets": [
-        164,
-        172
-      ]
-    },
-    {
-      "date": "2026-07-20T19:14:03+05:30",
-      "author": "tce-ashishg",
-      "message": "text color changed",
-      "widgets": [
-        164
-      ]
-    },
-    {
-      "date": "2026-07-20T18:19:27+05:30",
-      "author": "tce-ashishg",
-      "message": "wg164 issues related to audio resolved",
-      "widgets": [
-        164,
-        179
       ]
     }
   ]
