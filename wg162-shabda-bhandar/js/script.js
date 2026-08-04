@@ -81,8 +81,8 @@ function buildProgress() {
 
 function updateProgress() {
   const total = shuffledData.length || 1;
-  const pct = Math.round((currentIndex / total) * 100);
   const badgeVal = Math.min(currentIndex + 1, total);
+  const pct = Math.round((badgeVal / total) * 100);
 
   const badgeEl = document.getElementById('progressBadge');
   const percentEl = document.getElementById('progressPercent');
