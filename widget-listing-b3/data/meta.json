@@ -5,11 +5,11 @@
       "author": "tce-ashishg"
     },
     "wg161-where-does-my-food-go": {
-      "updatedAt": "2026-08-03T16:32:51+05:30",
+      "updatedAt": "2026-08-04T12:51:36+05:30",
       "author": "tce-ashishg"
     },
     "wg162-shabda-bhandar": {
-      "updatedAt": "2026-08-03T15:44:26+05:30",
+      "updatedAt": "2026-08-04T12:48:44+05:30",
       "author": "tce-nitinc"
     },
     "wg164-don-akshari-shabad": {
@@ -17,7 +17,7 @@
       "author": "tce-ashishg"
     },
     "wg165-tin-akshara-pasun-shabad": {
-      "updatedAt": "2026-07-31T16:00:52+05:30",
+      "updatedAt": "2026-08-04T12:51:36+05:30",
       "author": "tce-ashishg"
     },
     "wg172-map-your-neighbourhood": {
@@ -33,7 +33,7 @@
       "author": "tce-ashishg"
     },
     "wg176-vakyansh-se-shabda-tak": {
-      "updatedAt": "2026-08-04T10:53:42+05:30",
+      "updatedAt": "2026-08-04T12:48:44+05:30",
       "author": "tce-nitinc"
     },
     "wg177-world-of-sentences": {
@@ -46,6 +46,24 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-08-04T12:51:36+05:30",
+      "author": "tce-ashishg",
+      "message": "wg161 layout updated",
+      "widgets": [
+        161,
+        165
+      ]
+    },
+    {
+      "date": "2026-08-04T12:48:44+05:30",
+      "author": "tce-nitinc",
+      "message": "fixes",
+      "widgets": [
+        162,
+        176
+      ]
+    },
     {
       "date": "2026-08-04T10:53:42+05:30",
       "author": "tce-nitinc",
@@ -278,22 +296,6 @@
       "message": "wg179 functionality completed",
       "widgets": [
         179
-      ]
-    },
-    {
-      "date": "2026-07-24T17:43:27+05:30",
-      "author": "tce-ashishg",
-      "message": "Rename dis-Chanchal.mp3 to dis-chanchal.mp3",
-      "widgets": [
-        173
-      ]
-    },
-    {
-      "date": "2026-07-24T17:40:31+05:30",
-      "author": "tce-ashishg",
-      "message": "wg173 & wg174 issue resolved",
-      "widgets": [
-        173
       ]
     }
   ]
