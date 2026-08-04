@@ -96,7 +96,7 @@ function openEntry(idx){
   document.getElementById('toolsBar').style.display='flex';
   document.getElementById('resultsCard').classList.remove('visible');
   document.querySelector('.main-wrapper').classList.remove('review-sec');
-  document.querySelector('.entry-header').style.display='none';
+  document.querySelector('.entry-header').style.display='';
   document.querySelector('.entry-header').classList.remove('active');
   document.getElementById('entry-head').style.display='';
   document.getElementById('backdrop').style.display='none';
@@ -114,7 +114,7 @@ function retryEntry(){
   document.getElementById('toolsBar').style.display='flex';
   document.getElementById('resultsCard').classList.remove('visible');
   document.querySelector('.main-wrapper').classList.remove('review-sec');
-  document.querySelector('.entry-header').style.display='none';
+  document.querySelector('.entry-header').style.display='';
   document.querySelector('.entry-header').classList.remove('active');
   document.getElementById('entry-head').style.display='';
   document.getElementById('backdrop').style.display='none';
@@ -128,7 +128,7 @@ function backToEdit(){
   document.getElementById('toolsBar').style.display='flex';
   document.getElementById('resultsCard').classList.remove('visible');
   document.querySelector('.main-wrapper').classList.remove('review-sec');
-  document.querySelector('.entry-header').style.display='none';
+  document.querySelector('.entry-header').style.display='';
   document.querySelector('.entry-header').classList.remove('active');
   document.getElementById('entry-head').style.display='';
   document.getElementById('backdrop').style.display='none';

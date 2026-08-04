@@ -242,8 +242,8 @@ svg * {
 .bg-egypt{background:#c8a840;}
 .bg-canada{background:#c0392b;}
 
-.entry-header{    transform: rotate(-3deg);z-index: 1;display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1rem;gap:12px; position: absolute;         top: -30px;
-    left: -270px;}
+.entry-header{    transform: rotate(-3deg);z-index: 1;display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1rem;gap:12px; position: absolute;             top: -70px;
+    left: -330px;}
 .entry-title{font-size:20px;font-weight:500;color:#1a1a2e;font-family:Georgia,serif;}
 .entry-loc{font-size:13px;color:#888;margin-top:2px;}
 .back-btn{background:none;border:0.5px solid #ccc;border-radius:8px;padding:7px 14px;font-size:13px;color:#666;cursor:pointer;}
