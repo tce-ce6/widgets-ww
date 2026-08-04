@@ -145,7 +145,8 @@ svg * {
   background-color: #ddd;
   color: #999;
   cursor: not-allowed;
-  box-shadow: none
+  box-shadow: none;
+  opacity: .4;
 }
 
 @keyframes retry-blink {
@@ -244,7 +245,7 @@ svg * {
   height: 100%;
   display: flex;
   gap: 43px 65px;
-  padding: 53px 145px 55px 127px;
+  padding: 53px 150px 55px 124px;
   flex-wrap: wrap;
 
 }
@@ -263,7 +264,7 @@ svg * {
   transition: transform .2s ease, background-color .3s ease;
   box-shadow: 0 4px 6px rgba(0, 0, 0, .15);
   height: 205px;
-  width: 342px;
+      width: 343.5px;
 }
 
 .card-txt.correct {
