@@ -31,7 +31,8 @@ const DATA = [
   {phrase:"जिसने किसी दूसरे का स्थान अस्थाई रूप से ग्रहण किया हो", answer:"स्थानापन्न", phraseAudio:"assets/audio/vakyansh-30.mp3", wordAudio:"assets/audio/vakyansh-30-ans.mp3"}
 ];
 
-const DEFAULT_HINT = "वाक्यांश सुनें, फिर नीचे कार्ड खोलें";
+const DEFAULT_HINT = "वाक्यांश सुनें, फिर नीचे कार्ड खोलें.";
+const OPTIONS_OPEN_HINT = "सही शब्द चुनें - या अन्य विकल्प के पाने के लिए 'अन्य विकल्प' बटन पर टैप करें।";
 const OPTION_COUNT = 6;
 const MAX_OPTION_SETS = 3;
 
@@ -186,7 +187,7 @@ function retryOptions() {
   isLocked = false;
   wrongOptionEl = null;
   hideFeedbackLottie();
-  document.getElementById('itext').textContent = DEFAULT_HINT;
+  document.getElementById('itext').textContent = OPTIONS_OPEN_HINT;
 
   renderOptionSet(shuffledData[currentIndex]);
 
@@ -303,6 +304,7 @@ function restartCardLottie() {
     cardLottieAnimation.addEventListener('complete', function () {
       cardLottieAnimation.pause();
       if (cardContainerEl) cardContainerEl.classList.remove('hidden');
+      document.getElementById('itext').textContent = OPTIONS_OPEN_HINT;
     });
   });
 
