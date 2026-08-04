@@ -33,6 +33,7 @@ const DATA = [
 
 const DEFAULT_HINT = "वाक्यांश सुनें, फिर नीचे कार्ड खोलें";
 const OPTION_COUNT = 6;
+const MAX_OPTION_SETS = 3;
 
 let shuffledData = [];
 let currentIndex = 0;
@@ -44,6 +45,8 @@ let trophyLottieAnimation = null;
 let soundPlayed = false;
 let currentQuestionHadWrong = false;
 let firstTryCorrectCount = 0;
+let optionSetIndex = 1;
+let usedWrongWords = [];
 
 function shuffle(arr) {
   const a = [...arr];
@@ -68,8 +71,8 @@ function updateProgress() {
   if (labelEl) labelEl.textContent = current + ' of ' + total;
 }
 
-function getOptionWords(q) {
-  const wrongAnswers = DATA.map(d => d.answer).filter(a => a !== q.answer);
+function getOptionWords(q, excludeWords) {
+  const wrongAnswers = DATA.map(d => d.answer).filter(a => a !== q.answer && !excludeWords.includes(a));
   const wrongPicks = shuffle(wrongAnswers).slice(0, OPTION_COUNT - 1);
   return shuffle([
     {word: q.answer, correct: true},
@@ -77,11 +80,29 @@ function getOptionWords(q) {
   ]);
 }
 
+function renderOptionSet(q) {
+  const options = getOptionWords(q, usedWrongWords);
+  options.forEach(opt => {
+    if (!opt.correct) usedWrongWords.push(opt.word);
+  });
+
+  options.forEach((opt, i) => {
+    const el = document.getElementById('option-' + (i + 1));
+    if (!el) return;
+    const wordEl = el.querySelector('.card-txt-word');
+    if (wordEl) wordEl.textContent = opt.word;
+    el.classList.remove('correct', 'wrong', 'disabled');
+    el.onclick = function () { selectOption(opt, el, q); };
+  });
+}
+
 function loadQuestion() {
   isLocked = false;
   wrongOptionEl = null;
   soundPlayed = false;
   currentQuestionHadWrong = false;
+  optionSetIndex = 1;
+  usedWrongWords = [];
 
   const q = shuffledData[currentIndex];
 
@@ -94,28 +115,20 @@ function loadQuestion() {
   const nextBtn = document.getElementById('next-btn');
   if (nextBtn) nextBtn.disabled = false;
 
-  const retryBtn = document.getElementById('show-example-btn');
+  const retryBtn = document.getElementById('more-option-btn');
   if (retryBtn) {
     retryBtn.disabled = true;
     retryBtn.classList.add('disabled');
     retryBtn.classList.remove('blink');
   }
 
-  const options = getOptionWords(q);
-  options.forEach((opt, i) => {
-    const el = document.getElementById('option-' + (i + 1));
-    if (!el) return;
-    const wordEl = el.querySelector('.card-txt-word');
-    if (wordEl) wordEl.textContent = opt.word;
-    el.classList.remove('correct', 'wrong', 'disabled');
-    el.onclick = function () { selectOption(opt, el, q); };
-  });
+  renderOptionSet(q);
 
   restartCardLottie();
 }
 
 function selectOption(opt, el, q) {
-  if (!soundPlayed || isLocked) return;
+  if (!soundPlayed || isLocked || el.classList.contains('disabled')) return;
 
   if (opt.correct) {
     isLocked = true;
@@ -126,7 +139,7 @@ function selectOption(opt, el, q) {
     playFeedbackLottie('correct', el);
     playWordAudio(q);
 
-    const retryBtn = document.getElementById('show-example-btn');
+    const retryBtn = document.getElementById('more-option-btn');
     if (retryBtn) {
       retryBtn.disabled = true;
       retryBtn.classList.add('disabled');
@@ -146,7 +159,6 @@ function selectOption(opt, el, q) {
       }
     }
   } else {
-    isLocked = true;
     currentQuestionHadWrong = true;
     el.classList.add('wrong', 'disabled');
     wrongOptionEl = el;
@@ -156,8 +168,8 @@ function selectOption(opt, el, q) {
     const wrongEntry = DATA.find(d => d.answer === opt.word);
     if (wrongEntry) playWordAudio(wrongEntry);
 
-    const retryBtn = document.getElementById('show-example-btn');
-    if (retryBtn) {
+    const retryBtn = document.getElementById('more-option-btn');
+    if (retryBtn && optionSetIndex < MAX_OPTION_SETS) {
       retryBtn.disabled = false;
       retryBtn.classList.remove('disabled');
       retryBtn.classList.add('blink');
@@ -166,15 +178,22 @@ function selectOption(opt, el, q) {
 }
 
 function retryOptions() {
-  const retryBtn = document.getElementById('show-example-btn');
+  const retryBtn = document.getElementById('more-option-btn');
   if (retryBtn && retryBtn.disabled) return;
+  if (optionSetIndex >= MAX_OPTION_SETS) return;
 
-  hideFeedbackLottie();
+  optionSetIndex++;
   isLocked = false;
+  wrongOptionEl = null;
+  hideFeedbackLottie();
   document.getElementById('itext').textContent = DEFAULT_HINT;
+
+  renderOptionSet(shuffledData[currentIndex]);
+
   if (retryBtn) {
-    retryBtn.disabled = true;
-    retryBtn.classList.add('disabled');
+    const noMoreSets = optionSetIndex >= MAX_OPTION_SETS;
+    retryBtn.disabled = noMoreSets;
+    retryBtn.classList.toggle('disabled', noMoreSets);
     retryBtn.classList.remove('blink');
   }
 }
@@ -306,6 +325,10 @@ function playFeedbackLottie(kind, el) {
     autoplay: true,
     path: kind === 'correct' ? './lottie/correct.json' : './lottie/incorrect.json'
   });
+
+  if (kind === 'incorrect') {
+    feedbackLottieAnimation.addEventListener('complete', hideFeedbackLottie);
+  }
 }
 
 function hideFeedbackLottie() {
@@ -371,7 +394,9 @@ window.debugAutoPlay = function (wrongCount = 30, delay = 0) {
       setTimeout(function () {
         retryOptions();
         setTimeout(function () {
-          if (correctEl) correctEl.click();
+          const freshCorrectEl = Array.from(document.querySelectorAll('.card-txt'))
+            .find(el => el.querySelector('.card-txt-word').textContent === q.answer);
+          if (freshCorrectEl) freshCorrectEl.click();
           setTimeout(function () {
             resetSentence();
             setTimeout(playOne, delay);
