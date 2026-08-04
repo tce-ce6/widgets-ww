@@ -33,7 +33,7 @@
       "author": "tce-ashishg"
     },
     "wg176-vakyansh-se-shabda-tak": {
-      "updatedAt": "2026-08-03T12:03:29+05:30",
+      "updatedAt": "2026-08-04T10:53:42+05:30",
       "author": "tce-nitinc"
     },
     "wg177-world-of-sentences": {
@@ -46,6 +46,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-08-04T10:53:42+05:30",
+      "author": "tce-nitinc",
+      "message": "wg176 changes",
+      "widgets": [
+        176
+      ]
+    },
     {
       "date": "2026-08-03T17:55:40+05:30",
       "author": "tce-nitinc",
@@ -286,15 +294,6 @@
       "message": "wg173 & wg174 issue resolved",
       "widgets": [
         173
-      ]
-    },
-    {
-      "date": "2026-07-24T17:27:13+05:30",
-      "author": "tce-ashishg",
-      "message": "wg173 & wg174 issue resolved",
-      "widgets": [
-        173,
-        174
       ]
     }
   ]
