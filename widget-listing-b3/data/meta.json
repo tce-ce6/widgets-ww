@@ -9,8 +9,8 @@
       "author": "tce-ashishg"
     },
     "wg162-shabda-bhandar": {
-      "updatedAt": "2026-08-04T12:48:44+05:30",
-      "author": "tce-nitinc"
+      "updatedAt": "2026-08-04T17:23:40+05:30",
+      "author": "tce-ashishg"
     },
     "wg164-don-akshari-shabad": {
       "updatedAt": "2026-07-21T19:03:25+05:30",
@@ -46,6 +46,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-08-04T17:23:40+05:30",
+      "author": "tce-ashishg",
+      "message": "wg162 images updated",
+      "widgets": [
+        162
+      ]
+    },
     {
       "date": "2026-08-04T15:15:05+05:30",
       "author": "tce-ashishg",
@@ -288,14 +296,6 @@
       "widgets": [
         162,
         173
-      ]
-    },
-    {
-      "date": "2026-07-28T17:32:09+05:30",
-      "author": "tce-ashishg",
-      "message": "wg165 started and structuring done",
-      "widgets": [
-        165
       ]
     }
   ]
