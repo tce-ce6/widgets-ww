@@ -488,11 +488,6 @@ position: absolute;
   margin: 10px;
   border-radius: 10px;
   overflow: hidden;
-  border: 1px solid #ccc;
-}
-
-.img-reveal.placeholder {
-  background: #AED5FC
 }
 
 .img-placeholder-icon {
