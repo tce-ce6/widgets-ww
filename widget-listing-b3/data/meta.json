@@ -43,9 +43,21 @@
     "wg179-decentralisation-explorer": {
       "updatedAt": "2026-07-30T17:25:22+05:30",
       "author": "tce-ashishg"
+    },
+    "wg193-swar-ki-pahchan-gujrati": {
+      "updatedAt": "2026-08-05T18:44:03+05:30",
+      "author": "tce-ashishg"
     }
   },
   "commits": [
+    {
+      "date": "2026-08-05T18:44:03+05:30",
+      "author": "tce-ashishg",
+      "message": "wg193 completed",
+      "widgets": [
+        193
+      ]
+    },
     {
       "date": "2026-08-05T17:45:54+05:30",
       "author": "tce-ashishg",
@@ -285,14 +297,6 @@
       "date": "2026-07-29T12:06:05+05:30",
       "author": "tce-ashishg",
       "message": "wg179 issue resolved",
-      "widgets": [
-        179
-      ]
-    },
-    {
-      "date": "2026-07-28T19:15:16+05:30",
-      "author": "tce-ashishg",
-      "message": "wg179 error resolved",
       "widgets": [
         179
       ]
