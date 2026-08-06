@@ -1,46 +1,48 @@
-@font-face {
-    font-family: 'Roboto';
-    src: url('../assets/font/Roboto-Medium.ttf') format('truetype');
-    font-weight: 500;
-    font-style: normal;
-    font-display: swap;
-}
+/* .......................  */
 
 @font-face {
-    font-family: 'Roboto';
-    src: url('../assets/font/Roboto-ExtraBold.ttf') format('truetype');
-    font-weight: bold;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'Roboto';
-    src: url('../assets/font/Roboto-Black.ttf') format('truetype');
+    font-family: 'Noto Sans Gujarati';
+    src: url('../assets/font/NotoSansGujarati-Black.ttf') format('truetype');
     font-weight: 900;
     font-style: normal;
     font-display: swap;
 }
 
 @font-face {
-    font-family: 'Roboto';
-    src: url('../assets/font/Roboto-Regular.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'Roboto';
-    src: url('../assets/font/Roboto-Bold.ttf') format('truetype');
+    font-family: 'Noto Sans Gujarati';
+    src: url('../assets/font/NotoSansGujarati-Bold.ttf') format('truetype');
     font-weight: bold;
     font-style: normal;
     font-display: swap;
 }
 
 @font-face {
-    font-family: 'Roboto';
-    src: url('../assets/font/Roboto-SemiBold.ttf') format('truetype');
+    font-family: 'Noto Sans Gujarati';
+    src: url('../assets/font/NotoSansGujarati-ExtraBold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Noto Sans Gujarati';
+    src: url('../assets/font/NotoSansGujarati-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Noto Sans Gujarati';
+    src: url('../assets/font/NotoSansGujarati-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Noto Sans Gujarati';
+    src: url('../assets/font/NotoSansGujarati-SemiBold.ttf') format('truetype');
     font-weight: 600;
     font-style: normal;
     font-display: swap;
@@ -53,7 +55,7 @@ height: 100%;
     padding: 0;
     color: #000;
     line-height: 30px;
-    font-family: "Roboto", sans-serif;
+        font-family: 'Noto Sans Gujarati';
     background-color: #f5f5f5;
     margin: auto;
 
