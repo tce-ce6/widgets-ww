@@ -9,7 +9,7 @@
       "author": "tce-ashishg"
     },
     "wg162-shabda-bhandar": {
-      "updatedAt": "2026-08-05T17:45:54+05:30",
+      "updatedAt": "2026-08-06T14:56:08+05:30",
       "author": "tce-ashishg"
     },
     "wg164-don-akshari-shabad": {
@@ -25,11 +25,11 @@
       "author": "tce-ashishg"
     },
     "wg173-rhyming-words-gujurati": {
-      "updatedAt": "2026-07-28T18:36:07+05:30",
-      "author": "tce-nitinc"
+      "updatedAt": "2026-08-06T14:56:08+05:30",
+      "author": "tce-ashishg"
     },
     "wg174-opposite-word-gujrati": {
-      "updatedAt": "2026-07-24T17:27:13+05:30",
+      "updatedAt": "2026-08-06T14:56:08+05:30",
       "author": "tce-ashishg"
     },
     "wg176-vakyansh-se-shabda-tak": {
@@ -45,11 +45,22 @@
       "author": "tce-ashishg"
     },
     "wg193-swar-ki-pahchan-gujrati": {
-      "updatedAt": "2026-08-05T18:44:03+05:30",
+      "updatedAt": "2026-08-06T14:56:08+05:30",
       "author": "tce-ashishg"
     }
   },
   "commits": [
+    {
+      "date": "2026-08-06T14:56:08+05:30",
+      "author": "tce-ashishg",
+      "message": "gujurati font folder updated",
+      "widgets": [
+        162,
+        173,
+        174,
+        193
+      ]
+    },
     {
       "date": "2026-08-05T18:44:03+05:30",
       "author": "tce-ashishg",
@@ -291,14 +302,6 @@
       "widgets": [
         160,
         161
-      ]
-    },
-    {
-      "date": "2026-07-29T12:06:05+05:30",
-      "author": "tce-ashishg",
-      "message": "wg179 issue resolved",
-      "widgets": [
-        179
       ]
     }
   ]
