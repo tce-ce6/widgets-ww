@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
     options: [
       { text: "અ", sound: "assets/audio/a.mp3" },
       { text: "અં", sound: "assets/audio/um.mp3" },
-      { text: "અઃ", sound: "assets/audio/uhh.mp3" },
+      { text: "અઃ", sound: "assets/audio/uha.mp3" },
       { text: "આ", sound: "assets/audio/aa.mp3" },
     ],
   },
@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
       { text: "આ", sound: "assets/audio/aa.mp3" },
       { text: "અ", sound: "assets/audio/a.mp3" },
       { text: "ઓ", sound: "assets/audio/o.mp3" },
-      { text: "અઃ", sound: "assets/audio/uhh.mp3" },
+      { text: "અઃ", sound: "assets/audio/uha.mp3" },
     ],
   },
   {
@@ -126,7 +126,7 @@ document.addEventListener("DOMContentLoaded", () => {
     letterSound: "um.mp3",
     answer: "અં",
     options: [
-      { text: "અઃ", sound: "assets/audio/uhh.mp3" },
+      { text: "અઃ", sound: "assets/audio/uha.mp3" },
       { text: "અ", sound: "assets/audio/a.mp3" },
       { text: "ઐ", sound: "assets/audio/aee.mp3" },
       { text: "અં", sound: "assets/audio/um.mp3" },
@@ -134,10 +134,10 @@ document.addEventListener("DOMContentLoaded", () => {
   },
   {
     letter: "અઃ",
-    letterSound: "uhh.mp3",
+    letterSound: "uha.mp3",
     answer: "અઃ",
     options: [
-      { text: "અઃ", sound: "assets/audio/uhh.mp3" },
+      { text: "અઃ", sound: "assets/audio/uha.mp3" },
       { text: "ઊ", sound: "assets/audio/uu.mp3" },
       { text: "આ", sound: "assets/audio/aa.mp3" },
       { text: "અ", sound: "assets/audio/a.mp3" },

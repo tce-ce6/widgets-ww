@@ -284,6 +284,7 @@ function handleBubbleClick(word, bubbleEl) {
 }
 
 function showCorrect(q) {
+  const isLastQuestion = currentIndex === shuffledData.length - 1;
   const overlay = document.getElementById('correctOverlay');
   overlay.style.display = 'flex';
 
@@ -303,6 +304,12 @@ function showCorrect(q) {
     path: CONFETTI_LOTTIE_PATH
   });
 
+  // The final answer completes the game automatically once its celebration
+  // animation finishes; there is no next question to navigate to.
+  if (isLastQuestion) {
+    confettiLottieAnimation.addEventListener('complete', endGame);
+  }
+
   document.getElementById('bubbleLottieContainer').classList.add('lottie-hidden');
 
   document.querySelectorAll('.bubble').forEach(function(b) {
@@ -320,8 +327,13 @@ function showCorrect(q) {
 
   const nextBtn = document.getElementById('btnNext');
   if (nextBtn) {
-    nextBtn.classList.remove('disabled');
-    nextBtn.removeAttribute('disabled');
+    if (isLastQuestion) {
+      nextBtn.classList.add('disabled');
+      nextBtn.setAttribute('disabled', 'disabled');
+    } else {
+      nextBtn.classList.remove('disabled');
+      nextBtn.removeAttribute('disabled');
+    }
   }
 }
 
