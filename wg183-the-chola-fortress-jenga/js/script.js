@@ -45,7 +45,7 @@ const QS = [
   },
   {
     "stoneNo": 5,
-    "q": "Father conquers islands south. Son conquers lands north and launches ships east. What does this pattern reveal?",
+    "q": "Father conquers islands to the south. Son conquers lands to the north and launches ships to the east. What does this pattern reveal?",
     "opts": [
       "Random luck in battles",
       "Planned all-direction expansion",
@@ -179,6 +179,19 @@ document.addEventListener('DOMContentLoaded', function () {
   var hasAnswered = false;
   var summaryTimer = null;
 
+  // save original filter for each block and set none initially
+  try {
+    document.querySelectorAll('[id$="-block"]').forEach(function (block) {
+      var id = block.id;
+      originalPositions[id] = originalPositions[id] || { parent: block.parentNode, nextSibling: block.nextSibling, display: block.style.display || '' };
+      var attrFilter = block.getAttribute('filter');
+      var styleFilter = block.style.filter;
+      originalPositions[id].originalFilter = attrFilter || styleFilter || '';
+      try { block.removeAttribute('filter'); } catch (e) {}
+      block.style.filter = 'none';
+    });
+  } catch (e) {}
+
   function setOptionsLocked(locked) {
     options.forEach(function (option) {
       option.classList.toggle('is-locked', locked);
@@ -202,6 +215,34 @@ document.addEventListener('DOMContentLoaded', function () {
     } catch (e) {}
   }
 
+  function applyBlockFilter(stoneNo) {
+    try {
+      var id = stoneNo + '-block';
+      var block = document.getElementById(id);
+      if (!block) return;
+      var pos = originalPositions[id] || {};
+      var orig = pos.originalFilter || '';
+      if (!orig) return;
+      if (orig.indexOf && orig.indexOf('url(') === 0) {
+        block.setAttribute('filter', orig);
+        block.style.filter = '';
+      } else {
+        try { block.removeAttribute('filter'); } catch (e) {}
+        block.style.filter = orig;
+      }
+    } catch (e) {}
+  }
+
+  function removeFilterForBlock(stoneNo) {
+    try {
+      var id = stoneNo + '-block';
+      var block = document.getElementById(id);
+      if (!block) return;
+      try { block.removeAttribute('filter'); } catch (e) {}
+      block.style.filter = 'none';
+    } catch (e) {}
+  }
+
   function openQuestion(stoneNo) {
     var questionData = QS.find(function (item) {
       return item.stoneNo === stoneNo;
@@ -211,26 +252,28 @@ document.addEventListener('DOMContentLoaded', function () {
       return;
     }
 
-    activeStone = { number: stoneNo, data: questionData };
-    hasAnswered = false;
-    cholaBlocks.style.transform = 'translateX(-500px)';
-    cholaBlocks.style.pointerEvents = 'none';
-    questionPanel.style.display = 'block';
-    question.textContent = questionData.q;
-    options.forEach(function (option, index) {
-      option.textContent = questionData.opts[index];
-      option.style.backgroundColor = '';
-      option.classList.remove('is-correct', 'is-incorrect');
-    });
-    feedback.style.display = 'none';
-    feedback.textContent = '';
-    info.style.display = 'none';
-    infoText.textContent = questionData.info;
-    nextStoneButton.style.display = 'none';
-    nextStoneButton.classList.remove('is-disabled');
-    nextStoneButton.style.pointerEvents = '';
-    nextStoneButton.removeAttribute('aria-disabled');
-    setOptionsLocked(false);
+      activeStone = { number: stoneNo, data: questionData };
+      hasAnswered = false;
+      cholaBlocks.style.transform = 'translateX(-500px)';
+      cholaBlocks.style.pointerEvents = 'none';
+      questionPanel.style.display = 'block';
+      question.textContent = questionData.q;
+      options.forEach(function (option, index) {
+        option.textContent = questionData.opts[index];
+        option.style.backgroundColor = '';
+        option.classList.remove('is-correct', 'is-incorrect');
+      });
+      feedback.style.display = 'none';
+      feedback.textContent = '';
+      info.style.display = 'none';
+      infoText.textContent = questionData.info;
+      nextStoneButton.style.display = 'none';
+      nextStoneButton.classList.remove('is-disabled');
+      nextStoneButton.style.pointerEvents = '';
+      nextStoneButton.removeAttribute('aria-disabled');
+      setOptionsLocked(false);
+      // apply the block's original filter when question opens
+      applyBlockFilter(stoneNo);
   }
 
   function disableBlock(stoneNo) {
@@ -241,6 +284,9 @@ document.addEventListener('DOMContentLoaded', function () {
     completedBlock.classList.add('is-disabled');
     completedBlock.style.cursor = 'not-allowed';
     completedBlock.style.pointerEvents = 'none';
+    // remove selection overlay and filter when disabling
+    try { restoreBlockSelection(stoneNo); } catch (e) {}
+    try { removeFilterForBlock(stoneNo); } catch (e) {}
   }
 
   function disableAllBlocks() {
@@ -401,9 +447,23 @@ document.addEventListener('DOMContentLoaded', function () {
     info.style.display = 'none';
     nextStoneButton.style.display = 'none';
     summaryWrapper.style.display = 'block';
-    // play star lottie animation at summary only if player got all answers correct
+    // play appropriate lottie animation at summary:
+    // - sad.json when game over (3+ wrong)
+    // - stars.json for all other summary cases (including 0,1,2 wrong)
     try {
-      if (correctAnswers === totalQuestions) {
+      if (wrongAnswers >= maxWrongAnswers) {
+        if (starLottieFO) starLottieFO.style.display = 'block';
+        if (starAnim) { try { starAnim.destroy(); } catch (e) {} starAnim = null; }
+        if (typeof lottie !== 'undefined' && starLottieContainer) {
+          starAnim = lottie.loadAnimation({
+            container: starLottieContainer,
+            renderer: 'svg',
+            loop: true,
+            autoplay: true,
+            path: 'assets/json/sad.json'
+          });
+        }
+      } else {
         if (starLottieFO) starLottieFO.style.display = 'block';
         if (starAnim) { try { starAnim.destroy(); } catch (e) {} starAnim = null; }
         if (typeof lottie !== 'undefined' && starLottieContainer) {
@@ -415,9 +475,6 @@ document.addEventListener('DOMContentLoaded', function () {
             path: 'assets/json/stars.json'
           });
         }
-      } else {
-        if (starAnim) { try { starAnim.destroy(); } catch (e) {} starAnim = null; }
-        if (starLottieFO) starLottieFO.style.display = 'none';
       }
     } catch (e) {}
     if (homeButton) {
@@ -425,21 +482,16 @@ document.addEventListener('DOMContentLoaded', function () {
       homeButton.style.pointerEvents = 'none';
     }
 
+    // Show summary variant based on wrongAnswers:
+    // 3 or more wrong -> fully incorrect, 1-2 wrong -> half incorrect, 0 wrong -> correct
+    summaryIncorrect.style.display = 'none';
+    summaryHalfIncorrect.style.display = 'none';
+    summaryCorrect.style.display = 'none';
     if (wrongAnswers >= maxWrongAnswers) {
       summaryIncorrect.style.display = 'block';
-      summaryHalfIncorrect.style.display = 'none';
-      summaryCorrect.style.display = 'none';
-    } else if (correctAnswers <= 1) {
-      summaryIncorrect.style.display = 'block';
-      summaryHalfIncorrect.style.display = 'none';
-      summaryCorrect.style.display = 'none';
-    } else if (correctAnswers === 2) {
-      summaryIncorrect.style.display = 'none';
+    } else if (wrongAnswers === 1 || wrongAnswers === 2) {
       summaryHalfIncorrect.style.display = 'block';
-      summaryCorrect.style.display = 'none';
     } else {
-      summaryIncorrect.style.display = 'none';
-      summaryHalfIncorrect.style.display = 'none';
       summaryCorrect.style.display = 'block';
     }
   }
