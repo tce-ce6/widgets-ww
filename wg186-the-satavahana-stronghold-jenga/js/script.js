@@ -34,7 +34,7 @@ const QS = [
   },
   {
     "stoneNo": 4,
-    "q": "After winning battles near the Ganges, a king builds a NEW city named after that distant river. Why?",
+    "q": "After winning battles near the Ganges, a king builds a new city named after that distant river. Why?",
     "opts": [
       "A permanent victory monument",
       "Old capital was destroyed",
@@ -45,7 +45,7 @@ const QS = [
   },
   {
     "stoneNo": 5,
-    "q": "Father conquers islands south. Son conquers lands north and launches ships east. What does this pattern reveal?",
+    "q": "Father conquers islands to the south. Son conquers lands to the north and launches ships to the east. What does this pattern reveal?",
     "opts": [
       "Random luck in battles",
       "Planned all-direction expansion",
@@ -162,13 +162,35 @@ document.addEventListener('DOMContentLoaded', function () {
   var summaryHalfIncorrect = document.getElementById('summary-half-incorrect');
   var summaryCorrect = document.getElementById('summary-correct');
   var summaryHomeButton = document.getElementById('summary-home-btn');
-  var maxQuestions = 3;
+  // lottie star container
+  var starLottieFO = document.getElementById('star-lottie');
+  var starLottieContainer = document.getElementById('lottie-wrapper');
+  var starAnim = null;
+  // collapse sound (placed in assets/audio)
+  var collapseAudio = new Audio('assets/audio/collapse-audio.mp3');
+  var maxWrongAnswers = 3;
   var completedQuestions = 0;
   var wrongAnswers = 0;
   var correctAnswers = 0;
+  var totalQuestions = QS.length;
+  var answeredStatus = {};
+  var originalPositions = {};
   var activeStone = null;
   var hasAnswered = false;
   var summaryTimer = null;
+
+  // save original filter for each block and set none initially
+  try {
+    document.querySelectorAll('[id$="-block"]').forEach(function (block) {
+      var id = block.id;
+      originalPositions[id] = originalPositions[id] || { parent: block.parentNode, nextSibling: block.nextSibling, display: block.style.display || '' };
+      var attrFilter = block.getAttribute('filter');
+      var styleFilter = block.style.filter;
+      originalPositions[id].originalFilter = attrFilter || styleFilter || '';
+      try { block.removeAttribute('filter'); } catch (e) {}
+      block.style.filter = 'none';
+    });
+  } catch (e) {}
 
   function setOptionsLocked(locked) {
     options.forEach(function (option) {
@@ -177,42 +199,220 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
+  function hideAllBlockText() {
+    try {
+      document.querySelectorAll('#block-text').forEach(function (el) {
+        el.style.display = 'none';
+      });
+    } catch (e) {}
+  }
+
+  function restoreAllBlockText() {
+    try {
+      document.querySelectorAll('#block-text').forEach(function (el) {
+        el.style.display = '';
+      });
+    } catch (e) {}
+  }
+
+  function applyBlockFilter(stoneNo) {
+    try {
+      var id = stoneNo + '-block';
+      var block = document.getElementById(id);
+      if (!block) return;
+      var pos = originalPositions[id] || {};
+      var orig = pos.originalFilter || '';
+      if (!orig) return;
+      if (orig.indexOf && orig.indexOf('url(') === 0) {
+        block.setAttribute('filter', orig);
+        block.style.filter = '';
+      } else {
+        try { block.removeAttribute('filter'); } catch (e) {}
+        block.style.filter = orig;
+      }
+    } catch (e) {}
+  }
+
+  function removeFilterForBlock(stoneNo) {
+    try {
+      var id = stoneNo + '-block';
+      var block = document.getElementById(id);
+      if (!block) return;
+      try { block.removeAttribute('filter'); } catch (e) {}
+      block.style.filter = 'none';
+    } catch (e) {}
+  }
+
   function openQuestion(stoneNo) {
     var questionData = QS.find(function (item) {
       return item.stoneNo === stoneNo;
     });
 
-    if (completedQuestions >= maxQuestions || !questionData || activeStone || document.getElementById(stoneNo + '-block').classList.contains('is-disabled')) {
+    if (wrongAnswers >= maxWrongAnswers || !questionData || activeStone || document.getElementById(stoneNo + '-block').classList.contains('is-disabled')) {
       return;
     }
 
-    activeStone = { number: stoneNo, data: questionData };
-    hasAnswered = false;
-    cholaBlocks.style.transform = 'translateX(-500px)';
-    cholaBlocks.style.pointerEvents = 'none';
-    questionPanel.style.display = 'block';
-    question.textContent = questionData.q;
-    options.forEach(function (option, index) {
-      option.textContent = questionData.opts[index];
-      option.style.backgroundColor = '';
-      option.classList.remove('is-correct', 'is-incorrect');
-    });
-    feedback.style.display = 'none';
-    feedback.textContent = '';
-    info.style.display = 'none';
-    infoText.textContent = questionData.info;
-    nextStoneButton.style.display = 'none';
-    nextStoneButton.classList.remove('is-disabled');
-    nextStoneButton.style.pointerEvents = '';
-    nextStoneButton.removeAttribute('aria-disabled');
-    setOptionsLocked(false);
+      activeStone = { number: stoneNo, data: questionData };
+      hasAnswered = false;
+      cholaBlocks.style.transform = 'translateX(-500px)';
+      cholaBlocks.style.pointerEvents = 'none';
+      questionPanel.style.display = 'block';
+      question.textContent = questionData.q;
+      options.forEach(function (option, index) {
+        option.textContent = questionData.opts[index];
+        option.style.backgroundColor = '';
+        option.classList.remove('is-correct', 'is-incorrect');
+      });
+      feedback.style.display = 'none';
+      feedback.textContent = '';
+      info.style.display = 'none';
+      infoText.textContent = questionData.info;
+      nextStoneButton.style.display = 'none';
+      nextStoneButton.classList.remove('is-disabled');
+      nextStoneButton.style.pointerEvents = '';
+      nextStoneButton.removeAttribute('aria-disabled');
+      setOptionsLocked(false);
+      // apply the block's original filter when question opens
+      applyBlockFilter(stoneNo);
   }
 
   function disableBlock(stoneNo) {
     var completedBlock = document.getElementById(stoneNo + '-block');
+    if (!completedBlock) {
+      return;
+    }
     completedBlock.classList.add('is-disabled');
     completedBlock.style.cursor = 'not-allowed';
     completedBlock.style.pointerEvents = 'none';
+    // remove selection overlay and filter when disabling
+    try { restoreBlockSelection(stoneNo); } catch (e) {}
+    try { removeFilterForBlock(stoneNo); } catch (e) {}
+  }
+
+  function disableAllBlocks() {
+    document.querySelectorAll('[id$="-block"]').forEach(function (block) {
+      block.classList.add('is-disabled');
+      block.style.cursor = 'not-allowed';
+      block.style.pointerEvents = 'none';
+    });
+  }
+
+  function collapseRemainingBlocks() {
+    var baseGroup = document.getElementById('Group_813');
+    if (!baseGroup) {
+      return Promise.resolve();
+    }
+
+    var baseBox = baseGroup.getBBox();
+    var baseX = baseBox.x + baseBox.width / 2;
+    var baseY = baseBox.y - 20; // starting y above the base
+
+    var allBlocks = Array.from(document.querySelectorAll('[id$="-block"]'));
+    var flagEl = document.getElementById('flag');
+
+    var toCollapse = [];
+    // hide clicked blocks (they were left in background); save their state
+    allBlocks.forEach(function (block) {
+      var stoneNo = parseInt(block.id, 10);
+      if (answeredStatus.hasOwnProperty(stoneNo)) {
+        // save original display and parent for reset
+        originalPositions[block.id] = {
+          parent: block.parentNode,
+          nextSibling: block.nextSibling,
+          display: block.style.display || ''
+        };
+        block.style.display = 'none';
+        return;
+      }
+      toCollapse.push(block);
+    });
+
+    if (flagEl) {
+      originalPositions['flag'] = {
+        parent: flagEl.parentNode,
+        nextSibling: flagEl.nextSibling,
+        display: flagEl.style.display || ''
+      };
+      toCollapse.push(flagEl);
+    }
+
+    // play collapse audio (ignore errors if playback blocked)
+    try {
+      collapseAudio.currentTime = 0;
+      collapseAudio.play();
+    } catch (e) {
+      // playback may be blocked until user interaction
+    }
+
+    var transitions = [];
+    toCollapse.forEach(function (block, idx) {
+      // save original DOM position for reset
+      if (!originalPositions[block.id]) {
+        originalPositions[block.id] = {
+          parent: block.parentNode,
+          nextSibling: block.nextSibling,
+          display: block.style.display || ''
+        };
+      }
+
+      // hide any block text inside this block (id="block-text") so pile shows only shapes
+      try {
+        var textEl = block.querySelector('#block-text');
+        if (textEl) {
+          originalPositions[block.id] = originalPositions[block.id] || { parent: block.parentNode, nextSibling: block.nextSibling, display: block.style.display || '' };
+          originalPositions[block.id].labelDisplay = textEl.style.display || '';
+          textEl.style.display = 'none';
+        }
+      } catch (e) {}
+
+      // ensure block is rendered on top of baseGroup
+      if (cholaBlocks && cholaBlocks.appendChild) cholaBlocks.appendChild(block);
+
+      var blockBox = block.getBBox();
+      // Remove any disabled/faded appearance for the collapsed pile
+      block.classList.remove('is-disabled');
+      block.style.cursor = '';
+      block.style.opacity = '';
+      block.style.display = '';
+
+      // Arrange collapsed blocks in rows of three: left / center / right
+      var col = idx % 3; // 0:left,1:center,2:right
+      var row = Math.floor(idx / 3);
+      var xOffset;
+      if (col === 0) {
+        xOffset = -60 - Math.random() * 20; // left cluster (-80 to -60)
+      } else if (col === 1) {
+        xOffset = -10 + Math.random() * 20; // center cluster (-10 to +10)
+      } else {
+        xOffset = 60 + Math.random() * 20; // right cluster (60 to 80)
+      }
+      var yOffset = -(row * 30) - 10; // rows stacked by 30px
+      var currentX = blockBox.x + blockBox.width / 2;
+      var currentY = blockBox.y + blockBox.height / 2;
+      var finalTranslateX = (baseX + xOffset) - currentX;
+      var finalTranslateY = (baseY + yOffset) - currentY;
+      var rotate = (Math.random() - 0.5) * 6;
+
+      block.style.transformOrigin = 'center';
+      block.style.transition = 'transform 3.5s cubic-bezier(0.22, 1, 0.36, 1)';
+      block.style.transform = 'translate(0px,0px) rotate(0deg)';
+      // force style flush so the transition will animate from the starting transform
+      block.getBoundingClientRect();
+      block.style.transform = 'translate(' + finalTranslateX + 'px,' + finalTranslateY + 'px) rotate(' + rotate + 'deg)';
+      block.style.pointerEvents = 'none';
+
+      transitions.push(new Promise(function (resolve) {
+        var handler = function (event) {
+          if (event.propertyName === 'transform') {
+            block.removeEventListener('transitionend', handler);
+            resolve();
+          }
+        };
+        block.addEventListener('transitionend', handler);
+      }));
+    });
+
+    return Promise.all(transitions);
   }
 
   function showGameBoard() {
@@ -242,27 +442,56 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     introLayer.style.display = 'none';
-    jengaBlocks.style.display = 'none';
     questionPanel.style.display = 'none';
-    cholaBlocks.style.display = 'none';
-    cholaBlocks.style.transform = '';
-    cholaBlocks.style.pointerEvents = '';
     feedback.style.display = 'none';
     info.style.display = 'none';
     nextStoneButton.style.display = 'none';
     summaryWrapper.style.display = 'block';
+    // play appropriate lottie animation at summary:
+    // - sad.json when game over (3+ wrong)
+    // - stars.json for all other summary cases (including 0,1,2 wrong)
+    try {
+      if (wrongAnswers >= maxWrongAnswers) {
+        if (starLottieFO) starLottieFO.style.display = 'block';
+        if (starAnim) { try { starAnim.destroy(); } catch (e) {} starAnim = null; }
+        if (typeof lottie !== 'undefined' && starLottieContainer) {
+          starAnim = lottie.loadAnimation({
+            container: starLottieContainer,
+            renderer: 'svg',
+            loop: true,
+            autoplay: true,
+            path: 'assets/json/sad.json'
+          });
+        }
+      } else {
+        if (starLottieFO) starLottieFO.style.display = 'block';
+        if (starAnim) { try { starAnim.destroy(); } catch (e) {} starAnim = null; }
+        if (typeof lottie !== 'undefined' && starLottieContainer) {
+          starAnim = lottie.loadAnimation({
+            container: starLottieContainer,
+            renderer: 'svg',
+            loop: true,
+            autoplay: true,
+            path: 'assets/json/stars.json'
+          });
+        }
+      }
+    } catch (e) {}
+    if (homeButton) {
+      homeButton.style.display = 'none';
+      homeButton.style.pointerEvents = 'none';
+    }
 
-    if (correctAnswers <= 1) {
+    // Show summary variant based on wrongAnswers:
+    // 3 or more wrong -> fully incorrect, 1-2 wrong -> half incorrect, 0 wrong -> correct
+    summaryIncorrect.style.display = 'none';
+    summaryHalfIncorrect.style.display = 'none';
+    summaryCorrect.style.display = 'none';
+    if (wrongAnswers >= maxWrongAnswers) {
       summaryIncorrect.style.display = 'block';
-      summaryHalfIncorrect.style.display = 'none';
-      summaryCorrect.style.display = 'none';
-    } else if (correctAnswers === 2) {
-      summaryIncorrect.style.display = 'none';
+    } else if (wrongAnswers === 1 || wrongAnswers === 2) {
       summaryHalfIncorrect.style.display = 'block';
-      summaryCorrect.style.display = 'none';
     } else {
-      summaryIncorrect.style.display = 'none';
-      summaryHalfIncorrect.style.display = 'none';
       summaryCorrect.style.display = 'block';
     }
   }
@@ -274,8 +503,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     hasAnswered = true;
     completedQuestions += 1;
-    progressBlocks[completedQuestions - 1].style.display = 'block';
     var isCorrect = selectedIndex === activeStone.data.ans;
+    answeredStatus[activeStone.number] = isCorrect ? 'correct' : 'wrong';
     if (isCorrect) {
       correctAnswers += 1;
       options[selectedIndex].classList.add('is-correct');
@@ -289,11 +518,32 @@ document.addEventListener('DOMContentLoaded', function () {
       info.style.display = 'none';
       wrongAnswers += 1;
       numberBlocks.style.transform = 'rotate(' + (wrongAnswers * 3) + 'deg)';
+      if (wrongAnswers <= progressBlocks.length) {
+        progressBlocks[wrongAnswers - 1].style.display = 'block';
+      }
     }
     feedback.style.display = 'block';
     setOptionsLocked(true);
     nextStoneButton.style.display = 'block';
-    if (completedQuestions === maxQuestions) {
+    if (wrongAnswers >= maxWrongAnswers) {
+      disableBlock(activeStone.number);
+      disableAllBlocks();
+      questionPanel.style.display = 'none';
+      cholaBlocks.style.pointerEvents = 'none';
+      nextStoneButton.style.display = 'none';
+      if (summaryTimer) {
+        clearTimeout(summaryTimer);
+      }
+      // hide all block text labels at game end
+      hideAllBlockText();
+      if (homeButton) {
+        homeButton.style.display = 'none';
+        homeButton.style.pointerEvents = 'none';
+      }
+      collapseRemainingBlocks().then(function () {
+        showSummary();
+      });
+    } else if (completedQuestions === totalQuestions) {
       disableBlock(activeStone.number);
       nextStoneButton.classList.add('is-disabled');
       nextStoneButton.style.pointerEvents = 'none';
@@ -301,6 +551,31 @@ document.addEventListener('DOMContentLoaded', function () {
       if (summaryTimer) {
         clearTimeout(summaryTimer);
       }
+      // if all answers are correct, play star lottie
+      // if (correctAnswers === totalQuestions) {
+      //   try {
+      //     if (starLottieFO) starLottieFO.style.display = 'block';
+      //     if (starAnim) {
+      //       try { starAnim.destroy(); } catch (e) {}
+      //       starAnim = null;
+      //     }
+      //     if (typeof lottie !== 'undefined' && starLottieContainer) {
+      //       starAnim = lottie.loadAnimation({
+      //         container: starLottieContainer,
+      //         renderer: 'svg',
+      //         loop: false,
+      //         autoplay: true,
+      //         path: 'assets/json/stars.json'
+      //       });
+      //     }
+      //   } catch (e) {
+      //     // ignore lottie errors
+      //   }
+      // } else {
+      //   if (starLottieFO) starLottieFO.style.display = 'none';
+      // }
+      // hide block text labels at end of game before summary
+      hideAllBlockText();
       summaryTimer = setTimeout(function () {
         showSummary();
       }, 1000);
@@ -353,12 +628,65 @@ document.addEventListener('DOMContentLoaded', function () {
     completedQuestions = 0;
     wrongAnswers = 0;
     correctAnswers = 0;
+    answeredStatus = {};
+    // restore original DOM order and display for collapsed elements
+    Object.keys(originalPositions).forEach(function (id) {
+      var pos = originalPositions[id];
+      var el = document.getElementById(id);
+      if (el && pos && pos.parent) {
+        try {
+          pos.parent.insertBefore(el, pos.nextSibling);
+        } catch (e) {
+          if (cholaBlocks && cholaBlocks.appendChild) cholaBlocks.appendChild(el);
+        }
+        el.style.display = pos.display || '';
+      }
+    });
+    // restore any hidden block text labels (id="block-text")
+    Object.keys(originalPositions).forEach(function (id) {
+      var pos = originalPositions[id];
+      if (pos && pos.labelDisplay !== undefined) {
+        var el = document.getElementById(id);
+        if (el) {
+          try {
+            var lbl = el.querySelector('#block-text');
+            if (lbl) lbl.style.display = pos.labelDisplay || '';
+          } catch (e) {}
+        }
+      }
+    });
+    // restore flag styles (flag is moved during collapse and should be reset)
+    var flagEl = document.getElementById('flag');
+    if (flagEl) {
+      flagEl.style.transform = 'translateX(44px)';
+      flagEl.style.transition = '';
+      flagEl.style.pointerEvents = '';
+      flagEl.style.transformOrigin = '';
+    }
+    // hide and destroy star lottie if present
+    if (starAnim) {
+      try { starAnim.destroy(); } catch (e) {}
+      starAnim = null;
+    }
+    if (starLottieFO) {
+      starLottieFO.style.display = 'none';
+    }
+    // restore any block text labels
+    restoreAllBlockText();
+    originalPositions = {};
     activeStone = null;
     hasAnswered = false;
+    if (homeButton) {
+      homeButton.style.display = '';
+      homeButton.style.pointerEvents = '';
+    }
     document.querySelectorAll('[id$="-block"]').forEach(function (block) {
       block.classList.remove('is-disabled');
       block.style.cursor = 'pointer';
       block.style.pointerEvents = '';
+      block.style.transform = '';
+      block.style.opacity = '';
+      block.style.transition = '';
     });
   }
 
