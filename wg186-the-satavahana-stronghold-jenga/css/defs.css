@@ -1,1996 +1,3082 @@
+
       .st0 {
-        fill: #fccd78;
+        fill: #97281d;
       }
 
       .st1 {
-        fill: #ba3e3c;
+        fill: #6b170f;
       }
 
       .st2 {
-        clip-path: url(#clippath-51);
+        fill: #942518;
       }
 
       .st3 {
-        fill: #d98a53;
+        fill: #430f01;
       }
 
       .st4 {
-        fill: #f87f2c;
+        clip-path: url(#clippath-51);
       }
 
       .st5 {
-        fill: #ef9a4d;
+        fill: #de5d19;
       }
 
       .st6 {
-        clip-path: url(#clippath-34);
+        fill: #fed254;
       }
 
       .st7 {
-        fill: #581a30;
+        fill: #ca4d2c;
       }
 
       .st8 {
-        fill: #fdd473;
+        fill: #73392c;
       }
 
       .st9 {
-        fill: #9c2e34;
+        fill: #601b14;
       }
 
       .st10 {
-        fill: #fdea9d;
+        fill: #541d11;
       }
 
       .st11 {
-        fill: #f9c755;
+        fill: #8c460e;
       }
 
       .st12 {
-        fill: #8b2c34;
+        fill: #943619;
       }
 
       .st13 {
-        fill: #000e65;
+        fill: #4e1901;
       }
 
-      .st13, .st14 {
-        font-family: Roboto-Regular, Roboto;
-      }
-
-      .st13, .st14, .st15, .st16, .st17, .st18, .st19, .st20, .st21, .st22, .st23, .st24, .st25, .st26, .st27, .st28, .st29, .st30, .st31, .st32, .st33, .st34, .st35, .st36, .st37, .st38 {
-        isolation: isolate;
-      }
-
-      .st13, .st18, .st38 {
-        font-size: 26px;
-      }
-
-      .st39 {
-        fill: #6cfc7a;
-      }
-
-      .st40 {
-        clip-path: url(#clippath-38);
-      }
-
-      .st41 {
-        clip-path: url(#clippath-21);
-      }
-
-      .st42 {
-        fill: #b6254f;
-      }
-
-      .st43 {
-        fill: #9e343e;
-      }
-
-      .st44 {
-        clip-path: url(#clippath-6);
-      }
-
-      .st45 {
-        clip-path: url(#clippath-7);
-      }
-
-      .st46 {
-        clip-path: url(#clippath-17);
-      }
-
-      .st47 {
-        fill: #facf66;
-      }
-
-      .st48 {
-        fill: #a93939;
-      }
-
-      .st49 {
-        clip-path: url(#clippath-31);
-      }
-
-      .st50 {
-        fill: #da5a3d;
-      }
-
-      .st51 {
-        fill: #fcd279;
-      }
-
-      .st52 {
-        fill: #f6984b;
-      }
-
-      .st53 {
-        fill: #cf623d;
-      }
-
-      .st54 {
-        fill: #c64630;
-      }
-
-      .st55 {
-        fill: #c03924;
-      }
-
-      .st56 {
-        fill: #ec9d4e;
-      }
-
-      .st57 {
-        clip-path: url(#clippath-15);
-      }
-
-      .st58 {
-        clip-path: url(#clippath-33);
-      }
-
-      .st59 {
-        fill: #db5d3b;
-      }
-
-      .st14, .st60, .st21, .st22, .st30 {
-        fill: #fff;
-      }
-
-      .st14, .st21, .st30 {
-        font-size: 35px;
-      }
-
-      .st61 {
-        fill: #d74f39;
-      }
-
-      .st62 {
-        fill: #fedb64;
-      }
-
-      .st63 {
-        fill: #c0423e;
-      }
-
-      .st64 {
-        fill: #915855;
-      }
-
-      .st65 {
-        fill: #872a37;
-      }
-
-      .st66 {
-        fill: #fdc159;
-      }
-
-      .st67 {
-        fill: #fdad3d;
-      }
-
-      .st68 {
-        clip-path: url(#clippath-18);
-      }
-
-      .st69 {
-        clip-path: url(#clippath-47);
-      }
-
-      .st70 {
-        clip-path: url(#clippath-4);
-      }
-
-      .st71 {
-        fill: #fffddf;
-      }
-
-      .st72 {
-        fill: #cf4632;
-      }
-
-      .st73 {
-        fill: #d75438;
-      }
-
-      .st74 {
-        fill: #531b30;
+      .st14 {
+        fill: #8b2411;
       }
 
       .st15 {
+        fill: #e55e32;
+      }
+
+      .st16 {
+        fill: #c3431e;
+      }
+
+      .st17 {
+        fill: #c75021;
+      }
+
+      .st18 {
+        fill: #a33216;
+      }
+
+      .st19 {
+        fill: #962706;
+      }
+
+      .st20 {
+        clip-path: url(#clippath-34);
+      }
+
+      .st21 {
+        fill: #87290e;
+      }
+
+      .st22 {
+        fill: #aa3310;
+      }
+
+      .st23 {
+        fill: #af501c;
+      }
+
+      .st24 {
+        fill: #861b14;
+      }
+
+      .st25 {
+        fill: #4d1c13;
+      }
+
+      .st26 {
+        fill: #8e2107;
+      }
+
+      .st27 {
+        fill: #9d2e1f;
+      }
+
+      .st28 {
+        fill: #b8430f;
+      }
+
+      .st29 {
+        fill: #e65a2d;
+      }
+
+      .st30 {
+        fill: #fb642d;
+      }
+
+      .st31 {
+        fill: #9a2d1e;
+      }
+
+      .st32 {
+        fill: #9b5721;
+      }
+
+      .st33 {
+        fill: #c4481d;
+      }
+
+      .st34 {
+        fill: #6cfc7a;
+      }
+
+      .st35 {
+        fill: #a94119;
+      }
+
+      .st36 {
+        fill: #d0561a;
+      }
+
+      .st37 {
+        clip-path: url(#clippath-38);
+      }
+
+      .st38 {
+        clip-path: url(#clippath-21);
+      }
+
+      .st39 {
+        fill: #ae402b;
+      }
+
+      .st40 {
+        fill: #882d19;
+      }
+
+      .st41 {
+        fill: #520f10;
+      }
+
+      .st42 {
+        fill: #a83619;
+      }
+
+      .st43 {
+        fill: #f1b54c;
+      }
+
+      .st44 {
+        fill: #a1431c;
+      }
+
+      .st45 {
+        fill: #ba3811;
+      }
+
+      .st46 {
+        clip-path: url(#clippath-6);
+      }
+
+      .st47 {
+        clip-path: url(#clippath-7);
+      }
+
+      .st48 {
+        fill: #d85d20;
+      }
+
+      .st49 {
+        clip-path: url(#clippath-17);
+      }
+
+      .st50 {
+        fill: #bc4719;
+      }
+
+      .st51, .st52, .st53, .st54, .st55, .st56, .st57, .st58, .st59, .st60, .st61, .st62, .st63, .st64, .st65, .st66, .st67, .st68, .st69, .st70, .st71, .st72, .st73, .st74, .st75 {
+        isolation: isolate;
+      }
+
+      .st51, .st54 {
+        font-size: 30px;
+      }
+
+      .st51, .st55, .st59, .st64 {
+        fill: #0f6;
+      }
+
+      .st51, .st58 {
+        font-family: Roboto-Light, Roboto;
+        font-weight: 300;
+      }
+
+      .st76 {
+        fill: #c44010;
+      }
+
+      .st77 {
+        fill: #fde897;
+      }
+
+      .st78 {
+        clip-path: url(#clippath-31);
+      }
+
+      .st79 {
+        fill: #e85a0b;
+      }
+
+      .st80 {
+        fill: #982b1e;
+      }
+
+      .st81 {
+        fill: #b83d14;
+      }
+
+      .st82 {
+        fill: #bc4220;
+      }
+
+      .st83 {
+        fill: #a2441e;
+      }
+
+      .st84 {
+        fill: #95240f;
+      }
+
+      .st85 {
+        fill: #ac3814;
+      }
+
+      .st86 {
+        fill: #621512;
+      }
+
+      .st87 {
+        fill: #83211a;
+      }
+
+      .st88 {
+        fill: #e15f1a;
+      }
+
+      .st89 {
+        fill: #d44e13;
+      }
+
+      .st90 {
+        fill: #501a01;
+      }
+
+      .st91 {
+        clip-path: url(#clippath-15);
+      }
+
+      .st92 {
+        clip-path: url(#clippath-33);
+      }
+
+      .st93 {
+        clip-path: url(#clippath-61);
+      }
+
+      .st94 {
+        fill: #d86337;
+      }
+
+      .st95 {
+        fill: #a12f16;
+      }
+
+      .st96 {
+        fill: #9d5b1a;
+      }
+
+      .st97 {
+        fill: #ec8f3e;
+      }
+
+      .st98 {
+        fill: #a32f0a;
+      }
+
+      .st99 {
+        fill: #fedb64;
+      }
+
+      .st100 {
+        fill: #5a2726;
+      }
+
+      .st101 {
+        fill: #7c250f;
+      }
+
+      .st102 {
+        fill: #dd5315;
+      }
+
+      .st103 {
+        clip-path: url(#clippath-18);
+      }
+
+      .st104 {
+        clip-path: url(#clippath-47);
+      }
+
+      .st105 {
+        fill: #c04c28;
+      }
+
+      .st106 {
+        fill: #c7461f;
+      }
+
+      .st107 {
+        clip-path: url(#clippath-4);
+      }
+
+      .st108 {
+        fill: #bf370e;
+      }
+
+      .st109 {
+        fill: #5b2005;
+      }
+
+      .st110 {
+        fill: #bc4528;
+      }
+
+      .st111 {
+        fill: #c55e23;
+      }
+
+      .st112 {
+        fill: #e68641;
+      }
+
+      .st113 {
+        fill: #822417;
+      }
+
+      .st114 {
+        fill: #e26324;
+      }
+
+      .st115 {
+        fill: #71160e;
+      }
+
+      .st52 {
         fill: #ffa800;
         font-family: Roboto-Italic, Roboto;
         font-size: 24px;
         font-style: italic;
       }
 
-      .st75 {
-        fill: #ac3a3d;
+      .st116 {
+        fill: #82211a;
       }
 
-      .st76 {
-        fill: #c85b2f;
+      .st117 {
+        fill: #701308;
       }
 
-      .st77 {
-        fill: #ed8649;
+      .st118 {
+        fill: #a23012;
       }
 
-      .st78 {
-        fill: #f2c66b;
-      }
-
-      .st16, .st18, .st21, .st26, .st27, .st38 {
-        font-family: Roboto-Medium, Roboto;
-        font-weight: 500;
-      }
-
-      .st16, .st26, .st35 {
-        fill: #ffcb00;
-      }
-
-      .st16, .st35 {
-        font-size: 90px;
-      }
-
-      .st79 {
+      .st119 {
         clip-path: url(#clippath-22);
       }
 
-      .st80 {
-        fill: #dc4b2a;
+      .st120 {
+        fill: #c34519;
       }
 
-      .st81 {
-        fill: #f9852c;
+      .st121 {
+        fill: #99280d;
       }
 
-      .st82 {
-        fill: #5a222f;
+      .st122 {
+        fill: #891e09;
       }
 
-      .st83 {
-        fill: #f79d37;
-      }
-
-      .st84 {
-        fill: #b33636;
-      }
-
-      .st85 {
-        fill: #c64130;
-      }
-
-      .st86 {
-        fill: #d7482e;
-      }
-
-      .st87 {
-        fill: #fddc81;
-      }
-
-      .st88 {
-        fill: #f2a64e;
-      }
-
-      .st89 {
-        fill: #f5782d;
-      }
-
-      .st90 {
+      .st123 {
         clip-path: url(#clippath-23);
       }
 
-      .st91 {
-        fill: #9a313a;
+      .st124 {
+        fill: #983f2d;
       }
 
-      .st92 {
-        fill: #c03f37;
+      .st125 {
+        fill: #926457;
       }
 
-      .st93 {
-        fill: #b34539;
+      .st126 {
+        fill: #d65112;
       }
 
-      .st94 {
-        fill: #ef672e;
+      .st127 {
+        fill: #551d11;
       }
 
-      .st95 {
-        fill: #e75628;
+      .st128 {
+        fill: #814a2f;
       }
 
-      .st96 {
-        fill: #ea8248;
+      .st129 {
+        fill: #c85f21;
       }
 
-      .st97 {
-        fill: #feeaac;
+      .st130 {
+        fill: #b5300e;
       }
 
-      .st17, .st19, .st24, .st28, .st29, .st30, .st31, .st33, .st34, .st36, .st37 {
+      .st131 {
+        fill: #873215;
+      }
+
+      .st132 {
+        fill: #a6301a;
+      }
+
+      .st133 {
+        fill: #480f0f;
+      }
+
+      .st134 {
+        fill: #fe6634;
+      }
+
+      .st53 {
+        fill: #10428d;
+        opacity: .6;
+      }
+
+      .st135 {
+        fill: #7f3e2a;
+      }
+
+      .st136 {
+        fill: #5c1f11;
+      }
+
+      .st137 {
+        fill: #efab68;
+      }
+
+      .st138 {
+        fill: #962710;
+      }
+
+      .st139 {
+        fill: #eb8432;
+      }
+
+      .st140 {
+        fill: #c74e20;
+      }
+
+      .st141 {
+        fill: #c3451f;
+      }
+
+      .st142 {
+        fill: #8a4f3f;
+      }
+
+      .st143 {
+        fill: #fa7c34;
+      }
+
+      .st144 {
+        fill: #672c10;
+      }
+
+      .st145 {
+        fill: #6f2118;
+      }
+
+      .st54, .st61, .st63, .st66, .st67, .st68, .st69, .st70, .st71, .st73, .st75 {
         font-weight: 600;
       }
 
-      .st17, .st19, .st24, .st28, .st29, .st31, .st33, .st34, .st36, .st37 {
+      .st54, .st61, .st63, .st66, .st67, .st69, .st70, .st71, .st73, .st75 {
         fill: #74391b;
         font-family: Roboto-SemiBold, Roboto;
       }
 
-      .st17, .st20 {
-        font-size: 30px;
-      }
-
-      .st98 {
-        fill: #fcd06e;
-      }
-
-      .st99 {
-        fill: #bb413f;
-      }
-
-      .st100 {
-        fill: #f9882e;
-      }
-
-      .st101 {
-        fill: #fba032;
-      }
-
-      .st102 {
-        fill: #c74235;
-      }
-
-      .st103 {
-        fill: #dc7d4e;
-      }
-
-      .st104 {
-        fill: #d5563b;
-      }
-
-      .st105 {
-        fill: #f3b64f;
-      }
-
-      .st106 {
-        fill: #e15227;
-      }
-
-      .st107 {
-        fill: #a43339;
-      }
-
-      .st108 {
-        fill: #f4d56e;
-      }
-
-      .st109 {
-        fill: #9d333d;
-      }
-
-      .st110 {
-        fill: #fdc544;
-      }
-
-      .st111 {
-        fill: #9d3837;
-      }
-
-      .st112 {
-        clip-path: url(#clippath-54);
-      }
-
-      .st113 {
-        fill: #f77e2b;
-      }
-
-      .st114 {
-        fill: #f77f2d;
-      }
-
-      .st115 {
-        fill: #e49252;
-      }
-
-      .st116 {
-        fill: #ffeb9c;
-      }
-
-      .st117 {
-        stroke: #02a312;
-      }
-
-      .st117, .st118, .st119, .st120 {
-        fill: none;
-      }
-
-      .st117, .st119, .st120 {
-        stroke-width: 2px;
-      }
-
-      .st121 {
-        fill: #fc9235;
-      }
-
-      .st122 {
-        fill: #fdc044;
-      }
-
-      .st123 {
-        fill: #e0532c;
-      }
-
-      .st124 {
-        fill: #772e12;
-      }
-
-      .st125 {
-        fill: #d1523d;
-      }
-
-      .st126 {
-        fill: #f7812f;
-      }
-
-      .st127 {
-        fill: #8d391b;
-      }
-
-      .st128 {
-        fill: #6a252f;
-      }
-
-      .st129 {
-        fill: #da4727;
-      }
-
-      .st130 {
-        fill: #652422;
-      }
-
-      .st131 {
-        clip-path: url(#clippath-9);
-      }
-
-      .st132 {
-        fill: #67202e;
-      }
-
-      .st133 {
-        fill: #db722c;
-      }
-
-      .st134 {
-        fill: #d0462d;
-      }
-
-      .st135 {
-        fill: #e6632a;
-      }
-
-      .st136 {
-        clip-path: url(#clippath-10);
-      }
-
-      .st137 {
-        fill: #fcd87a;
-      }
-
-      .st138 {
-        fill: #b34d1c;
-      }
-
-      .st139 {
-        clip-path: url(#clippath-42);
-      }
-
-      .st140 {
-        fill: #fdf7d0;
-      }
-
-      .st141 {
-        fill: #d95a3d;
-      }
-
-      .st142 {
-        fill: #dd4e29;
-      }
-
-      .st143 {
-        fill: #93373e;
-      }
-
-      .st18 {
-        fill: #ffc100;
-      }
-
-      .st144 {
-        fill: #d3432f;
-      }
-
-      .st145 {
-        fill: #853222;
-      }
-
       .st146 {
-        fill: #f7b553;
+        fill: #722617;
       }
 
       .st147 {
-        fill: #ea974d;
+        fill: #cb491c;
       }
 
       .st148 {
-        fill: #e75729;
+        fill: #e65523;
       }
 
       .st149 {
-        fill: #e9703e;
+        fill: #de5707;
       }
 
       .st150 {
-        fill: #c0433f;
+        fill: #e66010;
       }
 
       .st151 {
-        fill: #f7792d;
+        fill: #713526;
       }
 
       .st152 {
-        fill: #d5452d;
+        fill: #a03826;
       }
 
       .st153 {
-        clip-path: url(#clippath-43);
+        fill: #702317;
       }
 
       .st154 {
-        fill: #d3442e;
+        fill: #89564c;
       }
 
       .st155 {
-        fill: #cd4331;
+        fill: #d94f23;
+      }
+
+      .st55, .st56, .st57, .st64, .st65, .st74 {
+        font-family: Roboto-Medium, Roboto;
+        font-weight: 500;
+      }
+
+      .st55, .st59 {
+        font-size: 90px;
       }
 
       .st156 {
-        fill: #3a0919;
+        clip-path: url(#clippath-54);
       }
 
       .st157 {
-        fill: #f7812e;
+        fill: #4b0f10;
       }
 
       .st158 {
-        fill: #fda839;
+        fill: #fc6d37;
       }
 
       .st159 {
-        fill: #a73336;
+        fill: #531a11;
       }
 
       .st160 {
-        clip-path: url(#clippath-25);
+        fill: #e96006;
       }
 
       .st161 {
-        fill: #fdf2c5;
+        fill: #ffeb9c;
       }
 
       .st162 {
-        fill: #db5b3c;
+        fill: #6a1509;
       }
 
       .st163 {
-        fill: #da4f33;
+        stroke: #02a312;
       }
 
-      .st164 {
-        clip-path: url(#clippath-27);
+      .st163, .st164, .st165, .st166 {
+        fill: none;
       }
 
-      .st165 {
-        fill: #ce4131;
-      }
-
-      .st166 {
-        fill: #f3cb9a;
+      .st163, .st165, .st166 {
+        stroke-width: 2px;
       }
 
       .st167 {
-        fill: #d4492c;
+        fill: #902b15;
       }
 
       .st168 {
-        fill: #fba139;
+        fill: #97331a;
       }
 
       .st169 {
-        fill: #fdc763;
+        fill: #9e4017;
       }
 
       .st170 {
-        fill: #fca23a;
+        fill: #993e22;
       }
 
       .st171 {
-        fill: #d4442c;
-      }
-
-      .st19 {
-        font-size: 15px;
+        fill: #b93f1f;
       }
 
       .st172 {
-        fill: #f7aa3f;
+        fill: #6c1006;
       }
 
       .st173 {
-        fill: #fec750;
+        fill: #943c16;
       }
 
       .st174 {
-        fill: #fdb743;
+        fill: #9e311f;
       }
 
       .st175 {
-        fill: #963c18;
+        fill: #5e2503;
       }
 
       .st176 {
-        fill: #fdb03a;
+        clip-path: url(#clippath-9);
       }
 
       .st177 {
-        fill: #bf413e;
+        fill: #511911;
       }
 
       .st178 {
-        fill: #d6482f;
+        fill: #751e16;
       }
 
       .st179 {
-        fill: #e4b990;
+        fill: #cb4113;
       }
 
       .st180 {
-        fill: #ea602b;
+        fill: #561c12;
       }
 
       .st181 {
-        fill: #bb4240;
-      }
-
-      .st20 {
-        fill: #ffc017;
-      }
-
-      .st20, .st22 {
-        font-family: Roboto-Light, Roboto;
-        font-weight: 300;
+        fill: #af2f10;
       }
 
       .st182 {
-        fill: #923d1c;
+        clip-path: url(#clippath-10);
       }
 
       .st183 {
-        clip-path: url(#clippath-11);
+        fill: #c24516;
       }
 
       .st184 {
-        fill: #b23638;
+        fill: #76180e;
       }
 
       .st185 {
-        fill: #be4240;
+        fill: #ca421c;
       }
 
       .st186 {
-        fill: #ee9658;
+        fill: #c63e0d;
       }
 
       .st187 {
-        clip-path: url(#clippath-57);
+        fill: #a72e11;
       }
 
       .st188 {
-        fill: #e38654;
+        fill: #c14416;
       }
 
       .st189 {
-        fill: #b8403c;
+        fill: #6c2d24;
       }
 
       .st190 {
-        fill: #f0a154;
+        fill: #d35016;
       }
 
       .st191 {
-        fill: #955850;
+        fill: #d45026;
       }
 
       .st192 {
-        fill: #fdc141;
+        clip-path: url(#clippath-42);
       }
 
       .st193 {
-        fill: #ff2c68;
+        fill: #e76e23;
       }
 
       .st194 {
-        fill: #d04830;
-      }
-
-      .st22 {
-        font-size: 38px;
+        fill: #a93711;
       }
 
       .st195 {
-        fill: #f57d2a;
+        fill: #ba4622;
       }
 
       .st196 {
-        fill: #a9363b;
+        fill: #902118;
       }
 
       .st197 {
-        fill: #c94a40;
+        fill: #d45022;
       }
 
       .st198 {
-        clip-path: url(#clippath-36);
+        fill: #d65920;
       }
 
       .st199 {
-        fill: #9c3032;
+        fill: #c34f1e;
+      }
+
+      .st56 {
+        fill: #ffc100;
+      }
+
+      .st56, .st72, .st74 {
+        font-size: 26px;
       }
 
       .st200 {
-        fill: red;
+        fill: #874912;
       }
 
       .st201 {
-        fill: #c64940;
+        fill: #f6831d;
       }
 
       .st202 {
-        fill: #c94433;
+        fill: #7f1f1a;
       }
 
       .st203 {
-        fill: #0b0701;
+        fill: #f07c11;
       }
 
       .st204 {
-        clip-path: url(#clippath-35);
+        clip-path: url(#clippath-59);
       }
 
       .st205 {
-        clip-path: url(#clippath-48);
+        fill: #e3651a;
       }
 
       .st206 {
-        fill: #ce4630;
+        fill: #dd4f20;
       }
 
-      .st207 {
-        fill: #d6472f;
+      .st207, .st57, .st58, .st68 {
+        fill: #fff;
       }
 
       .st208 {
-        fill: #c05131;
+        fill: #7c2910;
       }
 
       .st209 {
-        clip-path: url(#clippath-28);
+        clip-path: url(#clippath-43);
       }
 
       .st210 {
-        fill: #ad383b;
+        fill: #c84714;
       }
 
       .st211 {
-        fill: #e67a46;
+        fill: #a03412;
       }
 
       .st212 {
-        fill: #fba239;
+        fill: #8e4812;
       }
 
       .st213 {
-        fill: #59171f;
+        clip-path: url(#clippath-25);
       }
 
       .st214 {
-        fill: #ab3536;
+        fill: #f0983b;
       }
 
       .st215 {
-        fill: #542030;
+        fill: #925414;
       }
 
       .st216 {
-        fill: #fcd35a;
+        fill: #ce3d10;
       }
 
       .st217 {
-        fill: #db5932;
+        fill: #b7380d;
       }
 
       .st218 {
-        fill: #f7802c;
+        fill: #b8300d;
       }
 
       .st219 {
-        fill: #d6532f;
+        fill: #d74e1b;
       }
 
       .st220 {
-        fill: #f79e44;
+        fill: #6a3009;
       }
 
       .st221 {
-        fill: #fcb146;
+        fill: #e3591f;
       }
 
       .st222 {
-        clip-path: url(#clippath-1);
+        clip-path: url(#clippath-27);
       }
 
       .st223 {
-        fill: #f5bb4d;
+        fill: #de5f14;
       }
 
       .st224 {
-        clip-path: url(#clippath-56);
+        fill: #d44812;
       }
 
       .st225 {
-        fill: #d44631;
+        fill: #f3cb9a;
       }
 
       .st226 {
-        fill: #93303a;
+        fill: #db5d26;
       }
 
       .st227 {
-        fill: #db5834;
+        fill: #592624;
       }
 
       .st228 {
-        fill: #fdd271;
+        fill: #b9320c;
       }
 
       .st229 {
-        fill: #fdcd69;
+        fill: #6e2d1e;
       }
 
       .st230 {
-        fill: #fcd772;
+        fill: #d45812;
       }
 
       .st231 {
-        fill: #a63731;
+        fill: #c54921;
       }
 
       .st232 {
-        fill: #db4625;
+        fill: #d25416;
       }
 
       .st233 {
-        fill: #da4627;
+        fill: #e75e1c;
       }
 
       .st234 {
-        fill: #87323b;
+        fill: #d36c26;
       }
 
       .st235 {
-        fill: #fcd67b;
+        fill: #c16725;
       }
 
       .st236 {
-        fill: #fb8531;
+        fill: #be421e;
       }
 
       .st237 {
-        fill: #fde592;
+        fill: #f78d2a;
       }
 
       .st238 {
-        fill: #dd5c3b;
+        fill: #e75814;
       }
 
       .st239 {
-        fill: #ff9200;
+        fill: #b0390f;
       }
 
       .st240 {
-        fill: #da4725;
+        fill: #a75735;
       }
 
       .st241 {
-        fill: #fca538;
+        fill: #d25217;
       }
 
       .st242 {
-        fill: #cb4434;
+        fill: #60201c;
       }
 
       .st243 {
-        fill: #fdc94d;
+        fill: #fec750;
       }
 
       .st244 {
-        fill: #fcab39;
+        fill: #b63e17;
       }
 
       .st245 {
-        clip-path: url(#clippath-45);
+        fill: #2b0100;
       }
 
       .st246 {
-        fill: #e37543;
-      }
-
-      .st24 {
-        font-size: 14px;
+        fill: #bb4120;
       }
 
       .st247 {
-        clip-path: url(#clippath-46);
+        clip-path: url(#clippath-60);
       }
 
       .st248 {
-        clip-path: url(#clippath-40);
+        fill: #953b1c;
       }
 
       .st249 {
-        fill: #ce4232;
+        fill: #a2310c;
       }
 
       .st250 {
-        clip-path: url(#clippath-5);
+        fill: #e4b990;
       }
 
       .st251 {
-        fill: #fcc95d;
+        fill: #982e11;
       }
 
       .st252 {
-        clip-path: url(#clippath-20);
+        fill: #c35325;
       }
 
       .st253 {
-        fill: #fdde8b;
+        fill: #853c0f;
       }
 
       .st254 {
-        fill: #d7462e;
+        fill: #b7360f;
       }
 
       .st255 {
-        fill: #e4653b;
+        fill: #a53622;
       }
 
       .st256 {
-        fill: #f9a544;
+        clip-path: url(#clippath-11);
       }
 
       .st257 {
-        clip-path: url(#clippath-8);
+        fill: #b64311;
       }
 
       .st258 {
-        fill: #d3442f;
+        clip-path: url(#clippath-57);
       }
 
       .st259 {
-        fill: #d54a2f;
+        fill: #9a2204;
       }
 
       .st260 {
-        fill: #da4e32;
+        fill: #de5d17;
       }
 
       .st261 {
-        clip-path: url(#clippath-52);
+        fill: #c35232;
       }
 
       .st262 {
-        fill: #652433;
+        fill: #8e5021;
       }
 
       .st263 {
-        fill: #d4553c;
+        fill: #b1401b;
       }
 
       .st264 {
-        fill: #5b2130;
+        fill: #df6019;
       }
 
       .st265 {
-        clip-path: url(#clippath-41);
+        fill: #f6873f;
       }
 
       .st266 {
-        fill: #fca237;
+        fill: #f26511;
       }
 
       .st267 {
-        fill: #ab3436;
+        fill: #ff2c68;
       }
 
       .st268 {
-        fill: #e85e30;
+        fill: #83432e;
+      }
+
+      .st57, .st68 {
+        font-size: 35px;
       }
 
       .st269 {
-        fill: #fba73e;
+        fill: #008db8;
       }
 
       .st270 {
-        fill: #f6b958;
+        fill: #6b2d26;
       }
 
       .st271 {
-        fill: #fcd987;
+        fill: #5f1d12;
+      }
+
+      .st58 {
+        font-size: 38px;
       }
 
       .st272 {
-        fill: #fece4c;
+        fill: #79270c;
       }
 
       .st273 {
-        fill: #bb423f;
+        fill: #962d17;
       }
 
       .st274 {
-        fill: #f4bb5d;
+        fill: #d4641d;
       }
 
       .st275 {
-        fill: #dc1111;
+        fill: #f4a141;
       }
 
       .st276 {
-        fill: #8f2f39;
+        fill: #8e200b;
       }
 
       .st277 {
-        fill: #fda436;
+        fill: #f67330;
       }
 
       .st278 {
-        fill: #6e272f;
+        fill: #551c15;
       }
 
       .st279 {
-        fill: #5f1d37;
+        fill: #832814;
       }
 
       .st280 {
-        fill: #f7dfc5;
-      }
-
-      .st119 {
-        stroke: #ff2a2a;
+        fill: #6b2016;
       }
 
       .st281 {
-        clip-path: url(#clippath-3);
+        fill: #ae381e;
       }
 
       .st282 {
-        fill: #f2c60d;
+        fill: #af3913;
       }
 
       .st283 {
-        fill: #fdc849;
+        fill: #8e3810;
       }
 
       .st284 {
-        fill: #e5c8a7;
+        clip-path: url(#clippath-36);
       }
 
       .st285 {
-        fill: #c14139;
+        fill: #5e1c11;
       }
 
       .st286 {
-        fill: #f8bc50;
+        fill: #3d0a01;
       }
 
       .st287 {
-        fill: #973c18;
-      }
-
-      .st25 {
-        opacity: 1;
-      }
-
-      .st120 {
-        stroke: #006b99;
+        fill: red;
       }
 
       .st288 {
-        clip-path: url(#clippath-26);
+        fill: #521b10;
       }
 
       .st289 {
-        fill: #913025;
+        fill: #f78635;
       }
 
       .st290 {
-        fill: #fda837;
+        fill: #b34b1a;
       }
 
       .st291 {
-        fill: #f59d41;
+        fill: #0b0701;
       }
 
       .st292 {
-        fill: #fdd16e;
+        fill: #79432d;
       }
 
       .st293 {
-        fill: #f9c265;
+        fill: #6d3729;
       }
 
       .st294 {
-        fill: #d54630;
+        fill: #d15b25;
       }
 
       .st295 {
-        fill: #f0be82;
+        fill: #5f1a12;
       }
 
       .st296 {
-        fill: #fda136;
+        fill: #9f3b29;
       }
 
       .st297 {
-        fill: #bf3e3c;
-      }
-
-      .st26 {
-        font-size: 70px;
+        clip-path: url(#clippath-35);
       }
 
       .st298 {
-        clip-path: url(#clippath-12);
+        fill: #d54210;
       }
 
       .st299 {
-        fill: #e25529;
+        fill: #752d21;
       }
 
       .st300 {
-        fill: #c95129;
+        clip-path: url(#clippath-48);
       }
 
       .st301 {
-        fill: #fdbe47;
+        fill: #c3431a;
       }
 
       .st302 {
-        fill: #f7deba;
+        fill: #8f5542;
       }
 
       .st303 {
-        fill: #f9cf63;
+        fill: #7a370f;
       }
 
       .st304 {
-        clip-path: url(#clippath-50);
+        fill: #bc482d;
       }
 
       .st305 {
-        fill: #a6363c;
+        clip-path: url(#clippath-28);
       }
 
       .st306 {
-        fill: #9e4438;
+        fill: #96240e;
       }
 
       .st307 {
-        fill: #f3b65a;
+        fill: #420e05;
       }
 
       .st308 {
-        fill: #e9c10f;
+        fill: #994121;
       }
 
       .st309 {
-        fill: #fde99a;
+        fill: #551d10;
       }
 
       .st310 {
-        fill: #febe47;
+        fill: #8b430d;
       }
 
       .st311 {
-        fill: #b53c3d;
+        fill: #ec9b39;
       }
 
       .st312 {
-        fill: #933039;
+        fill: #c14719;
       }
 
       .st313 {
-        fill: #ec7339;
+        fill: #94260d;
       }
 
       .st314 {
-        fill: #af4140;
+        fill: #f3861f;
       }
 
       .st315 {
-        clip-path: url(#clippath-14);
+        fill: #985439;
       }
 
       .st316 {
-        fill: #d6a15f;
+        fill: #8d3611;
       }
 
       .st317 {
-        fill: #9f3414;
+        fill: #692418;
       }
 
       .st318 {
-        fill: #c24137;
+        fill: #844a2f;
       }
 
       .st319 {
-        fill: #c44939;
+        fill: #962207;
       }
 
       .st320 {
-        fill: #f6d6b3;
+        fill: #ea641f;
       }
 
       .st321 {
-        fill: #e68442;
+        fill: #af3113;
       }
 
       .st322 {
-        fill: #d94528;
+        fill: #bb4220;
       }
 
       .st323 {
-        fill: #d44630;
+        fill: #e4592b;
       }
 
       .st324 {
-        fill: #fc892f;
+        fill: #da5115;
       }
 
       .st325 {
-        fill: #fdbc42;
-      }
-
-      .st27 {
-        fill: #181818;
-        font-size: 28px;
+        fill: #ef8125;
       }
 
       .st326 {
-        fill: #5c1e2f;
+        fill: #7e220f;
       }
 
       .st327 {
-        fill: #f6b946;
+        fill: #e45c1e;
       }
 
       .st328 {
-        fill: #fbe09f;
+        fill: #bb541f;
       }
 
       .st329 {
-        fill: #f7d3a7;
+        fill: #e96a12;
       }
 
       .st330 {
-        opacity: .9;
+        fill: #ef6810;
       }
 
       .st331 {
-        clip-path: url(#clippath-30);
+        fill: #973b13;
       }
 
       .st332 {
-        clip-path: url(#clippath-19);
+        fill: #581510;
       }
 
       .st333 {
-        fill: #e99252;
+        fill: #87410c;
       }
 
       .st334 {
-        fill: #d7482d;
+        clip-path: url(#clippath-1);
       }
 
       .st335 {
-        fill: #dc4826;
+        clip-path: url(#clippath-56);
       }
 
       .st336 {
-        fill: #fcf3c5;
+        fill: #532013;
       }
 
       .st337 {
-        fill: #661f2f;
+        fill: #965c3d;
       }
 
       .st338 {
-        fill: #da8438;
+        fill: #e06722;
       }
 
       .st339 {
-        fill: #feead4;
+        fill: #5e1d13;
       }
 
       .st340 {
-        fill: #fcdf6e;
+        fill: #904b15;
       }
 
       .st341 {
-        fill: #a13438;
+        fill: #562011;
       }
 
       .st342 {
-        fill: #9e3c2b;
-      }
-
-      .st28 {
-        font-size: 14px;
+        fill: #973312;
       }
 
       .st343 {
-        fill: #f8dbb7;
+        fill: #d34f18;
       }
 
       .st344 {
-        fill: #fad26f;
+        fill: #4f1a01;
       }
 
       .st345 {
-        fill: #feb53a;
+        fill: #782810;
       }
 
       .st346 {
-        fill: #010000;
+        fill: #a94832;
       }
 
       .st347 {
-        fill: #e05830;
+        fill: #db5a2b;
       }
 
-      .st348 {
-        fill: #e26030;
-      }
-
-      .st29 {
-        font-size: 14px;
-      }
-
-      .st349 {
-        fill: #943038;
-      }
-
-      .st350 {
-        fill: #f8c072;
-      }
-
-      .st351 {
-        fill: #fdaa37;
-      }
-
-      .st352 {
-        fill: #fdaf3c;
-      }
-
-      .st353 {
-        clip-path: url(#clippath-32);
-      }
-
-      .st354 {
-        fill: #d6533b;
-      }
-
-      .st355 {
-        fill: #e65a2f;
-      }
-
-      .st356 {
-        fill: #a4393a;
-      }
-
-      .st357 {
-        fill: #d74b2f;
-      }
-
-      .st358 {
-        fill: #fefdfc;
-      }
-
-      .st359 {
-        fill: #7e2d3b;
-      }
-
-      .st360 {
-        fill: #d5462f;
-      }
-
-      .st361 {
-        fill: #fcabab;
-      }
-
-      /* .st362 {
-        display: block;
-      } */
-
-      .st363 {
-        fill: #531c2d;
-      }
-
-      .st364 {
-        fill: #d3583a;
-      }
-
-      .st365 {
-        clip-path: url(#clippath-55);
-      }
-
-      .st366 {
-        fill: #f8842d;
-      }
-
-      .st367 {
-        fill: #bf403b;
-      }
-
-      .st368 {
-        fill: #e68649;
-      }
-
-      .st369 {
-        fill: #872c36;
-      }
-
-      .st370 {
-        fill: #fda637;
-      }
-
-      .st371 {
-        fill: #d95838;
-      }
-
-      .st372 {
-        fill: #d6533a;
-      }
-
-      .st373 {
-        fill: #d8472c;
-      }
-
-      .st374 {
-        fill: #f6812e;
-      }
-
-      .st375 {
-        fill: #541d2d;
-      }
-
-      .st376 {
-        fill: #f2b64a;
-      }
-
-      .st30 {
-        font-family: SegoeUI-Semibold, 'Segoe UI';
-      }
-
-      .st377 {
-        fill: #fec000;
-      }
-
-      .st378 {
-        fill: #f7802d;
-      }
-
-      .st379 {
-        fill: #df532d;
-      }
-
-      .st380 {
-        fill: #e3904e;
-      }
-
-      .st381 {
-        fill: #ef672a;
-      }
-
-      .st382 {
-        fill: #b43e41;
-      }
-
-      .st383 {
-        clip-path: url(#clippath-53);
-      }
-
-      .st384 {
-        fill: #fdc148;
-      }
-
-      .st385 {
-        fill: #faab3c;
-      }
-
-      .st386 {
-        fill: #f5c77d;
-      }
-
-      .st387 {
-        fill: #f8a93e;
-      }
-
-      .st388 {
-        clip-path: url(#clippath-39);
-      }
-
-      .st389 {
-        fill: #f4943e;
-      }
-
-      .st31 {
-        font-size: 14px;
-      }
-
-      .st32 {
-        fill: #821736;
-        opacity: .6;
-      }
-
-      .st390 {
-        fill: #571f2b;
-      }
-
-      .st391 {
-        fill: #824937;
-      }
-
-      .st33 {
-        font-size: 15px;
-      }
-
-      .st392 {
-        fill: #fccd68;
-      }
-
-      .st393 {
-        fill: #fdba40;
-      }
-
-      .st394 {
-        fill: #cd6442;
-      }
-
-      .st395 {
-        fill: #fadb6d;
-      }
-
-      .st396 {
-        fill: #de4c29;
-      }
-
-      .st397 {
-        opacity: .8;
-      }
-
-      .st398 {
-        fill: #f8812d;
-      }
-
-      .st399 {
-        fill: #f6d5a7;
-      }
-
-      .st400 {
-        fill: #e4572c;
-      }
-
-      .st401 {
-        fill: #fca442;
-      }
-
-      .st402 {
-        fill: #fed04a;
-      }
-
-      .st403 {
-        fill: #fc9534;
-      }
-
-      .st404 {
-        fill: #d85731;
-      }
-
-      .st405 {
-        fill: #f6c066;
-      }
-
-      .st406 {
-        fill: #fda537;
-      }
-
-      .st407 {
-        clip-path: url(#clippath-16);
-      }
-
-      .st408 {
-        fill: #d2452f;
-      }
-
-      .st409 {
-        fill: #b63934;
-      }
-
-      .st34 {
-        font-size: 15px;
-      }
-
-      .st410 {
-        fill: #d64b36;
-      }
-
-      .st411 {
-        fill: #a3363a;
-      }
-
-      .st412 {
-        clip-path: url(#clippath-2);
-      }
-
-      .st413 {
-        fill: #f4b24e;
-      }
-
-      .st414 {
-        fill: #a53436;
-      }
-
-      .st415 {
-        fill: #fc8b31;
-      }
-
-      .st416 {
-        fill: #903c1a;
-      }
-
-      .st417 {
-        fill: #9f3726;
-      }
-
-      .st418 {
-        fill: #f8ce70;
-      }
-
-      .st419 {
-        clip-path: url(#clippath-29);
-      }
-
-      .st420 {
-        fill: #fca937;
-      }
-
-      .st421 {
-        fill: #bf413b;
-      }
-
-      .st422 {
-        fill: #e67e3d;
-      }
-
-      .st423 {
-        fill: #e6a147;
-      }
-
-      .st424 {
-        fill: #e25029;
-      }
-
-      .st425 {
-        fill: #8d3440;
-      }
-
-      .st426 {
-        fill: #fda236;
-      }
-
-      .st427 {
-        fill: #d0513f;
-      }
-
-      .st428 {
-        fill: #b93b38;
-      }
-
-      .st429 {
-        fill: #e3bb99;
-      }
-
-      .st430 {
-        clip-path: url(#clippath-49);
-      }
-
-      .st431 {
-        clip-path: url(#clippath-37);
-      }
-
-      .st432 {
-        fill: #5a2535;
-      }
-
-      .st433 {
-        fill: #fa812d;
-      }
-
-      .st434 {
-        fill: #fbdf6a;
-      }
-
-      .st35 {
+      .st59 {
         font-family: Roboto-Bold, Roboto;
         font-weight: 700;
       }
 
-      .st36 {
+      .st348 {
+        fill: #e04d0c;
+      }
+
+      .st349 {
+        fill: #b44014;
+      }
+
+      .st350 {
+        fill: #bf471e;
+      }
+
+      .st351 {
+        fill: #7c2312;
+      }
+
+      .st352 {
+        fill: #ff9200;
+      }
+
+      .st353 {
+        fill: #64180f;
+      }
+
+      .st354 {
+        fill: #76130c;
+      }
+
+      .st355 {
+        fill: #c4480f;
+      }
+
+      .st356 {
+        fill: #683425;
+      }
+
+      .st357 {
+        fill: #aa2d09;
+      }
+
+      .st358 {
+        fill: #f15c0a;
+      }
+
+      .st359 {
+        fill: #aa3717;
+      }
+
+      .st360 {
+        fill: #e45b11;
+      }
+
+      .st361 {
+        fill: #5e311e;
+      }
+
+      .st362 {
+        fill: #ee5d10;
+      }
+
+      .st363 {
+        clip-path: url(#clippath-45);
+      }
+
+      .st364 {
+        fill: #5e2603;
+      }
+
+      .st365 {
+        fill: #763509;
+      }
+
+      .st366 {
+        fill: #d3621f;
+      }
+
+      .st367 {
+        clip-path: url(#clippath-46);
+      }
+
+      .st368 {
+        fill: #ba411c;
+      }
+
+      .st369 {
+        fill: #c6481f;
+      }
+
+      .st370 {
+        fill: #581e14;
+      }
+
+      .st371 {
+        clip-path: url(#clippath-40);
+      }
+
+      .st372 {
+        fill: #621f16;
+      }
+
+      .st373 {
+        fill: #df5829;
+      }
+
+      .st374 {
+        fill: #6f3025;
+      }
+
+      .st375 {
+        fill: #f0b055;
+      }
+
+      .st376 {
+        fill: #ca4a13;
+      }
+
+      .st377 {
+        fill: #561a13;
+      }
+
+      .st378 {
+        fill: #cf4a1a;
+      }
+
+      .st379 {
+        fill: #a13927;
+      }
+
+      .st380 {
+        fill: #59190e;
+      }
+
+      .st381 {
+        clip-path: url(#clippath-5);
+      }
+
+      .st382 {
+        fill: #560b06;
+      }
+
+      .st383 {
+        clip-path: url(#clippath-20);
+      }
+
+      .st61 {
         font-size: 14px;
       }
 
+      .st384 {
+        fill: #be4a13;
+      }
+
+      .st385 {
+        fill: #eead51;
+      }
+
+      .st386 {
+        fill: #b5421b;
+      }
+
+      .st387 {
+        fill: #a26542;
+      }
+
+      .st388 {
+        clip-path: url(#clippath-8);
+      }
+
+      .st389 {
+        fill: #e05f1a;
+      }
+
+      .st390 {
+        fill: #6b2f27;
+      }
+
+      .st391 {
+        fill: #a2330c;
+      }
+
+      .st392 {
+        fill: #5e1a0f;
+      }
+
+      .st393 {
+        fill: #471710;
+      }
+
+      .st394 {
+        fill: #f48841;
+      }
+
+      .st395 {
+        fill: #783a0a;
+      }
+
+      .st396 {
+        fill: #85221c;
+      }
+
+      .st397 {
+        fill: #761609;
+      }
+
+      .st398 {
+        fill: #bb3f0e;
+      }
+
+      .st399 {
+        clip-path: url(#clippath-52);
+      }
+
+      .st400 {
+        fill: #dd5a1d;
+      }
+
+      .st401 {
+        fill: #992000;
+      }
+
+      .st402 {
+        fill: #3e1003;
+      }
+
+      .st403 {
+        fill: #73230a;
+      }
+
+      .st404 {
+        fill: #cf4111;
+      }
+
+      .st405 {
+        clip-path: url(#clippath-41);
+      }
+
+      .st406 {
+        fill: #ec5e1f;
+      }
+
+      .st407 {
+        fill: #833e0e;
+      }
+
+      .st408 {
+        fill: #9a5b18;
+      }
+
+      .st409 {
+        fill: #b24521;
+      }
+
+      .st410 {
+        fill: #b63712;
+      }
+
+      .st411 {
+        fill: #dd5e29;
+      }
+
+      .st412 {
+        fill: #a43c2a;
+      }
+
+      .st413 {
+        fill: #f39e39;
+      }
+
+      .st414 {
+        fill: #78180d;
+      }
+
+      .st415 {
+        fill: #8c2c14;
+      }
+
+      .st416 {
+        fill: #dc1111;
+      }
+
+      .st417 {
+        fill: #77350d;
+      }
+
+      .st418 {
+        fill: #b7330d;
+      }
+
+      .st419 {
+        fill: #551c02;
+      }
+
+      .st420 {
+        fill: #eb6425;
+      }
+
+      .st421 {
+        fill: #e98e29;
+      }
+
+      .st422 {
+        fill: #602014;
+      }
+
+      .st423 {
+        fill: #f7dfc5;
+      }
+
+      .st165 {
+        stroke: #ff2a2a;
+      }
+
+      .st424 {
+        clip-path: url(#clippath-3);
+      }
+
+      .st425 {
+        fill: #f2c60d;
+      }
+
+      .st426 {
+        fill: #c65023;
+      }
+
+      .st427 {
+        fill: #c33709;
+      }
+
+      .st428 {
+        fill: #72160d;
+      }
+
+      .st429 {
+        fill: #e5c8a7;
+      }
+
+      .st430 {
+        fill: #581d11;
+      }
+
+      .st431 {
+        fill: #832b11;
+      }
+
+      .st432 {
+        fill: #d55e2a;
+      }
+
+      .st433 {
+        fill: #a93118;
+      }
+
+      .st434 {
+        fill: #c84c1c;
+      }
+
       .st435 {
-        fill: #f9cc5b;
+        fill: #f28817;
       }
 
       .st436 {
-        clip-path: url(#clippath-13);
+        fill: #6a140d;
       }
 
       .st437 {
-        fill: #c3ecfd;
+        fill: #4d1f1a;
       }
 
       .st438 {
-        fill: #fd9832;
+        fill: #a35412;
       }
 
-      .st439 {
-        fill: #ad3b3a;
+      .st62 {
+        opacity: 1;
       }
 
-      .st440 {
-        fill: #c94026;
-      }
-
-      .st441 {
-        fill: #fdcf73;
-      }
-
-      .st442 {
-        fill: #fdbc3f;
-      }
-
-      .st443 {
-        fill: #601d32;
-      }
-
-      .st444 {
-        fill: #f5cb98;
-      }
-
-      .st445 {
-        fill: #511b30;
-      }
-
-      .st446 {
-        fill: #b03b3e;
-      }
-
-      .st447 {
-        fill: #df984c;
-      }
-
-      .st448 {
-        fill: #f48c41;
-      }
-
-      .st449 {
-        fill: #f79e34;
-      }
-
-      .st450 {
-        fill: #ffc28c;
-      }
-
-      .st451 {
-        clip-path: url(#clippath-24);
-      }
-
-      .st452 {
-        fill: #f8852c;
-      }
-
-      .st453 {
-        fill: #fcb645;
-      }
-
-      .st37 {
+      .st63 {
         font-size: 15px;
       }
 
+      .st166 {
+        stroke: #006b99;
+      }
+
+      .st439 {
+        clip-path: url(#clippath-26);
+      }
+
+      .st440 {
+        fill: #763f29;
+      }
+
+      .st441 {
+        fill: #a3340d;
+      }
+
+      .st442 {
+        fill: #9e4d27;
+      }
+
+      .st443 {
+        fill: #e88c3a;
+      }
+
+      .st444 {
+        fill: #5d1310;
+      }
+
+      .st445 {
+        fill: #894713;
+      }
+
+      .st446 {
+        fill: #c24926;
+      }
+
+      .st447 {
+        fill: #f0be82;
+      }
+
+      .st448 {
+        fill: #8b2f0f;
+      }
+
+      .st449 {
+        fill: #854213;
+      }
+
+      .st450 {
+        fill: #e2580b;
+      }
+
+      .st451 {
+        fill: #a3321d;
+      }
+
+      .st452 {
+        fill: #6b2216;
+      }
+
+      .st453 {
+        fill: #cb3f13;
+      }
+
       .st454 {
-        fill: #d5452e;
+        fill: #873625;
       }
 
       .st455 {
-        fill: #d77740;
+        fill: #9b2306;
       }
 
       .st456 {
-        fill: #fbba6d;
+        clip-path: url(#clippath-12);
       }
 
       .st457 {
-        clip-path: url(#clippath);
+        fill: #b53910;
       }
 
       .st458 {
-        fill: #ed9648;
+        fill: #b74120;
       }
 
       .st459 {
-        fill: #e16038;
+        fill: #e0540d;
       }
 
       .st460 {
-        fill: #fbca65;
+        fill: #f7deba;
       }
 
       .st461 {
-        fill: #f3eae9;
+        fill: #d0551d;
       }
 
       .st462 {
-        fill: #b03b3c;
+        clip-path: url(#clippath-50);
       }
 
       .st463 {
-        fill: #fcd178;
+        fill: #8e523e;
       }
 
       .st464 {
-        fill: #f58a38;
+        fill: #c84c19;
       }
 
       .st465 {
-        fill: #feb93d;
-      }
-
-      .st38 {
-        fill: #4cff00;
+        fill: #d6562d;
       }
 
       .st466 {
-        fill: #7d2f25;
+        fill: #cc491c;
+      }
+
+      .st64 {
+        font-size: 70px;
       }
 
       .st467 {
-        fill: #fdf6b3;
+        fill: #cf4d12;
       }
 
       .st468 {
-        fill: #fdf1bb;
+        fill: #e9c10f;
       }
 
       .st469 {
-        fill: #fcd452;
+        fill: #f5fdc3;
       }
 
       .st470 {
-        fill: #511c2d;
+        fill: #e6631a;
       }
 
       .st471 {
-        fill: #f69b54;
+        fill: #70150d;
       }
 
       .st472 {
-        fill: #5f2725;
+        clip-path: url(#clippath-14);
       }
 
       .st473 {
-        fill: #993424;
+        fill: #d6a15f;
       }
 
       .st474 {
-        fill: #d75f40;
+        fill: #9a310e;
       }
 
       .st475 {
-        clip-path: url(#clippath-44);
+        fill: #c1421d;
       }
 
       .st476 {
-        fill: #b43c3c;
+        fill: #b13411;
       }
 
       .st477 {
-        fill: #fa8f36;
+        fill: #ce4c1b;
       }
 
       .st478 {
-        fill: #571e31;
+        fill: #ae4729;
       }
 
       .st479 {
-        fill: #895059;
+        fill: #a52e12;
       }
 
       .st480 {
-        fill: #fecf4e;
+        fill: #6d2216;
       }
 
       .st481 {
-        fill: #da583a;
+        fill: #c03f0f;
       }
 
       .st482 {
-        fill: #6a212e;
+        fill: #f6d6b3;
       }
 
       .st483 {
-        fill: #d4452e;
+        fill: #972e1e;
       }
 
       .st484 {
-        fill: #d24725;
+        fill: #892916;
       }
 
       .st485 {
-        fill: #d34331;
+        fill: #7a2716;
       }
 
       .st486 {
-        fill: #fdd177;
+        fill: #d25d22;
       }
 
       .st487 {
-        fill: #fdf2c6;
+        fill: #5b1f11;
       }
 
       .st488 {
-        fill: #da4825;
+        fill: #fd632f;
       }
 
       .st489 {
-        fill: #5e1f32;
+        fill: #d95110;
+      }
+
+      .st65 {
+        fill: #181818;
+        font-size: 28px;
+      }
+
+      .st490 {
+        fill: #e56d2c;
+      }
+
+      .st491 {
+        fill: #c4491b;
+      }
+
+      .st492 {
+        fill: #4d1a12;
+      }
+
+      .st493 {
+        fill: #e5531d;
+      }
+
+      .st494 {
+        fill: #d25529;
+      }
+
+      .st495 {
+        fill: #b8401f;
+      }
+
+      .st496 {
+        fill: #98291c;
+      }
+
+      .st497 {
+        fill: #78360d;
+      }
+
+      .st498 {
+        fill: #8a4310;
+      }
+
+      .st499 {
+        fill: #d25a23;
+      }
+
+      .st500 {
+        fill: #f7d3a7;
+      }
+
+      .st501 {
+        clip-path: url(#clippath-30);
+      }
+
+      .st502 {
+        fill: #954320;
+      }
+
+      .st503 {
+        fill: #611d0b;
+      }
+
+      .st504 {
+        fill: #ac4729;
+      }
+
+      .st505 {
+        clip-path: url(#clippath-19);
+      }
+
+      .st506 {
+        fill: #912812;
+      }
+
+      .st507 {
+        fill: #6b1c17;
+      }
+
+      .st508 {
+        fill: #e76713;
+      }
+
+      .st509 {
+        fill: #d3520d;
+      }
+
+      .st66 {
+        font-size: 14px;
+      }
+
+      .st510 {
+        fill: #fb602e;
+      }
+
+      .st511 {
+        fill: #a3371b;
+      }
+
+      .st512 {
+        opacity: .8;
+      }
+
+      .st513 {
+        fill: #da8438;
+      }
+
+      .st514 {
+        fill: #feead4;
+      }
+
+      .st515 {
+        fill: #ed681e;
+      }
+
+      .st516 {
+        fill: #8f331c;
+      }
+
+      .st517 {
+        fill: #932318;
+      }
+
+      .st518 {
+        fill: #561f15;
+      }
+
+      .st519 {
+        fill: #c8481b;
+      }
+
+      .st520 {
+        fill: #b65820;
+      }
+
+      .st521 {
+        fill: #ce4b0d;
+      }
+
+      .st522 {
+        fill: #5c1f16;
+      }
+
+      .st523 {
+        fill: #d13e11;
+      }
+
+      .st524 {
+        opacity: .9;
+      }
+
+      .st525 {
+        fill: #f8dbb7;
+      }
+
+      .st526 {
+        fill: #e1682d;
+      }
+
+      .st527 {
+        fill: #d95919;
+      }
+
+      .st528 {
+        fill: #a6421b;
+      }
+
+      .st529 {
+        fill: #010000;
+      }
+
+      .st530 {
+        fill: #e0692d;
+      }
+
+      .st531 {
+        fill: #a62e11;
+      }
+
+      .st532 {
+        fill: #832b13;
+      }
+
+      .st533 {
+        fill: #c13f13;
+      }
+
+      .st67 {
+        font-size: 14px;
+      }
+
+      .st534 {
+        fill: #51170c;
+      }
+
+      .st535 {
+        fill: #7d2811;
+      }
+
+      .st536 {
+        fill: #bd3e14;
+      }
+
+      .st537 {
+        fill: #be451d;
+      }
+
+      .st538 {
+        fill: #cf592a;
+      }
+
+      .st539 {
+        fill: #ed5e11;
+      }
+
+      .st540 {
+        fill: #a63c1f;
+      }
+
+      .st541 {
+        fill: #9c3622;
+      }
+
+      .st542 {
+        fill: #e75c1d;
+      }
+
+      .st543 {
+        fill: #d74e13;
+      }
+
+      .st544 {
+        fill: #83492e;
+      }
+
+      .st545 {
+        fill: #682f1c;
+      }
+
+      .st546 {
+        fill: #efa539;
+      }
+
+      .st547 {
+        fill: #a43018;
+      }
+
+      .st548 {
+        fill: #efa84d;
+      }
+
+      .st549 {
+        clip-path: url(#clippath-32);
+      }
+
+      .st550 {
+        fill: #cb5119;
+      }
+
+      .st551 {
+        fill: #7d1a11;
+      }
+
+      .st552 {
+        fill: #bc4312;
+      }
+
+      .st553 {
+        fill: #a12a0e;
+      }
+
+      .st554 {
+        fill: #e96103;
+      }
+
+      .st555 {
+        fill: #c4481f;
+      }
+
+      .st556 {
+        fill: #fefdfc;
+      }
+
+      .st557 {
+        fill: #c66a2c;
+      }
+
+      .st558 {
+        fill: #731d1b;
+      }
+
+      .st559 {
+        fill: #d15a25;
+      }
+
+      .st560 {
+        fill: #d34f12;
+      }
+
+      .st561 {
+        fill: #b24211;
+      }
+
+      .st562 {
+        fill: #522014;
+      }
+
+      .st563 {
+        fill: #fcabab;
+      }
+
+      .st564 {
+        display: block;
+      }
+
+      .st565 {
+        fill: #bc492e;
+      }
+
+      .st566 {
+        fill: #5a1c11;
+      }
+
+      .st567 {
+        fill: #581b0e;
+      }
+
+      .st568 {
+        fill: #ab4519;
+      }
+
+      .st569 {
+        fill: #b94023;
+      }
+
+      .st570 {
+        clip-path: url(#clippath-55);
+      }
+
+      .st571 {
+        fill: #e8681f;
+      }
+
+      .st572 {
+        fill: #933d1d;
+      }
+
+      .st573 {
+        fill: #a5290b;
+      }
+
+      .st574 {
+        fill: #ce420c;
+      }
+
+      .st575 {
+        fill: #c94611;
+      }
+
+      .st576 {
+        fill: #0a2066;
+      }
+
+      .st577 {
+        fill: #962507;
+      }
+
+      .st578 {
+        fill: #a16753;
+      }
+
+      .st579 {
+        fill: #9b4315;
+      }
+
+      .st580 {
+        fill: #a03721;
+      }
+
+      .st581 {
+        fill: #bf410f;
+      }
+
+      .st582 {
+        fill: #5a0d0a;
+      }
+
+      .st583 {
+        fill: #b3310e;
+      }
+
+      .st584 {
+        fill: #681915;
+      }
+
+      .st585 {
+        fill: #cd4a28;
+      }
+
+      .st586 {
+        fill: #f68d24;
+      }
+
+      .st587 {
+        fill: #dc601f;
+      }
+
+      .st588 {
+        fill: #a7331d;
+      }
+
+      .st589 {
+        fill: #f35a2a;
+      }
+
+      .st590 {
+        fill: #e17b2a;
+      }
+
+      .st591 {
+        fill: #5f1513;
+      }
+
+      .st592 {
+        fill: #b03521;
+      }
+
+      .st68 {
+        font-family: SegoeUI-Semibold, 'Segoe UI';
+      }
+
+      .st593 {
+        fill: #fec000;
+      }
+
+      .st594 {
+        fill: #862c14;
+      }
+
+      .st595 {
+        fill: #d7531b;
+      }
+
+      .st596 {
+        fill: #db5423;
+      }
+
+      .st597 {
+        fill: #531c02;
+      }
+
+      .st598 {
+        fill: #a02f14;
+      }
+
+      .st599 {
+        fill: #df6117;
+      }
+
+      .st600 {
+        fill: #791e19;
+      }
+
+      .st601 {
+        clip-path: url(#clippath-53);
+      }
+
+      .st602 {
+        fill: #e58935;
+      }
+
+      .st603 {
+        fill: #441610;
+      }
+
+      .st604 {
+        fill: #9a2105;
+      }
+
+      .st605 {
+        fill: #6d230a;
+      }
+
+      .st606 {
+        fill: #cf5725;
+      }
+
+      .st607 {
+        fill: #8b1f15;
+      }
+
+      .st608 {
+        clip-path: url(#clippath-39);
+      }
+
+      .st609 {
+        fill: #f4943e;
+      }
+
+      .st610 {
+        fill: #932f1c;
+      }
+
+      .st611 {
+        fill: #dc6022;
+      }
+
+      .st69 {
+        font-size: 14px;
+      }
+
+      .st612 {
+        fill: #824937;
+      }
+
+      .st613 {
+        fill: #571914;
+      }
+
+      .st614 {
+        fill: #c54320;
+      }
+
+      .st615 {
+        fill: #9c2703;
+      }
+
+      .st70 {
+        font-size: 15px;
+      }
+
+      .st616 {
+        fill: #571e15;
+      }
+
+      .st617 {
+        fill: #c55933;
+      }
+
+      .st618 {
+        fill: #b04428;
+      }
+
+      .st619 {
+        fill: #c34118;
+      }
+
+      .st620 {
+        fill: #f47c53;
+      }
+
+      .st621 {
+        fill: #541e1c;
+      }
+
+      .st622 {
+        fill: #581d16;
+      }
+
+      .st623 {
+        fill: #c2440e;
+      }
+
+      .st624 {
+        fill: #f6d5a7;
+      }
+
+      .st625 {
+        fill: #b25124;
+      }
+
+      .st71 {
+        font-size: 15px;
+      }
+
+      .st72 {
+        fill: #6b2300;
+        font-family: Roboto-Regular, Roboto;
+      }
+
+      .st626 {
+        fill: #b33311;
+      }
+
+      .st627 {
+        fill: #eb994c;
+      }
+
+      .st628 {
+        fill: #864110;
+      }
+
+      .st629 {
+        fill: #9f3312;
+      }
+
+      .st630 {
+        fill: #c84b0c;
+      }
+
+      .st631 {
+        fill: #b53712;
+      }
+
+      .st632 {
+        fill: #79360d;
+      }
+
+      .st633 {
+        fill: #d5551b;
+      }
+
+      .st634 {
+        fill: #552004;
+      }
+
+      .st635 {
+        fill: #e96b2c;
+      }
+
+      .st636 {
+        fill: #8a420f;
+      }
+
+      .st637 {
+        fill: #ac501b;
+      }
+
+      .st638 {
+        fill: #95551a;
+      }
+
+      .st639 {
+        fill: #c76b28;
+      }
+
+      .st640 {
+        clip-path: url(#clippath-16);
+      }
+
+      .st641 {
+        fill: #ed6816;
+      }
+
+      .st642 {
+        fill: #733222;
+      }
+
+      .st643 {
+        fill: #da5819;
+      }
+
+      .st644 {
+        fill: #842b0b;
+      }
+
+      .st645 {
+        fill: #f58218;
+      }
+
+      .st646 {
+        fill: #c4430e;
+      }
+
+      .st73 {
+        font-size: 15px;
+      }
+
+      .st647 {
+        fill: #741b13;
+      }
+
+      .st648 {
+        clip-path: url(#clippath-2);
+      }
+
+      .st649 {
+        fill: #541f1d;
+      }
+
+      .st650 {
+        fill: #994020;
+      }
+
+      .st651 {
+        fill: #9d4121;
+      }
+
+      .st652 {
+        fill: #eb6511;
+      }
+
+      .st653 {
+        fill: #922615;
+      }
+
+      .st654 {
+        fill: #dd552a;
+      }
+
+      .st655 {
+        fill: #781f1b;
+      }
+
+      .st656 {
+        fill: #f4be54;
+      }
+
+      .st657 {
+        fill: #bb3f13;
+      }
+
+      .st658 {
+        fill: #5d1e15;
+      }
+
+      .st659 {
+        fill: #f42631;
+      }
+
+      .st660 {
+        fill: #75402b;
+      }
+
+      .st661 {
+        clip-path: url(#clippath-29);
+      }
+
+      .st662 {
+        fill: #db4a14;
+      }
+
+      .st663 {
+        fill: #761706;
+      }
+
+      .st664 {
+        fill: #b43e24;
+      }
+
+      .st665 {
+        fill: #e06422;
+      }
+
+      .st666 {
+        fill: #b9401d;
+      }
+
+      .st667 {
+        fill: #b0551b;
+      }
+
+      .st668 {
+        fill: #e06d22;
+      }
+
+      .st669 {
+        fill: #ee6b19;
+      }
+
+      .st670 {
+        fill: #e3bb99;
+      }
+
+      .st671 {
+        fill: #af442e;
+      }
+
+      .st672 {
+        fill: #e96413;
+      }
+
+      .st673 {
+        clip-path: url(#clippath-49);
+      }
+
+      .st674 {
+        fill: #df581b;
+      }
+
+      .st675 {
+        fill: #ec6723;
+      }
+
+      .st676 {
+        fill: #982c10;
+      }
+
+      .st677 {
+        fill: #e2642e;
+      }
+
+      .st678 {
+        clip-path: url(#clippath-37);
+      }
+
+      .st679 {
+        fill: #c5440e;
+      }
+
+      .st680 {
+        fill: #9c2a17;
+      }
+
+      .st681 {
+        fill: #b03b0d;
+      }
+
+      .st682 {
+        fill: #a73d1c;
+      }
+
+      .st683 {
+        fill: #863f0d;
+      }
+
+      .st684 {
+        clip-path: url(#clippath-58);
+      }
+
+      .st685 {
+        fill: #7a1f16;
+      }
+
+      .st686 {
+        fill: #671b14;
+      }
+
+      .st687 {
+        clip-path: url(#clippath-13);
+      }
+
+      .st688 {
+        fill: #d85515;
+      }
+
+      .st689 {
+        fill: #d55726;
+      }
+
+      .st690 {
+        fill: #b93304;
+      }
+
+      .st691 {
+        fill: #e24c0b;
+      }
+
+      .st692 {
+        fill: #eb7828;
+      }
+
+      .st693 {
+        fill: #8a2d11;
+      }
+
+      .st694 {
+        fill: #90420c;
+      }
+
+      .st695 {
+        fill: #631613;
+      }
+
+      .st696 {
+        fill: #972614;
+      }
+
+      .st697 {
+        fill: #de6b22;
+      }
+
+      .st698 {
+        fill: #a13013;
+      }
+
+      .st699 {
+        fill: #5a2203;
+      }
+
+      .st700 {
+        fill: #e2540f;
+      }
+
+      .st701 {
+        fill: #ad2c10;
+      }
+
+      .st702 {
+        fill: #631715;
+      }
+
+      .st703 {
+        fill: #f5cb98;
+      }
+
+      .st704 {
+        fill: #9c4415;
+      }
+
+      .st705 {
+        fill: #e8620a;
+      }
+
+      .st706 {
+        fill: #a6471b;
+      }
+
+      .st707 {
+        fill: #b34229;
+      }
+
+      .st708 {
+        fill: #501a0f;
+      }
+
+      .st709 {
+        fill: #e35912;
+      }
+
+      .st710 {
+        fill: #50190f;
+      }
+
+      .st711 {
+        fill: #922c19;
+      }
+
+      .st712 {
+        fill: #db4e07;
+      }
+
+      .st713 {
+        fill: #ffc28c;
+      }
+
+      .st714 {
+        fill: #c44412;
+      }
+
+      .st715 {
+        fill: #d54b13;
+      }
+
+      .st716 {
+        clip-path: url(#clippath-24);
+      }
+
+      .st717 {
+        fill: #a63e1e;
+      }
+
+      .st718 {
+        fill: #8e2514;
+      }
+
+      .st719 {
+        fill: #d03e0d;
+      }
+
+      .st720 {
+        fill: #e1591e;
+      }
+
+      .st721 {
+        fill: #f47120;
+      }
+
+      .st722 {
+        fill: #c64c26;
+      }
+
+      .st723 {
+        fill: #bd3716;
+      }
+
+      .st724 {
+        fill: #91e5ff;
+      }
+
+      .st725 {
+        fill: #af3112;
+      }
+
+      .st726 {
+        clip-path: url(#clippath);
+      }
+
+      .st727 {
+        fill: #481401;
+      }
+
+      .st728 {
+        fill: #aa3611;
+      }
+
+      .st729 {
+        fill: #dd4d19;
+      }
+
+      .st730 {
+        fill: #581d10;
+      }
+
+      .st731 {
+        fill: #f16512;
+      }
+
+      .st732 {
+        fill: #f3eae9;
+      }
+
+      .st733 {
+        fill: #e56a2e;
+      }
+
+      .st734 {
+        fill: #571912;
+      }
+
+      .st735 {
+        fill: #d6571b;
+      }
+
+      .st736 {
+        fill: #b36228;
+      }
+
+      .st74 {
+        fill: #4cff00;
+      }
+
+      .st737 {
+        fill: #5a2403;
+      }
+
+      .st738 {
+        fill: #da551e;
+      }
+
+      .st739 {
+        fill: #8c251d;
+      }
+
+      .st740 {
+        fill: #bb3505;
+      }
+
+      .st741 {
+        fill: #74412c;
+      }
+
+      .st742 {
+        fill: #4e0e05;
+      }
+
+      .st743 {
+        fill: #a1280b;
+      }
+
+      .st744 {
+        fill: #873312;
+      }
+
+      .st745 {
+        fill: #aa380c;
+      }
+
+      .st746 {
+        fill: #9a3726;
+      }
+
+      .st747 {
+        fill: #5a1b12;
+      }
+
+      .st748 {
+        fill: #461100;
+      }
+
+      .st749 {
+        clip-path: url(#clippath-44);
+      }
+
+      .st75 {
+        font-size: 14px;
+      }
+
+      .st750 {
+        fill: #2a0200;
+      }
+
+      .st751 {
+        fill: #651c11;
+      }
+
+      .st752 {
+        fill: #e06122;
+      }
+
+      .st753 {
+        fill: #f67e22;
+      }
+
+      .st754 {
+        fill: #ef6717;
+      }
+
+      .st755 {
+        fill: #a13917;
+      }
+
+      .st756 {
+        fill: #b6491c;
+      }
+
+      .st757 {
+        fill: #f7901a;
+      }
+
+      .st758 {
+        fill: #b33b11;
+      }
+
+      .st759 {
+        fill: #5f1c10;
+      }
+
+      .st760 {
+        fill: #953b17;
+      }
+
+      .st761 {
+        fill: #642f24;
       }

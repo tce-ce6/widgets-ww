@@ -1,138 +1,137 @@
 const QS = [
   {
     "stoneNo": 1,
-    "q": "A devout Shiva-worshipping king lets a foreign ruler build a Buddhist monastery in his busiest port. Why?",
+    "q": "In most ancient dynasties, a prince's name revealed his father's identity. In this kingdom, hearing a prince's name would tell you his mother's name instead. What does this unusual naming tradition reveal about the society?",
     "opts": [
-      "To convert to Buddhism",
-      "Diplomacy over personal belief",
-      "The port needed more temples"
+      "Women held significant status and influence",
+      "Fathers were kept secret for safety",
+      "Mothers chose the heir to the throne"
     ],
-    "ans": 1,
-    "info": "Rajaraja Chola, despite being a Shaivite, permitted a Srivijaya-funded Buddhist vihara at Nagapattinam to strengthen diplomatic ties."
+    "ans": 0,
+    "info": "Gautamiputra Satakarni literally means 'son of Gautami'. His mother Gautami Balashri was powerful enough to donate land and carve royal inscriptions at Nashik."
   },
   {
     "stoneNo": 2,
-    "q": "A navy crosses the Bay of Bengal, captures an enemy capital... then sails home without claiming any land. What was the point?",
+    "q": "A queen whose husband has died performs a grand horse ritual that was traditionally reserved only for the most powerful kings. What does this act tell us about her position in the kingdom?",
     "opts": [
-      "Punish and reopen trade routes",
-      "The invasion failed midway",
-      "Scout territory for later"
+      "She was performing it as a religious obligation",
+      "She wielded real political authority",
+      "The kingdom had no male heirs left"
     ],
-    "ans": 0,
-    "info": "Rajendra Chola's Srivijaya expedition was a punitive campaign, backed by merchant guilds, to reopen the Strait of Malacca for China-bound trade."
+    "ans": 1,
+    "info": "A Satavahana widow queen performed the ashvamedha yajna at the Naneghat caves near Pune — an extraordinary act of royal power for the era."
   },
   {
     "stoneNo": 3,
-    "q": "Private merchants fund an expensive overseas war. What would make businessmen pay for military action?",
+    "q": "Ancient coins found scattered across India — from the western coast of Gujarat all the way to the eastern coast of Andhra Pradesh — all bear the same dynasty's mark. What can historians conclude from this spread?",
     "opts": [
-      "Loyalty to the king",
-      "Hatred of a foreign religion",
-      "A blocked route to China"
+      "Coin collectors carried them across India",
+      "The coins were used as religious offerings",
+      "The kingdom had coast-to-coast trade reach"
     ],
     "ans": 2,
-    "info": "Indian merchant guilds supported the naval campaign because the Srivijaya Empire was blocking their profitable trade route through the Strait of Malacca."
+    "info": "Satavahana coins found from Gujarat to Andhra Pradesh prove their trade networks spanned India's entire width, connecting both coastlines."
   },
   {
     "stoneNo": 4,
-    "q": "After winning battles near the Ganges, a king builds a new city named after that distant river. Why?",
+    "q": "Several ancient coins show a detailed image of a two-masted sailing vessel. No king's face, no religious symbol — just a ship. Why would a ruler choose to put a ship on official currency instead of his own portrait?",
     "opts": [
-      "A permanent victory monument",
-      "Old capital was destroyed",
-      "He wanted to relocate north"
+      "The king personally loved sailing",
+      "Maritime trade defined the kingdom's wealth",
+      "Ships were considered sacred objects"
     ],
-    "ans": 0,
-    "info": "Rajendra Chola built Gangaikondacholapuram as a new capital whose name itself announced his conquest of the northern Gangetic region."
+    "ans": 1,
+    "info": "Ships on Satavahana coins reflect how central maritime trade was to their economy — it was their identity, not just an activity."
   },
   {
     "stoneNo": 5,
-    "q": "Father conquers islands to the south. Son conquers lands to the north and launches ships to the east. What does this pattern reveal?",
+    "q": "A kingdom exports spices, textiles, sandalwood, gold-plated pearls, and ivory. In return, it imports glass and perfumed ointments. What does the nature of these imports tell us about the kingdom's own capabilities?",
     "opts": [
-      "Random luck in battles",
-      "Planned all-direction expansion",
-      "Son fixing father's errors"
+      "They had surplus wealth to spend on luxuries",
+      "They lacked glassmaking and perfume technology",
+      "Glass and perfume were considered sacred"
     ],
     "ans": 1,
-    "info": "Rajaraja expanded southward to the Maldives and Sri Lanka, while Rajendra expanded northward to Bengal and eastward to Srivijaya."
+    "info": "The Satavahanas imported glass and perfumed ointments from the Roman Empire — items they couldn't produce locally but could afford through booming exports."
   },
   {
     "stoneNo": 6,
-    "q": "A massive temple carries two names — one for the god, another for the king. What does the royal name signal?",
+    "q": "A kingdom's agriculture thrives in a fertile river delta, its ports buzz with international trade, and tolls on merchant caravans fill the royal treasury. Yet within a few centuries, it completely falls apart. How is that possible?",
     "opts": [
-      "The king replaced the deity",
-      "It was the king's house",
-      "King's power equals divine power"
+      "Trade profits attracted constant invasions from rival kingdoms",
+      "Weak central control meant no one held the regions together",
+      "Over-dependence on trade collapsed when Roman demand dropped"
     ],
-    "ans": 2,
-    "info": "The Brihadishvara temple at Thanjavur was also called Rajarajeshvaram, linking Rajaraja Chola's identity directly to divine authority."
+    "ans": 1,
+    "info": "The Satavahana Empire had every economic advantage — fertile rivers, booming ports, Roman trade. However, it fragmented in the 3rd century CE because weak central control left no one to hold the regions together."
   },
   {
     "stoneNo": 7,
-    "q": "An empire holds a foreign island for fifty years. A local king fights back and reclaims it. What lesson?",
+    "q": "Cave inscriptions near Pune record a queen's generous donations given to priests, guests, workers, scholars, and monks of different faiths. What does this diversity of recipients reveal?",
     "opts": [
-      "Distant conquests don't last",
-      "Islands can never be taken",
-      "Fifty years weakens armies"
+      "The kingdom supported multiple belief systems",
+      "The queen was trying to buy political alliances",
+      "Only wealthy people received royal donations"
     ],
     "ans": 0,
-    "info": "Sri Lankan king Vijayabahu I successfully drove the Cholas out of northern Sri Lanka after approximately half a century of occupation."
+    "info": "The Naneghat cave inscriptions show a Satavahana queen donating to Vedic scholars, Jain monks, and Buddhist monks equally — true multi-faith patronage."
   },
   {
     "stoneNo": 8,
-    "q": "An empire builds roads, wells, canals — while fighting three rivals for decades. What happens eventually?",
+    "q": "A dynasty follows one particular deity devotedly, yet its kings regularly grant tax-free farmland to monks and scholars of completely different religions. Why would devout rulers fund rival belief systems?",
     "opts": [
-      "Empire becomes unbeatable",
-      "Treasury drains despite growth",
-      "Rivals surrender first"
+      "Keeping religious groups dependent on royal land grants ensured their loyalty",
+      "Supporting all faiths prevented religious conflicts that could destabilise the kingdom",
+      "Land given to monks was infertile, so it cost the treasury nothing"
     ],
     "ans": 1,
-    "info": "Constant wars with the Western Chalukyas, Pandyas, and Sri Lankan rulers gradually emptied the Chola treasury despite impressive domestic infrastructure."
+    "info": "The Satavahana kings were devout followers of Vasudeva (Krishna), yet they granted tax-free agricultural land to Vedic scholars, Jain monks, and Buddhist monks alike — a deliberate policy of religious inclusion that kept diverse communities peaceful and the kingdom stable."
   },
   {
     "stoneNo": 9,
-    "q": "Sending diplomats to China and defeating the empire blocking the sea route there. What connects both moves?",
+    "q": "Ancient inscriptions written in Brahmi script contain a few number symbols that look strikingly similar to the digits we use in classrooms today. What does this resemblance across two thousand years suggest?",
     "opts": [
-      "Preparing to invade China",
-      "Spreading religion eastward",
-      "Securing trade by all means"
+      "Modern numerals trace their origin to India",
+      "Europeans independently invented the same shapes",
+      "The inscriptions were carved in modern times"
     ],
-    "ans": 2,
-    "info": "Rajendra Chola used both diplomacy and military force to secure access to the lucrative China trade from two different directions simultaneously."
+    "ans": 0,
+    "info": "Numerals found in Satavahana-era Naneghat cave inscriptions are among the earliest evidence that our modern number system originated in India."
   },
   {
     "stoneNo": 10,
-    "q": "An empire that once stretched from the Maldives to Bengal slowly fades and is eventually absorbed by a former rival. What was the primary cause of this decline?",
+    "q": "This kingdom had not one but two famous capital cities at different times — one in the east and another further west. What does maintaining multiple capitals across a vast territory suggest about how they governed?",
     "opts": [
-      "Decades of multi-front wars",
-      "One catastrophic earthquake",
-      "A sudden palace revolution"
+      "Both cities competed to be the real capital",
+      "Power shifted as the empire's focus changed",
+      "The first capital was destroyed by floods"
     ],
-    "ans": 0,
-    "info": "The Chola Empire declined over decades due to treasury-draining conflicts on multiple fronts and was finally absorbed by the Pandyas in the 13th century."
+    "ans": 1,
+    "info": "Amravati and Pratishthana (Paithan) served as Satavahana capitals at different periods, reflecting how the empire's centre of gravity shifted across the Deccan."
   },
   {
     "stoneNo": 11,
-    "q": "Most empires build one great capital and rule from it forever. This empire moved its seat of power three times from Thanjavur to Gangaikondacholapuram to Kanchipuram. Why would a powerful empire keep shifting its capital?",
+    "q": "A powerful queen donates land specifically to Buddhist monks and has a detailed inscription carved at Nashik to record it publicly. Why would a royal go through the trouble of permanently inscribing a donation in stone?",
     "opts": [
-      "The kings could never agree on a location",
-      "Each capital marked a new era of power",
-      "Every capital was destroyed by enemies"
+      "Stone was the only writing material available",
+      "Buddhist monks demanded written proof",
+      "To make the commitment permanent and public"
     ],
-    "ans": 1,
-    "info": "Each capital marked a distinct phase of Chola power — Thanjavur under Rajaraja, Gangaikondacholapuram under Rajendra, and Kanchipuram in later years."
+    "ans": 2,
+    "info": "Gautami Balashri's Nashik inscription wasn't just a record — it was a public declaration of royal authority, religious patronage, and political influence carved to last centuries."
   },
   {
     "stoneNo": 12,
-    "q": "Imagine you find an ancient coin from China in a south Indian port. Does that alone prove two empires were trading partners? Why do historians demand multiple types of evidence before declaring something as fact?",
+    "q": "For centuries, a fertile river system fed the kingdom's agriculture while coastal ports handled international trade. Then the empire's central authority weakened, and everything unravelled. Why would losing central control collapse an otherwise prosperous empire?",
     "opts": [
-      "One source alone can mislead",
-      "Written evidence is always more trustworthy",
-      "Archaeological finds are more impressive than coins"
+      "No one to coordinate regions, collect taxes, or defend borders",
+      "The rivers changed course when the king lost power",
+      "Trade partners refused to deal with a weak ruler"
     ],
     "ans": 0,
-    "info": "Historians use coins, inscriptions, and archaeological finds together because each source alone may be incomplete, and triangulating evidence builds a more reliable picture."
+    "info": "The Satavahana Empire's disintegration in the 3rd century CE shows that economic prosperity without strong governance is like a ship without a rudder — it drifts and breaks apart."
   }
 ];
-
 
 document.addEventListener('DOMContentLoaded', function () {
   var stormButton = document.getElementById('strom-btn');
