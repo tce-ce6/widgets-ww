@@ -21,7 +21,7 @@
       "author": "tce-ashishg"
     },
     "wg167-vyanjan-okhdha": {
-      "updatedAt": "2026-08-17T18:00:33+05:30",
+      "updatedAt": "2026-08-18T15:54:05+05:30",
       "author": "tce-ashishg"
     },
     "wg172-map-your-neighbourhood": {
@@ -62,6 +62,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-08-18T15:54:05+05:30",
+      "author": "tce-ashishg",
+      "message": "wg167 issue resolved",
+      "widgets": [
+        167
+      ]
+    },
     {
       "date": "2026-08-17T18:00:33+05:30",
       "author": "tce-ashishg",
@@ -304,14 +312,6 @@
       "widgets": [
         161,
         179
-      ]
-    },
-    {
-      "date": "2026-07-30T17:09:35+05:30",
-      "author": "tce-nitinc",
-      "message": "added 176",
-      "widgets": [
-        176
       ]
     }
   ]
