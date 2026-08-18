@@ -359,7 +359,7 @@ document.addEventListener("DOMContentLoaded", () => {
       options: [
         { text: "छ", sound: "assets/audio/chha.mp3" },
         { text: "श", sound: "assets/audio/sha.mp3" },
-        { text: "श्र", sound: "assets/audio/shra.mp3" },
+        { text: "च", sound: "assets/audio/cha.mp3" },
         { text: "क्ष", sound: "assets/audio/ksha.mp3" },
       ],
     },
@@ -369,7 +369,7 @@ document.addEventListener("DOMContentLoaded", () => {
       answer: "ज्ञ",
       options: [
         { text: "ज्ञ", sound: "assets/audio/gya.mp3" },
-        { text: "ञ", sound: "assets/audio/nya.mp3" },
+        { text: "झ", sound: "assets/audio/jha.mp3" },
         { text: "ज", sound: "assets/audio/ja.mp3" },
         { text: "च", sound: "assets/audio/cha.mp3" },
       ],
