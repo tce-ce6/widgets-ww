@@ -82,7 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
       letterSound: "jha.mp3",
       answer: "झ",
       options: [
-        { text: "इ", sound: "assets/audio/i.mp3" },
+        { text: "च", sound: "assets/audio/cha.mp3" },
         { text: "छ", sound: "assets/audio/chha.mp3" },
         { text: "ह", sound: "assets/audio/ha.mp3" },
         { text: "झ", sound: "assets/audio/jha.mp3" },
@@ -116,7 +116,7 @@ document.addEventListener("DOMContentLoaded", () => {
       answer: "ड",
       options: [
         { text: "ढ", sound: "assets/audio/ddha.mp3" },
-        { text: "इ", sound: "assets/audio/i.mp3" },
+        { text: "च", sound: "assets/audio/cha.mp3" },
         { text: "ड", sound: "assets/audio/da.mp3" },
         { text: "ठ", sound: "assets/audio/tha.mp3" },
       ],
@@ -337,7 +337,7 @@ document.addEventListener("DOMContentLoaded", () => {
       options: [
         { text: "घ", sound: "assets/audio/gha.mp3" },
         { text: "झ", sound: "assets/audio/jha.mp3" },
-        { text: "इ", sound: "assets/audio/i.mp3" },
+        { text: "भ", sound: "assets/audio/bha.mp3" },
         { text: "ह", sound: "assets/audio/ha.mp3" },
       ],
     },
