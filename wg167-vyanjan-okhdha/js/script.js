@@ -45,17 +45,6 @@ document.addEventListener("DOMContentLoaded", () => {
       ],
     },
     {
-      letter: "ङ",
-      letterSound: "daa.mp3",
-      answer: "ङ",
-      options: [
-        { text: "ड़", sound: "assets/audio/dda.mp3" },
-        { text: "इ", sound: "assets/audio/i.mp3" },
-        { text: "ड", sound: "assets/audio/da.mp3" },
-        { text: "ङ", sound: "assets/audio/daa.mp3" },
-      ],
-    },
-    {
       letter: "च",
       letterSound: "cha.mp3",
       answer: "च",
@@ -63,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
         { text: "च", sound: "assets/audio/cha.mp3" },
         { text: "ज", sound: "assets/audio/ja.mp3" },
         { text: "न", sound: "assets/audio/na2.mp3" },
-        { text: "ञ", sound: "assets/audio/nya.mp3" },
+        { text: "छ", sound: "assets/audio/chha.mp3" },
       ],
     },
     {
@@ -83,7 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
       answer: "ज",
       options: [
         { text: "ज्ञ", sound: "assets/audio/gya.mp3" },
-        { text: "ञ", sound: "assets/audio/nya.mp3" },
+        { text: "झ", sound: "assets/audio/jha.mp3" },
         { text: "ज", sound: "assets/audio/ja.mp3" },
         { text: "च", sound: "assets/audio/cha.mp3" },
       ],
@@ -100,24 +89,13 @@ document.addEventListener("DOMContentLoaded", () => {
       ],
     },
     {
-      letter: "ञ",
-      letterSound: "nya.mp3",
-      answer: "ञ",
-      options: [
-        { text: "ज", sound: "assets/audio/ja.mp3" },
-        { text: "न", sound: "assets/audio/na2.mp3" },
-        { text: "ञ", sound: "assets/audio/nya.mp3" },
-        { text: "ज्ञ", sound: "assets/audio/gya.mp3" },
-      ],
-    },
-    {
       letter: "ट",
       letterSound: "ta.mp3",
       answer: "ट",
       options: [
         { text: "ठ", sound: "assets/audio/tha.mp3" },
         { text: "ढ", sound: "assets/audio/ddha.mp3" },
-        { text: "ढ़", sound: "assets/audio/ddha2.mp3" },
+        { text: "ड", sound: "assets/audio/da.mp3" },
         { text: "ट", sound: "assets/audio/ta.mp3" },
       ],
     },
@@ -128,7 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
       options: [
         { text: "ठ", sound: "assets/audio/tha.mp3" },
         { text: "ढ", sound: "assets/audio/ddha.mp3" },
-        { text: "ढ़", sound: "assets/audio/ddha2.mp3" },
+        { text: "क", sound: "assets/audio/ka.mp3" },
         { text: "ट", sound: "assets/audio/ta.mp3" },
       ],
     },
@@ -137,10 +115,10 @@ document.addEventListener("DOMContentLoaded", () => {
       letterSound: "da.mp3",
       answer: "ड",
       options: [
-        { text: "ड़", sound: "assets/audio/dda.mp3" },
+        { text: "ढ", sound: "assets/audio/ddha.mp3" },
         { text: "इ", sound: "assets/audio/i.mp3" },
         { text: "ड", sound: "assets/audio/da.mp3" },
-        { text: "ङ", sound: "assets/audio/daa.mp3" },
+        { text: "ठ", sound: "assets/audio/tha.mp3" },
       ],
     },
     {
@@ -150,7 +128,7 @@ document.addEventListener("DOMContentLoaded", () => {
       options: [
         { text: "ठ", sound: "assets/audio/tha.mp3" },
         { text: "ढ", sound: "assets/audio/ddha.mp3" },
-        { text: "ढ़", sound: "assets/audio/ddha2.mp3" },
+        { text: "ड", sound: "assets/audio/da.mp3" },
         { text: "ट", sound: "assets/audio/ta.mp3" },
       ],
     },
@@ -163,28 +141,6 @@ document.addEventListener("DOMContentLoaded", () => {
         { text: "ण", sound: "assets/audio/na.mp3" },
         { text: "ग", sound: "assets/audio/ga.mp3" },
         { text: "म", sound: "assets/audio/ma.mp3" },
-      ],
-    },
-    {
-      letter: "ड़",
-      letterSound: "dda.mp3",
-      answer: "ड़",
-      options: [
-        { text: "ड़", sound: "assets/audio/dda.mp3" },
-        { text: "इ", sound: "assets/audio/i.mp3" },
-        { text: "ड", sound: "assets/audio/da.mp3" },
-        { text: "ङ", sound: "assets/audio/daa.mp3" },
-      ],
-    },
-    {
-      letter: "ढ़",
-      letterSound: "ddha2.mp3",
-      answer: "ढ़",
-      options: [
-        { text: "ठ", sound: "assets/audio/tha.mp3" },
-        { text: "ढ", sound: "assets/audio/ddha.mp3" },
-        { text: "ढ़", sound: "assets/audio/ddha2.mp3" },
-        { text: "ट", sound: "assets/audio/ta.mp3" },
       ],
     },
     {
@@ -216,7 +172,7 @@ document.addEventListener("DOMContentLoaded", () => {
       options: [
         { text: "ट", sound: "assets/audio/ta.mp3" },
         { text: "ढ", sound: "assets/audio/ddha.mp3" },
-        { text: "ढ़", sound: "assets/audio/ddha2.mp3" },
+        { text: "ड", sound: "assets/audio/da.mp3" },
         { text: "द", sound: "assets/audio/da2.mp3" },
       ],
     },
@@ -316,7 +272,7 @@ document.addEventListener("DOMContentLoaded", () => {
         { text: "ख", sound: "assets/audio/kha.mp3" },
         { text: "स", sound: "assets/audio/sa.mp3" },
         { text: "र", sound: "assets/audio/ra.mp3" },
-        { text: "ड़", sound: "assets/audio/dda.mp3" },
+        { text: "ठ", sound: "assets/audio/tha.mp3" },
       ],
     },
     {
@@ -326,7 +282,7 @@ document.addEventListener("DOMContentLoaded", () => {
       options: [
         { text: "न", sound: "assets/audio/na2.mp3" },
         { text: "ल", sound: "assets/audio/la.mp3" },
-        { text: "त", sound: "assets/audio/ta2.mp3" },
+        { text: "ळ", sound: "assets/audio/adha.mp3" },
         { text: "ट", sound: "assets/audio/ta.mp3" },
       ],
     },
@@ -346,7 +302,7 @@ document.addEventListener("DOMContentLoaded", () => {
       letterSound: "sha.mp3",
       answer: "श",
       options: [
-        { text: "र", sound: "assets/audio/ra.mp3" },
+        { text: "ष", sound: "assets/audio/sha2.mp3" },
         { text: "श", sound: "assets/audio/sha.mp3" },
         { text: "स", sound: "assets/audio/sa.mp3" },
         { text: "ख", sound: "assets/audio/kha.mp3" },
@@ -392,7 +348,7 @@ document.addEventListener("DOMContentLoaded", () => {
       options: [
         { text: "घ", sound: "assets/audio/gha.mp3" },
         { text: "झ", sound: "assets/audio/jha.mp3" },
-        { text: "इ", sound: "assets/audio/i.mp3" },
+        { text: "ल", sound: "assets/audio/la.mp3" },
         { text: "ळ", sound: "assets/audio/adha.mp3" },
       ],
     },
@@ -408,17 +364,6 @@ document.addEventListener("DOMContentLoaded", () => {
       ],
     },
     {
-      letter: "त्र",
-      letterSound: "tra.mp3",
-      answer: "त्र",
-      options: [
-        { text: "त", sound: "assets/audio/ta2.mp3" },
-        { text: "र", sound: "assets/audio/ra.mp3" },
-        { text: "श्र", sound: "assets/audio/shra.mp3" },
-        { text: "त्र", sound: "assets/audio/tra.mp3" },
-      ],
-    },
-    {
       letter: "ज्ञ",
       letterSound: "gya.mp3",
       answer: "ज्ञ",
@@ -428,18 +373,7 @@ document.addEventListener("DOMContentLoaded", () => {
         { text: "ज", sound: "assets/audio/ja.mp3" },
         { text: "च", sound: "assets/audio/cha.mp3" },
       ],
-    },
-    {
-      letter: "श्र",
-      letterSound: "shra.mp3",
-      answer: "श्र",
-      options: [
-        { text: "श", sound: "assets/audio/sha.mp3" },
-        { text: "श्र", sound: "assets/audio/shra.mp3" },
-        { text: "क्ष", sound: "assets/audio/ksha.mp3" },
-        { text: "त्र", sound: "assets/audio/tra.mp3" },
-      ],
-    },
+    } 
   ];
 
   const lottieFOs = [

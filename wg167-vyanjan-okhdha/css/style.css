@@ -190,8 +190,8 @@ svg * {
   background-size: 100% 100%;
   background-repeat: no-repeat;
   background-position: center;
-  height: 170px;
-  width: 170px;
+  height: 172px;
+  width: 171px;
   position: absolute;
 }
 
@@ -205,18 +205,20 @@ svg * {
   align-items: center;
   justify-content: center;
   filter: brightness(1);
-  background-color: #fff;
+  /* background-color: #fff; */
 }
 
 /* Correct Answer */
-.option-flower.correct .text-wrap {
+.option-flower.correct {
   border: 7px solid #4CAF50;
+  border-radius: 50%;
   pointer-events: none;
 }
 
 /* Wrong Answer */
-.option-flower.incorrect .text-wrap {
+.option-flower.incorrect {
   border: 7px solid #F44336;
+  border-radius: 50%;
   pointer-events: none;
 }
 
@@ -232,8 +234,8 @@ svg * {
   background-size: 100% 100%;
   background-repeat: no-repeat;
   background-position: center;
-  height: 192px;
-  width: 157px;
+  height: 160px;
+  width: 160px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -241,22 +243,11 @@ svg * {
   font-weight: 700;
   z-index: 1;
   cursor: pointer;
+  border:7px solid transparent;
 }
 
 .flower-bg.option-flower {
   position: relative;
-}
-
-.flower-bg.option-flower::after {
-  content: "";
-  background-image: url("../assets/flower-stem.svg");
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
-  background-position: center;
-  height: 210px;
-  width: 210px;
-  position: absolute;
-  bottom: -198px;
 }
 
 .flower-list.optFlower-list {
