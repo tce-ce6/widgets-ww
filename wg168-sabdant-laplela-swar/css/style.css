@@ -1,0 +1,257 @@
+*:focus,
+*:focus {
+  outline: none !important;
+  /* Removes the standard browser focus ring */
+}
+
+svg * {
+  -webkit-tap-highlight-color: transparent;
+}
+
+#idiom-wrapper body {
+  box-sizing: border-box;
+  outline: none;
+  font-family: "Roboto", sans-serif;
+  font-size: 16px;
+  line-height: 1.2;
+  padding: 0;
+  margin: 0;
+  background-color: #fff !important;
+}
+
+#idiom-wrapper .container {
+  border: none;
+  height: 100vh;
+  width: 100vw;
+  position: relative;
+  user-select: none !important;
+}
+
+#idiom-wrapper ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: -110px;
+
+}
+
+#idiom-wrapper .container::after {
+  content: "";
+  background-image: url("../assets/bg.png");
+  background-color: #000;
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* #idiom-wrapper .mainContainerOuter {
+  background: #60360D !important
+} */
+
+#idiom-wrapper .button-controls {
+  background: 0 0 !important;
+  border: none !important
+}
+
+#idiom-wrapper .d-flex {
+  display: flex
+}
+
+#idiom-wrapper .question {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center
+}
+
+#idiom-wrapper .flexContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  z-index: 1
+}
+
+#idiom-wrapper .flexItem {
+  padding: 8px;
+  transition: box-shadow .3s ease-in-out;
+  display: flex;
+  align-items: center
+}
+
+@media (max-width:768px) {
+  #idiom-wrapper .flexItem {
+    width: 100%;
+    margin: 8px 0
+  }
+}
+
+#idiom-wrapper .btn {
+  display: inline-block;
+  padding: 12px 25px;
+  font-size: 16px;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+  background-color: #1e6bef;
+  color: #fff;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color .3s ease, transform .2s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, .1);
+  margin-right: 10px
+}
+
+#idiom-wrapper .btn:hover {
+  background-color: #3e80f3;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, .15)
+}
+
+#idiom-wrapper .btn-primary:active {
+  background-color: #3e80f3;
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .1)
+}
+
+#idiom-wrapper .btn:focus {
+  outline: 3px solid #1e6bef;
+  outline-offset: 3px
+}
+
+#idiom-wrapper .btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .1)
+}
+
+#idiom-wrapper .btn:disabled {
+  background-color: #ddd;
+  color: #999;
+  cursor: not-allowed;
+  box-shadow: none
+}
+
+#idiom-wrapper .wdgetTitle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  left: 0;
+  top: 0;
+  z-index: 3;
+}
+
+#idiom-wrapper .wdgetTitle h2 {
+  font-size: 28px;
+  font-weight: 600;
+  text-align: left;
+  padding: 5px 40px;
+  color: #fff;
+  border-radius: 0 0px 20px 20px;
+  background: #674ece;
+  white-space: nowrap;
+}
+
+#idiom-wrapper .versionText {
+  position: absolute;
+  right: 20px;
+  top: 10px !important;
+  font-size: 12px;
+  color: rgb(0 0 0 / 20%);
+}
+
+#idiom-wrapper .svg-container {
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+#idiom-wrapper svg {
+  width: 100% !important;
+  height: 100%;
+}
+
+/* swar ki pehchan style */
+
+.objects {
+  display: flex;
+  gap: 150px;
+}
+
+
+.left-col .main-img {
+  width: 452px;
+  height: 302px;
+  display: block;
+  object-fit: cover;
+}
+
+.card-wrapper {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 50px;
+  row-gap: 0px;
+}
+
+.card-wrapper li {
+  height: 361px;
+  width: 337px;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.card-wrapper li img {
+  height: 361px;
+  width: 331px;
+  transform-origin: center;
+  will-change: transform;
+}
+
+.option-txt {
+  position: absolute;
+  bottom: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 40px;
+  font-weight: 600;
+  z-index: 2;
+}
+
+.sount-icon {
+  height: 70px;
+  width: 70px;
+  margin: 60px auto 40px auto;
+  display: block;
+}
+
+.main-img-wrap {
+  position: relative;
+}
+
+#main-txt {
+  font-size: 110px;
+  position: absolute;
+  bottom: 132px;
+  left: 61%;
+  transform: translateX(-50%);
+  font-weight: 600;
+}
+.lottie-container{
+  position: absolute;
+  top: -130px;
+  z-index: 10;          /* keep above option image on correct click */
+  pointer-events: none; /* don't block option clicks */
+  left: 0;              /* stable horizontal placement for absolute positioning */
+}
