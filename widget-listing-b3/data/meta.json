@@ -21,15 +21,15 @@
       "author": "tce-ashishg"
     },
     "wg166-swar-okhdha": {
-      "updatedAt": "2026-08-21T15:46:35+05:30",
+      "updatedAt": "2026-08-21T18:22:27+05:30",
       "author": "tce-ashishg"
     },
     "wg167-vyanjan-okhdha": {
-      "updatedAt": "2026-08-19T16:14:07+05:30",
+      "updatedAt": "2026-08-21T18:22:27+05:30",
       "author": "tce-ashishg"
     },
     "wg168-sabdant-laplela-swar": {
-      "updatedAt": "2026-08-21T15:32:10+05:30",
+      "updatedAt": "2026-08-21T18:22:27+05:30",
       "author": "tce-ashishg"
     },
     "wg172-map-your-neighbourhood": {
@@ -70,6 +70,16 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-08-21T18:22:27+05:30",
+      "author": "tce-ashishg",
+      "message": "166, 167, 168 issue resolved",
+      "widgets": [
+        166,
+        167,
+        168
+      ]
+    },
     {
       "date": "2026-08-21T16:16:03+05:30",
       "author": "tce-ashishg",
@@ -310,14 +320,6 @@
       "date": "2026-08-02T20:25:24+05:30",
       "author": "tce-nitinc",
       "message": "wg177",
-      "widgets": [
-        177
-      ]
-    },
-    {
-      "date": "2026-08-02T20:21:04+05:30",
-      "author": "tce-nitinc",
-      "message": "wg-177",
       "widgets": [
         177
       ]
