@@ -37,11 +37,11 @@
       "author": "tce-ashishg"
     },
     "wg173-rhyming-words-gujurati": {
-      "updatedAt": "2026-08-12T11:38:13+05:30",
+      "updatedAt": "2026-08-21T16:16:03+05:30",
       "author": "tce-ashishg"
     },
     "wg174-opposite-word-gujrati": {
-      "updatedAt": "2026-08-06T14:56:08+05:30",
+      "updatedAt": "2026-08-21T16:16:03+05:30",
       "author": "tce-ashishg"
     },
     "wg176-vakyansh-se-shabda-tak": {
@@ -65,11 +65,21 @@
       "author": "tce-ashishg"
     },
     "wg193-swar-ki-pahchan-gujrati": {
-      "updatedAt": "2026-08-06T14:56:08+05:30",
+      "updatedAt": "2026-08-21T16:16:03+05:30",
       "author": "tce-ashishg"
     }
   },
   "commits": [
+    {
+      "date": "2026-08-21T16:16:03+05:30",
+      "author": "tce-ashishg",
+      "message": "thumb added",
+      "widgets": [
+        173,
+        174,
+        193
+      ]
+    },
     {
       "date": "2026-08-21T15:46:35+05:30",
       "author": "tce-ashishg",
@@ -310,14 +320,6 @@
       "message": "wg-177",
       "widgets": [
         177
-      ]
-    },
-    {
-      "date": "2026-08-01T23:06:40+05:30",
-      "author": "tce-ashishg",
-      "message": "wg161 issue related to restart btn resolved",
-      "widgets": [
-        161
       ]
     }
   ]
