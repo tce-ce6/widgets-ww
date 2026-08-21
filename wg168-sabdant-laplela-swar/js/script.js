@@ -118,13 +118,13 @@ let soundJson = {
   "ई": "ee.mp3",
   "ओ": "o.mp3",
   "औ": "ou.mp3",
-  "ऋ": "ri.mp3",
+  "ऋ": "ru.mp3",
   "उ": "u.mp3",
-  "अः": "uhh.mp3",
-  "अं": "um.mp3",
+  "अः": "aha.mp3",
+  "अं": "an.mp3",
   "ऊ": "uu.mp3",
-  "अँ": "an.mp3",
-  "आँ": "aw.mp3"
+  "अँ": "aw.mp3",
+  "आँ": "ay.mp3"
 };
 
 let wordSoundJson = {
