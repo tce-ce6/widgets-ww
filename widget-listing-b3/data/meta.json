@@ -21,7 +21,7 @@
       "author": "tce-ashishg"
     },
     "wg166-swar-okhdha": {
-      "updatedAt": "2026-08-18T18:34:13+05:30",
+      "updatedAt": "2026-08-21T15:46:35+05:30",
       "author": "tce-ashishg"
     },
     "wg167-vyanjan-okhdha": {
@@ -70,6 +70,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-08-21T15:46:35+05:30",
+      "author": "tce-ashishg",
+      "message": "wg166 img corrected",
+      "widgets": [
+        166
+      ]
+    },
     {
       "date": "2026-08-21T15:32:10+05:30",
       "author": "tce-ashishg",
@@ -310,15 +318,6 @@
       "message": "wg161 issue related to restart btn resolved",
       "widgets": [
         161
-      ]
-    },
-    {
-      "date": "2026-07-31T17:08:40+05:30",
-      "author": "tce-nitinc",
-      "message": "wg177",
-      "widgets": [
-        176,
-        177
       ]
     }
   ]
