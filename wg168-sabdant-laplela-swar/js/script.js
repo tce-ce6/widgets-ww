@@ -77,37 +77,37 @@ let letterData = {
 }
 
 let imgJson = {
-  "अनार": "anar.svg",
-  "अनानास": "ananas.svg",
+  "अजगर": "ajgar.svg",
+  "अननस": "ananas.svg",
+  "आरसा": "aarasa.svg",
   "आकाश": "akash.svg",
-  "ऐनक": "ainak.svg",
-  "ऐरावत": "airavat.svg",
-  "आलू": "aaloo.svg",
-
-  "अंडा": "anda.svg",
-  "अंजीर": "anjir.svg",
-  "औरत": "aurat.svg",
-  "औषधि": "aushadhi.svg",
-
-  "ईल": "eel.svg",
-  "एक": "Ek.svg",
-  "एकतारा": "ektara.svg",
-
   "इडली": "idli.svg",
-  "ईख": "ikh.svg",
-  "इमली": "imali.svg",
-
-  "ओढ़नी": "odhani.svg",
-  "ओखली": "okhali.svg",
-
+  "इमारत": "imarat.svg",
+  "समई": "samai.svg",
+  "ईडलिंबू": "edlimbu.svg",
+  "उखळ": "ukhad.svg",
+  "उशी": "ushi.svg",
+  "ऊस": "oos.svg",
+  "पाऊस": "paus.svg",
   "ऋषि": "rishi.svg",
   "ऋतु": "rutu.svg",
-
-  "ऊदबिलाव": "uddbilav.svg",
-  "उनचास": "unchas.svg",
-  "ऊन": "unn.svg",
-  "उपहार": "upahar.svg"
-}
+  "एक": "ek.svg",
+  "एडका": "edka.svg",
+  "ऐरण": "airan.svg",
+  "ऐरावत": "airavat.svg",
+  "ओढा": "odha.svg",
+  "ओढणी": "odhani.svg",
+  "औजार": "auzar.svg",
+  "औषध": "aushadh.svg",
+  "अंजीर": "anjir.svg",
+  "अंगठी": "angathi.svg",
+  "स्वतः": "swatha.svg",
+  "पुनः": "punah.svg",
+  "अँट": "ant.svg",
+  "अँनिमल": "animal.svg",
+  "ऑफिस": "office.svg",
+  "ऑईल": "oil.svg"
+};
 
 let soundJson = {
   "अ": "a.mp3",
@@ -122,40 +122,42 @@ let soundJson = {
   "उ": "u.mp3",
   "अः": "uhh.mp3",
   "अं": "um.mp3",
-  "ऊ": "uu.mp3"
+  "ऊ": "uu.mp3",
+  "अँ": "an.mp3",
+  "आँ": "aw.mp3"
 };
 
 let wordSoundJson = {
-  "अनार": "anar.mp3",
-  "अनानास": "ananas.mp3",
-  "आकाश": "akash.mp3",
-  "ऐनक": "ainak.mp3",
-  "ऐरावत": "airavat.mp3",
-  "आलू": "aaloo.mp3",
-
-  "अंडा": "anda.mp3",
-  "अंजीर": "anjir.mp3",
-  "औरत": "aurat.mp3",
-  "औषधि": "aushadhi.mp3",
-
-  "ईल": "eel.mp3",
-  "एक": "ek.mp3",
-  "एकतारा": "ektara.mp3",
-
-  "इडली": "idli.mp3",
-  "ईख": "ikh.mp3",
-  "इमली": "imali.mp3",
-
-  "ओढ़नी": "odhani.mp3",
-  "ओखली": "okhali.mp3",
-
-  "ऋषि": "rishi.mp3",
+  "अजगर": "ajagar.mp3",
+  "अननस": "ananas.mp3",
+  "आरसा": "aarsa.mp3",
+  "आकाश": "aakash.mp3",
+  "इडली": "edali.mp3",
+  "इमारत": "emarat.mp3",
+  "समई": "samai.mp3",
+  "ईडलिंबू": "edlimbu.mp3",
+  "उखळ": "ukhad.mp3",
+  "उशी": "ushi.mp3",
+  "ऊस": "oos.mp3",
+  "पाऊस": "paus.mp3",
+  "ऋषि": "rushi.mp3",
   "ऋतु": "rutu.mp3",
-
-  "ऊदबिलाव": "uddbilav.mp3",
-  "उनचास": "unchas.mp3",
-  "ऊन": "unn.mp3",
-  "उपहार": "uphar.mp3"
+  "एक": "aek.mp3",
+  "एडका": "aedaka.mp3",
+  "ऐरण": "airan.mp3",
+  "ऐरावत": "airavat.mp3",
+  "ओढा": "odha.mp3",
+  "ओढणी": "odhani.mp3",
+  "औजार": "auzar.mp3",
+  "औषध": "aushadh.mp3",
+  "अंजीर": "angeer.mp3",
+  "अंगठी": "angathi.mp3",
+  "स्वतः": "swatha.mp3",
+  "पुनः": "punhaa.mp3",
+  "अँट": "ant.mp3",
+  "अँनिमल": "animal.mp3",
+  "ऑफिस": "office.mp3",
+  "ऑईल": "oil.mp3"
 };
 
 const swarList = Object.keys(letterData); // ["अ","आ","इ",...]

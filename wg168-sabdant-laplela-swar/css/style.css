@@ -241,10 +241,10 @@ svg * {
 }
 
 #main-txt {
-  font-size: 140px;
+  font-size: 110px;
   position: absolute;
   bottom: 132px;
-  left: 56%;
+  left: 61%;
   transform: translateX(-50%);
   font-weight: 600;
 }
