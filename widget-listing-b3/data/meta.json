@@ -29,7 +29,7 @@
       "author": "tce-ashishg"
     },
     "wg168-sabdant-laplela-swar": {
-      "updatedAt": "2026-08-21T18:22:27+05:30",
+      "updatedAt": "2026-08-22T23:18:04+05:30",
       "author": "tce-ashishg"
     },
     "wg172-map-your-neighbourhood": {
@@ -70,6 +70,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-08-22T23:18:04+05:30",
+      "author": "tce-ashishg",
+      "message": "Rename Ek.svg to ek.svg",
+      "widgets": [
+        168
+      ]
+    },
     {
       "date": "2026-08-21T18:22:27+05:30",
       "author": "tce-ashishg",
@@ -314,14 +322,6 @@
       "message": "wg176",
       "widgets": [
         176
-      ]
-    },
-    {
-      "date": "2026-08-02T20:25:24+05:30",
-      "author": "tce-nitinc",
-      "message": "wg177",
-      "widgets": [
-        177
       ]
     }
   ]
