@@ -56,7 +56,7 @@ const ALL_DATA = [
   { word: "पुढे", realWord: "pudhe", opposite: "मागे", oppositeWord: "mage" },
   { word: "जड", realWord: "jad", opposite: "हलका", oppositeWord: "halka" },
   { word: "ओला", realWord: "ola", opposite: "सुका", oppositeWord: "suka" },
-  { word: "जाड", realWord: "jad", opposite: "बारीक", oppositeWord: "barik" },
+  { word: "जाड", realWord: "jaad", opposite: "बारीक", oppositeWord: "barik" },
   { word: "डावा", realWord: "dava", opposite: "उजवा", oppositeWord: "ujava" },
   { word: "मऊ", realWord: "mau", opposite: "कडक", oppositeWord: "kadak" },
   { word: "कमी", realWord: "kami", opposite: "अधिक", oppositeWord: "adhik" },
@@ -239,7 +239,7 @@ function spin() {
   container.on("click", null);
 
   isAnswerVisible = false;
-  showAnsBtn.textContent = "उत्तर देखें";
+  showAnsBtn.textContent = "उत्तर पहा";
   resetLotties();
 
   // Reset previous slice transforms and text styles
@@ -430,7 +430,7 @@ function resetWheel() {
 
   // Reset answer visibility
   isAnswerVisible = false;
-  showAnsBtn.textContent = "उत्तर देखें";
+  showAnsBtn.textContent = "उत्तर पहा";
 
   // Reset lotties
   resetLotties();
@@ -467,14 +467,14 @@ showAnsBtn.addEventListener("click", () => {
     showCorrectAnswer();
     revealAnswerByShowAns();
 
-    showAnsBtn.textContent = "उत्तर छिपाएँ";
+    showAnsBtn.textContent = "उत्तर लपवा";
     isAnswerVisible = true;
   } else {
     // HIDE answers
     resetLotties();
     clearImgBoxResults(); // ✅ REMOVE wrong/correct classes
 
-    showAnsBtn.textContent = "उत्तर देखें";
+    showAnsBtn.textContent = "उत्तर पहा";
     isAnswerVisible = false;
   }
 });
