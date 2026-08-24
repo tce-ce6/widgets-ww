@@ -64,15 +64,15 @@ let letterData = {
     "distractors": ["ऊस", "अँट"],
     "question": "‘अः’ हा ध्वनी असलेले शब्द ओळखा."
   },
-  "अँ": {
-    "answers": ["अँट", "अँनिमल"],
+  "ॲ": {
+    "answers": ["ॲन्ट", "ॲनिमल"],
     "distractors": ["ऑरका", "ऑलिव"],
-    "question": "‘अँ’ हा ध्वनी असलेले शब्द ओळखा."
+    "question": "‘ॲ’ हा ध्वनी असलेले शब्द ओळखा."
   },
-  "आँ": {
+  "ऑ": {
     "answers": ["ऑफिस", "ऑईल"],
-    "distractors": ["अँकर", "अँपल"],
-    "question": "‘आँ’ हा ध्वनी असलेले शब्द ओळखा."
+    "distractors": ["ॲन्कर", "ॲप्पल"],
+    "question": "‘ऑ’ हा ध्वनी असलेले शब्द ओळखा."
   }
 }
 
@@ -103,8 +103,8 @@ let imgJson = {
   "अंगठी": "angathi.svg",
   "स्वतः": "swatha.svg",
   "पुनः": "punah.svg",
-  "अँट": "ant.svg",
-  "अँनिमल": "animal.svg",
+  "ॲन्ट": "ant.svg",
+  "ॲनिमल": "animal.svg",
   "ऑफिस": "office.svg",
   "ऑईल": "oil.svg"
 };
@@ -123,8 +123,8 @@ let soundJson = {
   "अः": "aha.mp3",
   "अं": "an.mp3",
   "ऊ": "uu.mp3",
-  "अँ": "ay.mp3",
-  "आँ": "aw.mp3"
+  "ॲ": "ay.mp3",
+  "ऑ": "aw.mp3"
 };
 
 let wordSoundJson = {
@@ -154,8 +154,8 @@ let wordSoundJson = {
   "अंगठी": "angathi.mp3",
   "स्वतः": "swatha.mp3",
   "पुनः": "punhaa.mp3",
-  "अँट": "ant.mp3",
-  "अँनिमल": "animal.mp3",
+  "ॲन्ट": "ant.mp3",
+  "ॲनिमल": "animal.mp3",
   "ऑफिस": "office.mp3",
   "ऑईल": "oil.mp3"
 };
