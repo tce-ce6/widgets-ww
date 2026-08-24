@@ -220,6 +220,7 @@ document.addEventListener('DOMContentLoaded', function () {
       var id = stoneNo + '-block';
       var block = document.getElementById(id);
       if (!block) return;
+      block.classList.add('is-selected');
       var pos = originalPositions[id] || {};
       var orig = pos.originalFilter || '';
       if (!orig) return;
@@ -238,6 +239,7 @@ document.addEventListener('DOMContentLoaded', function () {
       var id = stoneNo + '-block';
       var block = document.getElementById(id);
       if (!block) return;
+      block.classList.remove('is-selected');
       try { block.removeAttribute('filter'); } catch (e) {}
       block.style.filter = 'none';
     } catch (e) {}
@@ -681,6 +683,7 @@ document.addEventListener('DOMContentLoaded', function () {
       homeButton.style.pointerEvents = '';
     }
     document.querySelectorAll('[id$="-block"]').forEach(function (block) {
+      block.classList.remove('is-selected');
       block.classList.remove('is-disabled');
       block.style.cursor = 'pointer';
       block.style.pointerEvents = '';

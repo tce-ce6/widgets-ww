@@ -254,6 +254,10 @@ svg * {
   opacity: 0.45;
 }
 
+#chola-blocks .is-selected {
+  filter: url("#redBorder") !important;
+}
+
 #number-blocks {
   transform-box: fill-box;
   transform-origin: center;

@@ -219,6 +219,7 @@ document.addEventListener('DOMContentLoaded', function () {
       var id = stoneNo + '-block';
       var block = document.getElementById(id);
       if (!block) return;
+      block.classList.add('is-selected');
       var pos = originalPositions[id] || {};
       var orig = pos.originalFilter || '';
       if (!orig) return;
@@ -237,6 +238,7 @@ document.addEventListener('DOMContentLoaded', function () {
       var id = stoneNo + '-block';
       var block = document.getElementById(id);
       if (!block) return;
+      block.classList.remove('is-selected');
       try { block.removeAttribute('filter'); } catch (e) {}
       block.style.filter = 'none';
     } catch (e) {}
@@ -550,29 +552,6 @@ document.addEventListener('DOMContentLoaded', function () {
       if (summaryTimer) {
         clearTimeout(summaryTimer);
       }
-      // if all answers are correct, play star lottie
-      // if (correctAnswers === totalQuestions) {
-      //   try {
-      //     if (starLottieFO) starLottieFO.style.display = 'block';
-      //     if (starAnim) {
-      //       try { starAnim.destroy(); } catch (e) {}
-      //       starAnim = null;
-      //     }
-      //     if (typeof lottie !== 'undefined' && starLottieContainer) {
-      //       starAnim = lottie.loadAnimation({
-      //         container: starLottieContainer,
-      //         renderer: 'svg',
-      //         loop: false,
-      //         autoplay: true,
-      //         path: 'assets/json/stars.json'
-      //       });
-      //     }
-      //   } catch (e) {
-      //     // ignore lottie errors
-      //   }
-      // } else {
-      //   if (starLottieFO) starLottieFO.style.display = 'none';
-      // }
       // hide block text labels at end of game before summary
       hideAllBlockText();
       summaryTimer = setTimeout(function () {
@@ -680,6 +659,7 @@ document.addEventListener('DOMContentLoaded', function () {
       homeButton.style.pointerEvents = '';
     }
     document.querySelectorAll('[id$="-block"]').forEach(function (block) {
+      block.classList.remove('is-selected');
       block.classList.remove('is-disabled');
       block.style.cursor = 'pointer';
       block.style.pointerEvents = '';
