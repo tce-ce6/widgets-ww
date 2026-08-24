@@ -223,6 +223,7 @@ svg * {
     overflow-wrap: anywhere;
     word-break: normal;
     height: 100%;
+    line-height: .99;
   }
 .feedback-msg{
   text-align: center;
@@ -252,6 +253,10 @@ svg * {
 
 #chola-blocks .is-disabled {
   opacity: 0.45;
+}
+
+#chola-blocks .is-selected {
+  filter: url("#redBorder") !important;
 }
 
 #number-blocks {

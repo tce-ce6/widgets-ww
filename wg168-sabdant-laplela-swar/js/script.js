@@ -123,8 +123,8 @@ let soundJson = {
   "अः": "aha.mp3",
   "अं": "an.mp3",
   "ऊ": "uu.mp3",
-  "अँ": "aw.mp3",
-  "आँ": "ay.mp3"
+  "अँ": "ay.mp3",
+  "आँ": "aw.mp3"
 };
 
 let wordSoundJson = {
@@ -228,7 +228,7 @@ document.addEventListener('DOMContentLoaded', function () {
   homeBtn.addEventListener('click', () => {
     homePage.style.display = 'block';
     gamePage.style.display = 'none';
-    showAnswerbtn.textContent = "उत्तर देखें";
+    showAnswerbtn.textContent = "उत्तर पहा";
     showAnswer = false;
     resetOptions();
   });
@@ -262,7 +262,7 @@ function resetOptions() {
 function loadSwar(selectedLetter) {
   gamePage.style.display = 'block';
   homePage.style.display = 'none';
-  showAnswerbtn.textContent = "उत्तर देखें";
+  showAnswerbtn.textContent = "उत्तर पहा";
   showAnswer = false;
 
   letter = selectedLetter;
@@ -468,7 +468,7 @@ function toggleAnswer() {
     }
   });
   // 🔥 Optional: change button text
-  showAnswerbtn.textContent = showAnswer ? "उत्तर हटाएँ" : "उत्तर देखें";
+  showAnswerbtn.textContent = showAnswer ? "उत्तर लपवा" : "उत्तर पहा";
 }
 
 uttarDekheBtn.addEventListener("click", toggleAnswer);
