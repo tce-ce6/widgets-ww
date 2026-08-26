@@ -46,6 +46,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const togglePanel = document.getElementById('toggle-panel');
   const ribiscoBubble = document.getElementById('ribisco-bubble');
   const mainBubblePage = document.getElementById('main-bubble-page');
+  const instructionInitial = document.getElementById('i_text_01');
+  const instructionAfterSelection = document.getElementById('i_text_02');
+  const instructionAfterAnimation = document.getElementById('i_text_03');
   const moleculeGroups = [...document.querySelectorAll('.o2-bubble, .co2-bubble')];
   const initialMoleculeStyles = moleculeGroups.map((group) => ({
     group,
@@ -61,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let moleculeMotionStart = 0;
   let settled = false;
 
-  if (!insights || !insightsButton || !closeButton || !startButton || !resetButton || !togglePanel || !ribiscoBubble || !mainBubblePage || toggleButtons.some((button) => !button)) return;
+  if (!insights || !insightsButton || !closeButton || !startButton || !resetButton || !togglePanel || !ribiscoBubble || !mainBubblePage || !instructionInitial || !instructionAfterSelection || !instructionAfterAnimation || toggleButtons.some((button) => !button)) return;
 
 	insights.style.display = 'none';
   if (lottieForeignObject) lottieForeignObject.style.display = 'none';
@@ -81,6 +84,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     activeAnimation.addEventListener('complete', () => {
       resetButton.style.pointerEvents = 'auto';
+      setButtonState(startButton, true);
+      instructionAfterAnimation.style.display = 'block';
     });
   };
 
@@ -141,6 +146,9 @@ document.addEventListener('DOMContentLoaded', () => {
     selectedGas = null;
     settled = false;
     mainBubblePage.style.display = 'block';
+    instructionInitial.style.display = 'block';
+    instructionAfterSelection.style.display = 'none';
+    instructionAfterAnimation.style.display = 'none';
     setButtonState(startButton, false);
     setButtonState(resetButton, false);
     togglePanel.style.opacity = '1';
@@ -180,6 +188,9 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     attachSelectedMolecule();
     ribiscoBubble.style.display = 'block';
+    instructionInitial.style.display = 'none';
+    instructionAfterSelection.style.display = 'block';
+    instructionAfterAnimation.style.display = 'none';
     setButtonState(startButton, true);
   };
 
@@ -198,9 +209,12 @@ document.addEventListener('DOMContentLoaded', () => {
   startButton.addEventListener('click', () => {
     if (!settled || !selectedGas) return;
     mainBubblePage.style.display = 'none';
-    setButtonState(startButton, false);
+    instructionInitial.style.display = 'none';
+    instructionAfterSelection.style.display = 'none';
+    instructionAfterAnimation.style.display = 'block';
     playAnimation(selectedGas === 'o2-bubble' ? './lottie/photorespiration.json' : './lottie/calvin-cycle.json');
     setButtonState(resetButton, true);
+    setButtonState(startButton, true);
   });
 
   togglePanel.addEventListener('click', (event) => {
