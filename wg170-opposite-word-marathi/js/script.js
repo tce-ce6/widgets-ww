@@ -217,7 +217,7 @@ function moveSelectedSliceText(index) {
     .selectAll(".slice-text")
     .transition()
     .duration(300)
-    .style("font-size", (_, i) => (i === index ? "60px" : "50px"))
+    .style("font-size", (_, i) => (i === index ? "52px" : "50px"))
     .attr("transform", function (_, i) {
       const base = d3.select(this).attr("data-base-transform");
       return i === index ? `${base} translate(-35,10)` : base;
@@ -374,7 +374,7 @@ function initWheel() {
       d.angle = (d.startAngle + d.endAngle) / 2;
 
       return `rotate(${(d.angle * 180) / Math.PI - 90}) translate(${
-        d.outerRadius - 50
+        d.outerRadius - 30
       }, 15)`;
     })
     .attr("transform", function () {
