@@ -25,7 +25,7 @@
       "author": "tce-ashishg"
     },
     "wg167-vyanjan-okhdha": {
-      "updatedAt": "2026-08-21T18:22:27+05:30",
+      "updatedAt": "2026-08-26T17:47:39+05:30",
       "author": "tce-ashishg"
     },
     "wg168-sabdant-laplela-swar": {
@@ -33,7 +33,7 @@
       "author": "tce-ashishg"
     },
     "wg170-opposite-word-marathi": {
-      "updatedAt": "2026-08-23T22:22:09+05:30",
+      "updatedAt": "2026-08-26T17:47:39+05:30",
       "author": "tce-ashishg"
     },
     "wg172-map-your-neighbourhood": {
@@ -49,7 +49,7 @@
       "author": "tce-ashishg"
     },
     "wg175-calvin-cycle-or-photorespiration": {
-      "updatedAt": "2026-08-23T22:45:40+05:30",
+      "updatedAt": "2026-08-26T18:14:44+05:30",
       "author": "tce-ashishg"
     },
     "wg176-vakyansh-se-shabda-tak": {
@@ -78,6 +78,32 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-08-26T18:14:44+05:30",
+      "author": "tce-ashishg",
+      "message": "wg175 completed",
+      "widgets": [
+        175
+      ]
+    },
+    {
+      "date": "2026-08-26T17:47:39+05:30",
+      "author": "tce-ashishg",
+      "message": "wg175 completed",
+      "widgets": [
+        167,
+        170,
+        175
+      ]
+    },
+    {
+      "date": "2026-08-25T19:10:05+05:30",
+      "author": "tce-ashishg",
+      "message": "wg175 structuring done",
+      "widgets": [
+        175
+      ]
+    },
     {
       "date": "2026-08-24T16:41:13+05:30",
       "author": "tce-ashishg",
@@ -307,30 +333,6 @@
       "message": "wg162 images updated",
       "widgets": [
         162
-      ]
-    },
-    {
-      "date": "2026-08-04T17:23:40+05:30",
-      "author": "tce-ashishg",
-      "message": "wg162 images updated",
-      "widgets": [
-        162
-      ]
-    },
-    {
-      "date": "2026-08-04T15:15:05+05:30",
-      "author": "tce-ashishg",
-      "message": "wg176 audio updated",
-      "widgets": [
-        176
-      ]
-    },
-    {
-      "date": "2026-08-04T14:31:21+05:30",
-      "author": "tce-nitinc",
-      "message": "wg176 fixes",
-      "widgets": [
-        176
       ]
     }
   ]
