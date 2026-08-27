@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 381.23 248.95">
+  <!-- Generator: Adobe Illustrator 30.7.0, SVG Export Plug-In . SVG Version: 2.1.4 Build 114)  -->
+  <defs>
+    <style>
+      .st0 {
+        opacity: .23;
+      }
+
+      .st1 {
+        fill: none;
+      }
+
+      .st2 {
+        clip-path: url(#clippath-1);
+      }
+
+      .st3, .st4 {
+        isolation: isolate;
+      }
+
+      .st5 {
+        fill: #fff;
+        stroke: #577c9b;
+      }
+
+      .st4 {
+        fill: #010101;
+        font-family: Roboto-Bold, Roboto;
+        font-size: 30px;
+        font-weight: 700;
+      }
+
+      .st6 {
+        clip-path: url(#clippath);
+      }
+
+      .st7 {
+        fill: #244e73;
+      }
+    </style>
+    <clipPath id="clippath">
+      <rect class="st1" x="5.94" y="4.39" width="373.23" height="244.56"/>
+    </clipPath>
+    <clipPath id="clippath-1">
+      <rect class="st1" x="15.54" y="10.79" width="369.64" height="244.16"/>
+    </clipPath>
+  </defs>
+  <g id="Group_270">
+    <g id="Group_268" class="st0">
+      <g class="st6">
+        <g id="Group_266">
+          <path id="Path_4314" class="st7" d="M68.52,15.46C121.1.5,178.84,1.38,231.93,14.02c22.65,5.41,45.09,16,57.02,34.23,15.02,22.76,14.88,50.49,11.05,75.75-3.15,19.97-17.39,36.34-33.43,50.11,21.01,16.91,55.54,41.08,93.77,68.08-49.81-20.87-102.91-43-135.43-54.41-37.9,11.29-78.62,10.82-118.05,7.7-30.07-3.35-61.33-12.82-81.2-33.7C4.54,136.94,3.09,103.59,8.85,74.22c5.12-27.35,29.26-50.66,59.67-58.75"/>
+        </g>
+      </g>
+    </g>
+    <g id="Group_267">
+      <g class="st2">
+        <g id="Group_266-2">
+          <path id="Path_4314-2" class="st5" d="M80.32,21.55c54.43-14.54,114.19-13.68,169.15-1.4,23.44,5.26,46.67,15.54,59.03,33.25,15.55,22.11,15.41,49.04,11.44,73.58-3.26,19.4-18,35.3-34.6,48.67,20.46,17.06,39.51,31.37,87.02,64.94-21.79-9.41-91.42-37.31-130.15-51.66-39.23,10.97-81.38,10.51-122.19,7.48-31.13-3.26-63.48-12.45-84.05-32.73-21.86-24.14-23.37-56.53-17.41-85.06,5.3-26.56,30.28-49.21,61.76-57.07"/>
+        </g>
+      </g>
+    </g>
+    <g id="I_am_hungry_Can_you_find_me_two_things_to_eat_" class="st3">
+      <text class="st4" transform="translate(85.04 67.19)"><tspan x="0" y="0">I am hungry!</tspan></text>
+      <text class="st4" transform="translate(59.8 106.19)"><tspan x="0" y="0">Can you find me</tspan></text>
+      <text class="st4" transform="translate(48.84 145.19)"><tspan x="0" y="0">two things to eat?</tspan></text>
+    </g>
+  </g>
+</svg>
