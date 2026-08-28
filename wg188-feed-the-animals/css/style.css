@@ -1,0 +1,461 @@
+*:focus,
+*:focus {
+  outline: none !important;
+  /* Removes the standard browser focus ring */
+}
+
+svg * {
+  -webkit-tap-highlight-color: transparent;
+}
+
+#shabda-wrapper body {
+  box-sizing: border-box;
+  outline: none;
+  font-family: "Roboto", sans-serif;
+  font-size: 16px;
+  line-height: 1.2;
+  padding: 0;
+  margin: 0;
+  background-color: #fff !important;
+}
+
+#shabda-wrapper .container {
+  border: none;
+  height: 100vh;
+  width: 100vw;
+  position: relative;
+  user-select: none !important;
+}
+
+#shabda-wrapper .container::after {
+  content: "";
+  background-image: url("./../assets/bg.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* #shabda-wrapper .mainContainerOuter {
+  background: #60360D !important
+} */
+.role-img {
+  width: 100%;
+  height: auto;
+}
+
+#shabda-wrapper .button-controls {
+  background: 0 0 !important;
+  border: none !important
+}
+
+#shabda-wrapper .d-flex {
+  display: flex
+}
+
+#shabda-wrapper .question {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center
+}
+
+#shabda-wrapper .flexContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  z-index: 1
+}
+
+#shabda-wrapper .flexItem {
+  padding: 8px;
+  transition: box-shadow .3s ease-in-out;
+  display: flex;
+  align-items: center
+}
+
+@media (max-width:768px) {
+  #shabda-wrapper .flexItem {
+    width: 100%;
+    margin: 8px 0
+  }
+}
+
+.bubble.wrong::before {
+  content: "";
+  background: #ff002682 !important;
+  border: 11px solid #ff0000 !important;
+  color: #C62828 !important;
+  animation: shake 0.4s ease !important;
+  height: 240px;
+  width: 240px;
+  position: absolute;
+  border-radius: 50%;
+}
+
+#shabda-wrapper .btn {
+  display: inline-block;
+  padding: 12px 25px;
+  font-size: 16px;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+  background-color: #1e6bef;
+  color: #fff;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color .3s ease, transform .2s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, .1);
+  margin-right: 10px
+}
+
+#shabda-wrapper .btn:hover {
+  background-color: #3e80f3;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, .15)
+}
+
+#shabda-wrapper .btn-primary:active {
+  background-color: #3e80f3;
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .1)
+}
+
+#shabda-wrapper .btn:focus {
+  outline: 3px solid #1e6bef;
+  outline-offset: 3px
+}
+
+#shabda-wrapper .btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .1)
+}
+
+#shabda-wrapper .btn:disabled {
+  background-color: #ddd;
+  color: #999;
+  cursor: not-allowed;
+  box-shadow: none
+}
+
+#shabda-wrapper .wdgetTitle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  left: 0;
+  top: 0;
+  z-index: 1
+}
+
+#shabda-wrapper .wdgetTitle h2 {
+  font-size: 23px;
+  font-weight: 600;
+  text-align: left;
+  padding: 8px 40px;
+  color: #fff;
+  border-radius: 0 0px 20px 20px;
+  background: #70c965;
+  white-space: nowrap;
+}
+
+#shabda-wrapper .versionText {
+  position: absolute;
+  right: 20px;
+  top: 10px !important;
+  font-size: 12px;
+  color: rgb(0 0 0 / 20%);
+}
+
+#shabda-wrapper .svg-container {
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+#shabda-wrapper svg {
+  width: 100% !important;
+  height: 100%;
+}
+
+img.step-image {
+  height: 90px;
+  width: 110px;
+}
+
+.food-flow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: center;
+  flex-direction: column;
+  position: absolute;
+  top: 110px;
+  left: -20px;
+}
+
+.organ-chart {
+display: flex;
+    flex-wrap: wrap;
+    gap: 22px;
+    justify-content: center;
+    padding: 115px 50px 50px 50px;
+    position: absolute;
+    top: 0;
+    z-index: 1;
+    width: 700px;
+    right: -82px;
+    row-gap: 18px;
+}
+
+.organ-container {
+  height: 202px;
+  width: 253px;
+
+}
+
+.organ-container img {
+  height: 100px;
+  width: auto;
+  display: block;
+  margin: 0px auto 30px auto;
+
+}
+
+#organFlow {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 490px;
+
+}
+
+.feedbackMessage {
+    position: absolute;
+    top: 60px;
+    left: 430px;
+    font-size: 51px;
+    width: 490px;
+    line-height: 1.2;
+    text-align: center;
+    height: 390px;
+    display: inline-block;
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+
+}
+
+.cross-image {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 70px;
+  width: 70px;
+  cursor: pointer;
+}
+
+.feedback-div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 99;
+}
+
+.organ-blank {
+  position: absolute;
+  width: 361px;
+  height: 100px;
+  border-radius: 20px;
+  box-sizing: border-box;
+  border: 2px dashed transparent;
+  background-color: transparent;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+#mouth-blank {
+  left: 151.7px;
+  top: 113px;
+}
+
+#osephagus-blank {
+  left: 171.7px;
+  top: 229px;
+}
+
+#stomach-blank {
+  left: 151.7px;
+  top: 345px;
+}
+
+#small-intestine-blank {
+  left: 171.7px;
+  top: 461px;
+}
+
+#large-intestine-blank {
+  left: 151.7px;
+  top: 577px;
+}
+
+#rectum-blank {
+  left: 171.7px;
+  top: 693px;
+}
+
+/* Organ chart container hover/selected states */
+.organ-container {
+height: 212px;
+    width: 257px;
+    cursor: pointer;
+    border-radius: 16px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+
+.organ-container.selected {
+    border-color: #00c000;
+    box-shadow: 10px 10px 0 1px #00c000;
+    border-radius: 55px;
+    border: 7px solid #00c000;
+}
+
+/* .organ-container.selected{
+  position: relative;
+}
+.organ-container.selected::after{
+  content: "";
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  border-radius: 50px;
+  box-shadow: 0 0 0 4px rgba(0, 192, 0, 0.35);
+} */
+
+.organ-container.selection-hint {
+  border-color: #22c55e;
+  background-color: #dcfce7;
+  box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.35);
+  border-radius: 50px;
+}
+
+.organ-container.disabled {
+  opacity: 0.2;
+  cursor: not-allowed;
+  pointer-events: none;
+  background-color: #f1f5f9;
+  border-color: #cbd5e1;
+  transform: none;
+  box-shadow: none;
+  border-radius: 50px;
+}
+
+/* Correct state */
+.organ-blank.correct {
+  border: 6px solid #00c000 !important;
+  background-color: rgba(240, 253, 244, 0.95);
+  box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.1);
+  pointer-events: none;
+  border-radius: 40px;
+  transform: translateX(3px);
+}
+
+/* Filled layout */
+.filled-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+
+.filled-content img {
+  height: 75px;
+  width: 85px;
+  object-fit: contain;
+}
+
+.filled-content .organ-name {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1e293b;
+  flex-grow: 1;
+  text-align: center;
+  font-family: "Roboto", sans-serif;
+}
+
+.filled-content .checkmark {
+    font-size: 40px;
+    color: #10b981;
+    font-weight: bold;
+}
+
+/* Wrong state and shake animations */
+@keyframes shake {
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  20%,
+  60% {
+    transform: translateX(-8px);
+  }
+
+  40%,
+  80% {
+    transform: translateX(8px);
+  }
+}
+
+.organ-blank.shake {
+  animation: shake 0.4s ease-in-out;
+  border: 3px solid #ef4444 !important;
+  background-color: rgba(254, 242, 242, 0.95);
+}
+
+.intro-page {
+  position: relative;
+}
+
+.global-button {
+  position: absolute;
+  bottom: -36px;
+  right: 42%;
+  transform: translateX(44%);
+  background-color: #E7107B;
+  padding: 30px 50px;
+  font-size: 35px;
+  font-weight: 600;
+  border-radius: 50px;
+}
+
+#restartButton {
+  position: absolute;
+  bottom: -20px;
+  right: 42%;
+  transform: translateX(44%);
+  background-color: #E7107B;
+  padding: 20px 40px;
+  font-size: 30px;
+  border-radius: 50px;
+}
