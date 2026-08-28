@@ -233,28 +233,16 @@ img.step-image {
      ========================================= */
   
   .feed-option {
-    width: 115px;
-    height: 115px;
-  
-    min-width: 115px;
-    min-height: 115px;
-  
-    flex: 0 0 115px;
-  
+    width: 165px;
+    height: 165px;
     box-sizing: border-box;
-  
     background: #ffffff;
-  
-    border: 5px solid #ffb477;
-  
+    border: 8px solid #ffb477;
     border-radius: 28px;
-  
     display: flex;
     flex-direction: column;
-  
     align-items: center;
     justify-content: center;
-  
     padding: 5px;
   
     margin: 0;
@@ -278,18 +266,11 @@ img.step-image {
      ========================================= */
   
   .feed-option img {
-    width: 68px;
-    height: 68px;
-  
-    max-width: 68px;
-    max-height: 68px;
-  
+    width: 80px;
+    height: 80px;
     object-fit: contain;
-  
     display: block;
-  
-    margin: 0 0 2px 0;
-  
+    margin: 0 0 8px 0;
     flex-shrink: 0;
   }
   
@@ -300,26 +281,15 @@ img.step-image {
   
   .feed-option span {
     display: block;
-  
     width: 100%;
-  
-    font-family: Arial, sans-serif;
-  
-    font-size: 17px;
-    font-weight: 400;
-  
-    line-height: 20px;
-  
+    font-size: 26px;
+    font-weight: 600;
+    line-height: 1.2;
     color: #000000;
-  
     text-align: center;
-  
     white-space: nowrap;
-  
     overflow: hidden;
-    
     text-overflow: ellipsis;
-  
     box-sizing: border-box;
   }
   
