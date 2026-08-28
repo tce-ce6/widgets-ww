@@ -72,12 +72,24 @@
       "updatedAt": "2026-08-24T12:52:42+05:30",
       "author": "tce-ashishg"
     },
+    "wg188-feed-the-animals": {
+      "updatedAt": "2026-08-27T19:21:01+05:30",
+      "author": "tce-ashishg"
+    },
     "wg193-swar-ki-pahchan-gujrati": {
       "updatedAt": "2026-08-21T16:16:03+05:30",
       "author": "tce-ashishg"
     }
   },
   "commits": [
+    {
+      "date": "2026-08-27T19:21:01+05:30",
+      "author": "tce-ashishg",
+      "message": "wg188 structuring done",
+      "widgets": [
+        188
+      ]
+    },
     {
       "date": "2026-08-26T18:14:44+05:30",
       "author": "tce-ashishg",
@@ -325,14 +337,6 @@
       "message": "wg193 completed",
       "widgets": [
         193
-      ]
-    },
-    {
-      "date": "2026-08-05T17:45:54+05:30",
-      "author": "tce-ashishg",
-      "message": "wg162 images updated",
-      "widgets": [
-        162
       ]
     }
   ]
