@@ -189,273 +189,241 @@ img.step-image {
   width: 110px;
 }
 
-.food-flow {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 30px;
-  justify-content: center;
-  flex-direction: column;
-  position: absolute;
-  top: 110px;
-  left: -20px;
-}
+/* =========================================
+   FEED OPTIONS - MAIN CONTAINER
+   ========================================= */
 
-.organ-chart {
-display: flex;
-    flex-wrap: wrap;
-    gap: 22px;
-    justify-content: center;
-    padding: 115px 50px 50px 50px;
-    position: absolute;
-    top: 0;
-    z-index: 1;
-    width: 700px;
-    right: -82px;
-    row-gap: 18px;
-}
-
-.organ-container {
-  height: 202px;
-  width: 253px;
-
-}
-
-.organ-container img {
-  height: 100px;
-  width: auto;
-  display: block;
-  margin: 0px auto 30px auto;
-
-}
-
-#organFlow {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 490px;
-
-}
-
-.feedbackMessage {
-    position: absolute;
-    top: 60px;
-    left: 430px;
-    font-size: 51px;
-    width: 490px;
-    line-height: 1.2;
-    text-align: center;
-    height: 390px;
-    display: inline-block;
+   #feed-options {
+    overflow: visible;
+  }
+  
+  #feed-options-container {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
     display: flex;
     align-items: center;
-    font-weight: 600;
-
-}
-
-.cross-image {
-  position: absolute;
-  top: 0;
-  right: 0;
-  height: 70px;
-  width: 70px;
-  cursor: pointer;
-}
-
-.feedback-div {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 99;
-}
-
-.organ-blank {
-  position: absolute;
-  width: 361px;
-  height: 100px;
-  border-radius: 20px;
-  box-sizing: border-box;
-  border: 2px dashed transparent;
-  background-color: transparent;
-  transition: all 0.3s ease;
-  cursor: pointer;
-}
-
-#mouth-blank {
-  left: 151.7px;
-  top: 113px;
-}
-
-#osephagus-blank {
-  left: 171.7px;
-  top: 229px;
-}
-
-#stomach-blank {
-  left: 151.7px;
-  top: 345px;
-}
-
-#small-intestine-blank {
-  left: 171.7px;
-  top: 461px;
-}
-
-#large-intestine-blank {
-  left: 151.7px;
-  top: 577px;
-}
-
-#rectum-blank {
-  left: 171.7px;
-  top: 693px;
-}
-
-/* Organ chart container hover/selected states */
-.organ-container {
-height: 212px;
-    width: 257px;
-    cursor: pointer;
-    border-radius: 16px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    justify-content: center;
+  }
+  
+  
+  /* =========================================
+     OPTIONS LIST
+     ========================================= */
+  
+  #feed-options-container ul {
+    width: 100%;
+    height: 100%;
+    
+    margin: 0;
+    padding: 0;
+  
+    list-style: none;
+  
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  
+    box-sizing: border-box;
+  }
+  
+  
+  /* =========================================
+     INDIVIDUAL FOOD OPTION CARD
+     ========================================= */
+  
+  .feed-option {
+    width: 115px;
+    height: 115px;
+  
+    min-width: 115px;
+    min-height: 115px;
+  
+    flex: 0 0 115px;
+  
+    box-sizing: border-box;
+  
+    background: #ffffff;
+  
+    border: 5px solid #ffb477;
+  
+    border-radius: 28px;
+  
     display: flex;
     flex-direction: column;
-    justify-content: center;
+  
     align-items: center;
+    justify-content: center;
+  
+    padding: 5px;
+  
+    margin: 0;
+  
+    cursor: pointer;
+  
+    position: relative;
+  
+    overflow: hidden;
+  
+    user-select: none;
+  
+    transition:
+      transform 0.15s ease,
+      box-shadow 0.15s ease;
+  }
+  
+  
+  /* =========================================
+     FOOD IMAGE
+     ========================================= */
+  
+  .feed-option img {
+    width: 68px;
+    height: 68px;
+  
+    max-width: 68px;
+    max-height: 68px;
+  
+    object-fit: contain;
+  
+    display: block;
+  
+    margin: 0 0 2px 0;
+  
+    flex-shrink: 0;
+  }
+  
+  
+  /* =========================================
+     TEXT
+     ========================================= */
+  
+  .feed-option span {
+    display: block;
+  
+    width: 100%;
+  
+    font-family: Arial, sans-serif;
+  
+    font-size: 17px;
+    font-weight: 400;
+  
+    line-height: 20px;
+  
+    color: #000000;
+  
+    text-align: center;
+  
+    white-space: nowrap;
+  
+    overflow: hidden;
+    
+    text-overflow: ellipsis;
+  
     box-sizing: border-box;
-}
-
-
-.organ-container.selected {
-    border-color: #00c000;
-    box-shadow: 10px 10px 0 1px #00c000;
-    border-radius: 55px;
-    border: 7px solid #00c000;
-}
-
-/* .organ-container.selected{
-  position: relative;
-}
-.organ-container.selected::after{
-  content: "";
-  position: absolute;
-  top: -4px;
-  left: -4px;
-  right: -4px;
-  bottom: -4px;
-  border-radius: 50px;
-  box-shadow: 0 0 0 4px rgba(0, 192, 0, 0.35);
-} */
-
-.organ-container.selection-hint {
-  border-color: #22c55e;
-  background-color: #dcfce7;
-  box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.35);
-  border-radius: 50px;
-}
-
-.organ-container.disabled {
-  opacity: 0.2;
-  cursor: not-allowed;
-  pointer-events: none;
-  background-color: #f1f5f9;
-  border-color: #cbd5e1;
-  transform: none;
-  box-shadow: none;
-  border-radius: 50px;
-}
-
-/* Correct state */
-.organ-blank.correct {
-  border: 6px solid #00c000 !important;
-  background-color: rgba(240, 253, 244, 0.95);
-  box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.1);
-  pointer-events: none;
-  border-radius: 40px;
-  transform: translateX(3px);
-}
-
-/* Filled layout */
-.filled-content {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  height: 100%;
-  padding: 0 16px;
-  box-sizing: border-box;
-}
-
-.filled-content img {
-  height: 75px;
-  width: 85px;
-  object-fit: contain;
-}
-
-.filled-content .organ-name {
-  font-size: 28px;
-  font-weight: 700;
-  color: #1e293b;
-  flex-grow: 1;
-  text-align: center;
-  font-family: "Roboto", sans-serif;
-}
-
-.filled-content .checkmark {
-    font-size: 40px;
-    color: #10b981;
-    font-weight: bold;
-}
-
-/* Wrong state and shake animations */
-@keyframes shake {
-
-  0%,
-  100% {
-    transform: translateX(0);
+  }
+  
+  
+  /* =========================================
+     HOVER
+     ========================================= */
+  
+  .feed-option:hover {
+    transform: scale(1.03);
+  
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+  
+    z-index: 10;
+  }
+  
+  
+  /* =========================================
+     CLICK / ACTIVE
+     ========================================= */
+  
+  .feed-option:active {
+    transform: scale(0.98);
+  }
+  
+  
+  /* =========================================
+     OPTIONAL SELECTED STATE
+     ========================================= */
+  
+  .feed-option.selected {
+    transform: scale(1.03);
+    border: 5px solid #65a5f9;  
+    z-index: 10;
+  }
+  
+  
+  /* =========================================
+     REMOVE DEFAULT LIST STYLES
+     ========================================= */
+  
+  #feed-options-container ul,
+  #feed-options-container li {
+    list-style: none;
+  }
+  
+  
+  /* =========================================
+     SVG FOREIGN OBJECT
+     ========================================= */
+  
+  foreignObject#feed-options {
+    overflow: visible;
   }
 
-  20%,
-  60% {
-    transform: translateX(-8px);
+  .animals-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    box-sizing: border-box;
+    padding: 16px 24px 8px;
   }
 
-  40%,
-  80% {
-    transform: translateX(8px);
+  #animal-question-label {
+    display: block;
+    font-size: 32px;
+    font-weight: 600;
+    color: #000;
+    text-align: center;
+    line-height: 1.2;
+    margin: 8px 0 0;
   }
-}
 
-.organ-blank.shake {
-  animation: shake 0.4s ease-in-out;
-  border: 3px solid #ef4444 !important;
-  background-color: rgba(254, 242, 242, 0.95);
-}
+  .animal-image {
+    width: 100%;
+    height: 390px;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
-.intro-page {
-  position: relative;
-}
+  .animal-image img {
+    max-width: 520px;
+    max-height: 360px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+  }
 
-.global-button {
-  position: absolute;
-  bottom: -36px;
-  right: 42%;
-  transform: translateX(44%);
-  background-color: #E7107B;
-  padding: 30px 50px;
-  font-size: 35px;
-  font-weight: 600;
-  border-radius: 50px;
-}
+  .feed-option.correct {
+    border-color: #1f9d4b;
+    box-shadow: 0 0 0 3px rgba(31, 157, 75, 0.35);
+  }
 
-#restartButton {
-  position: absolute;
-  bottom: -20px;
-  right: 42%;
-  transform: translateX(44%);
-  background-color: #E7107B;
-  padding: 20px 40px;
-  font-size: 30px;
-  border-radius: 50px;
-}
+  .feed-option.wrong {
+    border-color: #e41a1a;
+    box-shadow: 0 0 0 3px rgba(228, 26, 26, 0.35);
+  }
+
+  .feed-option.disabled {
+    pointer-events: none;
+    opacity: 0.7;
+  }
