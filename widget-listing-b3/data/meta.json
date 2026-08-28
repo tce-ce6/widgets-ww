@@ -73,8 +73,8 @@
       "author": "tce-ashishg"
     },
     "wg188-feed-the-animals": {
-      "updatedAt": "2026-08-28T11:32:53+05:30",
-      "author": "tce-ashishg"
+      "updatedAt": "2026-08-28T15:25:46+05:30",
+      "author": "tce-nitinc"
     },
     "wg193-swar-ki-pahchan-gujrati": {
       "updatedAt": "2026-08-21T16:16:03+05:30",
@@ -82,6 +82,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-08-28T15:25:46+05:30",
+      "author": "tce-nitinc",
+      "message": "wg 188 fixes",
+      "widgets": [
+        188
+      ]
+    },
     {
       "date": "2026-08-28T11:32:53+05:30",
       "author": "tce-ashishg",
@@ -326,17 +334,6 @@
       "message": "wg183 structuring done",
       "widgets": [
         183
-      ]
-    },
-    {
-      "date": "2026-08-06T14:56:08+05:30",
-      "author": "tce-ashishg",
-      "message": "gujurati font folder updated",
-      "widgets": [
-        162,
-        173,
-        174,
-        193
       ]
     }
   ]
