@@ -1282,23 +1282,19 @@
               <g id="Layer_2">
                 <g id="feed-btn" style="cursor: pointer; display: block">
                   <path id="Path_21-21" data-name="Path_21-2" class="st108" d="M847.47,841.93h226c25.68,0,46.5,20.82,46.5,46.5s-20.82,46.5-46.5,46.5h-226c-25.68,0-46.5-20.82-46.5-46.5s20.82-46.5,46.5-46.5Z"/>
-                  <g id="Feed_the_tiger" class="st15">
-                    <g class="st15">
-                      <g class="st15">
-                        <text class="st10" transform="translate(850 898.93)"><tspan id="feed-btn-text" x="0" y="0">Feed the tiger</tspan></text>
-                      </g>
-                    </g>
-                  </g>
+                  <foreignObject class="feed-btn" x="820" y="850" width="280" height="80">
+                  <div class="feed-btn-text-container">
+                    <span id="feed-btn-text">Feed the Horse</span>
+                  </div>
+                </foreignObject>
                 </g>
                 <g id="next-animal-btn" style="cursor: pointer; display: none">
-                  <path id="Path_21-21" data-name="Path_21-2" class="st108" d="M847.47,841.93h226c25.68,0,46.5,20.82,46.5,46.5s-20.82,46.5-46.5,46.5h-226c-25.68,0-46.5-20.82-46.5-46.5s20.82-46.5,46.5-46.5Z"/>
-                  <g id="Feed_the_tiger" class="st15">
-                    <g class="st15">
-                      <g class="st15">
-                        <text class="st10" transform="translate(865 898.93)"><tspan id="feed-btn-text" x="0" y="0">Next Animal</tspan></text>
-                      </g>
-                    </g>
-                  </g>
+                  <path id="next-animal-path" class="st108" d="M847.47,841.93h226c25.68,0,46.5,20.82,46.5,46.5s-20.82,46.5-46.5,46.5h-226c-25.68,0-46.5-20.82-46.5-46.5s20.82-46.5,46.5-46.5Z"/>
+                  <foreignObject class="feed-btn" x="820" y="850" width="280" height="80">
+                  <div class="feed-btn-text-container">
+                    <span id="next-animal-btn-text">Feed the Horse</span>
+                  </div>
+                </foreignObject>
                 </g>
                 <g id="Rectangle_1031" data-name="Rectangle_103">
                   <rect class="st84" x="578.97" y="109.93" width="753" height="516" rx="47" ry="47"/>
@@ -1431,10 +1427,16 @@
                 </g>
               </g>
             </g>
-            <g id="A_lion_eats_only_animals_Try_again_" class="st15">
+            <!-- <g id="A_lion_eats_only_animals_Try_again_" class="st15">
               <text id="feedback-txt" class="st32" transform="translate(1453.7952 377.5958)"><tspan id="incorrect-feedback-line1" x="0" y="0">A lion eats only animals!</tspan></text>
               <text class="st32" transform="translate(1551.5591 416.5958)"><tspan id="incorrect-feedback-line2" x="0" y="0">Try again!</tspan></text>
-            </g>
+            </g> -->
+            <foreignObject class="correct-txt-container" x="1425" y="320" width="390" height="135">
+              <div class="correct-text-container red">
+                <span id="incorrect-feedback-line1"></span>
+                <span id="incorrect-feedback-line2"></span>
+              </div>
+            </foreignObject>
           </g>
           <g id="correct-panel" style="display: none;">
             <g id="Rectangle_1421" data-name="Rectangle_142">
@@ -1451,10 +1453,16 @@
                 </g>
               </g>
             </g>
-            <g id="Tigers_are_carnivores._They_eat_only_animals." class="st15">
+            <!-- <g id="Tigers_are_carnivores._They_eat_only_animals." class="st15">
               <text class="st24" transform="translate(1471.6851 376.8511)"><tspan id="correct-feedback-line1" x="0" y="0">Tigers are carnivores.</tspan></text>
               <text class="st24" transform="translate(1467.5831 415.8511)"><tspan id="correct-feedback-line2" x="0" y="0">They eat only animals.</tspan></text>
-            </g>
+            </g> -->
+            <foreignObject class="correct-txt-container" x="1425" y="320" width="390" height="135">
+              <div class="correct-text-container green">
+                <span id="correct-feedback-line1"></span>
+                <span id="correct-feedback-line2"></span>
+              </div>
+            </foreignObject>
           </g>
           <g id="summary-screen" style="display: none;">
             <g id="Group_3110" data-name="Group_31">
