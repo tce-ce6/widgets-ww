@@ -308,7 +308,7 @@ const evaluateSelection = (animalData, selectedFoods) => {
     const correctSet = new Set(answer);
     const matchCount = selectedFoods.filter((food) => correctSet.has(food)).length;
     return {
-      isCorrect: matchCount === 2 && selectedFoods.length === 2,
+      isCorrect: selectedFoods.length > 0 && selectedFoods.every((food) => correctSet.has(food)),
       matchCount
     };
   }
@@ -333,7 +333,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const animalImage = document.getElementById('animal-image');
   const animalQuestionLabel = document.getElementById('animal-question-label');
   const feedBtnText = document.getElementById('feed-btn-text');
+  const nextAnimalBtnText = document.getElementById('next-animal-btn-text');
   const progressFill = document.getElementById('progress-fill');
+  const progressCap = document.getElementById('Path_3991');
   const progressBarText = document.querySelector('#progress-bar-text tspan');
   const correctCountText = document.getElementById('correct-count-text');
   const incorrectCountText = document.getElementById('incorrect-count-text');
@@ -378,8 +380,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const current = Math.min(roundIndex + 1, TOTAL_ROUNDS);
     if (progressBarText) progressBarText.textContent = `${padCount(current)} of ${TOTAL_ROUNDS}`;
     if (progressFill) {
-      const width = (current / TOTAL_ROUNDS) * PROGRESS_BAR_MAX_WIDTH;
-      progressFill.setAttribute('width', String(Math.max(45, width)));
+      const width = Math.max(45, (current / TOTAL_ROUNDS) * PROGRESS_BAR_MAX_WIDTH);
+      progressFill.setAttribute('width', String(width));
+      if (progressCap) progressCap.setAttribute('transform', `translate(${width - 45}, 0)`);
     }
   };
 
@@ -429,6 +432,7 @@ document.addEventListener('DOMContentLoaded', () => {
       };
     }
     if (feedBtnText) feedBtnText.textContent = `Feed the ${animalKey}`;
+    if (nextAnimalBtnText) nextAnimalBtnText.textContent = 'Next animal';
     renderFoodOptions();
     updateProgress();
     updateCounts();
@@ -470,11 +474,20 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const markOptions = (isCorrect) => {
-    feedOptionsList.querySelectorAll('.feed-option').forEach((item) => {
-      item.classList.add('disabled');
-      if (!item.classList.contains('selected')) return;
-      item.classList.add(isCorrect ? 'correct' : 'wrong');
-    });
+    if (isCorrect) {
+      // After a correct answer, only disable the options the user did NOT select
+      feedOptionsList.querySelectorAll('.feed-option').forEach((item) => {
+        if (item.classList.contains('selected')) {
+          item.classList.add('correct');
+        } else {
+          item.classList.add('disabled');
+        }
+      });
+    } else {
+      feedOptionsList.querySelectorAll('.feed-option.selected').forEach((item) => {
+        item.classList.add('wrong');
+      });
+    }
   };
 
   const onFoodClick = (item, food) => {
@@ -487,13 +500,12 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    if (selectedFoods.length >= 2) return;
     item.classList.add('selected');
     selectedFoods.push(food);
   };
 
   const submitAnswer = () => {
-    if (locked || !currentAnimal || selectedFoods.length !== 2) return;
+    if (locked || !currentAnimal || selectedFoods.length === 0) return;
 
     const result = evaluateSelection(currentAnimal, selectedFoods);
     locked = true;

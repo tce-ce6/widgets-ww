@@ -397,3 +397,33 @@ img.step-image {
     pointer-events: none;
     opacity: 0.7;
   }
+
+  .correct-text-container{
+    font-size: 26px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    flex-direction: column;
+    text-align: center;
+    line-height: 1.2;
+    padding: 0 10px;
+  }
+
+  .correct-text-container.green{
+    color: #1f9d4b;
+  }
+  .correct-text-container.red{
+    color: red;
+  }
+
+  .feed-btn-text-container{
+    font-size: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #fff;
+    font-weight: 600;
+  }
