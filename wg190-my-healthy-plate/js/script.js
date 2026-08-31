@@ -2,302 +2,161 @@
 (function(){
 "use strict";
 
-/* Star amounts (0-4) from "Nutrients in Foods" reference document. */
-var FOODS = {
-  rice:    {name:"Rice",       e:"🍚", carb:4, prot:1, vitm:1},
-  roti:    {name:"Roti",       e:"🫓", carb:3, prot:2, vitm:2},
-  idli:    {name:"Idli",       e:"🍘", carb:3, prot:2, vitm:2},
-  poha:    {name:"Poha",       e:"🍛", carb:4, prot:1, vitm:2},
-  potato:  {name:"Potato",     e:"🥔", carb:3, prot:1, vitm:2},
-  banana:  {name:"Banana",     e:"🍌", carb:3, prot:0, vitm:2},
-  milk:    {name:"Milk",       e:"🥛", carb:1, prot:2, vitm:3},
-  dal:     {name:"Dal",        e:"🍲", carb:2, prot:3, vitm:3},
-  egg:     {name:"Egg",        e:"🥚", carb:0, prot:4, vitm:3},
-  curd:    {name:"Curd",       e:"🥣", carb:1, prot:2, vitm:3},
-  paneer:  {name:"Paneer",     e:"🧀", carb:1, prot:4, vitm:3},
-  rajma:   {name:"Rajma",      e:"🫘", carb:2, prot:3, vitm:3},
-  fish:    {name:"Fish",       e:"🐟", carb:0, prot:4, vitm:3},
-  chicken: {name:"Chicken",    e:"🍗", carb:0, prot:4, vitm:2},
-  carrot:  {name:"Carrot",     e:"🥕", carb:1, prot:0, vitm:4},
-  orange:  {name:"Orange",     e:"🍊", carb:2, prot:0, vitm:4},
-  palak:   {name:"Palak",      e:"🥬", carb:1, prot:1, vitm:4},
-  guava:   {name:"Guava",      e:"🍈", carb:2, prot:0, vitm:4},
-  fries:   {name:"French fries", e:"🍟", carb:4, prot:1, vitm:0, junk:true},
-  cola:    {name:"Cold drink", e:"🥤", carb:4, prot:0, vitm:0, junk:true},
-  choc:    {name:"Chocolate",  e:"🍫", carb:4, prot:1, vitm:1, junk:true},
-  samosa:  {name:"Samosa",     e:"🥟", carb:3, prot:1, vitm:1, junk:true},
-  icecream:{name:"Ice cream",  e:"🍨", carb:3, prot:1, vitm:1, junk:true},
-  noodles: {name:"Noodles",    e:"🍜", carb:4, prot:1, vitm:1, junk:true},
-  burger:  {name:"Burger",     e:"🍔", carb:3, prot:1, vitm:1, junk:true},
-  pizza:   {name:"Pizza",      e:"🍕", carb:3, prot:1, vitm:1, junk:true},
-  jalebi:  {name:"Jalebi",     e:"🥨", carb:4, prot:0, vitm:0, junk:true},
-  biscuit: {name:"Cream biscuit", e:"🍪", carb:4, prot:1, vitm:0, junk:true}
-};
-var TRAY = ["rice","idli","milk","carrot","fries","dal","banana","pizza","roti","egg",
-            "orange","samosa","fish","poha","paneer","guava","noodles","chicken","potato","curd","palak",
-            "cola","rajma","burger","choc","jalebi","icecream","biscuit"];
+document.addEventListener("DOMContentLoaded", function () {
+  var pages = {
+    intro: document.getElementById("intro-page"),
+    activity: document.getElementById("activity-page"),
+    summary: document.getElementById("summary-page")
+  };
+  var selected = [];
+  var foodData = {};
+  var MAX_FOODS = 6;
+  var meterSettings = {
+    carbs: { fill: "meter_fill_1", arrow: "carbohydrate-arrow", x: 127.23, max: 24, low: 7, high: 9, colour: "#ff9f22", summary: "carbohydrates", text: "carbohydrates-txt" },
+    protein: { fill: "meter_fill_2", arrow: "protein-arrow", x: 307.23, max: 26, low: 7, high: 10, colour: "#27c63b", summary: "proteins", text: "proteins-txt" },
+    vitamins: { fill: "meter_fill_3", arrow: "vitamin-arrow", x: 508.23, max: 48, low: 14, high: 20, colour: "#ff0f0f", summary: "vitamins", text: "vitamins-txt" }
+  };
 
-var METERS = [
-  {key:"carb", name:"Carbohydrates", tag:"Give me energy",          face:"🏃", fill:"var(--carb)", deep:"var(--carb-deep)", lo:7, hi:9,  scale:12},
-  {key:"prot", name:"Proteins",      tag:"Build my body",           face:"💪", fill:"var(--prot)", deep:"var(--prot-deep)", lo:7, hi:10, scale:13},
-  {key:"vitm", name:"Vitamins & minerals", tag:"Protect me from illnesses", face:"✨", fill:"var(--vitm)", deep:"var(--vitm-deep)", lo:14, hi:20, scale:24}
-];
-
-var PICKS = 6;
-var picks = [];
-
-var AMOUNT_WORDS = ["no","a little","a moderate amount of","lots of","rich amounts of"];
-
-var metersEl = document.getElementById("meters");
-var plateEl = document.getElementById("plate");
-var trayEl = document.getElementById("tray");
-var picksLeft = document.getElementById("picks-left");
-var doneBtn = document.getElementById("done");
-var resetBtn = document.getElementById("reset");
-var bubble = document.getElementById("bubble");
-var announcer = document.getElementById("announcer");
-var traySection = document.getElementById("tray-section");
-var resultEl = document.getElementById("result");
-
-var SCREENS = ["screen-intro","screen-game","screen-result"];
-function showScreen(id){
-  SCREENS.forEach(function(s){
-    document.getElementById(s).classList.toggle("show", s === id);
-  });
-  window.scrollTo(0,0);
-}
-
-document.getElementById("start").addEventListener("click", function(){
-  showScreen("screen-game");
-  bubble.textContent = "Tap 6 foods for my plate!";
-  announce("Let's build a plate! Tap 6 foods from the tray.");
-});
-
-function buildMeters(){
-  METERS.forEach(function(m){
-    var loPct = (m.lo / m.scale) * 100;
-    var hiPct = (m.hi / m.scale) * 100;
-    var bandPct = ((m.hi - m.lo) / m.scale) * 100;
-    var wrap = document.createElement("div");
-    wrap.className = "meter";
-    wrap.innerHTML =
-      '<span class="face" id="face-'+m.key+'" aria-hidden="true">😴</span>' +
-      '<div class="tube" role="img" id="tube-'+m.key+'" aria-label="">' +
-        '<div class="band" style="bottom:'+loPct+'%;height:'+bandPct+'%"></div>' +
-        '<div class="fill" id="fill-'+m.key+'" style="background:#F0C24B"></div>' +
-        '<div class="line lo" style="bottom:'+loPct+'%"></div>' +
-        '<div class="line hi" style="bottom:'+hiPct+'%"></div>' +
-      '</div>' +
-      '<span class="name" style="color:'+m.deep+'">'+m.face+' '+m.name+'</span>' +
-      '<span class="tag">'+m.tag+'</span>' +
-      '<span class="status low" id="status-'+m.key+'">Low</span>';
-    metersEl.appendChild(wrap);
-  });
-}
-
-function stateOf(m, val){
-  if (val < m.lo) return "low";
-  if (val > m.hi) return "excess";
-  return "ok";
-}
-
-function levels(){
-  var t = {carb:0,prot:0,vitm:0};
-  picks.forEach(function(id){
-    t.carb += FOODS[id].carb; t.prot += FOODS[id].prot; t.vitm += FOODS[id].vitm;
-  });
-  return t;
-}
-
-function renderPlate(){
-  if (picks.length === 0){
-    plateEl.innerHTML = '<span class="empty">Tap foods to fill me!</span>';
-    plateEl.setAttribute("aria-label", "Ria's plate is empty.");
-    return;
+  function showPage(name) {
+    Object.keys(pages).forEach(function (key) {
+      pages[key].style.display = key === name ? "block" : "none";
+    });
   }
-  plateEl.innerHTML = picks.map(function(id){
-    return '<span class="pf" title="'+FOODS[id].name+'">'+FOODS[id].e+'</span>';
-  }).join("");
-  plateEl.setAttribute("aria-label", "Ria's plate has: " + picks.map(function(id){return FOODS[id].name;}).join(", ") + ".");
-}
 
-var STATE_FILL = { low:"#F0C24B", ok:"#5FAF62" };
-
-function updateMeters(){
-  var t = levels();
-  METERS.forEach(function(m){
-    var val = Math.min(m.scale, t[m.key]);
-    var fill = document.getElementById("fill-"+m.key);
-    fill.style.height = (val/m.scale*100) + "%";
-    var st = stateOf(m, t[m.key]);
-    fill.classList.toggle("excess", st === "excess");
-    if (st !== "excess") fill.style.background = STATE_FILL[st];
-    var faces = { low:"😴", ok:"😄", excess:"😵" };
-    var words = { low:"Low", ok:"Sufficient", excess:"Excess" };
-    document.getElementById("face-"+m.key).textContent = faces[st];
-    var status = document.getElementById("status-"+m.key);
-    status.textContent = words[st];
-    status.className = "status " + st;
-    var say = st === "ok" ? "just right and happy"
-            : st === "excess" ? "too much — that is more than my body needs"
-            : "still low — my body needs more "+m.name.toLowerCase();
-    document.getElementById("tube-"+m.key).setAttribute("aria-label", m.name+" meter is "+say+".");
-  });
-}
-
-function dotRow(cls, label, val){
-  var stars = "";
-  for (var i=0;i<4;i++) stars += '<span class="d'+(i<val?' on':'')+'">'+(i<val?'★':'☆')+'</span>';
-  return '<span class="lrow '+cls+'"><span class="lname">'+label+'</span>'+stars+'</span>';
-}
-
-function legendHTML(fd){
-  return '<span class="legend" aria-hidden="true">' +
-    dotRow("carb","C",fd.carb) +
-    dotRow("prot","P",fd.prot) +
-    dotRow("vitm","V",fd.vitm) +
-  '</span>';
-}
-
-function profileWords(fd){
-  return AMOUNT_WORDS[fd.carb]+" carbohydrates, "+
-         AMOUNT_WORDS[fd.prot]+" proteins, and "+
-         AMOUNT_WORDS[fd.vitm]+" vitamins and minerals";
-}
-
-function buildTray(){
-  trayEl.innerHTML = "";
-  TRAY.forEach(function(id){
-    var fd = FOODS[id];
-    var b = document.createElement("button");
-    b.className = "food"; b.type = "button";
-    b.setAttribute("aria-pressed","false");
-    b.setAttribute("aria-label", fd.name+". Gives "+profileWords(fd)+".");
-    b.dataset.id = id;
-    b.innerHTML =
-      '<span class="left">' +
-        '<span class="fe" aria-hidden="true">'+fd.e+'</span>' +
-        '<span class="fname">'+fd.name+'</span>' +
-        '<span class="tick">On my plate ✓</span>' +
-      '</span>' +
-      legendHTML(fd);
-    b.addEventListener("click", onFoodTap);
-    trayEl.appendChild(b);
-  });
-  updatePickUI();
-}
-
-function onFoodTap(ev){
-  var b = ev.currentTarget;
-  var id = b.dataset.id;
-  var fd = FOODS[id];
-  var idx = picks.indexOf(id);
-  if (idx > -1){
-    picks.splice(idx,1);
-    b.setAttribute("aria-pressed","false");
-    announce(fd.name+" removed from the plate.");
-  } else {
-    if (picks.length >= PICKS) return;
-    picks.push(id);
-    b.setAttribute("aria-pressed","true");
-    announce(fd.name+" added. It gives "+profileWords(fd)+". "+picks.length+" of "+PICKS+" foods on the plate.");
+  function totals() {
+    return selected.reduce(function (sum, id) {
+      var food = foodData[id];
+      sum.carbs += food.carbs;
+      sum.protein += food.protein;
+      sum.vitamins += food.vitamins;
+      return sum;
+    }, { carbs: 0, protein: 0, vitamins: 0 });
   }
-  updatePickUI();
-  updateMeters();
-  renderPlate();
-  liveCoach();
-}
 
-function updatePickUI(){
-  var left = PICKS - picks.length;
-  picksLeft.textContent = left === 0 ? "Plate full!" : ("Pick "+left+" more");
-  doneBtn.disabled = left !== 0;
-  resetBtn.disabled = picks.length === 0;
-  var full = picks.length >= PICKS;
-  Array.prototype.forEach.call(trayEl.children, function(b){
-    var pressed = b.getAttribute("aria-pressed") === "true";
-    b.disabled = full && !pressed;
-  });
-}
-
-function liveCoach(){
-  var t = levels();
-  if (picks.length === 0){ bubble.textContent = "Tap 6 foods for my plate!"; return; }
-  var excess = METERS.filter(function(m){ return stateOf(m, t[m.key]) === "excess"; });
-  var low = METERS.filter(function(m){ return stateOf(m, t[m.key]) === "low"; });
-  if (excess.length){
-    bubble.textContent = "Oops — my "+excess[0].name.toLowerCase()+" meter has too much now. That is more than my body needs!";
-  } else if (low.length){
-    bubble.textContent = "My "+low[0].name.toLowerCase()+" meter is still low. Look for foods with more "+low[0].name.toLowerCase()+" stars!";
-  } else {
-    bubble.textContent = "Every meter is just right and smiling! Tap the big button!";
+  function statusFor(value, setting) {
+    return value < setting.low ? "Low" : value > setting.high ? "Excess" : "Just right";
   }
-}
 
-doneBtn.addEventListener("click", function(){
-  var t = levels();
-  var okCount = METERS.filter(function(m){ return stateOf(m, t[m.key]) === "ok"; }).length;
-  var low = METERS.filter(function(m){ return stateOf(m, t[m.key]) === "low"; });
-  var excess = METERS.filter(function(m){ return stateOf(m, t[m.key]) === "excess"; });
-  var junkPicked = picks.filter(function(id){ return FOODS[id].junk; }).length;
-  var big = document.getElementById("result-big");
-  var title = document.getElementById("result-title");
-  var msg = document.getElementById("result-msg");
-  var recap = document.getElementById("result-recap");
-  var words = { low:"Low", ok:"Sufficient", excess:"Excess" };
-  recap.innerHTML = METERS.map(function(m){
-    var st = stateOf(m, t[m.key]);
-    return '<span class="chip '+st+'">'+m.name+': '+words[st]+'</span>';
-  }).join("");
-  if (okCount === 3){
-    big.textContent = "🎉🌟🎉";
-    title.textContent = "Hooray! A super plate!";
-    msg.textContent = junkPicked === 1
-      ? "Every meter is just right — and you fitted in one treat and still balanced your plate. Smart planning!"
-      : "Carbohydrates, proteins, vitamins and minerals — all just right. Your plate gave my body exactly what it needs!";
-  } else {
-    big.textContent = excess.length ? "😵" : "😴";
-    title.textContent = "Almost there!";
-    var parts = [];
-    if (low.length){
-      var reason = junkPicked >= 2
-        ? "Junk foods give mostly carbohydrate stars and hardly any protein or vitamin stars."
-        : "Look for foods with more "+low[0].name.toLowerCase()+" stars.";
-      parts.push("My "+low.map(function(m){return m.name.toLowerCase();}).join(" and ")+" meter"+(low.length>1?"s are":" is")+" still low. "+reason);
+  function statusColour(status) {
+    return status === "Just right" ? "#5faf62" : status === "Excess" ? "#f0524c" : "#f2bb40";
+  }
+
+  function updateMeter(key, value) {
+    var setting = meterSettings[key];
+    var fill = document.getElementById(setting.fill);
+    var scale = Math.min(value / setting.max, 1);
+    var bottom = 671.17;
+    var height = 194.96 * scale;
+    var clipId = "meter-clip-" + key;
+    var clip = document.getElementById(clipId);
+    if (!clip) {
+      clip = document.createElementNS("http://www.w3.org/2000/svg", "clipPath");
+      clip.id = clipId;
+      clip.setAttribute("clipPathUnits", "userSpaceOnUse");
+      clip.appendChild(document.createElementNS("http://www.w3.org/2000/svg", "rect"));
+      fill.ownerSVGElement.querySelector("defs").appendChild(clip);
     }
-    if (excess.length){
-      parts.push("My "+excess.map(function(m){return m.name.toLowerCase();}).join(" and ")+" meter"+(excess.length>1?"s have":" has")+" too much — try swapping some of those foods.");
-    }
-    msg.textContent = parts.join(" ") + " Try a new plate!";
+    fill.style.display = "block";
+    fill.style.setProperty("fill", setting.colour, "important");
+    fill.setAttribute("fill", setting.colour);
+    fill.removeAttribute("transform");
+    fill.setAttribute("clip-path", "url(#" + clipId + ")");
+    var clipRect = clip.firstChild;
+    clipRect.setAttribute("x", setting.x);
+    clipRect.setAttribute("y", bottom - height);
+    clipRect.setAttribute("width", "94.3");
+    clipRect.setAttribute("height", height);
+    document.getElementById(setting.arrow).style.transform = "translateY(" + (-195 * scale) + "px)";
   }
-  showScreen("screen-result");
-  announce(title.textContent+" "+msg.textContent);
+
+  function setReady(enabled) {
+    var button = document.getElementById("plate-ready-btn");
+    button.style.opacity = enabled ? "1" : ".45";
+    button.style.cursor = enabled ? "pointer" : "not-allowed";
+    button.dataset.enabled = enabled ? "true" : "false";
+  }
+
+  function updateActivity() {
+    var values = totals();
+    Object.keys(meterSettings).forEach(function (key) { updateMeter(key, values[key]); });
+    Object.keys(foodData).forEach(function (id) {
+      var card = document.getElementById(id);
+      var isSelected = selected.indexOf(id) !== -1;
+      var wrapper = card && card.querySelector("g");
+      var borderRects = wrapper ? wrapper.querySelectorAll("rect") : [];
+      card.style.opacity = "1";
+      card.style.filter = isSelected ? "drop-shadow(0 0 10px #22a7a9)" : "";
+      Array.prototype.forEach.call(borderRects, function (border) {
+        border.style.setProperty("stroke", isSelected ? "#22a7a9" : "", "important");
+        border.style.setProperty("stroke-width", isSelected ? "8" : "", "important");
+        border.style.strokeLinejoin = "round";
+      });
+    });
+    var full = selected.length === MAX_FOODS;
+    document.getElementById("girl-popup").style.display = full ? "block" : "none";
+    document.getElementById("girl-popup-msg").style.display = full ? "block" : "none";
+    setReady(full);
+  }
+
+  function resetPlate() {
+    selected = [];
+    updateActivity();
+  }
+
+  function updateSummary() {
+    var values = totals();
+    var messages = [];
+    Object.keys(meterSettings).forEach(function (key) {
+      var setting = meterSettings[key];
+      var status = statusFor(values[key], setting);
+      var label = key === "carbs" ? "Carbohydrates" : key === "protein" ? "Proteins" : "Vitamins & minerals";
+      document.getElementById(setting.text).textContent = label + ": " + status;
+      document.querySelector("#" + setting.summary + " path").style.fill = statusColour(status);
+      messages.push(label + " is " + status.toLowerCase() + " (" + values[key] + ").");
+    });
+    var message = document.getElementById("My_vitamins_minerals_meter_is_still_low._Look_for_foods_with_more_vitamins_minerals_stars._My_carbohydrates_meter_has_too_much_try_swapping_some_of_those_foods._");
+    var text = messages.join(" ");
+    message.querySelectorAll("text").forEach(function (node, index) {
+      node.textContent = index === 0 ? text : "";
+    });
+  }
+
+  function bindFoodCards() {
+    Object.keys(foodData).forEach(function (id) {
+      var card = document.getElementById(id);
+      if (!card) return;
+      card.addEventListener("click", function () {
+        var index = selected.indexOf(id);
+        if (index !== -1) selected.splice(index, 1);
+        else if (selected.length < MAX_FOODS) selected.push(id);
+        updateActivity();
+      });
+    });
+  }
+
+  function initialise() {
+    bindFoodCards();
+    document.getElementById("fill-plate-btn").addEventListener("click", function () { showPage("activity"); });
+    document.getElementById("reset-btn").addEventListener("click", resetPlate);
+    document.getElementById("plate-ready-btn").addEventListener("click", function () {
+      if (this.dataset.enabled !== "true") return;
+      updateSummary();
+      showPage("summary");
+    });
+    document.getElementById("try-new-plate-btn").addEventListener("click", function () {
+      resetPlate();
+      showPage("activity");
+    });
+    showPage("intro");
+    updateActivity();
+  }
+
+  showPage("intro");
+
+  fetch("./js/foods.json")
+    .then(function (response) { if (!response.ok) throw new Error("Food data could not load"); return response.json(); })
+    .then(function (data) { foodData = data; initialise(); })
+    .catch(function (error) { console.error(error); });
 });
 
-document.getElementById("replay").addEventListener("click", function(){
-  picks = [];
-  buildTray();
-  updateMeters();
-  renderPlate();
-  showScreen("screen-game");
-  bubble.textContent = "A new plate! Tap 6 foods — read the stars to plan it well.";
-  announce("New plate started. Pick 6 foods.");
-});
-
-resetBtn.addEventListener("click", function(){
-  if (picks.length === 0) return;
-  picks = [];
-  buildTray();
-  updateMeters();
-  renderPlate();
-  bubble.textContent = "Plate cleared! Tap 6 foods to start again.";
-  announce("Plate cleared. Pick 6 foods.");
-});
-
-function announce(msg){ announcer.textContent = msg; }
-
-buildMeters();
-buildTray();
-updateMeters();
-renderPlate();
 })();
