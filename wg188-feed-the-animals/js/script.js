@@ -99,10 +99,10 @@ const ANIMALS = [
   },
   {
     "animal": "Monkey",
-    "food-options": ["Banana", "Apple", "Corn", "Bug", "Egg", "Lizard"],
+    "food-options": ["Banana", "Apple", "Corn", "Bug", "Egg", "Snail"],
     "correct-answer": {
       "plant": ["Banana", "Apple", "Corn"],
-      "animal": ["Bug", "Egg", "Lizard"],
+      "animal": ["Bug", "Egg", "Snail"],
       "rule": "Any 1 plant + any 1 animal"
     },
     "correct-feedback": "Correct — Monkeys are omnivores. They eat both plants and animals.",
@@ -222,7 +222,8 @@ const ANIMALS = [
 ];
 
 const TOTAL_ROUNDS = ANIMALS.length;
-const PROGRESS_BAR_MAX_WIDTH = 324.81;
+const PROGRESS_BAR_MAX_WIDTH = 303.35;
+const PROGRESS_CAP_NATURAL_WIDTH = 45;
 
 const ANIMAL_IMAGE_MAP = {
   Cow: 'animal-cow',
@@ -263,7 +264,7 @@ const FOOD_IMAGE_MAP = {
   Berries: 'opt-berries',
   Bug: 'opt-bug',
   Worm: 'opt-worm',
-  Lizard: 'opt-snail',
+  Snail: 'opt-snail',
   Grain: 'opt-wheat',
   Spinach: 'opt-leaves'
 };
@@ -366,6 +367,13 @@ document.addEventListener('DOMContentLoaded', () => {
     if (element) element.style.display = value;
   };
 
+  const setFeedBtnEnabled = (enabled) => {
+    if (!feedBtn) return;
+    feedBtn.style.pointerEvents = enabled ? 'auto' : 'none';
+    feedBtn.style.cursor = enabled ? 'pointer' : 'default';
+    feedBtn.style.opacity = enabled ? '1' : '0.5';
+  };
+
   const hideFeedback = () => {
     setDisplay(correctPanel, 'none');
     setDisplay(incorrectPanel, 'none');
@@ -380,9 +388,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const current = Math.min(roundIndex + 1, TOTAL_ROUNDS);
     if (progressBarText) progressBarText.textContent = `${padCount(current)} of ${TOTAL_ROUNDS}`;
     if (progressFill) {
-      const width = Math.max(45, (current / TOTAL_ROUNDS) * PROGRESS_BAR_MAX_WIDTH);
+      const width = (current / TOTAL_ROUNDS) * PROGRESS_BAR_MAX_WIDTH;
       progressFill.setAttribute('width', String(width));
-      if (progressCap) progressCap.setAttribute('transform', `translate(${width - 45}, 0)`);
+      if (progressCap) progressCap.setAttribute('transform', `translate(${width - PROGRESS_CAP_NATURAL_WIDTH}, 0)`);
     }
   };
 
@@ -434,6 +442,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (feedBtnText) feedBtnText.textContent = `Feed the ${animalKey}`;
     if (nextAnimalBtnText) nextAnimalBtnText.textContent = 'Next animal';
     renderFoodOptions();
+    setFeedBtnEnabled(false);
     updateProgress();
     updateCounts();
   };
@@ -497,11 +506,13 @@ document.addEventListener('DOMContentLoaded', () => {
     if (item.classList.contains('selected')) {
       item.classList.remove('selected');
       selectedFoods = selectedFoods.filter((value) => value !== food);
+      setFeedBtnEnabled(selectedFoods.length > 0);
       return;
     }
 
     item.classList.add('selected');
     selectedFoods.push(food);
+    setFeedBtnEnabled(true);
   };
 
   const submitAnswer = () => {
@@ -521,9 +532,11 @@ document.addEventListener('DOMContentLoaded', () => {
       setDisplay(correctPanel, 'block');
       updateCounts();
 
-      // Hide Feed button and display Next Animal button
+      // Hide Feed button and display Next Animal / Summary button
       setDisplay(feedBtn, 'none');
       setDisplay(nextAnimalBtn, 'block');
+      const isLastRound = roundIndex + 1 >= TOTAL_ROUNDS;
+      if (nextAnimalBtnText) nextAnimalBtnText.textContent = isLastRound ? 'Summary' : 'Next animal';
       return;
     }
 

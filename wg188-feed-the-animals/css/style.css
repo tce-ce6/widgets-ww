@@ -161,7 +161,7 @@ svg * {
   padding: 8px 40px;
   color: #fff;
   border-radius: 0 0px 20px 20px;
-  background: #70c965;
+  background: #0295fc;
   white-space: nowrap;
 }
 
@@ -385,12 +385,12 @@ img.step-image {
 
   .feed-option.correct {
     border-color: #1f9d4b;
-    box-shadow: 0 0 0 3px rgba(31, 157, 75, 0.35);
+    border-width: 7px;
   }
 
   .feed-option.wrong {
     border-color: #e41a1a;
-    box-shadow: 0 0 0 3px rgba(228, 26, 26, 0.35);
+    border-width: 7px;
   }
 
   .feed-option.disabled {
@@ -426,4 +426,40 @@ img.step-image {
     height: 100%;
     color: #fff;
     font-weight: 600;
+  }
+
+.summary-container{
+  padding: 70px 90px;
+}
+  .summary-container .summary-title{
+    font-size: 55px;
+    margin: 0 auto;
+    text-align: center;
+    color: #70c965;
+  }
+  .summary-image{
+    height: 260px;
+    margin: 40px auto 0 auto;
+    display: block;
+  }
+  .summary-text{
+    text-align: center;
+    font-size: 27px;
+    display: block;
+    margin-top: 15px;
+  }
+  .summary-subtitle {
+    font-size: 30px;
+    margin-top: 40px;
+  }
+  .summary-list{
+    margin: 0;
+    padding: 0;
+    padding-left: 20px;
+    margin-top: 20px;
+    font-size: 24px;
+  }
+  .summary-subtitle-container{
+    margin: 0 0 0 93px;
+    max-width: 530px;
   }
