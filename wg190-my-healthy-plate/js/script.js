@@ -114,10 +114,9 @@ document.addEventListener("DOMContentLoaded", function () {
       document.querySelector("#" + setting.summary + " path").style.fill = statusColour(status);
       messages.push(label + " is " + status.toLowerCase() + " (" + values[key] + ").");
     });
-    var message = document.getElementById("My_vitamins_minerals_meter_is_still_low._Look_for_foods_with_more_vitamins_minerals_stars._My_carbohydrates_meter_has_too_much_try_swapping_some_of_those_foods._");
-    var text = messages.join(" ");
-    message.querySelectorAll("text").forEach(function (node, index) {
-      node.textContent = index === 0 ? text : "";
+    var feedback = document.getElementById("feedback-msg");
+    feedback.querySelectorAll("tspan").forEach(function (node, index) {
+      node.textContent = messages[index] || "";
     });
   }
 
