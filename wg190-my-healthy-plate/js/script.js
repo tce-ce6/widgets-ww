@@ -11,10 +11,17 @@ document.addEventListener("DOMContentLoaded", function () {
   var selected = [];
   var foodData = {};
   var MAX_FOODS = 6;
+  var LEVEL_COLOURS = {
+    low: "#3e93f3",
+    medium: "#f3dd15",
+    high: "#ff0fc6"
+  };
+  var YELLOW_LINE_Y = 573;
+  var PINK_LINE_Y = 524;
   var meterSettings = {
-    carbs: { fill: "meter_fill_1", arrow: "carbohydrate-arrow", x: 127.23, max: 24, low: 7, high: 9, colour: "#ff9f22", summary: "carbohydrates", text: "carbohydrates-txt" },
-    protein: { fill: "meter_fill_2", arrow: "protein-arrow", x: 307.23, max: 26, low: 7, high: 10, colour: "#27c63b", summary: "proteins", text: "proteins-txt" },
-    vitamins: { fill: "meter_fill_3", arrow: "vitamin-arrow", x: 508.23, max: 48, low: 14, high: 20, colour: "#ff0f0f", summary: "vitamins", text: "vitamins-txt" }
+    carbs: { fill: "meter_fill_1", arrow: "carbohydrate-arrow", x: 127.23, max: 24, low: 7, high: 9, summary: "carbohydrates", text: "carbohydrates-txt" },
+    protein: { fill: "meter_fill_2", arrow: "protein-arrow", x: 307.23, max: 26, low: 7, high: 10, summary: "proteins", text: "proteins-txt" },
+    vitamins: { fill: "meter_fill_3", arrow: "vitamin-arrow", x: 508.23, max: 48, low: 14, high: 20, summary: "vitamins", text: "vitamins-txt" }
   };
 
   function showPage(name) {
@@ -47,6 +54,8 @@ document.addEventListener("DOMContentLoaded", function () {
     var scale = Math.min(value / setting.max, 1);
     var bottom = 671.17;
     var height = 194.96 * scale;
+    var fillTop = bottom - height;
+    var colour = fillTop <= PINK_LINE_Y ? LEVEL_COLOURS.high : fillTop <= YELLOW_LINE_Y ? LEVEL_COLOURS.medium : LEVEL_COLOURS.low;
     var clipId = "meter-clip-" + key;
     var clip = document.getElementById(clipId);
     if (!clip) {
@@ -57,8 +66,8 @@ document.addEventListener("DOMContentLoaded", function () {
       fill.ownerSVGElement.querySelector("defs").appendChild(clip);
     }
     fill.style.display = "block";
-    fill.style.setProperty("fill", setting.colour, "important");
-    fill.setAttribute("fill", setting.colour);
+    fill.style.setProperty("fill", colour, "important");
+    fill.setAttribute("fill", colour);
     fill.removeAttribute("transform");
     fill.setAttribute("clip-path", "url(#" + clipId + ")");
     var clipRect = clip.firstChild;
@@ -66,7 +75,12 @@ document.addEventListener("DOMContentLoaded", function () {
     clipRect.setAttribute("y", bottom - height);
     clipRect.setAttribute("width", "94.3");
     clipRect.setAttribute("height", height);
-    document.getElementById(setting.arrow).style.transform = "translateY(" + (-195 * scale) + "px)";
+    var arrow = document.getElementById(setting.arrow);
+    if (arrow) {
+      arrow.style.setProperty("fill", colour, "important");
+      arrow.setAttribute("fill", colour);
+      arrow.style.transform = "translateY(" + (-195 * scale) + "px)";
+    }
   }
 
   function setReady(enabled) {
@@ -76,26 +90,38 @@ document.addEventListener("DOMContentLoaded", function () {
     button.dataset.enabled = enabled ? "true" : "false";
   }
 
+  function setResetEnabled(enabled) {
+    var button = document.getElementById("reset-btn");
+    button.style.opacity = enabled ? "1" : ".45";
+    button.style.cursor = enabled ? "pointer" : "not-allowed";
+    button.dataset.enabled = enabled ? "true" : "false";
+  }
+
   function updateActivity() {
     var values = totals();
     Object.keys(meterSettings).forEach(function (key) { updateMeter(key, values[key]); });
+    var full = selected.length === MAX_FOODS;
     Object.keys(foodData).forEach(function (id) {
       var card = document.getElementById(id);
       var isSelected = selected.indexOf(id) !== -1;
       var wrapper = card && card.querySelector("g");
       var borderRects = wrapper ? wrapper.querySelectorAll("rect") : [];
       card.style.opacity = "1";
-      card.style.filter = isSelected ? "drop-shadow(0 0 10px #22a7a9)" : "";
+      // Once all 6 foods are selected, disable the remaining (non-selected) cards
+      var disabled = full && !isSelected;
+      card.dataset.disabled = disabled ? "true" : "false";
+      card.style.pointerEvents = disabled ? "none" : "auto";
+      card.style.opacity = disabled ? ".45" : "1";
       Array.prototype.forEach.call(borderRects, function (border) {
-        border.style.setProperty("stroke", isSelected ? "#22a7a9" : "", "important");
-        border.style.setProperty("stroke-width", isSelected ? "8" : "", "important");
+        border.style.setProperty("stroke", isSelected ? "#1dbf4d" : "", "important");
+        border.style.setProperty("stroke-width", isSelected ? "4" : "", "important");
         border.style.strokeLinejoin = "round";
       });
     });
-    var full = selected.length === MAX_FOODS;
     document.getElementById("girl-popup").style.display = full ? "block" : "none";
     document.getElementById("girl-popup-msg").style.display = full ? "block" : "none";
     setReady(full);
+    setResetEnabled(selected.length > 0);
   }
 
   function resetPlate() {
@@ -125,6 +151,7 @@ document.addEventListener("DOMContentLoaded", function () {
       var card = document.getElementById(id);
       if (!card) return;
       card.addEventListener("click", function () {
+        if (card.dataset.disabled === "true") return;
         var index = selected.indexOf(id);
         if (index !== -1) selected.splice(index, 1);
         else if (selected.length < MAX_FOODS) selected.push(id);
