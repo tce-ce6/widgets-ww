@@ -77,7 +77,7 @@
       "author": "tce-ashishg"
     },
     "wg190-my-healthy-plate": {
-      "updatedAt": "2026-09-01T16:45:24+05:30",
+      "updatedAt": "2026-09-01T18:56:01+05:30",
       "author": "tce-ashishg"
     },
     "wg193-swar-ki-pahchan-gujrati": {
@@ -86,6 +86,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-09-01T18:56:01+05:30",
+      "author": "tce-ashishg",
+      "message": "wg190 issue resolved related to progress bar",
+      "widgets": [
+        190
+      ]
+    },
     {
       "date": "2026-09-01T16:45:24+05:30",
       "author": "tce-ashishg",
@@ -329,14 +337,6 @@
       "message": "wg167 completed",
       "widgets": [
         167
-      ]
-    },
-    {
-      "date": "2026-08-14T12:37:49+05:30",
-      "author": "tce-ashishg",
-      "message": "wg186 completed",
-      "widgets": [
-        186
       ]
     }
   ]
