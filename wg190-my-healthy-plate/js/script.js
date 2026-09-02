@@ -2,6 +2,74 @@
 (function(){
 "use strict";
 
+const RESULT_DATA = {
+  "nutrients": {
+    "carbohydrate": {
+      "low": {
+        "value": "Low",
+        "message": "My carbohydrates meter is still low. Look for foods with more carbohydrates stars."
+      },
+      "high": {
+        "value": "Excess",
+        "message": "My carbohydrates meter has too much — try swapping some of the foods."
+      },
+      "justRight": {
+        "value": "Sufficient"
+      }
+    },
+    "protein": {
+      "low": {
+        "value": "Low",
+        "message": "My proteins meter is low. Look for foods with more proteins stars."
+      },
+      "high": {
+        "value": "Excess",
+        "message": "My proteins meter has too much — try swapping some of the foods."
+      },
+      "justRight": {
+        "value": "Sufficient"
+      }
+    },
+    "vitamin": {
+      "low": {
+        "value": "Low",
+        "message": "My vitamins and minerals meter is still low. Look for foods with more vitamins and minerals stars."
+      },
+      "high": {
+        "value": "Excess",
+        "message": "My vitamins and minerals meter has too much — try swapping some of the foods."
+      },
+      "justRight": {
+        "value": "Sufficient"
+      }
+    }
+  },
+  "overallResults": {
+    "allSufficient": {
+      "message": "Hooray! A super plate — everything just right!",
+      "badge": "🥇 Balanced Plate Champion Badge",
+      "stars": 5
+    },
+    "allSufficientWithOneTreat": {
+      "message": "You fitted in one treat and still balanced your plate. Smart!",
+      "badge": "🥇 Balanced Plate Champion Badge",
+      "stars": 5
+    },
+    // "anyLow": {
+    //   "message": "Nutrient meter is still low. Look for foods with more nutrients stars."
+    // },
+    // "anyExcess": {
+    //   "message": "Nutrient meter has too much — try swapping some of the foods."
+    // },
+    "allHigh": {
+      "message": "All the nutrient meters have too much – try swapping some of the foods."
+    },
+    "allLow": {
+      "message": "All the nutrient meters are still low – try swapping some of the foods."
+    }
+  }
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   var pages = {
     intro: document.getElementById("intro-page"),
@@ -18,6 +86,31 @@ document.addEventListener("DOMContentLoaded", function () {
   };
   var YELLOW_LINE_Y = 573;
   var PINK_LINE_Y = 524;
+
+  function getFoodImageSrc(id) {
+    var map = {
+      rice: "rice", idli: "idli", milk: "milk", carrot: "carrot", french_fries: "french-fries",
+      dal: "dal", banana: "banana", pizza: "pizza", roti: "roti", egg: "egg", orange: "orange",
+      samosa: "samosa", fish: "fish", poha: "poha", paneer: "paneer", Guava: "guava",
+      noodles: "noodles", chicken: "chicken", potato: "potato", curd: "curd",
+      cold_drink: "cold-drink", rajma: "rajma", burger: "burger", chocolate: "chocolate",
+      jaebi: "jalebi", ice_cream: "ice-cream", cream_biscuit: "cream-biscuit"
+    };
+    var file = map[id];
+    return file ? "assets/image/elements/" + file + ".svg" : "";
+  }
+
+  function updatePlateImages() {
+    var imgs = document.querySelectorAll("#full-plate img");
+    Array.prototype.forEach.call(imgs, function (img, index) {
+      var id = selected[index];
+      var src = id ? getFoodImageSrc(id) : "";
+      img.removeAttribute("src");
+      if (id && src) img.setAttribute("src", src);
+      img.style.display = id && src ? "block" : "none";
+    });
+  }
+
   var meterSettings = {
     carbs: { fill: "meter_fill_1", arrow: "carbohydrate-arrow", x: 127.23, max: 24, low: 7, high: 9, summary: "carbohydrates", text: "carbohydrates-txt" },
     protein: { fill: "meter_fill_2", arrow: "protein-arrow", x: 307.23, max: 26, low: 7, high: 10, summary: "proteins", text: "proteins-txt" },
@@ -42,10 +135,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function statusFor(value, setting) {
     return value < setting.low ? "Low" : value > setting.high ? "Excess" : "Just right";
-  }
-
-  function statusColour(status) {
-    return status === "Just right" ? "#5faf62" : status === "Excess" ? "#f0524c" : "#f2bb40";
   }
 
   function updateMeter(key, value) {
@@ -100,6 +189,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function updateActivity() {
     var values = totals();
     Object.keys(meterSettings).forEach(function (key) { updateMeter(key, values[key]); });
+    updatePlateImages();
     var full = selected.length === MAX_FOODS;
     Object.keys(foodData).forEach(function (id) {
       var card = document.getElementById(id);
@@ -131,18 +221,54 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function updateSummary() {
     var values = totals();
-    var messages = [];
+    var nutrientKeys = { carbs: "carbohydrate", protein: "protein", vitamins: "vitamin" };
+    var labelByKey = { carbs: "Carbohydrates", protein: "Proteins", vitamins: "Vitamins & minerals" };
+    var badgeClassByKey = { carbs: "carbohydrates", protein: "proteins", vitamins: "vitamins-minerals" };
+    var levels = {};
+
     Object.keys(meterSettings).forEach(function (key) {
-      var setting = meterSettings[key];
-      var status = statusFor(values[key], setting);
-      var label = key === "carbs" ? "Carbohydrates" : key === "protein" ? "Proteins" : "Vitamins & minerals";
-      document.getElementById(setting.text).textContent = label + ": " + status;
-      document.querySelector("#" + setting.summary + " path").style.fill = statusColour(status);
-      messages.push(label + " is " + status.toLowerCase() + " (" + values[key] + ").");
+      var status = statusFor(values[key], meterSettings[key]);
+      levels[key] = status === "Low" ? "low" : status === "Excess" ? "high" : "justRight";
     });
-    var feedback = document.getElementById("feedback-msg");
-    feedback.querySelectorAll("tspan").forEach(function (node, index) {
-      node.textContent = messages[index] || "";
+
+    var allLow = levels.carbs === "low" && levels.protein === "low" && levels.vitamins === "low";
+    var allHigh = levels.carbs === "high" && levels.protein === "high" && levels.vitamins === "high";
+    var allSufficient = levels.carbs === "justRight" && levels.protein === "justRight" && levels.vitamins === "justRight";
+
+    var titleEl = document.querySelector("#feedback-msg .minerals-title");
+    var textContainer = document.getElementById("feedback-msg-text-container");
+
+    if (allSufficient) {
+      titleEl.textContent = RESULT_DATA.overallResults.allSufficient.message;
+      textContainer.style.display = "none";
+    } else if (allHigh) {
+      titleEl.textContent = RESULT_DATA.overallResults.allHigh.message;
+      textContainer.style.display = "none";
+    } else if (allLow) {
+      titleEl.textContent = RESULT_DATA.overallResults.allLow.message;
+      textContainer.style.display = "none";
+    } else {
+      titleEl.textContent = "Almost there!";
+      textContainer.style.display = "block";
+    }
+
+    Object.keys(meterSettings).forEach(function (key) {
+      var level = levels[key];
+      var nutrient = RESULT_DATA.nutrients[nutrientKeys[key]];
+      var badge = document.querySelector("#minerals-scale-container .minerals." + badgeClassByKey[key]);
+      if (badge) badge.textContent = labelByKey[key] + ": " + nutrient[level].value;
+
+      var txtEl = document.getElementById(meterSettings[key].text);
+      if (txtEl) {
+        var message = nutrient[level].message;
+        if (message) {
+          txtEl.textContent = message;
+          txtEl.style.display = "block";
+        } else {
+          txtEl.textContent = "";
+          txtEl.style.display = "none";
+        }
+      }
     });
   }
 
