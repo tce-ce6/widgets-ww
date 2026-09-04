@@ -6,41 +6,41 @@ const RESULT_DATA = {
   "nutrients": {
     "carbohydrate": {
       "low": {
-        "value": "Low",
+        "value": "Low 😴",
         "message": "My carbohydrates meter is still low. Look for foods with more carbohydrates stars."
       },
       "high": {
-        "value": "Excess",
+        "value": "Excess 😵",
         "message": "My carbohydrates meter has too much — try swapping some of the foods."
       },
       "justRight": {
-        "value": "Sufficient"
+        "value": "Sufficient 😄"
       }
     },
     "protein": {
       "low": {
-        "value": "Low",
+        "value": "Low 😴",
         "message": "My proteins meter is low. Look for foods with more proteins stars."
       },
       "high": {
-        "value": "Excess",
+        "value": "Excess 😵",
         "message": "My proteins meter has too much — try swapping some of the foods."
       },
       "justRight": {
-        "value": "Sufficient"
+        "value": "Sufficient 😄"
       }
     },
     "vitamin": {
       "low": {
-        "value": "Low",
+        "value": "Low 😴",
         "message": "My vitamins and minerals meter is still low. Look for foods with more vitamins and minerals stars."
       },
       "high": {
-        "value": "Excess",
+        "value": "Excess 😵",
         "message": "My vitamins and minerals meter has too much — try swapping some of the foods."
       },
       "justRight": {
-        "value": "Sufficient"
+        "value": "Sufficient 😄"
       }
     }
   },
@@ -189,6 +189,14 @@ document.addEventListener("DOMContentLoaded", function () {
   function updateActivity() {
     var values = totals();
     Object.keys(meterSettings).forEach(function (key) { updateMeter(key, values[key]); });
+    var smileyMap = { carbs: "smiley-dozzy", protein: "smiley-smile", vitamins: "smiley-nervous" };
+    var smileySrc = { low: "assets/image/smiley-nervous.svg", high: "assets/image/smiley-dozzy.svg", justRight: "assets/image/smiley-smile.svg" };
+    Object.keys(meterSettings).forEach(function (key) {
+      var status = statusFor(values[key], meterSettings[key]);
+      var level = status === "Low" ? "low" : status === "Excess" ? "high" : "justRight";
+      var img = document.querySelector("#" + smileyMap[key] + " img");
+      if (img) img.setAttribute("src", smileySrc[level]);
+    });
     updatePlateImages();
     var full = selected.length === MAX_FOODS;
     Object.keys(foodData).forEach(function (id) {
@@ -252,11 +260,15 @@ document.addEventListener("DOMContentLoaded", function () {
       textContainer.style.display = "block";
     }
 
+    var levelColours = { low: "#f2bb40", high: "#f0524c", justRight: "#5faf62" };
     Object.keys(meterSettings).forEach(function (key) {
       var level = levels[key];
       var nutrient = RESULT_DATA.nutrients[nutrientKeys[key]];
       var badge = document.querySelector("#minerals-scale-container .minerals." + badgeClassByKey[key]);
-      if (badge) badge.textContent = labelByKey[key] + ": " + nutrient[level].value;
+      if (badge) {
+        badge.textContent = labelByKey[key] + ": " + nutrient[level].value;
+        badge.style.setProperty("background-color", levelColours[level], "important");
+      }
 
       var txtEl = document.getElementById(meterSettings[key].text);
       if (txtEl) {
