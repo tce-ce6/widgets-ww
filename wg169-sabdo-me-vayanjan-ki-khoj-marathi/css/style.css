@@ -32,7 +32,7 @@ svg * {
   margin: 0;
   padding: 0;
   position: absolute;
-    top: -120px;
+  top: -120px;
 }
 
 #vyanjan-wrapper .container::after {
@@ -244,14 +244,18 @@ svg * {
   font-size: 140px;
   position: absolute;
   bottom: 132px;
-  left: 56%;
+  left: 60%;
   transform: translateX(-50%);
   font-weight: 600;
 }
-.lottie-container{
+
+.lottie-container {
   position: absolute;
   top: -130px;
-  z-index: 10;          /* keep above option image on correct click */
-  pointer-events: none; /* don't block option clicks */
-  left: 0;              /* stable horizontal placement for absolute positioning */
+  z-index: 10;
+  /* keep above option image on correct click */
+  pointer-events: none;
+  /* don't block option clicks */
+  left: 0;
+  /* stable horizontal placement for absolute positioning */
 }
