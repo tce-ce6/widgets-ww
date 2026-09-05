@@ -1,0 +1,1028 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 361 380.62">
+  <!-- Generator: Adobe Illustrator 30.8.1, SVG Export Plug-In . SVG Version: 2.1.4 Build 1)  -->
+  <defs>
+    <style>
+      .st0 {
+        clip-path: url(#clippath-34);
+      }
+
+      .st1 {
+        fill: url(#linear-gradient2);
+      }
+
+      .st2 {
+        clip-path: url(#clippath-38);
+      }
+
+      .st3 {
+        clip-path: url(#clippath-21);
+      }
+
+      .st4 {
+        clip-path: url(#clippath-6);
+      }
+
+      .st5 {
+        clip-path: url(#clippath-7);
+      }
+
+      .st6 {
+        clip-path: url(#clippath-17);
+      }
+
+      .st7 {
+        fill: #2b7ebc;
+      }
+
+      .st7, .st8, .st9, .st10, .st11, .st12 {
+        fill-rule: evenodd;
+      }
+
+      .st8 {
+        fill: #020202;
+      }
+
+      .st13 {
+        clip-path: url(#clippath-31);
+      }
+
+      .st14 {
+        clip-path: url(#clippath-15);
+      }
+
+      .st15 {
+        clip-path: url(#clippath-33);
+      }
+
+      .st16 {
+        clip-path: url(#clippath-18);
+      }
+
+      .st17 {
+        clip-path: url(#clippath-47);
+      }
+
+      .st18 {
+        clip-path: url(#clippath-4);
+      }
+
+      .st19 {
+        fill: url(#linear-gradient33);
+      }
+
+      .st20 {
+        fill: url(#linear-gradient10);
+      }
+
+      .st21 {
+        clip-path: url(#clippath-22);
+      }
+
+      .st22 {
+        fill: #66290a;
+      }
+
+      .st23 {
+        clip-path: url(#clippath-23);
+      }
+
+      .st24 {
+        fill: url(#linear-gradient32);
+      }
+
+      .st25 {
+        fill: url(#linear-gradient21);
+      }
+
+      .st26 {
+        fill: url(#linear-gradient27);
+      }
+
+      .st27 {
+        clip-path: url(#clippath-9);
+      }
+
+      .st28 {
+        clip-path: url(#clippath-10);
+      }
+
+      .st29 {
+        clip-path: url(#clippath-42);
+      }
+
+      .st30, .st9 {
+        fill: #fff;
+      }
+
+      .st31 {
+        clip-path: url(#clippath-43);
+      }
+
+      .st32 {
+        fill: url(#linear-gradient26);
+      }
+
+      .st33 {
+        fill: url(#linear-gradient1);
+      }
+
+      .st34 {
+        clip-path: url(#clippath-25);
+      }
+
+      .st35 {
+        clip-path: url(#clippath-27);
+      }
+
+      .st36 {
+        fill: url(#linear-gradient9);
+      }
+
+      .st37 {
+        fill: url(#linear-gradient18);
+      }
+
+      .st38 {
+        stroke-miterlimit: 10;
+        stroke-width: .95px;
+      }
+
+      .st38, .st39, .st40 {
+        fill: none;
+      }
+
+      .st38, .st40 {
+        stroke: #eaa700;
+      }
+
+      .st41 {
+        fill: url(#linear-gradient23);
+      }
+
+      .st42 {
+        clip-path: url(#clippath-11);
+      }
+
+      .st43 {
+        fill: url(#linear-gradient8);
+      }
+
+      .st44 {
+        fill: url(#linear-gradient11);
+      }
+
+      .st45 {
+        fill: #ffd522;
+      }
+
+      .st46 {
+        clip-path: url(#clippath-36);
+      }
+
+      .st47 {
+        clip-path: url(#clippath-35);
+      }
+
+      .st48 {
+        clip-path: url(#clippath-48);
+      }
+
+      .st49 {
+        clip-path: url(#clippath-28);
+      }
+
+      .st50 {
+        fill: url(#linear-gradient16);
+      }
+
+      .st51 {
+        fill: url(#linear-gradient24);
+      }
+
+      .st52 {
+        fill: #a06b24;
+      }
+
+      .st10 {
+        fill: #3da0eb;
+      }
+
+      .st53 {
+        fill: #7a350e;
+      }
+
+      .st54 {
+        fill: url(#linear-gradient30);
+      }
+
+      .st55 {
+        clip-path: url(#clippath-1);
+      }
+
+      .st56 {
+        fill: url(#linear-gradient22);
+      }
+
+      .st57 {
+        clip-path: url(#clippath-45);
+      }
+
+      .st58 {
+        fill: #eaae73;
+        stroke: #bc7d44;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: .7px;
+      }
+
+      .st59 {
+        clip-path: url(#clippath-46);
+      }
+
+      .st60 {
+        clip-path: url(#clippath-40);
+      }
+
+      .st61 {
+        fill: url(#linear-gradient29);
+      }
+
+      .st62 {
+        clip-path: url(#clippath-5);
+      }
+
+      .st63 {
+        clip-path: url(#clippath-20);
+      }
+
+      .st64 {
+        clip-path: url(#clippath-8);
+      }
+
+      .st65 {
+        fill: url(#linear-gradient19);
+      }
+
+      .st66 {
+        fill: url(#linear-gradient12);
+      }
+
+      .st67 {
+        clip-path: url(#clippath-41);
+      }
+
+      .st68 {
+        fill: url(#linear-gradient28);
+      }
+
+      .st69 {
+        clip-path: url(#clippath-3);
+      }
+
+      .st70 {
+        clip-path: url(#clippath-26);
+      }
+
+      .st11 {
+        fill: #3ca0eb;
+      }
+
+      .st71 {
+        fill: url(#linear-gradient7);
+      }
+
+      .st72 {
+        clip-path: url(#clippath-12);
+      }
+
+      .st73 {
+        opacity: 0;
+      }
+
+      .st73, .st74 {
+        isolation: isolate;
+      }
+
+      .st75 {
+        clip-path: url(#clippath-50);
+      }
+
+      .st76 {
+        fill: url(#linear-gradient20);
+      }
+
+      .st77 {
+        fill: url(#linear-gradient4);
+      }
+
+      .st78 {
+        fill: url(#linear-gradient31);
+      }
+
+      .st79 {
+        clip-path: url(#clippath-14);
+      }
+
+      .st80 {
+        fill: #fc6baf;
+      }
+
+      .st81 {
+        clip-path: url(#clippath-30);
+      }
+
+      .st82 {
+        clip-path: url(#clippath-19);
+      }
+
+      .st83 {
+        fill: url(#linear-gradient14);
+      }
+
+      .st84 {
+        fill: url(#linear-gradient5);
+      }
+
+      .st74 {
+        opacity: .2;
+      }
+
+      .st85 {
+        fill: #bc833f;
+      }
+
+      .st86 {
+        fill: url(#linear-gradient3);
+      }
+
+      .st87 {
+        clip-path: url(#clippath-32);
+      }
+
+      .st88 {
+        fill: url(#linear-gradient25);
+      }
+
+      .st89 {
+        fill: #8c4a1e;
+      }
+
+      .st90 {
+        fill: url(#linear-gradient15);
+      }
+
+      .st91 {
+        fill: url(#linear-gradient17);
+      }
+
+      .st92 {
+        clip-path: url(#clippath-39);
+      }
+
+      .st93 {
+        fill: #4d268c;
+      }
+
+      .st94 {
+        fill: url(#linear-gradient6);
+      }
+
+      .st95 {
+        clip-path: url(#clippath-16);
+      }
+
+      .st96 {
+        clip-path: url(#clippath-2);
+      }
+
+      .st97 {
+        clip-path: url(#clippath-29);
+      }
+
+      .st98 {
+        clip-path: url(#clippath-49);
+      }
+
+      .st99 {
+        clip-path: url(#clippath-37);
+      }
+
+      .st100 {
+        clip-path: url(#clippath-13);
+      }
+
+      .st101 {
+        fill: #7b00e6;
+      }
+
+      .st102 {
+        fill: url(#linear-gradient13);
+      }
+
+      .st103 {
+        fill: #7dbcec;
+      }
+
+      .st104 {
+        fill: url(#linear-gradient);
+      }
+
+      .st105 {
+        clip-path: url(#clippath-24);
+      }
+
+      .st12 {
+        fill: #e9f5f2;
+      }
+
+      .st40 {
+        stroke-miterlimit: 10;
+        stroke-width: .95px;
+      }
+
+      .st106 {
+        clip-path: url(#clippath);
+      }
+
+      .st107 {
+        fill: #eaa700;
+      }
+
+      .st108 {
+        clip-path: url(#clippath-44);
+      }
+
+      .st109 {
+        fill: #845217;
+      }
+
+      .st110 {
+        fill: #462208;
+      }
+    </style>
+    <clipPath id="clippath">
+      <rect class="st39" x="-116.12" y="10.99" width="550.64" height="508"/>
+    </clipPath>
+    <clipPath id="clippath-1">
+      <rect class="st39" x="27.3" y="24.08" width="321.58" height="341.01"/>
+    </clipPath>
+    <clipPath id="clippath-2">
+      <rect class="st39" x="-116.12" y="10.99" width="550.64" height="508"/>
+    </clipPath>
+    <clipPath id="clippath-3">
+      <rect class="st39" x="20.41" y="138.42" width="321.58" height="219.78"/>
+    </clipPath>
+    <clipPath id="clippath-4">
+      <polygon class="st39" points="329.03 149.99 329.03 345.93 33.37 345.93 33.37 150.2 20.41 138.35 20.41 358.2 341.99 358.2 341.99 138.35 329.03 149.99"/>
+    </clipPath>
+    <clipPath id="clippath-5">
+      <polygon class="st39" points="57.05 172.71 135.81 244.57 227.75 244.57 305.41 172.71 309.47 57.89 54.29 57.89 57.05 172.71"/>
+    </clipPath>
+    <linearGradient id="linear-gradient" x1="252.99" y1="162.39" x2="285.62" y2="162.39" gradientTransform="translate(83.1 415.46) rotate(-21.22) scale(1 -1)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f5be00"/>
+      <stop offset="1" stop-color="#eaa700"/>
+    </linearGradient>
+    <clipPath id="clippath-6">
+      <path class="st39" d="M291.53,167.22c-.32,4.8-8.06,8.43-17.28,8.12s-16.44-4.46-16.12-9.26l33.4,1.14Z"/>
+    </clipPath>
+    <linearGradient id="linear-gradient1" x1="123.23" y1="288.98" x2="164.17" y2="288.98" gradientTransform="translate(0 382) scale(1 -1)" gradientUnits="userSpaceOnUse">
+      <stop offset=".31" stop-color="#eaae73"/>
+      <stop offset="1" stop-color="#ea9f5e"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient2" x1="145.64" y1="305.58" x2="145.64" y2="272.84" gradientTransform="translate(0 382) scale(1 -1)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#e7b83c"/>
+      <stop offset=".46" stop-color="#d17922"/>
+    </linearGradient>
+    <clipPath id="clippath-7">
+      <path class="st39" d="M183.4,145.61l-58.41-12.35,7.06,45.27c.43,2.73,2.43,4.95,5.11,5.64l41.63,10.77c2.91.75,5.97.78,8.89.07l74.25-18.01c2.58-.63,4.55-2.71,5.04-5.32l8.02-43.01-91.59,16.94Z"/>
+    </clipPath>
+    <clipPath id="clippath-8">
+      <path class="st39" d="M183.4,145.61l-58.41-12.35,7.06,45.27c.43,2.73,2.43,4.95,5.11,5.64l41.63,10.77c2.91.75,5.97.78,8.89.07l74.25-18.01c2.58-.63,4.55-2.71,5.04-5.32l8.02-43.01-91.59,16.94Z"/>
+    </clipPath>
+    <clipPath id="clippath-9">
+      <path class="st39" d="M183.4,145.61l-58.41-12.35,7.06,45.27c.43,2.73,2.43,4.95,5.11,5.64l41.63,10.77c2.91.75,5.97.78,8.89.07l74.25-18.01c2.58-.63,4.55-2.71,5.04-5.32l8.02-43.01-91.59,16.94Z"/>
+    </clipPath>
+    <clipPath id="clippath-10">
+      <path class="st39" d="M183.4,145.61l-58.41-12.35,7.06,45.27c.43,2.73,2.43,4.95,5.11,5.64l41.63,10.77c2.91.75,5.97.78,8.89.07l74.25-18.01c2.58-.63,4.55-2.71,5.04-5.32l8.02-43.01-91.59,16.94Z"/>
+    </clipPath>
+    <clipPath id="clippath-11">
+      <path class="st39" d="M124.99,133.26l58.41,12.35-.15,43.81c-.01,3.38-3.2,5.84-6.47,4.99l-36.57-9.46c-4.53-1.17-7.93-4.92-8.65-9.54l-6.58-42.15Z"/>
+    </clipPath>
+    <clipPath id="clippath-12">
+      <path class="st39" d="M124.99,133.26l58.41,12.35-.15,43.81c-.01,3.38-3.2,5.84-6.47,4.99l-36.57-9.46c-4.53-1.17-7.93-4.92-8.65-9.54l-6.58-42.15Z"/>
+    </clipPath>
+    <clipPath id="clippath-13">
+      <path class="st39" d="M183.4,145.61l-58.41-12.35,7.06,45.27c.43,2.73,2.43,4.95,5.11,5.64l41.63,10.77c2.91.75,5.97.78,8.89.07l74.25-18.01c2.58-.63,4.55-2.71,5.04-5.32l8.02-43.01-91.59,16.94Z"/>
+    </clipPath>
+    <clipPath id="clippath-14">
+      <path class="st39" d="M183.4,145.61l-58.41-12.35,7.06,45.27c.43,2.73,2.43,4.95,5.11,5.64l41.63,10.77c2.91.75,5.97.78,8.89.07l74.25-18.01c2.58-.63,4.55-2.71,5.04-5.32l8.02-43.01-91.59,16.94Z"/>
+    </clipPath>
+    <clipPath id="clippath-15">
+      <path class="st39" d="M183.4,145.61l-58.41-12.35,7.06,45.27c.43,2.73,2.43,4.95,5.11,5.64l41.63,10.77c2.91.75,5.97.78,8.89.07l74.25-18.01c2.58-.63,4.55-2.71,5.04-5.32l8.02-43.01-91.59,16.94Z"/>
+    </clipPath>
+    <clipPath id="clippath-16">
+      <path class="st39" d="M183.4,145.61l-58.41-12.35,7.06,45.27c.43,2.73,2.43,4.95,5.11,5.64l41.63,10.77c2.91.75,5.97.78,8.89.07l74.25-18.01c2.58-.63,4.55-2.71,5.04-5.32l8.02-43.01-91.59,16.94Z"/>
+    </clipPath>
+    <clipPath id="clippath-17">
+      <path class="st39" d="M183.4,145.61l-58.41-12.35,7.06,45.27c.43,2.73,2.43,4.95,5.11,5.64l41.63,10.77c2.91.75,5.97.78,8.89.07l74.25-18.01c2.58-.63,4.55-2.71,5.04-5.32l8.02-43.01-91.59,16.94Z"/>
+    </clipPath>
+    <clipPath id="clippath-18">
+      <path class="st39" d="M190.51,154.82l.12,30.79c0,2.11,2,3.66,4.05,3.15l63.14-15.79c2.61-.65,4.58-2.8,5.01-5.45l4.32-26.6,11.38-.79-1.32,50.3-94.5,11.12.79-49.37,7.01,2.65Z"/>
+    </clipPath>
+    <clipPath id="clippath-19">
+      <path class="st39" d="M183.4,145.61l-58.41-12.35,7.06,45.27c.43,2.73,2.43,4.95,5.11,5.64l41.63,10.77c2.91.75,5.97.78,8.89.07l74.25-18.01c2.58-.63,4.55-2.71,5.04-5.32l8.02-43.01-91.59,16.94Z"/>
+    </clipPath>
+    <clipPath id="clippath-20">
+      <path class="st39" d="M183.1,197.58l.24-43.02-7.12-.26v30.76c0,1.93-1.81,3.34-3.68,2.88l-33.55-8.27c-1.18-.29-2.06-1.27-2.23-2.47l-4.22-30.17-7.81-.26,3.4,40.23,54.97,10.59Z"/>
+    </clipPath>
+    <linearGradient id="linear-gradient3" x1="155.52" y1="299.92" x2="155.52" y2="248.74" gradientTransform="translate(0 382) scale(1 -1)" gradientUnits="userSpaceOnUse">
+      <stop offset=".31" stop-color="#eaae73"/>
+      <stop offset="1" stop-color="#ea9951"/>
+    </linearGradient>
+    <clipPath id="clippath-21">
+      <path class="st39" d="M183.4,145.61l91.59-16.94-7.73,41.45c-.66,3.56-3.35,6.39-6.87,7.24l-77.17,18.72.18-50.47Z"/>
+    </clipPath>
+    <clipPath id="clippath-22">
+      <path class="st39" d="M272.53,141.38l-89.12,16.94-56.65-11.65s-3.53-4.24-3.88-6.71c-.35-2.47,2.12-6.71,2.12-6.71l58.41,12.35,91.59-16.94s1.76,2.47,1.76,6c0,3.53-4.24,6.71-4.24,6.71Z"/>
+    </clipPath>
+    <clipPath id="clippath-23">
+      <path class="st39" d="M272.53,141.38l-89.12,16.94-56.65-11.65s-3.53-4.24-3.88-6.71c-.35-2.47,2.12-6.71,2.12-6.71l58.41,12.35,91.59-16.94s1.76,2.47,1.76,6c0,3.53-4.24,6.71-4.24,6.71Z"/>
+    </clipPath>
+    <linearGradient id="linear-gradient4" x1="201.23" y1="269.7" x2="201.23" y2="226.57" gradientTransform="translate(0 382) scale(1 -1)" gradientUnits="userSpaceOnUse">
+      <stop offset=".31" stop-color="#eaae73" stop-opacity="0"/>
+      <stop offset="1" stop-color="#ea9951"/>
+    </linearGradient>
+    <clipPath id="clippath-24">
+      <polygon class="st39" points="128.34 127.26 107.52 99.02 182.5 87.58 204.23 114.9 128.34 127.26"/>
+    </clipPath>
+    <clipPath id="clippath-25">
+      <path class="st39" d="M96.05,95.49s-9.94,49.99,12,63.89c10.59,6.71,16.94-26.12,16.94-26.12l-28.94-37.77Z"/>
+    </clipPath>
+    <clipPath id="clippath-26">
+      <polygon class="st39" points="140.52 133.26 217.54 122.15 258.41 128.67 182.17 141.73 140.52 133.26"/>
+    </clipPath>
+    <clipPath id="clippath-27">
+      <path class="st39" d="M96.05,95.49s-9.94,49.99,12,63.89c10.59,6.71,16.94-26.12,16.94-26.12l-28.94-37.77Z"/>
+    </clipPath>
+    <clipPath id="clippath-28">
+      <path class="st39" d="M96.05,95.49s-9.94,49.99,12,63.89c10.59,6.71,16.94-26.12,16.94-26.12l-28.94-37.77Z"/>
+    </clipPath>
+    <clipPath id="clippath-29">
+      <path class="st39" d="M96.05,95.49s-9.94,49.99,12,63.89c10.59,6.71,16.94-26.12,16.94-26.12l-28.94-37.77Z"/>
+    </clipPath>
+    <clipPath id="clippath-30">
+      <polygon class="st39" points="139.46 133.26 184.02 141.99 257.08 128.76 307.91 87.45 179.79 26.04 72.84 111.28 139.46 133.26"/>
+    </clipPath>
+    <linearGradient id="linear-gradient5" x1="140.57" y1="233.53" x2="173.13" y2="233.53" gradientTransform="translate(0 382) scale(1 -1)" xlink:href="#linear-gradient"/>
+    <clipPath id="clippath-31">
+      <path class="st39" d="M173.13,149.84c0,2.17-7.29,3.92-16.28,3.92s-16.28-1.76-16.28-3.92v-6.67h32.56v6.67Z"/>
+    </clipPath>
+    <linearGradient id="linear-gradient6" x1="145.02" y1="240.14" x2="168.56" y2="240.14" gradientTransform="translate(0 382) scale(1 -1)" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient7" x1="140.57" y1="243.21" x2="173.13" y2="243.21" gradientTransform="translate(0 382) scale(1 -1)" xlink:href="#linear-gradient"/>
+    <clipPath id="clippath-32">
+      <path class="st39" d="M173.13,140.16c0,2.17-7.29,3.92-16.28,3.92s-16.28-1.76-16.28-3.92v-6.67h32.56v6.67Z"/>
+    </clipPath>
+    <linearGradient id="linear-gradient8" x1="145.02" y1="249.81" x2="168.56" y2="249.81" gradientTransform="translate(0 382) scale(1 -1)" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient9" x1="140.57" y1="252.1" x2="173.13" y2="252.1" gradientTransform="translate(0 382) scale(1 -1)" xlink:href="#linear-gradient"/>
+    <clipPath id="clippath-33">
+      <path class="st39" d="M173.13,131.27c0,2.17-7.29,3.92-16.28,3.92s-16.28-1.76-16.28-3.92v-6.67h32.56v6.67Z"/>
+    </clipPath>
+    <linearGradient id="linear-gradient10" x1="145.02" y1="258.71" x2="168.56" y2="258.71" gradientTransform="translate(0 382) scale(1 -1)" xlink:href="#linear-gradient"/>
+    <clipPath id="clippath-34">
+      <polygon class="st39" points="139.46 133.26 184.02 141.99 257.08 128.76 307.91 87.45 179.79 26.04 72.84 111.28 139.46 133.26"/>
+    </clipPath>
+    <linearGradient id="linear-gradient11" x1="222.81" y1="241.65" x2="255.37" y2="241.65" gradientTransform="translate(0 382) scale(1 -1)" xlink:href="#linear-gradient"/>
+    <clipPath id="clippath-35">
+      <path class="st39" d="M255.37,141.72c0,2.17-7.29,3.92-16.28,3.92s-16.28-1.76-16.28-3.92v-6.67h32.56v6.67Z"/>
+    </clipPath>
+    <linearGradient id="linear-gradient12" x1="227.26" y1="248.26" x2="250.79" y2="248.26" gradientTransform="translate(0 382) scale(1 -1)" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient13" x1="222.81" y1="251.33" x2="255.37" y2="251.33" gradientTransform="translate(0 382) scale(1 -1)" xlink:href="#linear-gradient"/>
+    <clipPath id="clippath-36">
+      <path class="st39" d="M255.37,132.04c0,2.17-7.29,3.92-16.28,3.92s-16.28-1.76-16.28-3.92v-6.67h32.56v6.67Z"/>
+    </clipPath>
+    <linearGradient id="linear-gradient14" x1="227.26" y1="257.93" x2="250.79" y2="257.93" gradientTransform="translate(0 382) scale(1 -1)" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient15" x1="222.81" y1="260.22" x2="255.37" y2="260.22" gradientTransform="translate(0 382) scale(1 -1)" xlink:href="#linear-gradient"/>
+    <clipPath id="clippath-37">
+      <path class="st39" d="M255.37,123.15c0,2.17-7.29,3.92-16.28,3.92s-16.28-1.76-16.28-3.92v-6.67h32.56v6.67Z"/>
+    </clipPath>
+    <linearGradient id="linear-gradient16" x1="227.26" y1="266.82" x2="250.79" y2="266.82" gradientTransform="translate(0 382) scale(1 -1)" xlink:href="#linear-gradient"/>
+    <clipPath id="clippath-38">
+      <polygon class="st39" points="139.46 133.26 184.02 141.99 257.08 128.76 307.91 87.45 179.79 26.04 72.84 111.28 139.46 133.26"/>
+    </clipPath>
+    <linearGradient id="linear-gradient17" x1="193.51" y1="244.3" x2="226.08" y2="244.3" gradientTransform="translate(0 382) scale(1 -1)" xlink:href="#linear-gradient"/>
+    <clipPath id="clippath-39">
+      <path class="st39" d="M226.08,139.07c0,2.17-7.29,3.92-16.28,3.92s-16.28-1.76-16.28-3.92v-6.67h32.56v6.67Z"/>
+    </clipPath>
+    <linearGradient id="linear-gradient18" x1="197.96" y1="250.9" x2="221.5" y2="250.9" gradientTransform="translate(0 382) scale(1 -1)" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient19" x1="193.51" y1="253.98" x2="226.08" y2="253.98" gradientTransform="translate(0 382) scale(1 -1)" xlink:href="#linear-gradient"/>
+    <clipPath id="clippath-40">
+      <path class="st39" d="M226.08,129.4c0,2.17-7.29,3.92-16.28,3.92s-16.28-1.76-16.28-3.92v-6.67h32.56v6.67Z"/>
+    </clipPath>
+    <linearGradient id="linear-gradient20" x1="197.96" y1="260.58" x2="221.5" y2="260.58" gradientTransform="translate(0 382) scale(1 -1)" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient21" x1="193.51" y1="262.87" x2="226.08" y2="262.87" gradientTransform="translate(0 382) scale(1 -1)" xlink:href="#linear-gradient"/>
+    <clipPath id="clippath-41">
+      <path class="st39" d="M226.08,120.51c0,2.17-7.29,3.92-16.28,3.92s-16.28-1.76-16.28-3.92v-6.67h32.56v6.67Z"/>
+    </clipPath>
+    <linearGradient id="linear-gradient22" x1="197.96" y1="269.47" x2="221.5" y2="269.47" gradientTransform="translate(0 382) scale(1 -1)" xlink:href="#linear-gradient"/>
+    <clipPath id="clippath-42">
+      <polygon class="st39" points="139.46 133.26 184.02 141.99 257.08 128.76 307.91 87.45 179.79 26.04 72.84 111.28 139.46 133.26"/>
+    </clipPath>
+    <linearGradient id="linear-gradient23" x1="171.63" y1="233.89" x2="204.19" y2="233.89" gradientTransform="translate(0 382) scale(1 -1)" xlink:href="#linear-gradient"/>
+    <clipPath id="clippath-43">
+      <path class="st39" d="M204.19,149.49c0,2.17-7.29,3.92-16.28,3.92s-16.28-1.76-16.28-3.92v-6.67h32.56v6.67Z"/>
+    </clipPath>
+    <linearGradient id="linear-gradient24" x1="176.08" y1="240.49" x2="199.62" y2="240.49" gradientTransform="translate(0 382) scale(1 -1)" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient25" x1="171.63" y1="243.56" x2="204.19" y2="243.56" gradientTransform="translate(0 382) scale(1 -1)" xlink:href="#linear-gradient"/>
+    <clipPath id="clippath-44">
+      <path class="st39" d="M204.19,139.81c0,2.17-7.29,3.92-16.28,3.92s-16.28-1.76-16.28-3.92v-6.67h32.56v6.67Z"/>
+    </clipPath>
+    <linearGradient id="linear-gradient26" x1="176.08" y1="250.17" x2="199.62" y2="250.17" gradientTransform="translate(0 382) scale(1 -1)" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient27" x1="171.63" y1="252.45" x2="204.19" y2="252.45" gradientTransform="translate(0 382) scale(1 -1)" xlink:href="#linear-gradient"/>
+    <clipPath id="clippath-45">
+      <path class="st39" d="M204.19,130.92c0,2.17-7.29,3.92-16.28,3.92s-16.28-1.76-16.28-3.92v-6.67h32.56v6.67Z"/>
+    </clipPath>
+    <linearGradient id="linear-gradient28" x1="176.08" y1="259.06" x2="199.62" y2="259.06" gradientTransform="translate(0 382) scale(1 -1)" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient29" x1="177.76" y1="161.09" x2="210.39" y2="161.09" xlink:href="#linear-gradient"/>
+    <clipPath id="clippath-46">
+      <path class="st39" d="M221.87,195.67c-.32,4.8-8.06,8.43-17.28,8.12s-16.44-4.46-16.12-9.26l33.4,1.14Z"/>
+    </clipPath>
+    <linearGradient id="linear-gradient30" x1="107.07" y1="199.9" x2="139.7" y2="199.9" xlink:href="#linear-gradient"/>
+    <clipPath id="clippath-47">
+      <path class="st39" d="M141.93,185.08c-.32,4.8-8.06,8.43-17.28,8.12-9.22-.32-16.44-4.46-16.12-9.26l33.4,1.14Z"/>
+    </clipPath>
+    <linearGradient id="linear-gradient31" x1="150.7" y1="163.08" x2="183.33" y2="163.08" xlink:href="#linear-gradient"/>
+    <clipPath id="clippath-48">
+      <path class="st39" d="M195.93,203.61c-.32,4.8-8.06,8.43-17.28,8.12-9.22-.32-16.44-4.46-16.12-9.26l33.4,1.14Z"/>
+    </clipPath>
+    <linearGradient id="linear-gradient32" x1="156.24" y1="177.75" x2="188.87" y2="177.75" gradientTransform="translate(57.5 381.23) rotate(-1.78) scale(1 -1)" xlink:href="#linear-gradient"/>
+    <clipPath id="clippath-49">
+      <path class="st39" d="M239.5,204.2c-1.9,4.42-10.41,5.27-19,1.9-8.59-3.37-14.02-9.68-12.12-14.1l31.12,12.2Z"/>
+    </clipPath>
+    <linearGradient id="linear-gradient33" x1="-247.33" y1="200.53" x2="-214.7" y2="200.53" gradientTransform="translate(-129.26 381.23) rotate(-178.22)" xlink:href="#linear-gradient"/>
+    <clipPath id="clippath-50">
+      <path class="st39" d="M92.82,193.94c1.9,4.42,10.41,5.27,19,1.9,8.59-3.37,14.02-9.68,12.12-14.1l-31.12,12.2Z"/>
+    </clipPath>
+  </defs>
+  <g id="option-ans">
+    <g id="Group_2036">
+      <g id="Group_2035">
+        <g id="Group_2027">
+          <g class="st106">
+            <g id="Group_2026">
+              <g id="Group_2025" class="st74">
+                <g id="Group_2024">
+                  <g class="st55">
+                    <g id="Group_2023">
+                      <path id="Path_9003" class="st8" d="M188.1,24.08L27.31,145.31v219.78h321.58v-219.78L188.11,24.08h0Z"/>
+                    </g>
+                  </g>
+                </g>
+              </g>
+            </g>
+          </g>
+        </g>
+        <path id="Path_9004" class="st10" d="M181.21,17.19L20.42,138.42v219.78h321.58v-219.78L181.22,17.19h0Z"/>
+        <path id="Path_9005" class="st7" d="M181.2,31.59L33.3,141.59v207.65h295.73v-207.65L181.2,31.59h0Z"/>
+        <g id="Group_2032">
+          <g class="st96">
+            <g id="Group_2031">
+              <g id="Group_2030" class="st73">
+                <g id="Group_2029">
+                  <g class="st69">
+                    <g id="Group_2028">
+                      <rect id="Rectangle_503" class="st30" x="20.41" y="138.42" width="321.58" height="219.78"/>
+                    </g>
+                  </g>
+                </g>
+              </g>
+            </g>
+          </g>
+        </g>
+        <path id="Path_9006" class="st12" d="M181.21,286.11L20.42,138.35v219.85h321.58v-219.85l-160.78,147.76h0Z"/>
+        <path id="Path_9007" class="st9" d="M227.17,244.28h-91.94l-114.82,113.92h321.58l-114.82-113.92h0Z"/>
+        <path id="Path_9008" class="st11" d="M181.17,286.11L20.38,138.35v219.85h321.58v-219.85l-160.79,147.76h0Z"/>
+        <path id="Path_9009" class="st103" d="M20.38,358.2l114.82-113.92h91.94l114.82,113.92H20.38Z"/>
+        <path id="Path_9010" class="st9" d="M341.99,345.93v-207.59l-12.96,11.65v195.94H33.37v-195.73l-12.96-11.85v219.85h321.58v-12.27h0Z"/>
+        <path id="Path_9011" class="st101" d="M341.99,345.93v-207.59l-12.96,11.65v195.94H33.37v-195.73l-12.96-11.85v219.85h321.58v-12.27h0Z"/>
+        <path id="Path_9012" class="st80" d="M20.41,153.67l8.5-7.55-8.5-7.78v15.33Z"/>
+        <path id="Path_9013" class="st80" d="M20.41,167.59v15.94l12.96-11.5v-15.95l-12.96,11.5h0Z"/>
+        <path id="Path_9014" class="st80" d="M20.41,197.33v15.95l12.96-11.5v-15.95l-12.96,11.5Z"/>
+        <path id="Path_9015" class="st80" d="M20.41,227.15v15.94l12.96-11.5v-15.95l-12.96,11.5h0Z"/>
+        <path id="Path_9016" class="st80" d="M20.41,256.94v15.94l12.96-11.5v-15.95l-12.96,11.5h0Z"/>
+        <path id="Path_9017" class="st80" d="M20.41,286.65v15.94l12.96-11.5v-15.95l-12.96,11.5h0Z"/>
+        <path id="Path_9018" class="st80" d="M20.41,316.52v15.94l12.96-11.5v-15.95l-12.96,11.5h0Z"/>
+        <path id="Path_9019" class="st80" d="M20.41,346.37v11.83h4.64l13.82-12.27h-5.5v-11.06l-12.96,11.5Z"/>
+        <path id="Path_9020" class="st80" d="M54.42,345.93l-13.82,12.27h17.96l13.82-12.27h-17.96Z"/>
+        <path id="Path_9021" class="st80" d="M87.96,345.93l-13.82,12.27h17.96l13.82-12.27h-17.96Z"/>
+        <path id="Path_9022" class="st80" d="M121.61,345.93l-13.82,12.27h17.96l13.82-12.27h-17.96ZM329.03,161.77v15.94l12.96-11.5v-15.95l-12.96,11.5h0Z"/>
+        <path id="Path_9023" class="st80" d="M155.11,345.93l-13.82,12.27h17.96l13.82-12.27h-17.96ZM329.03,191.51v15.94l12.96-11.5v-15.95l-12.96,11.5h0Z"/>
+        <path id="Path_9024" class="st80" d="M188.62,345.93l-13.82,12.27h17.94l13.82-12.27h-17.94ZM329.03,221.25v15.93l12.96-11.51v-15.93l-12.96,11.5h0Z"/>
+        <path id="Path_9025" class="st80" d="M222.18,345.93l-13.82,12.27h17.96l13.82-12.27h-17.96ZM329.03,251.06v15.94l12.96-11.5v-15.95l-12.96,11.5h0Z"/>
+        <path id="Path_9026" class="st80" d="M255.75,345.93l-13.82,12.27h17.9l13.82-12.27h-17.9ZM329.03,280.86v15.91l12.96-11.5v-15.91l-12.96,11.5Z"/>
+        <path id="Path_9027" class="st80" d="M289.41,345.93l-13.82,12.26h17.96l13.82-12.27h-17.96ZM329.03,310.75v15.94l12.96-11.5v-15.94l-12.96,11.5Z"/>
+        <path id="Path_9028" class="st80" d="M329.03,340.49v5.45h-6.14l-13.82,12.26h17.96l14.95-13.27v-15.94l-12.96,11.51h.01Z"/>
+        <g id="Group_2034">
+          <g class="st18">
+            <g id="Group_2033">
+              <rect id="Rectangle_506" class="st80" x="216.87" y="363.36" width="244.52" height="11.92" transform="translate(-159.67 318.3) rotate(-41.6)"/>
+            </g>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+  <g>
+    <g class="st62">
+      <g>
+        <path class="st93" d="M183.6,251.59c-43.53,0-87.06,0-130.59.02-.67,0-.83-.21-.83-1.12V54.6c0-.91.15-1.12.83-1.12,87.06.02,174.11.02,261.16,0,.67,0,.83.21.83,1.12-.01,65.3-.01,130.6,0,195.89,0,.91-.15,1.12-.83,1.12-43.52-.02-87.04-.02-130.57-.02Z"/>
+        <g>
+          <g>
+            <g>
+              <path class="st104" d="M291.53,167.22c-.32,4.8-8.06,8.43-17.28,8.12s-16.44-4.46-16.12-9.26l.25-3.77,33.26,1.14s-.05,2.99-.11,3.77Z"/>
+              <g class="st4">
+                <polygon class="st30" points="282.04 176.5 278.34 176.37 278.11 169.53 281.8 169.67 282.04 176.5"/>
+              </g>
+              <ellipse class="st45" cx="275.02" cy="161.69" rx="8.7" ry="16.72" transform="translate(107.32 433.08) rotate(-88.74)"/>
+              <path class="st107" d="M264.1,162.15c.21-3.13,5.79-5.47,12.47-5.25,3.67.13,6.91,1.01,9.05,2.3-1.83-1.96-5.88-3.4-10.66-3.56-6.67-.23-12.26,2.12-12.47,5.25-.09,1.4.92,2.73,2.66,3.78-.72-.77-1.1-1.63-1.04-2.51Z"/>
+              <ellipse class="st39" cx="275.02" cy="161.69" rx="8.7" ry="16.72" transform="translate(107.32 433.08) rotate(-88.74)"/>
+              <ellipse class="st38" cx="274.69" cy="161.29" rx="5.67" ry="12.1" transform="translate(106.58 431.86) rotate(-88.57)"/>
+            </g>
+            <path class="st30" d="M288.2,149.7l1.19,2.19c.43.8,1.09,1.45,1.88,1.88l2.19,1.19-2.19,1.19c-.8.43-1.45,1.09-1.88,1.88l-1.19,2.19-1.19-2.19c-.43-.8-1.09-1.45-1.88-1.88l-2.19-1.19,2.19-1.19c.8-.43,1.45-1.09,1.88-1.88l1.19-2.19Z"/>
+          </g>
+          <g>
+            <path class="st33" d="M123.23,96.63c0,10.62,9.17,17.62,20.47,15.63s20.47-12.22,20.47-22.85-9.17-17.62-20.47-15.63c-11.31,1.99-20.47,12.22-20.47,22.85Z"/>
+            <path class="st1" d="M128.52,95.81c0,8.88,7.66,14.73,17.12,13.07,9.45-1.67,17.12-10.22,17.12-19.1s-7.66-14.73-17.12-13.07c-9.45,1.67-17.12,10.22-17.12,19.1Z"/>
+            <ellipse class="st52" cx="145.11" cy="94.79" rx="19.96" ry="16.47" transform="translate(-27.56 109.88) rotate(-38.15)"/>
+            <polygon class="st110" points="153.23 155.85 110.87 160.44 122.87 132.55 214.99 118.79 153.23 155.85"/>
+            <path class="st109" d="M110.87,160.44l10.68-1.15c8.47-9.35,8.82-25.94,8.82-25.94l-4.34-1.26-3.16.47-12,27.88Z"/>
+            <polygon class="st58" points="124.99 133.26 214.99 118.79 275 128.67 183.4 145.61 124.99 133.26"/>
+            <polygon class="st110" points="140.52 133.26 217.54 122.15 258.41 128.67 182.17 141.73 140.52 133.26"/>
+            <path class="st89" d="M183.4,145.61l-58.41-12.35,7.06,45.27c.43,2.73,2.43,4.95,5.11,5.64l40.75,10.54c3.49.9,7.15.93,10.66.08l73.5-17.83c2.5-.61,4.41-2.62,4.88-5.15l8.05-43.14-91.59,16.94Z"/>
+            <g>
+              <g class="st5">
+                <polygon class="st53" points="178.2 171.11 272.7 151.26 273.76 152.05 178.2 173.49 178.2 171.11"/>
+              </g>
+              <g class="st64">
+                <polygon class="st53" points="181.11 184.35 245.17 170.32 272.97 163.7 272.7 161.05 181.11 184.35"/>
+              </g>
+              <g class="st27">
+                <path class="st53" d="M124.99,133.26l58.41,12.35-.35,56.83-48.41-12.53c-1.25-.32-2.18-1.37-2.35-2.65l-7.3-54.01Z"/>
+              </g>
+              <g class="st28">
+                <g>
+                  <g class="st42">
+                    <path class="st110" d="M272.53,144.02l-89.12,16.94-56.65-11.65s-3.53-4.24-3.88-6.71c-.35-2.47,2.12-6.71,2.12-6.71l58.41,12.35,91.59-16.94s1.76,2.47,1.76,6-4.24,6.71-4.24,6.71Z"/>
+                  </g>
+                  <g class="st72">
+                    <g>
+                      <polygon class="st22" points="125.75 158.77 188.43 171.64 126.39 161.3 125.75 158.77"/>
+                      <polygon class="st22" points="125.17 173.14 162.49 178.17 188.28 185.17 125.17 173.14"/>
+                    </g>
+                  </g>
+                </g>
+              </g>
+              <g class="st100">
+                <path class="st52" d="M188.92,153.59l.12,30.79c0,2.11,2,3.66,4.05,3.15l63.14-15.79c2.61-.65,4.58-2.8,5.01-5.45l4.32-26.6,11.38-.79-1.32,50.3-94.5,11.12.79-49.37,7.01,2.65Z"/>
+              </g>
+              <g class="st79">
+                <path class="st109" d="M185.04,196.69l.24-43.02-7.12-.26v30.76c0,1.93-1.81,3.34-3.68,2.88l-33.55-8.27c-1.18-.29-2.06-1.27-2.23-2.47l-4.22-30.17-7.81-.26,3.4,40.23,54.97,10.59Z"/>
+              </g>
+              <g class="st14">
+                <path class="st85" d="M190.51,154.82l.12,30.79c0,2.11,2,3.66,4.05,3.15l63.14-15.79c2.61-.65,4.58-2.8,5.01-5.45l4.32-26.6,11.38-.79-1.32,50.3-94.5,11.12.79-49.37,7.01,2.65Z"/>
+              </g>
+              <g class="st95">
+                <path class="st52" d="M183.1,197.58l.24-43.02-7.12-.26v30.76c0,1.93-1.81,3.34-3.68,2.88l-33.55-8.27c-1.18-.29-2.06-1.27-2.23-2.47l-4.22-30.17-7.81-.26,3.4,40.23,54.97,10.59Z"/>
+              </g>
+              <g class="st6">
+                <g class="st16">
+                  <path class="st109" d="M272.53,143.76l-89.12,16.94-56.65-11.65s-3.53-4.24-3.88-6.71c-.35-2.47,2.12-6.71,2.12-6.71l58.41,12.35,91.59-16.94s1.76,2.47,1.76,6c0,3.53-4.24,6.71-4.24,6.71Z"/>
+                </g>
+              </g>
+              <g class="st82">
+                <g class="st63">
+                  <path class="st109" d="M272.53,143.76l-89.12,16.94-56.65-11.65s-3.53-4.24-3.88-6.71c-.35-2.47,2.12-6.71,2.12-6.71l58.41,12.35,91.59-16.94s1.76,2.47,1.76,6c0,3.53-4.24,6.71-4.24,6.71Z"/>
+                </g>
+              </g>
+            </g>
+            <polygon class="st86" points="124.99 133.26 96.05 95.49 184.99 82.08 214.99 118.79 124.99 133.26"/>
+            <polygon class="st110" points="128.34 127.26 107.52 99.02 182.5 87.58 204.23 114.9 128.34 127.26"/>
+            <path class="st22" d="M96.05,95.49s-9.94,49.99,12,63.89c10.59,6.71,16.94-26.12,16.94-26.12l-28.94-37.77Z"/>
+            <g class="st3">
+              <path class="st53" d="M266.62,142.52l-.35,2.29-75.62,14.38-.4-2.12-15.88-.53-.11,2.54-47.5-9.77s-3.53-4.24-3.88-6.71c-.35-2.47,2.12-6.71,2.12-6.71l58.41,12.35,91.59-16.94s1.76,2.47,1.76,6-10.15,5.2-10.15,5.2Z"/>
+            </g>
+            <path class="st110" d="M124.99,142.44"/>
+            <path class="st85" d="M272.53,141.38l-89.12,16.94-56.65-11.65s-3.53-4.24-3.88-6.71c-.35-2.47,2.12-6.71,2.12-6.71l58.41,12.35,91.59-16.94s1.76,2.47,1.76,6c0,3.53-4.24,6.71-4.24,6.71Z"/>
+            <g>
+              <g class="st21">
+                <polygon class="st52" points="183.23 159.02 183.58 144.91 118.28 127.26 117.58 152.32 183.23 159.02"/>
+              </g>
+              <g class="st23">
+                <polygon class="st77" points="122.87 139.96 182.96 152.32 279.58 134.32 278 124.26 122.87 132.55 122.87 139.96"/>
+              </g>
+            </g>
+            <g class="st105">
+              <path class="st22" d="M183.58,81.02s-9.94,49.99,12,63.89c10.59,6.71,16.94-26.12,16.94-26.12l-28.94-37.77Z"/>
+            </g>
+            <g class="st34">
+              <polygon class="st110" points="93.23 103.61 124.99 146.67 130.99 133.26 88.64 93.37 93.23 103.61"/>
+            </g>
+            <g class="st70">
+              <polygon class="st53" points="216.76 115.61 275.17 127.96 269.35 179.85 218.88 166.08 216.76 115.61"/>
+            </g>
+            <g class="st35">
+              <polygon class="st52" points="94.99 102.2 124.99 142.44 160.99 124.79 92.87 83.49 94.99 102.2"/>
+            </g>
+            <g>
+              <g class="st49">
+                <path class="st53" d="M92.34,108.55l30,42.71s-30-35.65-30-36.71,0-6,0-6Z"/>
+              </g>
+              <g class="st97">
+                <polygon class="st53" points="92.28 126.85 106.81 147.38 117.05 157.61 92.28 126.85"/>
+              </g>
+            </g>
+            <g>
+              <g class="st81">
+                <g>
+                  <g>
+                    <path class="st84" d="M173.13,149.84c0,2.17-7.29,3.92-16.28,3.92s-16.28-1.76-16.28-3.92v-6.67h32.56v6.67Z"/>
+                    <g class="st13">
+                      <rect class="st30" x="164.41" y="142.39" width="3.38" height="11.77"/>
+                    </g>
+                    <ellipse class="st45" cx="156.85" cy="143.17" rx="16.28" ry="3.92"/>
+                    <path class="st94" d="M145.31,143.3c1.19-1.05,5.87-1.83,11.47-1.83s10.28.78,11.47,1.83c.19-.17.3-.34.3-.52,0-1.3-5.27-2.35-11.77-2.35s-11.77,1.05-11.77,2.35c0,.18.1.35.3.52Z"/>
+                  </g>
+                  <g>
+                    <path class="st71" d="M173.13,140.16c0,2.17-7.29,3.92-16.28,3.92s-16.28-1.76-16.28-3.92v-6.67h32.56v6.67Z"/>
+                    <g class="st87">
+                      <rect class="st30" x="164.41" y="132.71" width="3.38" height="11.77"/>
+                    </g>
+                    <ellipse class="st45" cx="156.85" cy="133.49" rx="16.28" ry="3.92"/>
+                    <path class="st43" d="M145.31,133.62c1.19-1.05,5.87-1.83,11.47-1.83s10.28.78,11.47,1.83c.19-.17.3-.34.3-.52,0-1.3-5.27-2.35-11.77-2.35s-11.77,1.05-11.77,2.35c0,.18.1.35.3.52Z"/>
+                  </g>
+                  <g>
+                    <path class="st36" d="M173.13,131.27c0,2.17-7.29,3.92-16.28,3.92s-16.28-1.76-16.28-3.92v-6.67h32.56v6.67Z"/>
+                    <g class="st15">
+                      <rect class="st30" x="164.41" y="123.82" width="3.38" height="11.77"/>
+                    </g>
+                    <ellipse class="st45" cx="156.85" cy="124.6" rx="16.28" ry="3.92"/>
+                    <path class="st20" d="M145.31,124.73c1.19-1.05,5.87-1.83,11.47-1.83s10.28.78,11.47,1.83c.19-.17.3-.34.3-.52,0-1.3-5.27-2.35-11.77-2.35s-11.77,1.05-11.77,2.35c0,.18.1.35.3.52Z"/>
+                  </g>
+                </g>
+              </g>
+              <g class="st0">
+                <g>
+                  <g>
+                    <path class="st44" d="M255.37,141.72c0,2.17-7.29,3.92-16.28,3.92s-16.28-1.76-16.28-3.92v-6.67h32.56v6.67Z"/>
+                    <g class="st47">
+                      <rect class="st30" x="246.65" y="134.27" width="3.38" height="11.77"/>
+                    </g>
+                    <ellipse class="st45" cx="239.09" cy="135.05" rx="16.28" ry="3.92"/>
+                    <path class="st66" d="M227.55,135.18c1.19-1.05,5.87-1.83,11.47-1.83s10.28.78,11.47,1.83c.19-.17.3-.34.3-.52,0-1.3-5.27-2.35-11.77-2.35s-11.77,1.05-11.77,2.35c0,.18.1.35.3.52Z"/>
+                  </g>
+                  <g>
+                    <path class="st102" d="M255.37,132.04c0,2.17-7.29,3.92-16.28,3.92s-16.28-1.76-16.28-3.92v-6.67h32.56v6.67Z"/>
+                    <g class="st46">
+                      <rect class="st30" x="246.65" y="124.59" width="3.38" height="11.77"/>
+                    </g>
+                    <ellipse class="st45" cx="239.09" cy="125.38" rx="16.28" ry="3.92"/>
+                    <path class="st83" d="M227.55,125.51c1.19-1.05,5.87-1.83,11.47-1.83s10.28.78,11.47,1.83c.19-.17.3-.34.3-.52,0-1.3-5.27-2.35-11.77-2.35s-11.77,1.05-11.77,2.35c0,.18.1.35.3.52Z"/>
+                  </g>
+                  <g>
+                    <path class="st90" d="M255.37,123.15c0,2.17-7.29,3.92-16.28,3.92s-16.28-1.76-16.28-3.92v-6.67h32.56v6.67Z"/>
+                    <g class="st99">
+                      <rect class="st30" x="246.65" y="115.7" width="3.38" height="11.77"/>
+                    </g>
+                    <ellipse class="st45" cx="239.09" cy="116.48" rx="16.28" ry="3.92"/>
+                    <path class="st50" d="M227.55,116.61c1.19-1.05,5.87-1.83,11.47-1.83s10.28.78,11.47,1.83c.19-.17.3-.34.3-.52,0-1.3-5.27-2.35-11.77-2.35s-11.77,1.05-11.77,2.35c0,.18.1.35.3.52Z"/>
+                  </g>
+                </g>
+              </g>
+              <g class="st2">
+                <g>
+                  <g>
+                    <path class="st91" d="M226.08,139.07c0,2.17-7.29,3.92-16.28,3.92s-16.28-1.76-16.28-3.92v-6.67h32.56v6.67Z"/>
+                    <g class="st92">
+                      <rect class="st30" x="217.35" y="131.62" width="3.38" height="11.77"/>
+                    </g>
+                    <ellipse class="st45" cx="209.79" cy="132.41" rx="16.28" ry="3.92"/>
+                    <path class="st37" d="M198.26,132.54c1.19-1.05,5.87-1.83,11.47-1.83s10.28.78,11.47,1.83c.19-.17.3-.34.3-.52,0-1.3-5.27-2.35-11.77-2.35s-11.77,1.05-11.77,2.35c0,.18.1.36.3.52Z"/>
+                  </g>
+                  <g>
+                    <path class="st65" d="M226.08,129.4c0,2.17-7.29,3.92-16.28,3.92s-16.28-1.76-16.28-3.92v-6.67h32.56v6.67Z"/>
+                    <g class="st60">
+                      <rect class="st30" x="217.35" y="121.95" width="3.38" height="11.77"/>
+                    </g>
+                    <ellipse class="st45" cx="209.79" cy="122.73" rx="16.28" ry="3.92"/>
+                    <path class="st76" d="M198.26,122.86c1.19-1.05,5.87-1.83,11.47-1.83s10.28.78,11.47,1.83c.19-.17.3-.34.3-.52,0-1.3-5.27-2.35-11.77-2.35s-11.77,1.05-11.77,2.35c0,.18.1.35.3.52Z"/>
+                  </g>
+                  <g>
+                    <path class="st25" d="M226.08,120.51c0,2.17-7.29,3.92-16.28,3.92s-16.28-1.76-16.28-3.92v-6.67h32.56v6.67Z"/>
+                    <g class="st67">
+                      <rect class="st30" x="217.35" y="113.05" width="3.38" height="11.77"/>
+                    </g>
+                    <ellipse class="st45" cx="209.79" cy="113.84" rx="16.28" ry="3.92"/>
+                    <path class="st56" d="M198.26,113.97c1.19-1.05,5.87-1.83,11.47-1.83s10.28.78,11.47,1.83c.19-.17.3-.34.3-.52,0-1.3-5.27-2.35-11.77-2.35s-11.77,1.05-11.77,2.35c0,.18.1.35.3.52Z"/>
+                  </g>
+                </g>
+              </g>
+              <g class="st29">
+                <g>
+                  <g>
+                    <path class="st41" d="M204.19,149.49c0,2.17-7.29,3.92-16.28,3.92s-16.28-1.76-16.28-3.92v-6.67h32.56v6.67Z"/>
+                    <g class="st31">
+                      <rect class="st30" x="195.47" y="142.03" width="3.38" height="11.77"/>
+                    </g>
+                    <ellipse class="st45" cx="187.91" cy="142.82" rx="16.28" ry="3.92"/>
+                    <path class="st51" d="M176.37,142.95c1.19-1.05,5.87-1.83,11.47-1.83s10.28.78,11.47,1.83c.19-.17.3-.34.3-.52,0-1.3-5.27-2.35-11.77-2.35s-11.77,1.05-11.77,2.35c0,.18.1.36.3.52Z"/>
+                  </g>
+                  <g>
+                    <path class="st88" d="M204.19,139.81c0,2.17-7.29,3.92-16.28,3.92s-16.28-1.76-16.28-3.92v-6.67h32.56v6.67Z"/>
+                    <g class="st108">
+                      <rect class="st30" x="195.47" y="132.36" width="3.38" height="11.77"/>
+                    </g>
+                    <ellipse class="st45" cx="187.91" cy="133.14" rx="16.28" ry="3.92"/>
+                    <path class="st32" d="M176.37,133.27c1.19-1.05,5.87-1.83,11.47-1.83s10.28.78,11.47,1.83c.19-.17.3-.34.3-.52,0-1.3-5.27-2.35-11.77-2.35s-11.77,1.05-11.77,2.35c0,.18.1.35.3.52Z"/>
+                  </g>
+                  <g>
+                    <path class="st26" d="M204.19,130.92c0,2.17-7.29,3.92-16.28,3.92s-16.28-1.76-16.28-3.92v-6.67h32.56v6.67Z"/>
+                    <g class="st57">
+                      <rect class="st30" x="195.47" y="123.47" width="3.38" height="11.77"/>
+                    </g>
+                    <ellipse class="st45" cx="187.91" cy="124.25" rx="16.28" ry="3.92"/>
+                    <path class="st68" d="M176.37,124.38c1.19-1.05,5.87-1.83,11.47-1.83s10.28.78,11.47,1.83c.19-.17.3-.34.3-.52,0-1.3-5.27-2.35-11.77-2.35s-11.77,1.05-11.77,2.35c0,.18.1.35.3.52Z"/>
+                  </g>
+                </g>
+              </g>
+            </g>
+            <path class="st109" d="M97.02,103.34s-7.76,43.57,14.69,56.64l.03-5.17c-18.77-10.93-12.33-46.24-12.33-46.24l-2.39-5.23Z"/>
+            <path class="st52" d="M96.05,95.49s-9.94,49.99,12,63.89c10.59,6.71,16.94-26.12,16.94-26.12l-28.94-37.77ZM108.27,154.21c-17.69-6.14-10.03-53.41-10.03-53.41l21.99,30.33s-4.32,25.73-11.96,23.08Z"/>
+            <path class="st30" d="M221.87,109.33l1.19,2.19c.43.8,1.09,1.45,1.88,1.88l2.19,1.19-2.19,1.19c-.8.43-1.45,1.09-1.88,1.88l-1.19,2.19-1.19-2.19c-.43-.8-1.09-1.45-1.88-1.88l-2.19-1.19,2.19-1.19c.8-.43,1.45-1.09,1.88-1.88l1.19-2.19Z"/>
+            <g>
+              <g>
+                <path class="st61" d="M221.87,195.67c-.32,4.8-8.06,8.43-17.28,8.12s-16.44-4.46-16.12-9.26l.25-3.77,33.26,1.14s-.05,2.99-.11,3.77Z"/>
+                <g class="st59">
+                  <polygon class="st30" points="212.38 204.96 208.68 204.82 208.44 197.98 212.14 198.12 212.38 204.96"/>
+                </g>
+                <ellipse class="st45" cx="205.36" cy="190.14" rx="8.7" ry="16.72" transform="translate(10.75 391.27) rotate(-88.74)"/>
+                <path class="st107" d="M194.44,190.6c.21-3.13,5.79-5.47,12.47-5.25,3.67.13,6.91,1.01,9.05,2.3-1.83-1.96-5.88-3.4-10.66-3.56-6.67-.23-12.26,2.12-12.47,5.25-.09,1.4.92,2.73,2.66,3.78-.72-.77-1.1-1.62-1.04-2.51Z"/>
+                <ellipse class="st39" cx="205.36" cy="190.14" rx="8.7" ry="16.72" transform="translate(10.75 391.27) rotate(-88.74)"/>
+                <ellipse class="st38" cx="205.03" cy="189.74" rx="5.67" ry="12.1" transform="translate(10.22 389.96) rotate(-88.57)"/>
+              </g>
+              <g>
+                <path class="st54" d="M141.93,185.08c-.32,4.8-8.06,8.43-17.28,8.12-9.22-.32-16.44-4.46-16.12-9.26l.25-3.77,33.26,1.14s-.05,2.99-.11,3.77Z"/>
+                <g class="st17">
+                  <polygon class="st30" points="132.43 194.37 128.74 194.23 128.5 187.39 132.19 187.53 132.43 194.37"/>
+                </g>
+                <ellipse class="st45" cx="125.42" cy="179.55" rx="8.7" ry="16.72" transform="translate(-56.85 300.99) rotate(-88.74)"/>
+                <path class="st107" d="M114.49,180.02c.21-3.13,5.79-5.47,12.47-5.25,3.67.13,6.91,1.01,9.05,2.3-1.83-1.96-5.88-3.4-10.66-3.56-6.67-.23-12.26,2.12-12.47,5.25-.09,1.4.92,2.73,2.66,3.78-.72-.77-1.1-1.63-1.04-2.51Z"/>
+                <ellipse class="st39" cx="125.42" cy="179.55" rx="8.7" ry="16.72" transform="translate(-56.85 300.99) rotate(-88.74)"/>
+                <ellipse class="st38" cx="125.09" cy="179.16" rx="5.67" ry="12.1" transform="translate(-57.14 299.72) rotate(-88.57)"/>
+              </g>
+              <g>
+                <path class="st78" d="M195.93,203.61c-.32,4.8-8.06,8.43-17.28,8.12-9.22-.32-16.44-4.46-16.12-9.26l.25-3.77,33.26,1.14s-.05,2.99-.11,3.77Z"/>
+                <g class="st48">
+                  <polygon class="st30" points="186.43 212.9 182.74 212.76 182.5 205.92 186.2 206.06 186.43 212.9"/>
+                </g>
+                <ellipse class="st45" cx="179.42" cy="198.08" rx="8.7" ry="16.72" transform="translate(-22.56 373.1) rotate(-88.74)"/>
+                <path class="st107" d="M168.5,198.55c.21-3.13,5.79-5.47,12.47-5.25,3.67.13,6.91,1.01,9.05,2.3-1.83-1.96-5.88-3.4-10.66-3.56-6.67-.23-12.26,2.12-12.47,5.25-.09,1.4.92,2.73,2.66,3.78-.72-.77-1.1-1.63-1.04-2.51Z"/>
+                <ellipse class="st39" cx="179.42" cy="198.08" rx="8.7" ry="16.72" transform="translate(-22.56 373.1) rotate(-88.74)"/>
+                <ellipse class="st38" cx="179.09" cy="197.69" rx="5.67" ry="12.1" transform="translate(-23.01 371.77) rotate(-88.57)"/>
+              </g>
+              <g>
+                <path class="st24" d="M239.5,204.2c-1.9,4.42-10.41,5.27-19,1.9-8.59-3.37-14.02-9.68-12.12-14.1l1.49-3.47,30.98,12.15s-1.05,2.8-1.36,3.52Z"/>
+                <g class="st98">
+                  <polygon class="st30" points="227.45 209.8 224.02 208.44 226.07 201.91 229.51 203.27 227.45 209.8"/>
+                </g>
+                <ellipse class="st45" cx="225.76" cy="193.49" rx="8.7" ry="16.71" transform="translate(-35.06 336.25) rotate(-69.29)"/>
+                <path class="st107" d="M215.32,190.29c1.24-2.88,7.28-3.23,13.5-.8,3.42,1.34,6.18,3.25,7.77,5.18-1.08-2.45-4.41-5.16-8.87-6.91-6.22-2.44-12.26-2.08-13.5.8-.56,1.29-.04,2.88,1.25,4.45-.42-.97-.5-1.9-.15-2.71Z"/>
+                <ellipse class="st39" cx="225.76" cy="193.49" rx="8.7" ry="16.71" transform="translate(-35.06 336.25) rotate(-69.29)"/>
+                <ellipse class="st40" cx="225.58" cy="193.01" rx="5.67" ry="12.09" transform="translate(-35.15 334.98) rotate(-69.12)"/>
+              </g>
+              <g>
+                <path class="st19" d="M92.82,193.94c1.9,4.42,10.41,5.27,19,1.9,8.59-3.37,14.02-9.68,12.12-14.1l-1.49-3.47-30.98,12.15s1.05,2.8,1.36,3.52Z"/>
+                <g class="st75">
+                  <polygon class="st30" points="104.86 199.54 108.3 198.18 106.25 191.65 102.81 193.01 104.86 199.54"/>
+                </g>
+                <ellipse class="st45" cx="106.54" cy="183.25" rx="16.71" ry="8.7" transform="translate(-57.91 49.51) rotate(-20.71)"/>
+                <path class="st107" d="M117,180.03c-1.24-2.88-7.28-3.23-13.5-.8-3.42,1.34-6.18,3.25-7.77,5.18,1.08-2.45,4.41-5.16,8.87-6.91,6.22-2.44,12.26-2.08,13.5.8.56,1.29.04,2.88-1.25,4.45.42-.97.5-1.9.15-2.71Z"/>
+                <ellipse class="st39" cx="106.54" cy="183.25" rx="16.71" ry="8.7" transform="translate(-57.91 49.51) rotate(-20.71)"/>
+                <ellipse class="st40" cx="106.72" cy="182.75" rx="12.09" ry="5.67" transform="translate(-58.13 50.04) rotate(-20.88)"/>
+              </g>
+              <path class="st30" d="M233.89,188.74l1.19,2.19c.43.8,1.09,1.45,1.88,1.88l2.19,1.19-2.19,1.19c-.8.43-1.45,1.09-1.88,1.88l-1.19,2.19-1.19-2.19c-.43-.8-1.09-1.45-1.88-1.88l-2.19-1.19,2.19-1.19c.8-.43,1.45-1.09,1.88-1.88l1.19-2.19Z"/>
+              <path class="st30" d="M193.2,177.03l1.19,2.19c.43.8,1.09,1.45,1.88,1.88l2.19,1.19-2.19,1.19c-.8.43-1.45,1.09-1.88,1.88l-1.19,2.19-1.19-2.19c-.43-.8-1.09-1.45-1.88-1.88l-2.19-1.19,2.19-1.19c.8-.43,1.45-1.09,1.88-1.88l1.19-2.19Z"/>
+              <path class="st30" d="M99.04,185.56l1.19,2.19c.43.8,1.09,1.45,1.88,1.88l2.19,1.19-2.19,1.19c-.8.43-1.45,1.09-1.88,1.88l-1.19,2.19-1.19-2.19c-.43-.8-1.09-1.45-1.88-1.88l-2.19-1.19,2.19-1.19c.8-.43,1.45-1.09,1.88-1.88l1.19-2.19Z"/>
+            </g>
+            <path class="st30" d="M152.78,100.32l1.07,1.96c.39.71.97,1.3,1.69,1.69l1.96,1.07-1.96,1.07c-.71.39-1.3.97-1.69,1.69l-1.07,1.96-1.07-1.96c-.39-.71-.97-1.3-1.69-1.69l-1.96-1.07,1.96-1.07c.71-.39,1.3-.97,1.69-1.69l1.07-1.96Z"/>
+            <path class="st30" d="M182.96,113.87l1.07,1.96c.39.71.97,1.3,1.69,1.69l1.96,1.07-1.96,1.07c-.71.39-1.3.97-1.69,1.69l-1.07,1.96-1.07-1.96c-.39-.71-.97-1.3-1.69-1.69l-1.96-1.07,1.96-1.07c.71-.39,1.3-.97,1.69-1.69l1.07-1.96Z"/>
+            <path class="st30" d="M231.73,92.96l1.07,1.96c.39.71.97,1.3,1.69,1.69l1.96,1.07-1.96,1.07c-.71.39-1.3.97-1.69,1.69l-1.07,1.96-1.07-1.96c-.39-.71-.97-1.3-1.69-1.69l-1.96-1.07,1.96-1.07c.71-.39,1.3-.97,1.69-1.69l1.07-1.96Z"/>
+            <path class="st30" d="M219.72,82.68l1.56,2.85c.57,1.04,1.42,1.89,2.46,2.46l2.85,1.56-2.85,1.56c-1.04.57-1.89,1.42-2.46,2.46l-1.56,2.85-1.56-2.85c-.57-1.04-1.42-1.89-2.46-2.46l-2.85-1.56,2.85-1.56c1.04-.57,1.89-1.42,2.46-2.46l1.56-2.85Z"/>
+            <path class="st30" d="M250.26,110.26l1.31,2.39c.48.87,1.19,1.59,2.07,2.07l2.39,1.31-2.39,1.31c-.87.48-1.59,1.19-2.07,2.07l-1.31,2.39-1.31-2.39c-.48-.87-1.19-1.59-2.07-2.07l-2.39-1.31,2.39-1.31c.87-.48,1.59-1.19,2.07-2.07l1.31-2.39Z"/>
+            <path class="st30" d="M166.4,92.94l1.5,2.74c.55,1,1.36,1.82,2.36,2.36l2.74,1.5-2.74,1.5c-1,.55-1.82,1.36-2.36,2.36l-1.5,2.74-1.5-2.74c-.55-1-1.36-1.82-2.36-2.36l-2.74-1.5,2.74-1.5c1-.55,1.82-1.36,2.36-2.36l1.5-2.74Z"/>
+          </g>
+        </g>
+      </g>
+    </g>
+    <polygon class="st30" points="306.69 171.49 300.71 177.03 306.33 60.89 57.37 60.89 60.05 175.64 54.29 169.91 51.22 54.89 312.62 54.89 306.69 171.49"/>
+  </g>
+</svg>

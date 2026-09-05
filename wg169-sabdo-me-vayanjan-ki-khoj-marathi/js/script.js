@@ -43,7 +43,7 @@ let letterData = {
 
   "झ": {
     "answers": ["झरा", "झगा", "झाडू"],
-    "distractors": ["कावळा", "झोपड़ी", "डमरू"],
+    "distractors": ["कावळा", "डमरू", "गुलाब"],
     "question": "‘झ’ हा ध्वनी असलेले शब्द ओळखा."
   },
 
@@ -156,7 +156,7 @@ let letterData = {
   },
 
   "व": {
-    "answers": ["रथ", "गवत", "तलवार"],
+    "answers": ["तवा", "गवत", "तलवार"],
     "distractors": ["क्षमा", "चित्रकार", "शेळी"],
     "question": "‘व’ हा ध्वनी असलेले शब्द ओळखा."
   },
@@ -228,20 +228,20 @@ let imgJson = {
   "झोपड़ी": "zopadi.svg",
 
   "घर": "ghar.svg",
-  "घरटे": "gharte.svg",
+  "घरटे": "gharate.svg",
   "घंटा": "ghanta.svg",
   "खडू": "khadu.svg",
   "पुरुष": "purush.svg",
 
   "चहा": "chaha.svg",
-  "चमचा": "chamacha.svg",
-  "चरखा": "charkha.svg",
+  "चमचा": "chamcha.svg",
+  "चरखा": "charakha.svg",
   "झोपड़ी": "zopadi.svg",
   "डमरू": "damaru.svg",
 
-  "छप्पर": "chhappar.svg",
-  "छत्री": "chhatri.svg",
-  "छडी": "chhadi.svg",
+  "छप्पर": "chappar.svg",
+  "छत्री": "chatri.svg",
+  "छडी": "chadee.svg",
   "झोका": "zhoka.svg",
   "काजळ": "kajal.svg",
   "घोडा": "ghoda.svg",
@@ -261,7 +261,7 @@ let imgJson = {
   "टाकी": "taki.svg",
 
   "ठेला": "thela.svg",
-  "ठोकळा": "thokala.svg",
+  "ठोकळा": "thokada.svg",
   "ठसा": "thasa.svg",
   "खटारा": "khatara.svg",
   "अजगर": "ajagar.svg",
@@ -273,29 +273,29 @@ let imgJson = {
   "ढग": "dhag.svg",
   "ढाल": "dhaal.svg",
   "ढोल": "dhol.svg",
-  "बाग": "baug.svg",
+  "बाग": "baag.svg",
   "सागर": "sagar.svg",
 
   "बाण": "baan.svg",
   "चरण": "charan.svg",
-  "लसूण": "lasun.svg",
+  "लसूण": "lasoon.svg",
 
-  "तवा": "tava.svg",
+  "तवा": "tawa.svg",
   "तलवार": "talwar.svg",
   "तबला": "tabla.svg",
 
   "थाळी": "thali.svg",
   "थंड": "thand.svg",
-  "थवा": "thava.svg",
+  "थवा": "thawa.svg",
 
   "दगड": "dagad.svg",
   "दर्पण": "darpan.svg",
-  "दरवाजा": "darwaja.svg",
+  "दरवाजा": "darvaja.svg",
   "यज्ञ": "yagya.svg",
   "पत्र": "khat.svg",
 
   "धन": "dhan.svg",
-  "धनुष्य": "dhanush.svg",
+  "धनुष्य": "dhanushya.svg",
   "धोबी": "dhobi.svg",
   "पतंग": "patang.svg",
   "रान": "raan.svg",
@@ -313,12 +313,12 @@ let imgJson = {
   "बदक": "badak.svg",
 
   "फळ": "phal.svg",
-  "फळी": "phali.svg",
-  "फणस": "phanas.svg",
+  "फळी": "fali.svg",
+  "फणस": "fanas.svg",
   "पान": "pan.svg",
   "रान": "raan.svg",
 
-  "बाग": "baug.svg",
+  "बाग": "baag.svg",
   "बदक": "badak.svg",
   "बरणी": "barani.svg",
   "विज्ञान": "vigyan.svg",
@@ -329,7 +329,7 @@ let imgJson = {
   "भाजी": "bhaji.svg",
   "टोपी": "topi.svg",
 
-  "चमचा": "chamacha.svg",
+  "चमचा": "chamcha.svg",
   "मटार": "matar.svg",
   "मगर": "magar.svg",
 
@@ -340,8 +340,8 @@ let imgJson = {
   "राजा": "raja.svg",
   "शेळी": "sheli.svg",
 
-  "लाल": "laal.svg",
-  "लाडू": "ladu.svg",
+  "लाल": "lal.svg",
+  "लाडू": "ladoo.svg",
   "अक्षर": "akshar.svg",
   "टमाटर": "tamatar.svg",
   "नाव": "naav.svg",
@@ -358,13 +358,13 @@ let imgJson = {
   "षटकोन": "shatkon.svg",
   "वन": "van.svg",
 
-  "लसूण": "lasun.svg",
+  "लसूण": "lasoon.svg",
   "डास": "daas.svg",
   "बक्षीस": "bakshis.svg",
 
   "जहाज": "jahaj.svg",
   "चहा": "chaha.svg",
-  "हत्ती": "hatti.svg",
+  "हत्ती": "hathi.svg",
 
   "कमळ": "kamal.svg",
 
@@ -372,7 +372,7 @@ let imgJson = {
   "बक्षीस": "bakshis.svg",
   "क्षत्रिय": "kshatriya.svg",
 
-  "प्रतिज्ञा": "pratigya.svg",
+  "प्रतिज्ञा": "pratidhnya.svg",
   "पतंग": "patang.svg"
 
 };
@@ -446,11 +446,11 @@ let wordSoundJson = {
 
   "चहा": "chaha.mp3",
   "चमचा": "chamacha.mp3",
-  "चरखा": "charkha.mp3",
+  "चरखा": "charakha.mp3",
 
-  "छप्पर": "chhappar.mp3",
-  "छत्री": "chhatri.mp3",
-  "छडी": "chhadi.mp3",
+  "छप्पर": "chappar.mp3",
+  "छत्री": "chatri.mp3",
+  "छडी": "chadi.mp3",
   "झोका": "zhoka.mp3",
   "काजळ": "kajal.mp3",
   "घोडा": "ghoda.mp3",
@@ -462,18 +462,18 @@ let wordSoundJson = {
   "कावळा": "kawala.mp3",
 
   "टांगा": "tanga.mp3",
-  "टरबूज": "tarbuj.mp3",
+  "टरबूज": "tarbuz.mp3",
   "टाकी": "taki.mp3",
 
   "ठेला": "thela.mp3",
-  "ठोकळा": "thokala.mp3",
+  "ठोकळा": "thokda.mp3",
   "ठसा": "thasa.mp3",
 
   "डास": "daas.mp3",
 
-  "ढाल": "dhaal.mp3",
+  "ढाल": "dhal.mp3",
   "ढोल": "dhol.mp3",
-  "बाग": "baug.mp3",
+  "बाग": "bagh.mp3",
   "सागर": "sagar.mp3",
 
   "बाण": "baan.mp3",
@@ -490,12 +490,12 @@ let wordSoundJson = {
 
   "दगड": "dagad.mp3",
   "दर्पण": "darpan.mp3",
-  "दरवाजा": "darwaja.mp3",
+  "दरवाजा": "darvaja.mp3",
   "यज्ञ": "yagya.mp3",
   "पत्र": "patra.mp3",
 
   "धन": "dhan.mp3",
-  "धनुष्य": "dhanush.mp3",
+  "धनुष्य": "dhanushya.mp3",
   "धोबी": "dhobi.mp3",
   "पतंग": "patang.mp3",
   "रान": "raan.mp3",
@@ -510,9 +510,9 @@ let wordSoundJson = {
   "पपई": "papai.mp3",
   "बदक": "badak.mp3",
 
-  "फळ": "phal.mp3",
-  "फळी": "phali.mp3",
-  "फणस": "phanas.mp3",
+  "फळ": "fal.mp3",
+  "फळी": "fani.mp3",
+  "फणस": "fanas.mp3",
   "पान": "pan.mp3",
 
   "बरणी": "barani.mp3",
@@ -534,7 +534,7 @@ let wordSoundJson = {
   "राजा": "raja.mp3",
   "शेळी": "sheli.mp3",
 
-  "लाल": "laal.mp3",
+  "लाल": "lal.mp3",
   "लाडू": "ladu.mp3",
   "अक्षर": "akshar.mp3",
   "टमाटर": "tamatar.mp3",
@@ -551,7 +551,7 @@ let wordSoundJson = {
   "वन": "van.mp3",
 
   "बक्षीस": "bakshis.mp3",
-  "हत्ती": "hatti.mp3",
+  "हत्ती": "hati.mp3",
 
   "क्षत्रिय": "kshtriya.mp3",
   "प्रतिज्ञा": "pratidhnya.mp3"
@@ -626,7 +626,7 @@ document.addEventListener('DOMContentLoaded', function () {
   homeBtn.addEventListener('click', () => {
     homePage.style.display = 'block';
     gamePage.style.display = 'none';
-    showAnswerbtn.textContent = "उत्तर देखें";
+    showAnswerbtn.textContent = "उत्तर पहा";
     showAnswer = false;
     resetOptions();
   });
@@ -660,7 +660,7 @@ function resetOptions() {
 function loadvyanjan(selectedLetter) {
   gamePage.style.display = 'block';
   homePage.style.display = 'none';
-  showAnswerbtn.textContent = "उत्तर देखें";
+  showAnswerbtn.textContent = "उत्तर पहा";
   showAnswer = false;
   letter = selectedLetter;
   const data = letterData[letter];
@@ -896,7 +896,7 @@ function toggleAnswer() {
   });
 
   // 🔥 Optional: change button text
-  showAnswerbtn.textContent = showAnswer ? "उत्तर हटाएँ" : "उत्तर देखें";
+  showAnswerbtn.textContent = showAnswer ? "उत्तर लपवा" : "उत्तर पहा";
 }
 
 uttarDekheBtn.addEventListener("click", toggleAnswer);
