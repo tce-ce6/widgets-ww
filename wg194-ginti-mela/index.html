@@ -6,16 +6,16 @@
   <title>गिनती मेला</title>
   <link rel="stylesheet" href="css/global_style.css">
   <link rel="stylesheet" href="css/style.css">
-  <script src="lottie.js"></script>
+  <script src="js/lottie.js"></script>
 
 </head>
 
-<body id="shabd-widget">
+<body id="ginti-widget">
   <div class="container">
     <div class="mainContainerOuter">
       <div class="wdgetTitle">
         <h2>गिनती मेला</h2>
-        <span id="versionId" class="versionText">b4_wg194_260904_01</span>
+        <span id="versionId" class="versionText">b4_wg194_260907_01</span>
       </div>
       <div class="svg-container">
         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
@@ -253,8 +253,7 @@
                     </text>
                   </g>
                 </g>
-                <foreignObject id="number-panel" x="67" y="194" width="1170" height="800"
-                  style="border: 2px solid red;">
+                <foreignObject id="number-panel" x="67" y="194" width="1170" height="800">
                   <div class="left-container">
                     <img src="./assets/images/panel-lantern.svg" alt="">
                     <div class="number-container" id="number-container">
@@ -326,7 +325,7 @@
                   </div>
                 </foreignObject>
                 <g id="star-panel">
-                  <path id="Path_9291" data-name="Path_929" class="st33"
+                  <path id="Path_9291" data-name="Path_929"
                     d="M148.11,128.05l-5.68,10.18-11.43,2.26,7.92,8.55-1.39,11.57,10.58-4.89,10.58,4.89-1.39-11.57,7.92-8.55-11.43-2.26-5.68-10.18Z" />
                   <path id="Path_9301" data-name="Path_930"
                     d="M192.11,128.05l-5.68,10.18-11.43,2.26,7.92,8.55-1.39,11.57,10.58-4.89,10.58,4.89-1.39-11.57,7.92-8.55-11.43-2.26-5.68-10.18Z" />
@@ -337,8 +336,7 @@
                   <path id="Path_9331" data-name="Path_933"
                     d="M328.11,128.05l-5.68,10.18-11.43,2.26,7.92,8.55-1.39,11.57,10.58-4.89,10.58,4.89-1.39-11.57,7.92-8.55-11.43-2.26-5.68-10.18Z" />
                 </g>
-                <foreignObject id="operative-panel" x="1260" y="240" width="600" height="650"
-                  style="border: 2px solid red;">
+                <foreignObject id="operative-panel" x="1260" y="240" width="600" height="650">
                   <div class="right-container">
                     <div class="instrcution-text">
                       <ol>
@@ -359,12 +357,13 @@
                     </div>
                     <div class="img-container">
                       <div class="hint-img-wrapper" id="hint-img">
-                        <img src="./assets/images/hint-card-back.svg" alt="">
-                        <span class="hint-question" id="questions">३ के बाद आने वाली संख्या ज्ञात करें</span>
+                        <img id="hint-card-image" src="./assets/images/hint-card-front.svg" alt="Hint Card">
+                        <span class="hint-tap-prompt" id="hint-tap-prompt">हिंट देखने के लिए यहाँ टैप करें 👆</span>
+                        <span class="hint-question" id="questions" style="display: none;"></span>
                       </div>
                     </div>
                     <div class="ans-btn">
-                      <button id="show-ans-btn">उत्तर दिखाएँ</button>
+                      <button id="show-ans-btn" disabled>उत्तर दिखाएँ</button>
                     </div>
                   </div>
                 </foreignObject>
@@ -375,7 +374,8 @@
       </div>
     </div>
   </div>
-  <script src="sketch.js"></script>
+  <script src="js/json.js"></script>
+  <script src="js/sketch.js"></script>
 </body>
 
 </html>

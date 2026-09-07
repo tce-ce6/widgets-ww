@@ -6,7 +6,7 @@ svg * {
   -webkit-tap-highlight-color: transparent;
 }
 
-#shabd-widgetbody {
+#ginti-widgetbody {
   font-family: "Roboto", sans-serif;
   font-size: 16px;
   line-height: 1.2;
@@ -14,7 +14,7 @@ svg * {
   margin: 0
 }
 
-#shabd-widget .container {
+#ginti-widget .container {
   border: none;
   height: 100vh;
   width: 100vw;
@@ -22,7 +22,7 @@ svg * {
   user-select: none !important;
 }
 
-#shabd-widget .container::after {
+#ginti-widget .container::after {
   content: "";
   background-image: url("../assets/images/bg.png");
   background-size: cover;
@@ -36,27 +36,27 @@ svg * {
   /* filter: blur(5px) */
 }
 
-#shabd-widget .mainContainerOuter {
+#ginti-widget .mainContainerOuter {
   background: #000 !important
 }
 
-#shabd-widget .button-controls {
+#ginti-widget .button-controls {
   background: 0 0 !important;
   border: none !important
 }
 
-#shabd-widget .d-flex {
+#ginti-widget .d-flex {
   display: flex
 }
 
-#shabd-widget .question {
+#ginti-widget .question {
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center
 }
 
-#shabd-widget .flexContainer {
+#ginti-widget .flexContainer {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -64,7 +64,7 @@ svg * {
   z-index: 1
 }
 
-#shabd-widget .flexItem {
+#ginti-widget .flexItem {
   padding: 8px;
   transition: box-shadow .3s ease-in-out;
   display: flex;
@@ -72,13 +72,13 @@ svg * {
 }
 
 @media (max-width:768px) {
-  #shabd-widget .flexItem {
+  #ginti-widget .flexItem {
     width: 100%;
     margin: 8px 0
   }
 }
 
-#shabd-widget .btn {
+#ginti-widget .btn {
   display: inline-block;
   padding: 12px 25px;
   font-size: 16px;
@@ -95,36 +95,36 @@ svg * {
   margin-right: 10px
 }
 
-#shabd-widget .btn:hover {
+#ginti-widget .btn:hover {
   background-color: #3e80f3;
   transform: translateY(-2px);
   box-shadow: 0 6px 10px rgba(0, 0, 0, .15)
 }
 
-#shabd-widget .btn-primary:active {
+#ginti-widget .btn-primary:active {
   background-color: #3e80f3;
   transform: translateY(1px);
   box-shadow: 0 2px 4px rgba(0, 0, 0, .1)
 }
 
-#shabd-widget .btn:focus {
+#ginti-widget .btn:focus {
   outline: 3px solid #1e6bef;
   outline-offset: 3px
 }
 
-#shabd-widget .btn:active {
+#ginti-widget .btn:active {
   transform: translateY(1px);
   box-shadow: 0 2px 4px rgba(0, 0, 0, .1)
 }
 
-#shabd-widget .btn:disabled {
+#ginti-widget .btn:disabled {
   background-color: #ddd;
   color: #999;
   cursor: not-allowed;
   box-shadow: none
 }
 
-#shabd-widget .wdgetTitle {
+#ginti-widget .wdgetTitle {
   width: 100%;
   display: flex;
   align-items: center;
@@ -134,7 +134,7 @@ svg * {
   z-index: 1
 }
 
-#shabd-widget .wdgetTitle h2 {
+#ginti-widget .wdgetTitle h2 {
   font-size: 25px;
   font-weight: 600;
   text-align: left;
@@ -145,7 +145,7 @@ svg * {
   white-space: nowrap;
 }
 
-#shabd-widget .versionText {
+#ginti-widget .versionText {
   position: absolute;
   right: 20px;
   top: 10px !important;
@@ -153,13 +153,13 @@ svg * {
   color: rgb(0 0 0 / 20%);
 }
 
-#shabd-widget .svg-container {
+#ginti-widget .svg-container {
   width: 100%;
   height: 100%;
   z-index: 1;
 }
 
-#shabd-widget svg {
+#ginti-widget svg {
   width: 100% !important;
   height: 100%;
 }
@@ -186,54 +186,6 @@ svg * {
   80% {
     transform: translateX(10px);
   }
-}
-
-.shake {
-  animation: shake 0.5s ease-in-out;
-}
-
-/* Subtle 1px shake animation for letter buttons when wrong */
-/* @keyframes shakeButton {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-1px); }
-  75% { transform: translateX(1px); }
-} */
-
-/* .letter-button.shake-button {
-  animation: shakeButton 0.3s ease-in-out;
-} */
-
-/* Red border for wrong letter button - handled via JavaScript */
-.letter-button.wrong-letter {
-  filter: drop-shadow(5px 5px 5px #ff0000);
-  animation: shake 0.5s ease-in-out;
-}
-
-/* Letter button hover effects */
-/* .letter-button:hover {
-  opacity: 0.8;
-  transform: scale(1.05);
-  transition: all 0.2s ease;
-} */
-
-.letter-button {
-  transition: all 0.2s ease;
-}
-
-/* Sound button hover - no shake */
-/* .sound-button:hover {
-  opacity: 0.8;
-  transform: scale(1.1);
-  transition: all 0.2s ease;
-} */
-
-.sound-button {
-  transition: all 0.2s ease;
-}
-
-#lottie-wrapper {
-  height: 730px;
-  width: 1000px;
 }
 
 .btn-wrap {
@@ -288,19 +240,77 @@ svg * {
   font-size: 17px;
 }
 
-.ans-btn button {
-  font-size: 24px;
-}
-
 .new-grid-btn {
   background-color: #29dda7;
-  font-size: 30px;
+  font-size: 26px;
   color: #000;
+  font-weight: 700;
+  padding: 10px 22px;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.new-grid-btn:hover {
+  background-color: #4df4c1;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.new-grid-btn:active {
+  transform: translateY(1px);
 }
 
 .hint-img-wrapper {
   position: relative;
-  margin: 40px 0 20px 0;
+  margin: 30px 0 20px 0;
+  width: 582px;
+  max-width: 100%;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.25s ease, filter 0.25s ease;
+}
+
+.hint-img-wrapper:hover {
+  transform: translateY(-3px) scale(1.015);
+  filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.35));
+}
+
+.hint-img-wrapper:active {
+  transform: scale(0.98);
+}
+
+.hint-img-wrapper img {
+  width: 100%;
+  display: block;
+  pointer-events: none;
+}
+
+.hint-tap-prompt {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #1f3b0e;
+  font-size: 26px;
+  font-weight: 700;
+  text-align: center;
+  width: 85%;
+  pointer-events: none;
+  animation: bouncePrompt 1.6s infinite ease-in-out;
+}
+
+@keyframes bouncePrompt {
+
+  0%,
+  100% {
+    transform: translate(-50%, -50%);
+  }
+
+  50% {
+    transform: translate(-50%, -55%);
+  }
 }
 
 .hint-question {
@@ -308,18 +318,62 @@ svg * {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  color: #fff;
-  font-size: 30px;
-  white-space: nowrap;
+  color: #efff8a;
+  font-size: 26px;
+  font-weight: 600;
+  line-height: 1.35;
+  text-align: center;
+  width: 88%;
+  word-wrap: break-word;
+  pointer-events: none;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
 }
 
 .ans-btn button {
-  padding: 20px 40px;
+  padding: 14px 36px;
   border-radius: 50px;
-  background-color: green;
-  font-size: 30px;
-  margin: 0 auto;
+  background-color: #2e7d32;
+  color: #fff;
+  border: none;
+  font-size: 26px;
+  font-weight: 700;
+  margin: 10px auto 0 auto;
   display: block;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+  transition: all 0.2s ease;
+}
+
+.ans-btn button:hover {
+  background-color: #388e3c;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.ans-btn button:active {
+  transform: translateY(1px);
+}
+
+.ans-btn button:disabled {
+  background-color: #888888;
+  color: #dddddd;
+  cursor: not-allowed;
+  opacity: 0.55;
+  box-shadow: none;
+  transform: none;
+  pointer-events: none;
+}
+
+#star-panel path {
+  fill: #4c3b68;
+  opacity: 0.5;
+  transition: fill 0.3s ease, opacity 0.3s ease, filter 0.3s ease;
+}
+
+#star-panel path.active-star {
+  fill: #ffe41d !important;
+  opacity: 1 !important;
+  filter: drop-shadow(0 0 8px #ffe41d);
 }
 
 .left-container {
@@ -333,22 +387,185 @@ svg * {
   z-index: 1;
   display: flex;
   flex-wrap: wrap;
-
 }
 
 .lantern-div {
-  border: 2px solid yellow;
-  height: 101.83;
-  width: 109.39;
   position: absolute;
+  width: 109.39px;
+  height: 101.83px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.lantern-div:not(.solved):hover {
+  filter: brightness(1.12) drop-shadow(0 0 8px rgba(255, 228, 20, 0.5));
+}
+
+.lantern-div:not(.solved):active {
+  transform: scale(0.96);
+}
+
+.lantern-div.correct-pop {
+  animation: correctBounce 0.35s ease-out;
+}
+
+@keyframes correctBounce {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.08);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.lantern-div.lantern-glow {
+  animation: pulseLantern 0.8s infinite alternate ease-in-out;
+}
+
+@keyframes pulseLantern {
+  from {
+    transform: scale(1);
+    filter: drop-shadow(0 0 8px #ffe414);
+  }
+
+  to {
+    transform: scale(1.12);
+    filter: drop-shadow(0 0 20px #ffe414) brightness(1.2);
+  }
+}
+
+.lantern-div.lantern-shake {
+  animation: shake 0.5s ease-in-out;
+}
+
+.lantern-div img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.lantern-div .num-span {
+  position: relative;
+  z-index: 2;
+  font-family: "Roboto", "Noto Sans Devanagari", sans-serif;
+  font-size: 32px;
+  font-weight: 800;
+  color: #000;
+  pointer-events: none;
+  margin-top: 14px;
+  line-height: 1;
+}
+
+.lantern-div.solved,
+.lantern-div.solved:hover {
+  transform: scale(1) !important;
+  filter: none !important;
+  cursor: default;
+  pointer-events: none;
+}
+
+.lantern-div.solved img {
+  width: 100%;
+  height: 100%;
+  transform: scale(1) !important;
+}
+
+.lantern-div.solved .num-span {
+  color: #261600;
+  text-shadow: 0 0 2px rgba(255, 255, 255, 0.8);
 }
 
 .lantern-div:nth-child(1) {
-  top: 140px;
-  left: 38px;
+  top: 141px;
+  left: 39.5px;
 }
 
 .lantern-div:nth-child(2) {
-  top: 140px;
-  left: 100px;
+  top: 151px;
+  left: 220px;
+}
+
+.lantern-div:nth-child(3) {
+  top: 154px;
+  left: 473.4px;
+}
+
+.lantern-div:nth-child(4) {
+  top: 139px;
+  left: 683px;
+
+}
+
+.lantern-div:nth-child(5) {
+  top: 250px;
+  left: 862.4px;
+}
+
+.lantern-div:nth-child(6) {
+  top: 194px;
+  left: 1011.3px;
+}
+
+.lantern-div:nth-child(7) {
+  top: 379px;
+  left: 120px;
+}
+
+.lantern-div:nth-child(8) {
+  top: 346px;
+  left: 338px;
+}
+
+.lantern-div:nth-child(9) {
+  top: 398.3px;
+  left: 513.37px;
+}
+
+.lantern-div:nth-child(10) {
+  top: 382px;
+  left: 706.4px;
+}
+
+.lantern-div:nth-child(11) {
+  top: 541px;
+  left: 852.2px;
+}
+
+.lantern-div:nth-child(12) {
+  top: 592.7px;
+  left: 1014px;
+}
+
+.lantern-div:nth-child(13) {
+  top: 631.8px;
+  left: 67.5px;
+
+}
+
+.lantern-div:nth-child(14) {
+  top: 606.3px;
+  left: 264.2px;
+}
+
+.lantern-div:nth-child(15) {
+  top: 625.5px;
+  left: 476px;
+}
+
+.lantern-div:nth-child(16) {
+  top: 640px;
+  left: 683px;
 }
