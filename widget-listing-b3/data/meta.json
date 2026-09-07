@@ -81,7 +81,7 @@
       "author": "tce-ashishg"
     },
     "wg190-my-healthy-plate": {
-      "updatedAt": "2026-09-04T17:42:49+05:30",
+      "updatedAt": "2026-09-07T15:29:08+05:30",
       "author": "tce-ashishg"
     },
     "wg193-swar-ki-pahchan-gujrati": {
@@ -89,11 +89,20 @@
       "author": "tce-ashishg"
     },
     "wg194-ginti-mela": {
-      "updatedAt": "2026-09-04T17:42:49+05:30",
+      "updatedAt": "2026-09-07T15:29:08+05:30",
       "author": "tce-ashishg"
     }
   },
   "commits": [
+    {
+      "date": "2026-09-07T15:29:08+05:30",
+      "author": "tce-ashishg",
+      "message": "wg190 issues resolved",
+      "widgets": [
+        190,
+        194
+      ]
+    },
     {
       "date": "2026-09-07T10:52:10+05:30",
       "author": "tce-ashishg",
@@ -337,14 +346,6 @@
       "message": "wg166 img corrected",
       "widgets": [
         166
-      ]
-    },
-    {
-      "date": "2026-08-21T15:32:10+05:30",
-      "author": "tce-ashishg",
-      "message": "wg168 completed",
-      "widgets": [
-        168
       ]
     }
   ]
