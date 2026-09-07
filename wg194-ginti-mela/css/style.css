@@ -1,9 +1,11 @@
 * {
   box-sizing: border-box
 }
+
 svg * {
   -webkit-tap-highlight-color: transparent;
 }
+
 #shabd-widgetbody {
   font-family: "Roboto", sans-serif;
   font-size: 16px;
@@ -150,21 +152,40 @@ svg * {
   font-size: 12px;
   color: rgb(0 0 0 / 20%);
 }
-#shabd-widget .svg-container{
+
+#shabd-widget .svg-container {
   width: 100%;
   height: 100%;
   z-index: 1;
 }
-#shabd-widget svg{
-    width: 100% !important;
-    height: 100%;
+
+#shabd-widget svg {
+  width: 100% !important;
+  height: 100%;
 }
 
 /* Shake animation for answer slots */
 @keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
-  20%, 40%, 60%, 80% { transform: translateX(10px); }
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translateX(-10px);
+  }
+
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translateX(10px);
+  }
 }
 
 .shake {
@@ -208,16 +229,126 @@ svg * {
 
 .sound-button {
   transition: all 0.2s ease;
-} 
+}
 
-#lottie-wrapper{
+#lottie-wrapper {
   height: 730px;
   width: 1000px;
 }
-.btn-wrap{
+
+.btn-wrap {
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 800;
+}
+
+.instrcution-text {
+  font-size: 30px;
+  color: #efff8a;
+  line-height: 1.7;
+}
+
+.dropdown-container {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-size: 30px;
+}
+
+.dropdown-wrapper {
+  background-color: #3acbf7;
+  padding: 10px 10px 10px 20px;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  position: relative;
+}
+
+.dropdown-container select {
+  font-size: 24px;
+  padding: 10px 35px 10px 16px;
+  border-radius: 15px;
+  position: relative;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  line-height: 1.4;
+}
+
+.dropdown-wrapper::after {
+  content: "▼";
+  position: absolute;
+  right: 17px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  font-size: 17px;
+}
+
+.ans-btn button {
+  font-size: 24px;
+}
+
+.new-grid-btn {
+  background-color: #29dda7;
+  font-size: 30px;
+  color: #000;
+}
+
+.hint-img-wrapper {
+  position: relative;
+  margin: 40px 0 20px 0;
+}
+
+.hint-question {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #fff;
+  font-size: 30px;
+  white-space: nowrap;
+}
+
+.ans-btn button {
+  padding: 20px 40px;
+  border-radius: 50px;
+  background-color: green;
+  font-size: 30px;
+  margin: 0 auto;
+  display: block;
+}
+
+.left-container {
+  position: relative;
+}
+
+.number-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+
+}
+
+.lantern-div {
+  border: 2px solid yellow;
+  height: 101.83;
+  width: 109.39;
+  position: absolute;
+}
+
+.lantern-div:nth-child(1) {
+  top: 140px;
+  left: 38px;
+}
+
+.lantern-div:nth-child(2) {
+  top: 140px;
+  left: 100px;
 }
