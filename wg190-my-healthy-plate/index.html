@@ -14,7 +14,7 @@
     <div class="mainContainerOuter">
       <div class="wdgetTitle">
         <h2>My Healthy Plate</h2>
-        <span id="versionId" class="versionText">b4_wg190_260904_01</span>
+        <span id="versionId" class="versionText">b4_wg190_260907_01</span>
       </div>
       <div class="svg-container" id="svg-container">
         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="Layer_1" version="1.1"
@@ -2246,9 +2246,26 @@
               <div id="feedback-msg-container">
                 <h1 class="minerals-title">Almost there!</h1>
                 <div id="minerals-scale-container" class="minerals-scale-container">
-                  <span class="minerals carbohydrates">Carbohydrates: `${carbsStatus}`</span>
-                  <span class="minerals proteins">Proteins: `${proteinStatus}`</span>
-                  <span class="minerals vitamins-minerals">Vitamins &amp; minerals: `${vitaminsStatus}`</span>
+                  <div class="capsule-wrapper">
+                    <span class="capusle-inner">
+                      <span class="capsule-inner" data-capsule="carbs"></span>
+                    </span>
+                    <span class="minerals carbohydrates">Carbohydrates: `${carbsStatus}`</span>
+                  </div>
+                  <div class="capsule-wrapper">
+                    <span class="capusle-inner">
+                      <span class="capsule-inner" data-capsule="protein"></span>
+                    </span>
+                    <span class="minerals proteins">Proteins: `${proteinStatus}`</span>
+                  </div>
+                  <div class="capsule-wrapper">
+                    <span class="capusle-inner">
+                      <span class="capsule-inner" data-capsule="vitamins"></span>
+                    </span>
+                    <span class="minerals vitamins-minerals">Vitamins &amp; minerals: `${vitaminsStatus}`</span>
+                  </div>
+
+
                 </div>
                 <div id="feedback-msg-text-container">
                   <p class="feedback-msg-text" id="carbohydrates-txt">My vitamins & minerals meter is still low. Look

@@ -265,23 +265,17 @@ img.step-image {
   margin-bottom: 50px;
 }
 
-.minerals {
+/* .minerals {
   padding: 15px 30px;
   background-color: #ff0000;
   font-size: 24px;
   border-radius: 40px;
-}
+} */
 
-.minerals.carbohydrates {
-  background-color: #ffcc8a;
-}
-
-.minerals.proteins {
-  background-color: #88e79f;
-}
-
-.minerals.vitamins-minerals {
-  background-color: #febdbd;
+.minerals {
+  font-size: 22px;
+  font-weight: 600;
+  text-align: center;
 }
 
 .minerals-scale-container {
@@ -301,4 +295,36 @@ img.step-image {
   font-weight: 600;
   line-height: 1.3;
   margin-bottom: 12px;
+}
+
+.capsule-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #ececec;
+  padding: 20px 30px;
+  gap: 15px;
+  border-radius: 20px;
+  min-width: 220px;
+
+}
+
+.capusle-inner {
+  background-color: #c8c8c8;
+  font-size: 24px;
+  border-radius: 40px;
+  width: 100%;
+  box-sizing: border-box;
+  height: 20px;
+  overflow: hidden;
+
+}
+
+.capsule-inner {
+  width: 0%;
+  display: inline-block;
+  background-color: green;
+  height: 100%;
+  transition: width 1.2s ease;
 }
