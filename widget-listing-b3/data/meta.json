@@ -89,11 +89,24 @@
       "author": "tce-ashishg"
     },
     "wg194-ginti-mela": {
-      "updatedAt": "2026-09-07T19:03:50+05:30",
+      "updatedAt": "2026-09-08T18:57:41+05:30",
+      "author": "tce-ashishg"
+    },
+    "wg195-chitra-dekh-kar-vakya-banaye": {
+      "updatedAt": "2026-09-08T18:57:41+05:30",
       "author": "tce-ashishg"
     }
   },
   "commits": [
+    {
+      "date": "2026-09-08T18:57:41+05:30",
+      "author": "tce-ashishg",
+      "message": "wg195 structuring done",
+      "widgets": [
+        194,
+        195
+      ]
+    },
     {
       "date": "2026-09-07T19:03:50+05:30",
       "author": "tce-ashishg",
@@ -336,16 +349,6 @@
         166,
         167,
         168
-      ]
-    },
-    {
-      "date": "2026-08-21T16:16:03+05:30",
-      "author": "tce-ashishg",
-      "message": "thumb added",
-      "widgets": [
-        173,
-        174,
-        193
       ]
     }
   ]
