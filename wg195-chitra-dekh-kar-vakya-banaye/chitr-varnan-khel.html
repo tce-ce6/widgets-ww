@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>चित्र वर्णन खेल</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sky-top:#BEE7F0;
+    --sky-bottom:#E4F5EC;
+    --meadow:#DCEEC2;
+    --meadow-dark:#B9D98F;
+    --wood:#8B5E34;
+    --wood-dark:#6B4423;
+    --tile-bg:#FFF9EE;
+    --tile-border:#E8A33D;
+    --leaf:#4C8C4A;
+    --leaf-dark:#2F5E2D;
+    --mango:#F0A93B;
+    --mango-dark:#C97A1E;
+    --text-dark:#2B3A2F;
+    --error:#E1574C;
+    --success:#3E8E41;
+    --paper:#FFFDF8;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;}
+  .app{
+    font-family:'Noto Sans Devanagari','Baloo 2',sans-serif;
+    background:linear-gradient(180deg,var(--sky-top) 0%, var(--sky-bottom) 55%, var(--meadow) 55%, var(--meadow) 100%);
+    border-radius:20px;
+    padding:0 0 24px 0;
+    max-width:640px;
+    margin:0 auto;
+    color:var(--text-dark);
+    overflow:hidden;
+    position:relative;
+  }
+  .title-bar{
+    text-align:center;
+    padding:18px 16px 6px;
+    font-family:'Baloo 2',sans-serif;
+    font-weight:700;
+    font-size:22px;
+    color:var(--leaf-dark);
+  }
+  .scene-label{
+    text-align:center;
+    font-size:13px;
+    font-weight:600;
+    color:var(--mango-dark);
+    padding:0 20px 4px;
+  }
+  .progress{
+    text-align:center;
+    font-size:14px;
+    font-weight:700;
+    font-family:'Baloo 2',sans-serif;
+    color:var(--leaf-dark);
+    padding:0 20px 6px;
+  }
+  .instruction{
+    text-align:center;
+    font-size:16px;
+    padding:0 20px 14px;
+    color:var(--text-dark);
+    font-weight:400;
+  }
+  .scene{
+    position:relative;
+    height:210px;
+    margin:0 20px 12px;
+    background:linear-gradient(180deg, #DFF3F8 0%, #DFF3F8 62%, var(--meadow-dark) 62%, var(--meadow-dark) 100%);
+    border-radius:16px;
+    overflow:hidden;
+    border:2px solid #ffffff;
+  }
+  .scene svg{position:absolute;bottom:0;left:0;width:100%;height:100%;}
+  .card-strip{
+    margin:0 20px 14px;
+    background:var(--paper);
+    border:2px solid var(--tile-border);
+    border-radius:14px;
+    padding:12px 16px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    cursor:pointer;
+    transition:transform .12s ease, background .15s ease;
+  }
+  .card-strip.hidden{display:none;}
+  .card-strip:hover{background:#FFF6E5;}
+  .card-strip:active{transform:scale(.98);}
+  .card-strip-left{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:15px;
+    font-weight:600;
+    color:var(--wood-dark);
+  }
+  .card-strip-icon{font-size:20px;}
+  .card-strip-hint{
+    font-size:13px;
+    color:var(--mango-dark);
+    font-weight:600;
+  }
+  .card{
+    background:var(--paper);
+    margin:0 20px;
+    border-radius:16px;
+    padding:18px 18px 22px;
+    border:2px solid #F0E9D8;
+  }
+  .card.hidden{display:none;}
+  .sentence-row{
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+    margin-bottom:16px;
+    padding:10px;
+    border-radius:12px;
+    transition:background .25s ease;
+  }
+  .sentence-row.correct{background:#EAF6E4;}
+  .sentence-number{
+    font-family:'Baloo 2',sans-serif;
+    font-weight:700;
+    font-size:18px;
+    color:var(--mango-dark);
+    min-width:22px;
+    padding-top:6px;
+  }
+  .slots{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    flex:1;
+  }
+  .slot{
+    min-width:60px;
+    height:42px;
+    border:2px dashed var(--wood);
+    border-radius:10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:16px;
+    font-weight:600;
+    padding:0 10px;
+    background:#FBF6EA;
+    transition:transform .12s ease, border-color .15s ease, background .15s ease;
+  }
+  .slot.filled{
+    border-style:solid;
+    border-color:var(--tile-border);
+    background:var(--tile-bg);
+    cursor:pointer;
+  }
+  .slot.filled:hover{transform:translateY(-2px);}
+  .slot.wrong{
+    animation:shake .35s ease;
+    border-color:var(--error);
+    background:#FCEBEA;
+  }
+  .slot.right{
+    border-color:var(--success);
+    background:#E9F6E7;
+  }
+  @keyframes shake{
+    0%,100%{transform:translateX(0);}
+    20%{transform:translateX(-6px);}
+    40%{transform:translateX(6px);}
+    60%{transform:translateX(-4px);}
+    80%{transform:translateX(4px);}
+  }
+  .wordbank{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    justify-content:center;
+    margin:6px 0 18px;
+    min-height:50px;
+  }
+  .tile{
+    font-family:'Noto Sans Devanagari',sans-serif;
+    font-size:17px;
+    font-weight:600;
+    padding:9px 18px;
+    background:var(--tile-bg);
+    border:2px solid var(--tile-border);
+    border-radius:10px;
+    color:var(--text-dark);
+    cursor:pointer;
+    transition:transform .12s ease, opacity .2s ease, background .15s ease;
+  }
+  .tile:hover{transform:translateY(-2px);background:#FFF3DC;}
+  .tile:active{transform:translateY(0) scale(.96);}
+  .tile.used{
+    opacity:0;
+    pointer-events:none;
+    transform:scale(.7);
+  }
+  .controls{
+    display:flex;
+    justify-content:center;
+    gap:12px;
+    flex-wrap:wrap;
+  }
+  .btn{
+    font-family:'Baloo 2',sans-serif;
+    font-size:16px;
+    font-weight:700;
+    padding:10px 26px;
+    border-radius:24px;
+    border:none;
+    cursor:pointer;
+    background:var(--leaf);
+    color:#fff;
+    transition:transform .12s ease, background .15s ease;
+  }
+  .btn:hover{background:var(--leaf-dark);}
+  .btn:active{transform:scale(.96);}
+  .btn:disabled{background:#C9C6BC;cursor:not-allowed;}
+  .btn.audio{
+    background:transparent;
+    color:var(--mango-dark);
+    border:2px solid var(--mango);
+    font-size:18px;
+    padding:6px 12px;
+  }
+  .btn.audio:hover{background:#FFF3DC;}
+  .btn.ghost{
+    background:transparent;
+    color:var(--leaf-dark);
+    border:2px solid var(--leaf);
+  }
+  .btn.ghost:hover{background:#EAF6E4;}
+  .btn.next{background:var(--mango-dark);}
+  .btn.next:hover{background:#A9640F;}
+  .btn.hidden{display:none;}
+  .overlay{
+    margin:0 20px;
+    background:var(--paper);
+    border-radius:16px;
+    padding:18px;
+    border:2px solid var(--tile-border);
+  }
+  .overlay.hidden{display:none;}
+  .overlay-scene{
+    position:relative;
+    height:190px;
+    margin-bottom:14px;
+    background:linear-gradient(180deg, #DFF3F8 0%, #DFF3F8 62%, var(--meadow-dark) 62%, var(--meadow-dark) 100%);
+    border-radius:14px;
+    overflow:hidden;
+    border:2px solid #ffffff;
+  }
+  .overlay-scene svg{position:absolute;bottom:0;left:0;width:100%;height:100%;}
+  .overlay-title{
+    font-family:'Baloo 2',sans-serif;
+    font-weight:700;
+    font-size:17px;
+    color:var(--leaf-dark);
+    margin-bottom:10px;
+    text-align:center;
+  }
+  .overlay-list{
+    list-style:none;
+    margin:0 0 16px;
+    padding:0;
+    counter-reset:sentence-counter;
+  }
+  .overlay-list li{
+    counter-increment:sentence-counter;
+    font-size:16px;
+    line-height:1.7;
+    padding-left:28px;
+    position:relative;
+    margin-bottom:6px;
+  }
+  .overlay-list li::before{
+    content:counter(sentence-counter) ".";
+    position:absolute;
+    left:0;
+    font-weight:700;
+    color:var(--mango-dark);
+    font-family:'Baloo 2',sans-serif;
+  }
+  .overlay-list li.pending{
+    color:var(--text-dark);
+    opacity:.4;
+  }
+  .overlay-controls{
+    display:flex;
+    justify-content:center;
+    gap:12px;
+    flex-wrap:wrap;
+  }
+  @media (max-width:420px){
+    .title-bar{font-size:19px;}
+    .instruction{font-size:14px;}
+    .scene{height:165px;}
+    .overlay-scene{height:150px;}
+    .slot{min-width:48px;height:38px;font-size:14px;}
+    .tile{font-size:15px;padding:8px 14px;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important;transition:none !important;}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="title-bar">चित्र वर्णन खेल</div>
+  <div class="scene-label" id="sceneLabel">चित्र 1</div>
+  <div class="progress" id="progressLabel">वाक्य 1 / 5</div>
+  <div class="instruction">चित्र को ध्यान से देखिए, फिर सही शब्द चुनकर पाँचों वाक्य पूरे कीजिए।</div>
+
+  <div class="scene" id="mainScene"></div>
+
+  <div class="card-strip hidden" id="cardStrip">
+    <div class="card-strip-left">
+      <span class="card-strip-icon">📖</span>
+      <span id="cardStripText">0 वाक्य बने</span>
+    </div>
+    <span class="card-strip-hint">देखने के लिए टैप करें</span>
+  </div>
+
+  <div class="card" id="gameCard">
+    <div class="sentence-row" id="activeRow">
+      <div class="sentence-number" id="activeNumber">1.</div>
+      <div class="slots" id="activeSlots"></div>
+    </div>
+    <div class="wordbank" id="activeBank"></div>
+    <div class="controls">
+      <button class="btn audio" id="audioBtn" aria-label="वाक्य सुनें">🔊 सुनें</button>
+      <button class="btn" id="checkBtn" disabled>जाँचें</button>
+      <button class="btn next" id="mainNextBtn">अगला चित्र ➜</button>
+    </div>
+  </div>
+
+  <div class="overlay hidden" id="overlayCard">
+    <div class="overlay-scene" id="overlayScene"></div>
+    <div class="overlay-title" id="overlayTitle">अब तक बने वाक्य</div>
+    <ul class="overlay-list" id="overlayList"></ul>
+    <div class="overlay-controls">
+      <button class="btn ghost hidden" id="backBtn">🔙 वापस जाएँ</button>
+      <button class="btn hidden" id="restartBtn">🔁 फिर से खेलें</button>
+      <button class="btn next hidden" id="nextChitraBtn">अगला चित्र ➜</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var pondScene = ''
+    + '<svg viewBox="0 0 400 210" xmlns="http://www.w3.org/2000/svg">'
+    + '<circle cx="345" cy="30" r="20" fill="#FBDD6B"/>'
+    + '<ellipse cx="80" cy="35" rx="30" ry="12" fill="#ffffff" opacity="0.85"/>'
+    + '<ellipse cx="105" cy="42" rx="22" ry="10" fill="#ffffff" opacity="0.85"/>'
+    + '<rect x="70" y="105" width="22" height="85" fill="#8B5E34"/>'
+    + '<ellipse cx="81" cy="85" rx="70" ry="55" fill="#4C8C4A"/>'
+    + '<ellipse cx="55" cy="65" rx="42" ry="34" fill="#5DA05A"/>'
+    + '<ellipse cx="120" cy="70" rx="45" ry="36" fill="#3F7A3D"/>'
+    + '<ellipse cx="60" cy="118" rx="13" ry="17" fill="#F0A93B" stroke="#C97A1E" stroke-width="2"/>'
+    + '<ellipse cx="100" cy="112" rx="12" ry="16" fill="#F0A93B" stroke="#C97A1E" stroke-width="2"/>'
+    + '<ellipse cx="330" cy="140" rx="150" ry="45" fill="#8FD3E8"/>'
+    + '<ellipse cx="330" cy="140" rx="150" ry="45" fill="#5CB2CC" opacity="0.3"/>'
+    + '<g transform="translate(280,132)"><ellipse rx="12" ry="6" fill="#8FBEDC" stroke="#4E86A6" stroke-width="1.5"/><path d="M 11 0 L 20 -5 L 20 5 Z" fill="#8FBEDC" stroke="#4E86A6" stroke-width="1.5"/></g>'
+    + '<g transform="translate(340,150) scale(-1,1)"><ellipse rx="11" ry="5.5" fill="#A9D4E8" stroke="#4E86A6" stroke-width="1.5"/><path d="M 10 0 L 18 -5 L 18 5 Z" fill="#A9D4E8" stroke="#4E86A6" stroke-width="1.5"/></g>'
+    + '<g transform="translate(300,158)"><ellipse rx="9" ry="4.5" fill="#8FBEDC" stroke="#4E86A6" stroke-width="1.5"/><path d="M 8 0 L 15 -4 L 15 4 Z" fill="#8FBEDC" stroke="#4E86A6" stroke-width="1.5"/></g>'
+    + '<g transform="translate(48,95)">'
+    + '<ellipse cx="0" cy="8" rx="11" ry="8" fill="#C97A1E"/>'
+    + '<circle cx="-9" cy="-2" r="8" fill="#C97A1E"/>'
+    + '<circle cx="-13" cy="-8" r="3.5" fill="#C97A1E"/>'
+    + '<circle cx="-5" cy="-9" r="3.5" fill="#C97A1E"/>'
+    + '<circle cx="-13" cy="-8" r="1.6" fill="#8B4A0F"/>'
+    + '<circle cx="-5" cy="-9" r="1.6" fill="#8B4A0F"/>'
+    + '<circle cx="-1" cy="0" r="1.4" fill="#3B2410"/>'
+    + '<path d="M 9 6 Q 22 0 24 -14" stroke="#C97A1E" stroke-width="4" fill="none" stroke-linecap="round"/>'
+    + '<ellipse cx="10" cy="7" rx="3" ry="2.4" fill="#F0A93B"/>'
+    + '</g>'
+    + '<g transform="translate(38,182)">'
+    + '<ellipse cx="0" cy="0" rx="26" ry="11" fill="#E8A050"/>'
+    + '<path d="M -26 0 Q -34 -6 -30 8 Q -22 6 -26 0 Z" fill="#E8A050"/>'
+    + '<circle cx="20" cy="-8" r="8" fill="#E8A050"/>'
+    + '<path d="M 15 -14 L 12 -20 L 19 -16 Z" fill="#E8A050"/>'
+    + '<path d="M 24 -14 L 27 -21 L 21 -17 Z" fill="#E8A050"/>'
+    + '<circle cx="24" cy="-9" r="1.4" fill="#3B2410"/>'
+    + '<ellipse cx="27" cy="-6" rx="2.4" ry="1.6" fill="#fff"/>'
+    + '</g>'
+    + '<rect x="0" y="192" width="400" height="18" fill="#B9D98F"/>'
+    + '</svg>';
+
+  var scenes = [
+    {
+      label: "चित्र 1",
+      svg: pondScene,
+      sentences: [
+        {
+          words: ["तालाब","के","किनारे","एक","पेड़","है"],
+          distractors: ["नदी","बीच","दो","झाड़ी","था"],
+          text: "तालाब के किनारे एक पेड़ है।"
+        },
+        {
+          words: ["पेड़","पर","मीठे","फल","लगे","हैं"],
+          distractors: ["नीचे","खट्टे","फूल","गिरे","था"],
+          text: "पेड़ पर मीठे फल लगे हैं।"
+        },
+        {
+          words: ["बंदर","पेड़","पर","बैठकर","फल","खा","रहा","है"],
+          distractors: ["लोमड़ी","नीचे","सोकर","पानी","रही"],
+          text: "बंदर पेड़ पर बैठकर फल खा रहा है।"
+        },
+        {
+          words: ["पेड़","के","नीचे","एक","लोमड़ी","आराम","कर","रही","है"],
+          distractors: ["तालाब","ऊपर","बंदर","दौड़","रहा"],
+          text: "पेड़ के नीचे एक लोमड़ी आराम कर रही है।"
+        },
+        {
+          words: ["तालाब","में","कुछ","मछलियाँ","तैर","रही","हैं"],
+          distractors: ["नदी","सारी","कौवे","उड़"],
+          text: "तालाब में कुछ मछलियाँ तैर रही हैं।"
+        }
+      ]
+    }
+  ];
+
+  var sceneIdx = 0;
+  var completed = [];
+  var currentIdx = 0;
+  var slots = [];
+  var refs = {};
+  var bank = [];
+
+  function shuffle(arr){
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--){
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+    }
+    return a;
+  }
+
+  function currentScene(){ return scenes[sceneIdx]; }
+  function currentSentences(){ return currentScene().sentences; }
+
+  function updateMainNextBtn(){
+    var hasNextScene = sceneIdx < scenes.length - 1;
+    document.getElementById('mainNextBtn').disabled = !hasNextScene;
+  }
+
+  function loadScene(idx){
+    sceneIdx = idx;
+    completed = [];
+    currentIdx = 0;
+    document.getElementById('sceneLabel').textContent = currentScene().label;
+    document.getElementById('mainScene').innerHTML = currentScene().svg;
+    document.getElementById('overlayScene').innerHTML = currentScene().svg;
+    updateCardStrip();
+    updateMainNextBtn();
+    hideOverlay();
+    startCurrent();
+  }
+
+  function startCurrent(){
+    var s = currentSentences()[currentIdx];
+    slots = new Array(s.words.length).fill(null);
+    refs = {};
+    var pool = shuffle(s.words.concat(s.distractors));
+    bank = pool.map(function(w){ return { word: w, used: false }; });
+    document.getElementById('activeNumber').textContent = (currentIdx + 1) + '.';
+    document.getElementById('progressLabel').textContent = 'वाक्य ' + (currentIdx + 1) + ' / ' + currentSentences().length;
+    document.getElementById('activeRow').classList.remove('correct');
+    renderSlots();
+    renderBank();
+    updateCheckBtn();
+  }
+
+  function renderSlots(){
+    var container = document.getElementById('activeSlots');
+    container.innerHTML = '';
+    slots.forEach(function(val, i){
+      var el = document.createElement('div');
+      el.className = 'slot' + (val ? ' filled' : '');
+      el.textContent = val || '';
+      el.setAttribute('role','button');
+      el.setAttribute('tabindex', val ? '0' : '-1');
+      if (val){
+        el.addEventListener('click', function(){ removeFromSlot(i); });
+        el.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' ') removeFromSlot(i); });
+      }
+      container.appendChild(el);
+    });
+  }
+
+  function renderBank(){
+    var container = document.getElementById('activeBank');
+    container.innerHTML = '';
+    bank.forEach(function(tile, ti){
+      var btn = document.createElement('button');
+      btn.className = 'tile' + (tile.used ? ' used' : '');
+      btn.textContent = tile.word;
+      btn.type = 'button';
+      btn.disabled = tile.used;
+      btn.addEventListener('click', function(){ placeTile(ti); });
+      container.appendChild(btn);
+    });
+  }
+
+  function placeTile(tileIndex){
+    var emptyIdx = slots.indexOf(null);
+    if (emptyIdx === -1) return;
+    bank[tileIndex].used = true;
+    slots[emptyIdx] = bank[tileIndex].word;
+    refs[emptyIdx] = tileIndex;
+    renderSlots();
+    renderBank();
+    updateCheckBtn();
+  }
+
+  function removeFromSlot(slotIdx){
+    var tileRef = refs[slotIdx];
+    if (tileRef !== undefined) bank[tileRef].used = false;
+    slots[slotIdx] = null;
+    delete refs[slotIdx];
+    document.getElementById('activeRow').classList.remove('correct');
+    document.querySelectorAll('#activeSlots .slot').forEach(function(s){ s.classList.remove('wrong','right'); });
+    renderSlots();
+    renderBank();
+    updateCheckBtn();
+  }
+
+  function updateCheckBtn(){
+    var count = slots.filter(function(v){ return v !== null; }).length;
+    document.getElementById('checkBtn').disabled = (count !== currentSentences()[currentIdx].words.length);
+  }
+
+  function updateCardStrip(){
+    var strip = document.getElementById('cardStrip');
+    if (completed.length === 0){
+      strip.classList.add('hidden');
+      return;
+    }
+    strip.classList.remove('hidden');
+    document.getElementById('cardStripText').textContent = completed.length + ' वाक्य बने';
+  }
+
+  function checkSentence(){
+    var s = currentSentences()[currentIdx];
+    var slotEls = document.querySelectorAll('#activeSlots .slot');
+    var allCorrect = true;
+    for (var i = 0; i < s.words.length; i++){
+      if (slots[i] === s.words[i]){
+        slotEls[i].classList.add('right');
+        slotEls[i].classList.remove('wrong');
+      } else {
+        slotEls[i].classList.add('wrong');
+        allCorrect = false;
+      }
+    }
+    if (allCorrect){
+      document.getElementById('activeRow').classList.add('correct');
+      document.getElementById('checkBtn').disabled = true;
+      completed.push(s.text);
+      updateCardStrip();
+      setTimeout(function(){
+        if (currentIdx < currentSentences().length - 1){
+          currentIdx++;
+          startCurrent();
+        } else {
+          showOverlay(true);
+        }
+      }, 800);
+    } else {
+      setTimeout(function(){
+        document.querySelectorAll('#activeSlots .slot.wrong').forEach(function(el){ el.classList.remove('wrong'); });
+      }, 500);
+    }
+  }
+
+  function renderOverlayList(){
+    var list = document.getElementById('overlayList');
+    list.innerHTML = '';
+    currentSentences().forEach(function(s, i){
+      var li = document.createElement('li');
+      if (i < completed.length){
+        li.textContent = completed[i];
+      } else {
+        li.textContent = '............';
+        li.classList.add('pending');
+      }
+      list.appendChild(li);
+    });
+  }
+
+  function showOverlay(isFinal){
+    renderOverlayList();
+    document.getElementById('gameCard').classList.add('hidden');
+    document.getElementById('cardStrip').classList.add('hidden');
+    document.getElementById('overlayCard').classList.remove('hidden');
+    var hasNextScene = sceneIdx < scenes.length - 1;
+    document.getElementById('nextChitraBtn').classList.remove('hidden');
+    document.getElementById('nextChitraBtn').disabled = !hasNextScene;
+    if (isFinal){
+      document.getElementById('overlayTitle').textContent = '🎉 शाबाश! आपने पूरा चित्र वर्णन कर लिया';
+      document.getElementById('backBtn').classList.add('hidden');
+      document.getElementById('restartBtn').classList.remove('hidden');
+    } else {
+      document.getElementById('overlayTitle').textContent = 'अब तक बने वाक्य';
+      document.getElementById('backBtn').classList.remove('hidden');
+      document.getElementById('restartBtn').classList.add('hidden');
+    }
+  }
+
+  function hideOverlay(){
+    document.getElementById('overlayCard').classList.add('hidden');
+    document.getElementById('gameCard').classList.remove('hidden');
+    if (completed.length > 0) document.getElementById('cardStrip').classList.remove('hidden');
+  }
+
+  function restart(){
+    loadScene(sceneIdx);
+  }
+
+  function goToNextScene(){
+    if (sceneIdx < scenes.length - 1){
+      loadScene(sceneIdx + 1);
+    }
+  }
+
+  function speak(text){
+    try{
+      if (!('speechSynthesis' in window)) return;
+      var utter = new SpeechSynthesisUtterance(text);
+      utter.lang = 'hi-IN';
+      utter.rate = 0.85;
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.speak(utter);
+    }catch(e){}
+  }
+
+  document.getElementById('checkBtn').addEventListener('click', checkSentence);
+  document.getElementById('audioBtn').addEventListener('click', function(){
+    var partial = slots.filter(function(v){return v;}).join(' ');
+    speak(partial || currentSentences()[currentIdx].text);
+  });
+  document.getElementById('cardStrip').addEventListener('click', function(){ showOverlay(false); });
+  document.getElementById('backBtn').addEventListener('click', hideOverlay);
+  document.getElementById('restartBtn').addEventListener('click', restart);
+  document.getElementById('nextChitraBtn').addEventListener('click', goToNextScene);
+  document.getElementById('mainNextBtn').addEventListener('click', goToNextScene);
+
+  loadScene(0);
+})();
+</script>
+</body>
+</html>
