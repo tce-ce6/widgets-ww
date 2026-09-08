@@ -1,0 +1,59 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>चित्र देखकर वाक्य बनाना</title>
+  <link rel="stylesheet" href="css/global_style.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/lottie.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body id="ginti-widget">
+  <div class="container">
+    <div class="mainContainerOuter">
+      <div class="wdgetTitle">
+        <h2>चित्र देखकर वाक्य बनाना</h2>
+        <span id="versionId" class="versionText">b4_wg195_260908_01</span>
+      </div>
+      <div class="svg-container">
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="Layer_1" version="1.1" viewBox="0 0 1920 1080">
+  <!-- Generator: Adobe Illustrator 30.8.1, SVG Export Plug-In . SVG Version: 2.1.4 Build 1)  -->
+          <foreignObject x="145" y="150" width="1637.58" height="448.69">
+                <div class="app">
+                  <span class="i-text" id="i-text">चित्र को ध्यान से देखिए, फिर सही शब्द चुनकर पाँचों वाक्य पूरे कीजिए।</span>
+                  <div class="scene" id="mainScene">
+                    <img src="assets/images/chitra_01.svg" alt="चित्र 1" id="sceneImage">
+                  </div>                
+                  <div class="card" id="gameCard">
+                    <div class="sentence-row" id="activeRow">
+                      <div class="sentence-number" id="activeNumber">1.</div>
+                      <div class="slots" id="activeSlots"></div>
+                    </div>
+                    <div class="wordbank" id="activeBank"></div>
+                    <div class="controls">
+                      <button class="btn audio" id="audioBtn" aria-label="वाक्य सुनें">🔊 सुनें</button>
+                      <button class="btn" id="checkBtn" disabled>जाँचें</button>
+                      <button class="btn next" id="mainNextBtn">अगला चित्र ➜</button>
+                    </div>
+                  </div>
+                
+                  <div class="overlay hidden" id="overlayCard">
+                    <div class="overlay-scene" id="overlayScene"></div>
+                    <div class="overlay-title" id="overlayTitle">अब तक बने वाक्य</div>
+                    <ul class="overlay-list" id="overlayList"></ul>
+                  </div>
+                </div>
+            </foreignObject>
+  
+</svg>
+      </div>
+    </div>
+  </div>
+  <script src="js/json.js"></script>
+  <script src="js/sketch.js"></script>
+</body>
+
+</html>

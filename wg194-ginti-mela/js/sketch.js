@@ -168,6 +168,30 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // Play lottie burst animation over a solved lantern
+  function playBurst(lantern) {
+    if (typeof lottie === "undefined") return;
+    let overlay = lantern.querySelector(".lottie-overlay");
+    if (!overlay) {
+      overlay = document.createElement("div");
+      overlay.className = "lottie-overlay";
+      lantern.appendChild(overlay);
+    }
+    overlay.innerHTML = "";
+    const burst = lottie.loadAnimation({
+      container: overlay,
+      renderer: "svg",
+      loop: false,
+      autoplay: true,
+      path: "./assets/JSON/bubble-brust.json",
+      rendererSettings: { preserveAspectRatio: "xMidYMid slice" }
+    });
+    burst.addEventListener("complete", () => {
+      burst.destroy();
+      overlay.innerHTML = "";
+    });
+  }
+
   // Initialize a new game round
   function initRound() {
     currentCategory = getSelectedCategory();
@@ -215,7 +239,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (isProcessingAnswer) return;
     if (currentQuestionIndex >= current5TargetNumbers.length) return;
 
-    const lantern = e.currentTarget;
+const lantern = e.currentTarget;
     if (lantern.classList.contains("solved")) return;
 
     // If hint is not revealed yet, prompt user to tap the card first
@@ -252,6 +276,9 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       lantern.classList.add("solved", "correct-pop");
       lantern.classList.remove("lantern-glow");
+
+      // Play lottie bubble burst over the correct lantern
+      playBurst(lantern);
 
       setTimeout(() => {
         lantern.classList.remove("correct-pop");
