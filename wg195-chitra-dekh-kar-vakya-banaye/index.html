@@ -21,11 +21,34 @@
       <div class="svg-container">
         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="Layer_1" version="1.1" viewBox="0 0 1920 1080">
   <!-- Generator: Adobe Illustrator 30.8.1, SVG Export Plug-In . SVG Version: 2.1.4 Build 1)  -->
-          <foreignObject x="145" y="150" width="1637.58" height="448.69">
+
+            <g xmlns="http://www.w3.org/2000/svg" id="star-progress" style="transform: translate(260px, 30px) scale(.8);">
+                <path id="Path_4229" class="st41" d="M1564.83,22.93c-19.56,0-35.41,15.85-35.41,35.41s15.85,35.41,35.41,35.41h268.29c19.56,0,35.41-15.85,35.41-35.41s-15.85-35.41-35.41-35.41h-268.29Z"/>
+                <g id="Group_1159" class="st12">
+                  <g id="Group_40">
+                    <g class="st39">
+                      <g id="Group_39">
+                        <g id="_1_5" class="st12">
+                          <g class="st12">
+                            <text class="st13" transform="translate(1553.3147 68.1198)"><tspan x="0" y="0">1/5</tspan></text>
+                          </g>
+                        </g>
+                      </g>
+                    </g>
+                  </g>
+                </g>
+                <path id="Path_3912" class="st31" d="M1644.32,39.17l-5.68,10.18-11.43,2.26,7.92,8.55-1.39,11.57,10.58-4.89,10.58,4.89-1.39-11.57,7.92-8.55-11.43-2.26-5.68-10.18h0Z"/>
+                <path id="Path_4230" class="st9" d="M1688.32,39.17l-5.68,10.18-11.43,2.26,7.92,8.55-1.39,11.57,10.58-4.89,10.58,4.89-1.39-11.57,7.92-8.55-11.43-2.26-5.68-10.18h0Z"/>
+                <path id="Path_4231" class="st9" d="M1734.32,39.17l-5.68,10.18-11.43,2.26,7.92,8.55-1.39,11.57,10.58-4.89,10.58,4.89-1.39-11.57,7.92-8.55-11.43-2.26-5.68-10.18h0Z"/>
+                <path id="Path_4232" class="st9" d="M1778.32,39.17l-5.68,10.18-11.43,2.26,7.92,8.55-1.39,11.57,10.58-4.89,10.58,4.89-1.39-11.57,7.92-8.55-11.43-2.26-5.68-10.18h0Z"/>
+                <path id="Path_4233" class="st9" d="M1824.32,39.17l-5.68,10.18-11.43,2.26,7.92,8.55-1.39,11.57,10.58-4.89,10.58,4.89-1.39-11.57,7.92-8.55-11.43-2.26-5.68-10.18h0Z"/>
+                <line id="Line_1" class="st23" x1="1609.71" y1="29.62" x2="1609.71" y2="86.62"/>
+              </g>
+          <foreignObject x="60" y="110" width="1800" height="930">
                 <div class="app">
                   <span class="i-text" id="i-text">चित्र को ध्यान से देखिए, फिर सही शब्द चुनकर पाँचों वाक्य पूरे कीजिए।</span>
                   <div class="scene" id="mainScene">
-                    <img src="assets/images/chitra_01.svg" alt="चित्र 1" id="sceneImage">
+                    <img src="assets/images/picture-1.svg" alt="चित्र 1" id="sceneImage">
                   </div>                
                   <div class="card" id="gameCard">
                     <div class="sentence-row" id="activeRow">
@@ -34,16 +57,19 @@
                     </div>
                     <div class="wordbank" id="activeBank"></div>
                     <div class="controls">
-                      <button class="btn audio" id="audioBtn" aria-label="वाक्य सुनें">🔊 सुनें</button>
-                      <button class="btn" id="checkBtn" disabled>जाँचें</button>
-                      <button class="btn next" id="mainNextBtn">अगला चित्र ➜</button>
+                      <!-- <button class="btn audio" id="audioBtn" aria-label="वाक्य सुनें">🔊 सुनें</button> -->
+                      <button class="btn-action check" id="checkBtn" disabled>जाँचें</button>
+                      <button class="btn-action next" id="mainNextBtn" disabled>अगला चित्र</button>
                     </div>
                   </div>
                 
                   <div class="overlay hidden" id="overlayCard">
                     <div class="overlay-scene" id="overlayScene"></div>
-                    <div class="overlay-title" id="overlayTitle">अब तक बने वाक्य</div>
-                    <ul class="overlay-list" id="overlayList"></ul>
+                    <ul class="overlay-list" id="overlayList" style="visibility: hidden;"></ul>
+                    <div class="overlay-title" id="overlayTitle" style="cursor: pointer;">अब तक बने वाक्य</div>
+                    <!-- <div class="overlay-controls">
+                      <button class="btn-action next" id="nextChitraBtn" type="button">अगला चित्र</button>
+                    </div> -->
                   </div>
                 </div>
             </foreignObject>
@@ -52,7 +78,7 @@
       </div>
     </div>
   </div>
-  <script src="js/json.js"></script>
+  <script src="js/scenes.js"></script>
   <script src="js/sketch.js"></script>
 </body>
 
