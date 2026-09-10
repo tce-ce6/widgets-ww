@@ -16,7 +16,7 @@
     <div class="mainContainerOuter">
       <div class="wdgetTitle">
         <h2>चित्र देखकर वाक्य बनाना</h2>
-        <span id="versionId" class="versionText">b4_wg195_260908_01</span>
+        <span id="versionId" class="versionText">b4_wg195_260910_01</span>
       </div>
       <div class="svg-container">
         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="Layer_1" version="1.1" viewBox="0 0 1920 1080">
@@ -58,18 +58,16 @@
                     <div class="wordbank" id="activeBank"></div>
                     <div class="controls">
                       <!-- <button class="btn audio" id="audioBtn" aria-label="वाक्य सुनें">🔊 सुनें</button> -->
+                       <img src="assets/images/sound.svg" alt="sound-icon" class="audio" id="audioBtn">
                       <button class="btn-action check" id="checkBtn" disabled>जाँचें</button>
                       <button class="btn-action next" id="mainNextBtn" disabled>अगला चित्र</button>
                     </div>
                   </div>
                 
-                  <div class="overlay hidden" id="overlayCard">
+                  <div class="overlay" id="overlayCard">
                     <div class="overlay-scene" id="overlayScene"></div>
                     <ul class="overlay-list" id="overlayList" style="visibility: hidden;"></ul>
-                    <div class="overlay-title" id="overlayTitle" style="cursor: pointer;">अब तक बने वाक्य</div>
-                    <!-- <div class="overlay-controls">
-                      <button class="btn-action next" id="nextChitraBtn" type="button">अगला चित्र</button>
-                    </div> -->
+                    <button type="button" style="transform: translateY(-62px);" class="overlay-title" id="overlayTitle" disabled>अब तक बने वाक्य</button>
                   </div>
                 </div>
             </foreignObject>
