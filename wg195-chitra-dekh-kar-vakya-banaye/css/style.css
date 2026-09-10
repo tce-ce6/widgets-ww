@@ -344,6 +344,17 @@ position: relative;
     font-size:18px;
     padding:6px 12px;
   }
+  img.audio{
+    width:60px;
+    height:60px;
+    cursor:pointer;
+    transition:opacity .3s;
+  }
+  img.audio.disabled{
+    opacity:.4;
+    pointer-events:none;
+  }
+  img.audio:not(.disabled):active{transform:scale(.94);}
   .btn.ghost{
     background:transparent;
     color:var(--leaf-dark);
@@ -376,9 +387,9 @@ position: relative;
     gap:12px;
     margin-top:14px;
   }
-  .overlay-title{
+.overlay-title{
     color: #fff;
-    margin-top: -87px;
+    margin-top: -30px;
     text-align: center;
     background: #f7901e;
     padding: 20px;
@@ -387,6 +398,16 @@ position: relative;
     border-radius: 60px;
     z-index: 10;
     position: relative;
+    font-family: inherit;
+    border: none;
+    line-height: 1.2;
+  }
+  .overlay-title:disabled{
+    opacity: .45;
+    cursor: not-allowed;
+  }
+  .overlay-title:not(:disabled){
+    cursor: pointer;
   }
   .overlay-list{
 list-style: none;
@@ -457,6 +478,11 @@ list-style: none;
     margin-bottom: 30px;
 }
 
+#audioBtn{
+  cursor: pointer;
+  position: relative;
+  left: -30px;
+}
       .st0 {
         fill: #a97f49;
       }

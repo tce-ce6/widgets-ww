@@ -11,6 +11,8 @@
   var slots = [];
   var refs = {};
   var bank = [];
+  var checkCount = 0;
+  var sentenceAudio = null;
 
   function byId(id){ return document.getElementById(id); }
 
@@ -68,6 +70,33 @@
     setStars(completed.length);
   }
 
+  function pad2(n){ return (n < 10 ? '0' : '') + n; }
+
+  function currentAudioSrc(){
+    var pic = sceneIndex + 1;
+    var vak = sentenceOrder[currentIdx] + 1;
+    return 'assets/audio/picture' + pad2(pic) + '_vakya' + pad2(vak) + '.mp3';
+  }
+
+  function updateAudioBtn(){
+    var btn = byId('audioBtn');
+    if (!btn) return;
+    btn.classList.toggle('disabled', checkCount < 3);
+    btn.setAttribute('aria-disabled', checkCount < 3 ? 'true' : 'false');
+  }
+
+  function playSentenceAudio(){
+    if (checkCount < 3) return;
+    var src = currentAudioSrc();
+    var btn = byId('audioBtn');
+    if (btn) btn.setAttribute('data-src', src);
+    if (!sentenceAudio) sentenceAudio = new Audio();
+    sentenceAudio.pause();
+    sentenceAudio.src = src;
+    var p = sentenceAudio.play();
+    if (p && p.catch) p.catch(function(){});
+  }
+
   function updateMainNextBtn(){
     var btn = byId('mainNextBtn');
     if (btn) btn.disabled = completed.length < 1;
@@ -95,11 +124,16 @@
 
     updateProgressLabel();
     updateMainNextBtn();
-    hideOverlay();
+    renderOverlayList();
+    var list = byId('overlayList');
+    if (list) list.style.visibility = 'hidden';
+    updateOverlayTitleBtn();
     startCurrent();
   }
 
   function startCurrent(){
+    checkCount = 0;
+    updateAudioBtn();
     var s = currentSentences()[sentenceOrder[currentIdx]];
     slots = new Array(s.words.length).fill(null);
     refs = {};
@@ -182,6 +216,8 @@
   }
 
   function checkSentence(){
+    checkCount++;
+    updateAudioBtn();
     var s = currentSentences()[sentenceOrder[currentIdx]];
     var slotEls = document.querySelectorAll('#activeSlots .slot');
     var allCorrect = true;
@@ -202,12 +238,12 @@
       completed.push(s.text);
       updateProgressLabel();
       updateMainNextBtn();
+      renderOverlayList();
+      updateOverlayTitleBtn();
       setTimeout(function(){
         if (currentIdx < currentSentences().length - 1){
           currentIdx++;
           startCurrent();
-        } else {
-          showOverlay(true);
         }
       }, 800);
     } else {
@@ -233,25 +269,9 @@
     });
   }
 
-  function showOverlay(isFinal){
-    renderOverlayList();
-    setHidden('gameCard', true);
-    setHidden('overlayCard', false);
-
-    var titleEl = byId('overlayTitle');
-    if (titleEl){
-      titleEl.textContent = isFinal
-        ? '🎉 शाबाश! आपने पूरा चित्र वर्णन कर लिया'
-        : 'अब तक बने वाक्य';
-    }
-
-    var nextBtn = byId('nextChitraBtn');
-    if (nextBtn) nextBtn.classList.remove('hidden');
-  }
-
-  function hideOverlay(){
-    // setHidden('overlayCard', true);
-    setHidden('gameCard', false);
+  function updateOverlayTitleBtn(){
+    var btn = byId('overlayTitle');
+    if (btn) btn.disabled = completed.length < 1;
   }
 
   function loadNextScene(){
@@ -262,12 +282,22 @@
   if (checkBtn) checkBtn.addEventListener('click', checkSentence);
 
   var mainNextBtn = byId('mainNextBtn');
-  if (mainNextBtn) mainNextBtn.addEventListener('click', function(){
-    showOverlay(completed.length >= currentSentences().length);
-  });
+  if (mainNextBtn) mainNextBtn.addEventListener('click', loadNextScene);
 
-  var nextChitraBtn = byId('nextChitraBtn');
-  if (nextChitraBtn) nextChitraBtn.addEventListener('click', loadNextScene);
+  var audioBtn = byId('audioBtn');
+  if (audioBtn) audioBtn.addEventListener('click', playSentenceAudio);
+  updateAudioBtn();
+
+  var overlayTitle = byId('overlayTitle');
+  if (overlayTitle){
+    overlayTitle.addEventListener('click', function(){
+      if (completed.length < 1) return;
+      var list = byId('overlayList');
+      if (list){
+        list.style.visibility = (list.style.visibility === 'visible') ? 'hidden' : 'visible';
+      }
+    });
+  }
 
   if (scenes.length > 0) loadNextScene();
 })();
