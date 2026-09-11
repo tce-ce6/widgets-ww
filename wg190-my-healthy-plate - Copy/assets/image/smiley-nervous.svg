@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 80.68 80.68">
+  <!-- Generator: Adobe Illustrator 30.7.0, SVG Export Plug-In . SVG Version: 2.1.4 Build 114)  -->
+  <defs>
+    <style>
+      .st0 {
+        fill: #f0544d;
+      }
+
+      .st1 {
+        fill: #50205b;
+        isolation: isolate;
+        opacity: .5;
+      }
+
+      .st2 {
+        fill: #fff;
+      }
+
+      .st3 {
+        fill: #3a2f18;
+      }
+
+      .st4 {
+        fill: #fedf56;
+      }
+    </style>
+  </defs>
+  <g id="smiley-nervous">
+    <circle id="Ellipse_9" class="st1" cx="39.12" cy="42.3" r="35.32"/>
+    <g id="Group_868">
+      <circle id="Ellipse_10" class="st2" cx="41.48" cy="39.38" r="35.32"/>
+      <g id="Group_867">
+        <circle id="Ellipse_11" class="st4" cx="41.48" cy="39.38" r="29.73"/>
+        <ellipse id="Ellipse_12" class="st3" cx="41.49" cy="53.53" rx="7.5" ry="9.13"/>
+        <path id="Path_6075" class="st0" d="M41.49,56.69c-2.21.06-4.26,1.16-5.53,2.98,2.01,3.05,6.12,3.9,9.17,1.89.75-.49,1.39-1.14,1.89-1.89-1.26-1.82-3.32-2.92-5.53-2.98Z"/>
+        <rect id="Rectangle_694" class="st3" x="27.64" y="23.55" width="3.2" height="14.31" transform="translate(-12.87 35.66) rotate(-53.12)"/>
+        <rect id="Rectangle_695" class="st3" x="22.08" y="29.1" width="14.31" height="3.2" transform="translate(-12.57 23.69) rotate(-36.88)"/>
+        <rect id="Rectangle_696" class="st3" x="52.69" y="23.55" width="3.2" height="14.31" transform="translate(-2.85 55.7) rotate(-53.12)"/>
+        <rect id="Rectangle_697" class="st3" x="47.12" y="29.1" width="14.31" height="3.2" transform="translate(-7.56 38.72) rotate(-36.88)"/>
+      </g>
+    </g>
+  </g>
+</svg>
