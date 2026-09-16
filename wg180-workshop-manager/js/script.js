@@ -11,16 +11,16 @@ const X0=70,X1=600,Y0=340,Y1=20,XMAX=6,YMAX=16;
 const px=x=>X0+(x/XMAX)*(X1-X0), py=y=>Y0-(y/YMAX)*(Y0-Y1);
 const $=id=>document.getElementById(id);
 let g='';
-for(let i=1;i<=XMAX;i++) g+='<line x1="'+px(i)+'" y1="'+Y1+'" x2="'+px(i)+'" y2="'+Y0+'" stroke="#E2E7DE" stroke-width="1"/>';
-for(let j=2;j<=YMAX;j+=2) g+='<line x1="'+X0+'" y1="'+py(j)+'" x2="'+X1+'" y2="'+py(j)+'" stroke="#E2E7DE" stroke-width="1"/>';
+for(let i=1;i<=XMAX;i++) g+='<line x1="'+px(i)+'" y1="'+Y1+'" x2="'+px(i)+'" y2="'+Y0+'" stroke="#7dcb80" stroke-width="1"/>';
+for(let j=2;j<=YMAX;j+=2) g+='<line x1="'+X0+'" y1="'+py(j)+'" x2="'+X1+'" y2="'+py(j)+'" stroke="#7dcb80" stroke-width="1"/>';
 $('grid').innerHTML=g;
 let al='';
-for(let i=0;i<=XMAX;i++) al+='<text x="'+px(i)+'" y="'+(Y0+20)+'" text-anchor="middle" style="font:12px \'Atkinson Hyperlegible\',sans-serif; fill:#8B978C">'+i+'</text>';
-for(let j=0;j<=YMAX;j+=2) al+='<text x="'+(X0-10)+'" y="'+(py(j)+4)+'" text-anchor="end" style="font:12px \'Atkinson Hyperlegible\',sans-serif; fill:#8B978C">'+j+'</text>';
+for(let i=0;i<=XMAX;i++) al+='<text x="'+px(i)+'" y="'+(Y0+20)+'" text-anchor="middle" style="font:12px \'Atkinson Hyperlegible\',sans-serif; fill:#000000">'+i+'</text>';
+for(let j=0;j<=YMAX;j+=2) al+='<text x="'+(X0-10)+'" y="'+(py(j)+4)+'" text-anchor="end" style="font:12px \'Atkinson Hyperlegible\',sans-serif; fill:#000000">'+j+'</text>';
 $('axisLabels').innerHTML=al;
 $('curve').setAttribute('d',sched.map((p,i)=>(i?'L':'M')+px(p[0])+' '+py(p[1])).join(' '));
 const names='ABCDEF';
-$('pts').innerHTML=sched.map((p,i)=>'<circle cx="'+px(p[0])+'" cy="'+py(p[1])+'" r="4" fill="#0A4A3B"/><text x="'+(px(p[0])+10)+'" y="'+(py(p[1])-8)+'" style="font:12px \'Atkinson Hyperlegible\',sans-serif; fill:#5C6B5E">'+names[i]+'</text>').join('');
+$('pts').innerHTML=sched.map((p,i)=>'<circle cx="'+px(p[0])+'" cy="'+py(p[1])+'" r="4" fill="#6b4315"/><text x="'+(px(p[0])+10)+'" y="'+(py(p[1])-8)+'" style="font:12px \'Atkinson Hyperlegible\',sans-serif; fill:#5C6B5E">'+names[i]+'</text>').join('');
 function curveY(x){ if(x<0)x=0; if(x>5) return null; const i=Math.min(Math.floor(x),4); const a=sched[i],b=sched[i+1]; return a[1]+(b[1]-a[1])*(x-a[0])/(b[0]-a[0]); }
 
 const screens=['s0','s1','game','done'];
@@ -113,9 +113,9 @@ show(0);
 
   var startShift = function () {
     setDisplay($('intro'), 'none');
-    setDisplay($('play-screen'), 'block');
+    setDisplay($('game-screen'), 'block');
     setDisplay($('stage'), 'block');
-    setDisplay($('work_order_1'), 'block');
+    startMission(0);
     setDisplay(document.querySelector('.prod-schedule-wrapper'), 'block');
     setDisplay(document.querySelector('.grid-card-wrapper'), 'block');
     setDisplay(document.querySelector('.start-shift-wrapper'), 'none');
@@ -136,8 +136,22 @@ show(0);
   var howBtn = document.querySelector('.how-to-play-btn');
   if (howBtn) howBtn.addEventListener('click', showHowToPlay);
 
-  var closeBtn = document.getElementById('Group_1061');
+  var closeBtn = document.getElementById('close-btn');
   if (closeBtn) closeBtn.addEventListener('click', hideHowToPlay);
+
+  var prodScheduleBtn = document.querySelector('.production-schedule-btn');
+  if (prodScheduleBtn) {
+    prodScheduleBtn.addEventListener('click', function () {
+      setDisplay($('production_popup'), 'block');
+    });
+  }
+
+  var scheduleCloseBtn = document.getElementById('schedule-close-btn');
+  if (scheduleCloseBtn) {
+    scheduleCloseBtn.addEventListener('click', function () {
+      setDisplay($('production_popup'), 'none');
+    });
+  }
 
   /* ---------- chart card logic (from test.html) ---------- */
 
@@ -149,14 +163,14 @@ show(0);
   var grid = $('grid'), axisLabels = $('axisLabels'), curve = $('curve'), pts = $('pts');
   if (grid) {
     var g = '';
-    for (var i = 1; i <= XMAX; i++) g += '<line x1="' + px(i) + '" y1="' + Y1 + '" x2="' + px(i) + '" y2="' + Y0 + '" stroke="#E2E7DE" stroke-width="1"/>';
-    for (var j = 2; j <= YMAX; j += 2) g += '<line x1="' + X0 + '" y1="' + py(j) + '" x2="' + X1 + '" y2="' + py(j) + '" stroke="#E2E7DE" stroke-width="1"/>';
+    for (var i = 1; i <= XMAX; i++) g += '<line x1="' + px(i) + '" y1="' + Y1 + '" x2="' + px(i) + '" y2="' + Y0 + '" stroke="#7dcb80" stroke-width="1"/>';
+    for (var j = 2; j <= YMAX; j += 2) g += '<line x1="' + X0 + '" y1="' + py(j) + '" x2="' + X1 + '" y2="' + py(j) + '" stroke="#7dcb80" stroke-width="1"/>';
     grid.innerHTML = g;
   }
   if (axisLabels) {
     var al = '';
-    for (var m = 0; m <= XMAX; m++) al += '<text x="' + px(m) + '" y="' + (Y0 + 20) + '" text-anchor="middle" style="font:12px \'Atkinson Hyperlegible\',sans-serif; fill:#8B978C">' + m + '</text>';
-    for (var n = 0; n <= YMAX; n += 2) al += '<text x="' + (X0 - 10) + '" y="' + (py(n) + 4) + '" text-anchor="end" style="font:12px \'Atkinson Hyperlegible\',sans-serif; fill:#8B978C">' + n + '</text>';
+    for (var m = 0; m <= XMAX; m++) al += '<text x="' + px(m) + '" y="' + (Y0 + 20) + '" text-anchor="middle" style="font:12px \'Atkinson Hyperlegible\',sans-serif; fill:#000000">' + m + '</text>';
+    for (var n = 0; n <= YMAX; n += 2) al += '<text x="' + (X0 - 10) + '" y="' + (py(n) + 4) + '" text-anchor="end" style="font:12px \'Atkinson Hyperlegible\',sans-serif; fill:#000000">' + n + '</text>';
     axisLabels.innerHTML = al;
   }
   if (curve) {
@@ -165,7 +179,7 @@ show(0);
   if (pts) {
     var names = 'ABCDEF';
     pts.innerHTML = sched.map(function (p, i) {
-      return '<circle cx="' + px(p[0]) + '" cy="' + py(p[1]) + '" r="4" fill="#0A4A3B"/>' +
+      return '<circle cx="' + px(p[0]) + '" cy="' + py(p[1]) + '" r="4" fill="#6b4315"/>' +
              '<text x="' + (px(p[0]) + 10) + '" y="' + (py(p[1]) - 8) + '" style="font:12px \'Atkinson Hyperlegible\',sans-serif; fill:#5C6B5E">' + names[i] + '</text>';
     }).join('');
   }
@@ -178,36 +192,185 @@ show(0);
     return a[1] + (b[1] - a[1]) * (x - a[0]) / (b[0] - a[0]);
   }
 
-  var lx = 1.5, ly = 7, mission = 0, done1 = false;
+  var lx = 1.5, ly = 7, mission = 0, phase = '', dragEnabled = true;
+  var done = [false, false, false, false];
+  var workOrders = ['work_order_1', 'work_order_2', 'work_order_3', 'work_order_4'];
+  var hideList = ['feedback-idle', 'feedback-beyond', 'feedback-well',
+    'mission_cleared', 'next-mission-btn', 'collect-badge-btn',
+    'mission2_buttons', 'mission3_buttons', 'mission4_buttons'];
+  function resetFeedback() {
+    hideList.forEach(function (id) { setDisplay($(id), 'none'); });
+  }
+
+  function startMission(i) {
+    if (i === 0) {
+      done = [false, false, false, false];
+      clearMission();
+      setDisplay($('stage_complete'), 'none');
+      setDisplay($('stage-1-complete'), 'none');
+      setDisplay($('stage-2-complete'), 'none');
+      setDisplay($('stage-3-complete'), 'none');
+      setDisplay($('stage-4-complete'), 'none');
+      setDisplay($('badge-screen'), 'none');
+    }
+    mission = i;
+    phase = '';
+    workOrders.forEach(function (id) { setDisplay($(id), 'none'); });
+    resetFeedback();
+    setDisplay($(workOrders[i]), 'block');
+    if (i === 0) { dragEnabled = true; setDot(1.5, 7); }
+    if (i === 1) {
+      dragEnabled = false; setDot(2, 6);
+      setDisplay($('mission2_buttons'), 'block');
+      setDisplay($('Group_1114'), 'none');
+    }
+    if (i === 2) {
+      dragEnabled = true; setDot(1.5, 7);
+      setDisplay($('mission3_buttons'), 'block');
+      setDisplay($('Group_11141'), 'none');
+    }
+    if (i === 3) {
+      dragEnabled = true; setDot(2, 12); phase = 'predict';
+      setDisplay($('mission4_buttons'), 'block');
+      setDisplay($('Group_11142'), 'none');
+    }
+  }
+
   function setDot(x, y) {
     lx = x; ly = y;
     if ($('handle')) {
       $('handle').setAttribute('cx', px(x));
       $('handle').setAttribute('cy', py(y));
     }
-    if ($('coords')) {
-      $('coords').textContent = 'Current plan: ' + (Math.round(x * 10) / 10) + ' bats, ' + (Math.round(y * 10) / 10) + ' sticks';
+    var coordsBox = $('coords');
+    if (coordsBox) {
+      var b = coordsBox.querySelector('#bats');
+      var s = coordsBox.querySelector('#sticks');
+      if (b) b.textContent = (Math.round(x * 10) / 10).toString();
+      if (s) s.textContent = (Math.round(y * 10) / 10).toString();
     }
   }
 
-  var feedbackGroups = ['feedback-idle', 'feedback-beyond', 'feedback-well'];
-  function resetFeedback() {
-    feedbackGroups.forEach(function (id) { setDisplay($(id), 'none'); });
+  function clearMission() {
+    resetFeedback();
+    setDisplay($('mission_cleared'), 'none');
+    setDisplay($('collect-badge-btn'), 'none');
+  }
+
+  function revealStage() {
+    var el = $('stage-' + (mission + 1) + '-complete');
+    if (el) {
+      el.style.visibility = 'visible';
+      el.style.opacity = '1';
+      el.style.display = 'block';
+    }
+  }
+
+  var nextMissionBtn = $('next-mission-btn');
+  if (nextMissionBtn) {
+    nextMissionBtn.addEventListener('click', function () {
+      if (mission < 3) startMission(mission + 1);
+    });
+  }
+
+  var collectBadgeBtn = $('collect-badge-btn');
+  if (collectBadgeBtn) {
+    collectBadgeBtn.addEventListener('click', function () {
+      dragEnabled = false;
+      var ids = ['intro', 'game-screen', 'stage', 'stage_complete', 'work_order_1',
+        'work_order_2', 'work_order_3', 'work_order_4', 'production_popup',
+        'how-to-play-summary'];
+      ids.forEach(function (id) { setDisplay($(id), 'none'); });
+      workOrders.forEach(function (id) { setDisplay($(id), 'none'); });
+      resetFeedback();
+      setDisplay(document.querySelector('.prod-schedule-wrapper'), 'none');
+      setDisplay(document.querySelector('.grid-card-wrapper'), 'none');
+      setDisplay(document.querySelector('.start-shift-wrapper'), 'none');
+      setDisplay(document.querySelector('.start-shift-btn'), 'none');
+      setDisplay(document.querySelector('.play-btn-wrapper'), 'none');
+      setDisplay(document.querySelector('.how-to-play-btn'), 'none');
+      setDisplay($('badge-screen'), 'block');
+    });
+  }
+
+  var playAgainBtn = $('play-again-btn');
+  if (playAgainBtn) {
+    playAgainBtn.addEventListener('click', function () {
+      startMission(0);
+      workOrders.forEach(function (id) { setDisplay($(id), 'none'); });
+      setDisplay($('badge-screen'), 'none');
+      setDisplay($('game-screen'), 'none');
+      setDisplay($('stage'), 'none');
+      setDisplay($('intro'), 'block');
+      setDisplay(document.querySelector('.play-btn-wrapper'), 'block');
+      setDisplay(document.querySelector('.how-to-play-btn'), 'block');
+      setDisplay(document.querySelector('.prod-schedule-wrapper'), 'none');
+      setDisplay(document.querySelector('.grid-card-wrapper'), 'none');
+      setDisplay(document.querySelector('.start-shift-wrapper'), 'block');
+      setDisplay(document.querySelector('.start-shift-btn'), 'block');
+      dragEnabled = true;
+    });
+  }
+
+  var inefficientBtn = $('Group_1112');
+  if (inefficientBtn) {
+    inefficientBtn.addEventListener('click', function () {
+      if (mission === 1 && !done[1]) {
+        done[1] = true;
+        revealStage();
+        setDisplay($('Group_1114'), 'block');
+        setDisplay($('next-mission-btn'), 'block');
+      }
+    });
+  }
+
+  var declineBtn = $('Group_11121');
+  if (declineBtn) {
+    declineBtn.addEventListener('click', function () {
+      if (mission === 2 && !done[2]) {
+        done[2] = true;
+        revealStage();
+        setDisplay($('Group_11141'), 'block');
+        setDisplay($('next-mission-btn'), 'block');
+      }
+    });
+  }
+
+  var sticksBtn = $('Group_1118');
+  if (sticksBtn) {
+    sticksBtn.addEventListener('click', function () {
+      if (mission === 3 && !done[3]) {
+        done[3] = true;
+        dragEnabled = false;
+        revealStage();
+        setDisplay($('collect-badge-btn'), 'block');
+      }
+    });
   }
 
   function onRelease(x, y) {
-    if (mission !== 0 || done1) return;
-    var cy = curveY(x);
-    resetFeedback();
-    if (cy === null || y - cy > 0.5) {
-      setDisplay($('feedback-beyond'), 'block');
-    } else if (cy - y > 0.5) {
-      setDisplay($('feedback-idle'), 'block');
-    } else {
-      done1 = true;
-      setDisplay($('feedback-well'), 'block');
-      setDisplay($('mission_cleared'), 'block');
-      setDisplay($('button_next_mission'), 'block');
+    if (mission === 0 && !done[0]) {
+      var cy = curveY(x);
+      resetFeedback();
+      if (cy === null || y - cy > 0.5) {
+        setDisplay($('feedback-beyond'), 'block');
+      } else if (cy - y > 0.5) {
+        setDisplay($('feedback-idle'), 'block');
+      } else {
+        done[0] = true;
+        revealStage();
+        setDisplay($('feedback-well'), 'block');
+        setDisplay($('mission_cleared'), 'block');
+        setDisplay($('next-mission-btn'), 'block');
+      }
+    }
+    if (mission === 2 && !done[2]) {
+      if (Math.abs(x - 4) <= 0.35 && Math.abs(y - 12) <= 0.9) {
+        setDisplay($('mission3_buttons'), 'block');
+        setDisplay($('Group_11141'), 'none');
+      } else {
+        resetFeedback();
+      }
     }
   }
 
@@ -224,6 +387,7 @@ show(0);
 
   if (overlay) {
     overlay.addEventListener('pointerdown', function (ev) {
+      if (!dragEnabled) return;
       var p = toXY(ev);
       drag = true;
       setDot(p[0], p[1]);
@@ -243,6 +407,7 @@ show(0);
 
   if (handle) {
     handle.addEventListener('keydown', function (ev) {
+      if (!dragEnabled) return;
       var step = ev.shiftKey ? 1 : 0.25;
       var nx = lx, ny = ly, used = true;
       if (ev.key === 'ArrowLeft') nx = Math.max(0, lx - step);
