@@ -383,3 +383,16 @@ img.step-image {
   text-align: center;
   line-height: 1.5;
 }
+
+.feedback-wrapper{
+  border: 5px dashed #056e1c;
+  display: block;
+  color: #056e1c;
+  background-color: #fffca7;
+  border-radius: 20px;
+  font-size: 26px;
+  padding: 20px;
+}
+.feedback-wrapper strong{
+  display: block;
+}
