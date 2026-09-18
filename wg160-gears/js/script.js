@@ -301,41 +301,37 @@ function updateChrome(){
 function renderInspector(){
   const box=document.getElementById("inspector");
   const g=selectedId?byId(selectedId):null;
+  box.classList.toggle("disabled",!g);
+  const chip=document.querySelector("#inspector .chip"),
+        name=document.getElementById("inspName"),
+        role=document.getElementById("inspRole"),
+        teethInp=document.getElementById("teethInput"),
+        speed=document.getElementById("inspSpeed"),
+        actDriver=document.getElementById("actDriver"),
+        actDetach=document.getElementById("actDetach");
   if(!g){
-    box.innerHTML='<div class="insp-empty">Click a gear on the canvas to change its teeth or remove it.</div>';
+    chip.style.background=getComputedStyle(document.body).getPropertyValue("--ink-faint")||"#b7bec2";
+    name.textContent="No gear yet";
+    role.textContent="Add a gear to begin";
+    role.className="role";
+    teethInp.value="";
+    speed.textContent="—";
+    actDriver.hidden=true;
+    actDetach.hidden=true;
     return;
   }
   const col=PALETTE[g.colorIdx];
   const isDriver=g.id===driverId;
-  const connected=componentOf(g.id).size>1;
+  chip.style.background=col.fill;
+  name.textContent=`${col.label} gear`;
+  role.textContent=isDriver?"Driver":`Gear #${g.id}`;
+  role.className=isDriver?"role driver":"role";
+  teethInp.value=g.teeth;
   computeSpeeds();
   const s=speedInfo(g);
-  box.innerHTML=`
-    <div class="insp-head">
-      <span class="chip" style="background:${col.fill}"></span>
-      <div>
-        <div class="name">${col.label} gear</div>
-        <div class="role ${isDriver?"driver":""}">${isDriver?"Driver":"Gear"} #${g.id}</div>
-      </div>
-    </div>
-    <div class="field">
-      <span class="flbl">Teeth</span>
-      <div class="stepper">
-        <button data-act="dec" aria-label="Fewer teeth">−</button>
-        <input type="number" id="teethInput" min="6" max="60" step="1" value="${g.teeth}">
-        <button data-act="inc" aria-label="More teeth">+</button>
-      </div>
-    </div>
-    <div class="insp-speed"><span>Speed</span><b>${s.spinning?`${s.cw?"↻":"↺"} ${s.mult.toFixed(2)}×`:"—"}</b></div>
-    <div class="insp-actions">
-      ${isDriver?"":'<button class="btn" data-act="driver">Make driver</button>'}
-      ${connected?'<button class="btn" data-act="detach">Detach</button>':""}
-      <button class="btn ghost-danger" data-act="delete">Delete</button>
-    </div>`;
-  box.querySelectorAll("[data-act]").forEach(b=>b.addEventListener("click",()=>inspAction(b.dataset.act)));
-  const inp=box.querySelector("#teethInput");
-  inp.addEventListener("change",()=>setTeeth(parseInt(inp.value,10)));
-  inp.addEventListener("keydown",e=>{if(e.key==="Enter")inp.blur();});
+  speed.textContent=s.spinning?`${s.cw?"↻":"↺"} ${s.mult.toFixed(2)}×`:"—";
+  actDriver.hidden=isDriver;
+  actDetach.hidden=componentOf(g.id).size<=1;
 }
 function inspAction(act){
   const g=byId(selectedId); if(!g) return;
@@ -548,17 +544,12 @@ document.getElementById("speedToggle").addEventListener("click",function(){
   render();
 });
 
-// seed a small example: a meshed pair so the canvas isn't empty
-(function seed(){
-  addGear();                 // amber driver, 12 teeth
-  const a=byId(driverId);
-  // add a larger gear already meshed to the driver as a starting example
-  const g2={id:nextId++,teeth:24,x:a.x,y:a.y,colorIdx:1,angle:0,omega:0};
-  colorCursor=2;
-  g2.x=a.x+pitchR(a)+pitchR(g2);
-  gears.push(g2);
-  edges.push({a:a.id,b:g2.id,type:"mesh",angle:0});
-  relayout(a.id);
-  selectedId=null;
-  render();
-})();
+// inspector controls are static markup now — bind once
+const inspBox=document.getElementById("inspector");
+inspBox.querySelectorAll("[data-act]").forEach(b=>b.addEventListener("click",()=>inspAction(b.dataset.act)));
+const teethInp=document.getElementById("teethInput");
+teethInp.addEventListener("change",()=>setTeeth(parseInt(teethInp.value,10)));
+teethInp.addEventListener("keydown",e=>{if(e.key==="Enter")teethInp.blur();});
+
+// initial chrome state (empty canvas: inspector disabled)
+updateChrome();
