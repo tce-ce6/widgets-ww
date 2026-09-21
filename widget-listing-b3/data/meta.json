@@ -1,7 +1,7 @@
 {
   "folders": {
     "wg160-gears": {
-      "updatedAt": "2026-07-29T19:38:06+05:30",
+      "updatedAt": "2026-09-11T18:53:14+05:30",
       "author": "tce-ashishg"
     },
     "wg161-where-does-my-food-go": {
@@ -68,6 +68,10 @@
       "updatedAt": "2026-07-30T17:25:22+05:30",
       "author": "tce-ashishg"
     },
+    "wg180-workshop-manager": {
+      "updatedAt": "2026-09-18T18:33:10+05:30",
+      "author": "tce-ashishg"
+    },
     "wg183-the-chola-fortress-jenga": {
       "updatedAt": "2026-08-24T12:52:42+05:30",
       "author": "tce-ashishg"
@@ -98,6 +102,56 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-09-18T18:33:10+05:30",
+      "author": "tce-ashishg",
+      "message": "wg180 completed",
+      "widgets": [
+        180
+      ]
+    },
+    {
+      "date": "2026-09-18T18:32:38+05:30",
+      "author": "tce-ashishg",
+      "message": "wg180 completed",
+      "widgets": [
+        180
+      ]
+    },
+    {
+      "date": "2026-09-16T18:58:39+05:30",
+      "author": "tce-ashishg",
+      "message": "wg180 functionality done",
+      "widgets": [
+        180
+      ]
+    },
+    {
+      "date": "2026-09-15T18:51:57+05:30",
+      "author": "tce-ashishg",
+      "message": "wg180 structuring done",
+      "widgets": [
+        180
+      ]
+    },
+    {
+      "date": "2026-09-11T19:02:15+05:30",
+      "author": "tce-ashishg",
+      "message": "wg160 structuring done",
+      "widgets": [
+        180,
+        190
+      ]
+    },
+    {
+      "date": "2026-09-11T18:53:14+05:30",
+      "author": "tce-ashishg",
+      "message": "wg160 structuring done",
+      "widgets": [
+        160,
+        190
+      ]
+    },
     {
       "date": "2026-09-11T11:19:51+05:30",
       "author": "tce-ashishg",
@@ -296,57 +350,6 @@
       "message": "wg175 structuring done",
       "widgets": [
         175
-      ]
-    },
-    {
-      "date": "2026-08-24T16:41:13+05:30",
-      "author": "tce-ashishg",
-      "message": " wg168 content updated",
-      "widgets": [
-        168
-      ]
-    },
-    {
-      "date": "2026-08-24T12:52:42+05:30",
-      "author": "tce-ashishg",
-      "message": "wg186 & wg168 issue resolved",
-      "widgets": [
-        168,
-        183,
-        186
-      ]
-    },
-    {
-      "date": "2026-08-23T22:45:40+05:30",
-      "author": "tce-ashishg",
-      "message": "wg175 started",
-      "widgets": [
-        161,
-        175
-      ]
-    },
-    {
-      "date": "2026-08-23T22:22:09+05:30",
-      "author": "tce-ashishg",
-      "message": "wh170 functionality done",
-      "widgets": [
-        170
-      ]
-    },
-    {
-      "date": "2026-08-23T22:08:55+05:30",
-      "author": "tce-ashishg",
-      "message": "wh170 functionality done",
-      "widgets": [
-        170
-      ]
-    },
-    {
-      "date": "2026-08-23T00:06:41+05:30",
-      "author": "tce-ashishg",
-      "message": "wh170 structuring done",
-      "widgets": [
-        170
       ]
     }
   ]
