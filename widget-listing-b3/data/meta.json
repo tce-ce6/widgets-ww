@@ -99,9 +99,21 @@
     "wg195-chitra-dekh-kar-vakya-banaye": {
       "updatedAt": "2026-09-10T16:08:37+05:30",
       "author": "tce-ashishg"
+    },
+    "wg196-perfect-pairs": {
+      "updatedAt": "2026-09-21T18:44:53+05:30",
+      "author": "tce-ashishg"
     }
   },
   "commits": [
+    {
+      "date": "2026-09-21T18:44:53+05:30",
+      "author": "tce-ashishg",
+      "message": "wg196 functionality done",
+      "widgets": [
+        196
+      ]
+    },
     {
       "date": "2026-09-18T18:33:10+05:30",
       "author": "tce-ashishg",
@@ -341,14 +353,6 @@
       "widgets": [
         167,
         170,
-        175
-      ]
-    },
-    {
-      "date": "2026-08-25T19:10:05+05:30",
-      "author": "tce-ashishg",
-      "message": "wg175 structuring done",
-      "widgets": [
         175
       ]
     }
