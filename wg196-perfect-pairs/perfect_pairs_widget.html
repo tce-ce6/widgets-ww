@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Perfect Pairs — male and female words</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#2A2438;
+    --wall-dk:#E7D2A6;
+    --board:#C6DEC2; --board-dk:#A6C5A3; --board-edge:#8CAE89;
+    --frame:#A9793F; --frame-dk:#7B5527;
+    --cream:#FFF9EC; --parch:#FFF4DC; --white:#FFF;
+    --gold:#FFC53D; --gold-dk:#C68F14; --gold-lt:#FFE9A8;
+    --coral:#EE6B45;
+    --teal:#2F9E96; --teal-dk:#1F7570;
+    --slate:#6E7A86;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html, body{ height:100%; overflow:hidden; }
+  body{
+    margin:0; font-family:'Nunito', sans-serif; user-select:none;
+    background:var(--wall-dk); padding:8px 9px 10px;
+    display:flex; flex-direction:column; position:relative;
+  }
+  .room-bg{ position:fixed; inset:0; z-index:0; pointer-events:none; }
+  .room-bg svg{ width:100%; height:100%; display:block; }
+  .wrap{
+    max-width:440px; margin:0 auto; position:relative; z-index:1;
+    width:100%; height:100%; display:flex; flex-direction:column;
+  }
+  .hidden{ display:none !important; }
+
+  h1{
+    font-family:'Baloo 2', sans-serif; font-weight:800;
+    text-align:center; font-size:1.3rem; line-height:1.3;
+    color:var(--ink); letter-spacing:.015em;
+    background:linear-gradient(180deg,var(--gold-lt) 0%,var(--gold) 52%,var(--gold-dk) 100%);
+    border:3px solid var(--ink); border-radius:11px;
+    padding:2px 20px; width:fit-content; margin:0 auto 6px;
+    box-shadow:2px 3px 0 rgba(0,0,0,.28);
+  }
+  .btn{
+    font-family:'Baloo 2', sans-serif; font-weight:800;
+    border:4px solid var(--ink); color:white; padding:9px 26px;
+    border-radius:999px; font-size:1rem; cursor:pointer;
+    box-shadow:3px 3px 0 rgba(0,0,0,.3); background:var(--coral);
+  }
+  .btn:active{ transform:translate(2px,2px); box-shadow:1px 1px 0 rgba(0,0,0,.3); }
+  .icon-btn{
+    position:absolute; top:-1px; left:0; width:30px; height:30px; border-radius:50%;
+    background:var(--cream); border:3px solid var(--ink); font-size:.9rem; cursor:pointer;
+    box-shadow:2px 2px 0 rgba(0,0,0,.25); z-index:6;
+    display:flex; align-items:center; justify-content:center; padding:0;
+  }
+  .icon-btn:active{ transform:translate(1px,1px); box-shadow:1px 1px 0 rgba(0,0,0,.25); }
+
+  /* ================= the blackboard ================= */
+  .slate{
+    flex:1; min-height:0; position:relative; display:flex; flex-direction:column;
+    background:radial-gradient(120% 90% at 30% 16%, var(--board) 0%, var(--board-dk) 100%);
+    border:7px solid var(--frame); border-radius:10px;
+    box-shadow:0 0 0 2px var(--frame-dk), 5px 6px 0 rgba(0,0,0,.22),
+               inset 0 0 22px rgba(255,255,255,.34);
+    padding:8px 9px 9px; overflow:hidden;
+  }
+  .slate::before{
+    content:''; position:absolute; inset:0; pointer-events:none; opacity:.26;
+    background:
+      radial-gradient(64px 22px at 20% 80%, rgba(255,255,255,.72), transparent 70%),
+      radial-gradient(84px 18px at 80% 26%, rgba(255,255,255,.58), transparent 70%);
+  }
+  .ledge{
+    flex-shrink:0; height:19px; margin-top:-1px;
+    background:linear-gradient(180deg,var(--frame) 0%,var(--frame-dk) 100%);
+    border-radius:0 0 8px 8px; box-shadow:4px 4px 0 rgba(0,0,0,.18);
+  }
+  .chalktext{
+    font-family:'Nunito',sans-serif; font-weight:900; color:#2C4A33;
+    text-align:center; text-shadow:0 1px 0 rgba(255,255,255,.5);
+  }
+
+  /* ================= status ================= */
+  .status{
+    flex-shrink:0; display:flex; gap:6px; justify-content:center; align-items:center;
+    margin-bottom:6px; flex-wrap:wrap;
+  }
+  .pill{
+    font-family:'Nunito',sans-serif; font-weight:900; font-size:.7rem; color:var(--ink);
+    background:rgba(255,249,236,.92); border:3px solid var(--ink);
+    border-radius:999px; padding:2px 12px; box-shadow:2px 2px 0 rgba(0,0,0,.2);
+    white-space:nowrap;
+  }
+  .chain{
+    display:flex; gap:4px; justify-content:center; align-items:center;
+    margin:0 0 6px; flex-shrink:0; height:14px;
+  }
+  .link{
+    width:20px; height:11px; border-radius:999px;
+    border:3px solid var(--ink); background:rgba(255,255,255,.55);
+  }
+  .link.on{
+    background:linear-gradient(180deg,var(--gold-lt),var(--gold) 55%,var(--gold-dk));
+    animation:linkpop .5s cubic-bezier(.2,1.7,.4,1) both;
+  }
+  @keyframes linkpop{
+    0%{ transform:scale(.4) rotate(-16deg); box-shadow:0 0 0 0 rgba(255,197,61,.9); }
+    55%{ transform:scale(1.3) rotate(4deg); box-shadow:0 0 0 9px rgba(255,197,61,0); }
+    100%{ transform:none; box-shadow:0 0 0 0 rgba(255,197,61,0); }
+  }
+  .ask{ font-size:.76rem; margin:0 0 6px; flex-shrink:0; }
+
+  /* ================= the cards ================= */
+  .board{
+    flex:1; min-height:0; display:grid; gap:6px;
+    grid-template-columns:1fr 1fr; grid-template-rows:repeat(5,1fr);
+    align-content:center;
+  }
+  .card{
+    perspective:800px; cursor:pointer; background:none; border:none; padding:0;
+    min-width:0; min-height:0; position:relative;
+    animation:dealIn .46s cubic-bezier(.2,1.35,.4,1) both;
+  }
+  @keyframes dealIn{
+    0%{ opacity:0; transform:translate(var(--dx,0px),-210px) rotate(var(--dr,0deg)) scale(.7); }
+    100%{ opacity:1; transform:none; }
+  }
+  .card:not(.flipped):not(.cleared):active{ transform:translateY(3px) scale(.98); }
+  .card:focus-visible{ outline:3px solid var(--gold); outline-offset:3px; border-radius:12px; }
+  .card .inner{
+    display:block; position:relative; width:100%; height:100%;
+    transform-style:preserve-3d;
+  }
+  .card.flipped .inner{ animation:turnOver .44s cubic-bezier(.3,1,.4,1) forwards; }
+  @keyframes turnOver{
+    0%{ transform:rotateY(0) scale(1); }
+    50%{ transform:rotateY(90deg) scale(1.12); }
+    100%{ transform:rotateY(180deg) scale(1); }
+  }
+  .card.turnback .inner{ animation:turnBack .42s cubic-bezier(.3,1,.4,1) forwards; }
+  @keyframes turnBack{
+    0%{ transform:rotateY(180deg) scale(1); }
+    50%{ transform:rotateY(90deg) scale(1.08); }
+    100%{ transform:rotateY(0) scale(1); }
+  }
+  .card .face{
+    display:flex; position:absolute; inset:0; backface-visibility:hidden;
+    border:4px solid var(--ink); border-radius:11px;
+    align-items:center; justify-content:center;
+    box-shadow:2px 3px 0 rgba(0,0,0,.26);
+    overflow:hidden; padding:3px;
+  }
+  /* face-down side: a number on a patterned back */
+  .card .back{
+    background:
+      repeating-linear-gradient(45deg,
+        rgba(255,255,255,.14) 0 8px, transparent 8px 16px),
+      linear-gradient(160deg, var(--teal) 0%, var(--teal-dk) 100%);
+  }
+  .card .back::before{
+    content:''; position:absolute; top:-60%; left:-130%;
+    width:58%; height:220%; transform:rotate(22deg);
+    background:linear-gradient(90deg, transparent, rgba(255,255,255,.36), transparent);
+    animation:sweep 4.6s ease-in-out infinite;
+  }
+  @keyframes sweep{ 0%{ left:-130%; } 42%{ left:200%; } 100%{ left:200%; } }
+  .card .back .num{
+    position:relative; z-index:2;
+    font-family:'Baloo 2', sans-serif; font-weight:800;
+    font-size:clamp(1.1rem,3.6vh,1.5rem); color:var(--cream);
+    width:clamp(26px,5.4vh,34px); aspect-ratio:1; border-radius:50%;
+    border:3px solid rgba(255,249,236,.9); background:rgba(0,0,0,.14);
+    display:flex; align-items:center; justify-content:center; line-height:1;
+  }
+  /* revealed side */
+  .card .front{
+    transform:rotateY(180deg);
+    background:linear-gradient(180deg,var(--parch) 0%,#F1E0BC 100%);
+    font-family:'Nunito',sans-serif; font-weight:900; color:var(--ink);
+    font-size:clamp(.9rem,3.2vh,1.2rem); text-align:center; line-height:1.12;
+    word-break:break-word;
+  }
+  .card.long .front{ font-size:clamp(.72rem,2.5vh,.95rem); }
+  .card.hit .front{
+    background:linear-gradient(180deg,var(--gold-lt) 0%,var(--gold) 100%);
+  }
+  .card.hit{ animation:liftAway .55s ease .25s forwards; }
+  @keyframes liftAway{
+    0%{ opacity:1; transform:none; }
+    100%{ opacity:0; transform:translateY(-26px) scale(.6) rotate(6deg); }
+  }
+  .card.miss .inner{ animation:shake .45s ease; }
+  @keyframes shake{
+    0%,100%{ transform:rotateY(180deg) translateX(0); }
+    28%{ transform:rotateY(180deg) translateX(-9px) rotate(-3deg); }
+    62%{ transform:rotateY(180deg) translateX(9px) rotate(3deg); }
+  }
+  .card.cleared{
+    pointer-events:none;
+    border:3px dashed var(--board-edge); border-radius:11px;
+    background:rgba(255,255,255,.14);
+  }
+  .card.cleared .inner{ display:none; }
+
+  /* ---- the shuffle: a stack that riffles, then deals out ---- */
+  .shufstage{
+    position:absolute; inset:0; z-index:7; pointer-events:none; display:none;
+  }
+  .shufstage.on{ display:block; }
+  .shufcard{
+    position:absolute; left:50%; top:50%;
+    width:clamp(58px,17vw,78px); aspect-ratio:.76;
+    margin-left:calc(clamp(58px,17vw,78px) / -2);
+    transform-origin:50% 60%;
+    border:4px solid var(--ink); border-radius:11px;
+    box-shadow:2px 3px 0 rgba(0,0,0,.3);
+    background:
+      repeating-linear-gradient(45deg,
+        rgba(255,255,255,.14) 0 8px, transparent 8px 16px),
+      linear-gradient(160deg, var(--teal) 0%, var(--teal-dk) 100%);
+    animation:riffle 1.25s cubic-bezier(.4,.1,.5,.9) both;
+  }
+  .shufcard::after{
+    content:''; position:absolute; left:50%; top:50%;
+    width:38%; aspect-ratio:1; transform:translate(-50%,-50%);
+    border-radius:50%; border:3px solid rgba(255,249,236,.75);
+  }
+  @keyframes riffle{
+    0%{   transform:translateY(-46%) translateX(0) rotate(0); }
+    20%{  transform:translateY(-58%) translateX(var(--rx)) rotate(var(--rr)); }
+    44%{  transform:translateY(-34%) translateX(calc(var(--rx) * -0.85))
+                    rotate(calc(var(--rr) * -1)); }
+    66%{  transform:translateY(-56%) translateX(calc(var(--rx) * 0.55))
+                    rotate(calc(var(--rr) * 0.6)); }
+    86%{  transform:translateY(-44%) translateX(calc(var(--rx) * -0.2))
+                    rotate(calc(var(--rr) * -0.25)); }
+    100%{ transform:translateY(-46%) translateX(0) rotate(0); }
+  }
+  .shufstage.out .shufcard{ animation:tighten .3s ease both; }
+  @keyframes tighten{
+    0%{   transform:translateY(-46%) scale(1); opacity:1; }
+    100%{ transform:translateY(-46%) scale(.82); opacity:0; }
+  }
+  .shuflabel{
+    position:absolute; left:50%; bottom:6%; transform:translateX(-50%);
+    font-family:'Nunito',sans-serif; font-weight:900; font-size:.76rem;
+    color:#2C4A33; text-shadow:0 1px 0 rgba(255,255,255,.55);
+    letter-spacing:.06em; opacity:0; animation:labelFade 1.55s ease both;
+  }
+  @keyframes labelFade{ 0%{opacity:0} 18%{opacity:1} 78%{opacity:1} 100%{opacity:0} }
+
+  /* the pair joined together for a beat */
+  .joined{
+    position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+    display:flex; align-items:stretch; z-index:9;
+    background:var(--cream); border:4px solid var(--ink); border-radius:12px;
+    box-shadow:0 5px 0 var(--gold-dk), 3px 6px 0 rgba(0,0,0,.28);
+    font-family:'Nunito',sans-serif; font-weight:900; color:var(--ink);
+    font-size:clamp(.86rem,3.4vh,1.18rem); overflow:hidden;
+    opacity:0; pointer-events:none; white-space:nowrap;
+  }
+  .joined span{ padding:7px 12px; }
+  .joined span:first-child{ background:rgba(42,36,56,.07); }
+  .joined i{
+    width:6px; flex:0 0 6px; align-self:stretch; position:relative;
+    background:linear-gradient(var(--ink) 0 0) center/2px 100% no-repeat;
+  }
+  .joined i::before, .joined i::after{
+    content:''; position:absolute; left:50%; width:6px; height:6px;
+    background:var(--ink); border-radius:50%; transform:translateX(-50%);
+  }
+  .joined i::before{ top:-3px; } .joined i::after{ bottom:-3px; }
+  .joined.go{ animation:joinshow 1.2s ease forwards; }
+  @keyframes joinshow{
+    0%{ opacity:0; transform:translate(-50%,-50%) scale(.5); }
+    15%{ opacity:1; transform:translate(-50%,-50%) scale(1.07); }
+    26%{ transform:translate(-50%,-50%) scale(1); }
+    82%{ opacity:1; }
+    100%{ opacity:0; transform:translate(-50%,-74%) scale(.94); }
+  }
+
+  .roundflash{
+    position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+    z-index:10; opacity:0; pointer-events:none; text-align:center;
+    font-family:'Baloo 2', sans-serif; font-weight:800; color:var(--ink);
+    background:linear-gradient(180deg,var(--gold-lt) 0%,var(--gold) 52%,var(--gold-dk) 100%);
+    border:4px solid var(--ink); border-radius:14px;
+    padding:9px 22px; font-size:1.04rem; line-height:1.3;
+    box-shadow:3px 5px 0 rgba(0,0,0,.3);
+  }
+  .roundflash.go{ animation:flashIn 1.5s ease forwards; }
+  @keyframes flashIn{
+    0%{ opacity:0; transform:translate(-50%,-50%) scale(.5) rotate(-4deg); }
+    14%{ opacity:1; transform:translate(-50%,-50%) scale(1.06) rotate(2deg); }
+    26%{ transform:translate(-50%,-50%) scale(1) rotate(0); }
+    80%{ opacity:1; }
+    100%{ opacity:0; transform:translate(-50%,-64%) scale(.95); }
+  }
+
+  /* ================= panels ================= */
+  .panel{
+    flex:1; min-height:0; display:flex; flex-direction:column; align-items:center;
+    justify-content:center; text-align:center; padding:8px;
+  }
+  .panel .note{
+    font-family:'Nunito', sans-serif; font-weight:800; color:var(--ink); background:var(--cream);
+    border:3px solid var(--ink); border-radius:13px; padding:11px 16px;
+    font-size:.9rem; max-width:330px; margin:0 auto 14px; line-height:1.5;
+    box-shadow:2px 3px 0 rgba(0,0,0,.22);
+  }
+  .banner{
+    font-family:'Baloo 2', sans-serif; font-weight:800; color:var(--ink);
+    background:linear-gradient(180deg,var(--gold-lt) 0%,var(--gold) 52%,var(--gold-dk) 100%);
+    border:3px solid var(--ink); border-radius:11px;
+    padding:3px 18px; margin:0 auto 11px; width:fit-content; max-width:96%;
+    font-size:1.04rem; line-height:1.3; box-shadow:2px 3px 0 rgba(0,0,0,.26);
+  }
+  /* two face-down cards as decoration, no words given away */
+  .peek{ display:flex; gap:9px; justify-content:center; margin:0 auto 15px; }
+  .peekcard{
+    width:58px; height:76px; border:4px solid var(--ink); border-radius:11px;
+    box-shadow:2px 3px 0 rgba(0,0,0,.26);
+    background:
+      repeating-linear-gradient(45deg,
+        rgba(255,255,255,.14) 0 8px, transparent 8px 16px),
+      linear-gradient(160deg, var(--teal) 0%, var(--teal-dk) 100%);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .peekcard:nth-child(1){ transform:rotate(-6deg); }
+  .peekcard:nth-child(2){ transform:rotate(5deg); }
+  .peekcard span{
+    font-family:'Baloo 2', sans-serif; font-weight:800; font-size:1.2rem;
+    color:var(--cream); width:30px; height:30px; border-radius:50%;
+    border:3px solid rgba(255,249,236,.9); background:rgba(0,0,0,.14);
+    display:flex; align-items:center; justify-content:center; line-height:1;
+  }
+
+  .confetti{ position:fixed; inset:0; pointer-events:none; z-index:11; overflow:hidden; }
+  .bit{ position:absolute; width:9px; height:14px; border-radius:2px; animation:fall linear forwards; }
+  @keyframes fall{
+    0%{ transform:translateY(-30px) rotate(0); opacity:1; }
+    100%{ transform:translateY(105vh) rotate(700deg); opacity:.9; }
+  }
+  @media (prefers-reduced-motion:reduce){ *{ animation:none !important; } }
+</style>
+</head>
+<body>
+<div class="room-bg">
+  <svg viewBox="0 0 400 700" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="wallGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#FBF0DA"/>
+        <stop offset="70%" stop-color="#F3E2C0"/>
+        <stop offset="100%" stop-color="#E7D2A6"/>
+      </linearGradient>
+      <linearGradient id="lightGrad" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#FFFBEA" stop-opacity="0.85"/>
+        <stop offset="100%" stop-color="#FFFBEA" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    <rect width="400" height="700" fill="url(#wallGrad)"/>
+    <g>
+      <rect x="12" y="54" width="80" height="90" rx="4" fill="#BFE3F2" stroke="#A9793F" stroke-width="6"/>
+      <path d="M52,57 L52,141" stroke="#A9793F" stroke-width="4"/>
+      <path d="M15,99 L89,99" stroke="#A9793F" stroke-width="4"/>
+      <circle cx="74" cy="76" r="9" fill="#FFD93D" opacity="0.85"/>
+    </g>
+    <path d="M92,64 L236,214 L92,214 Z" fill="url(#lightGrad)"/>
+    <g>
+      <rect x="306" y="58" width="80" height="98" rx="3" fill="#FFF9EC" stroke="#2A2438" stroke-width="4"/>
+      <text x="346" y="86" text-anchor="middle" font-family="'Baloo 2',sans-serif"
+            font-size="17" font-weight="800" fill="#EE6B45">Aa</text>
+      <g stroke="#B9C3C0" stroke-width="4" stroke-linecap="round">
+        <path d="M318,106 L374,106"/><path d="M318,122 L374,122"/><path d="M318,138 L360,138"/>
+      </g>
+    </g>
+    <rect x="0" y="566" width="400" height="134" fill="#C9975B"/>
+    <rect x="0" y="566" width="400" height="10" fill="#A9793F"/>
+    <g stroke="#B0813F" stroke-width="3" opacity="0.4">
+      <path d="M60,576 L20,700"/><path d="M162,576 L142,700"/>
+      <path d="M252,576 L264,700"/><path d="M342,576 L384,700"/>
+    </g>
+    <g>
+      <rect x="-12" y="644" width="424" height="18" rx="5" fill="#D9A85F" stroke="#8E6227" stroke-width="4"/>
+      <rect x="42" y="662" width="12" height="40" fill="#8E6227"/>
+      <rect x="348" y="662" width="12" height="40" fill="#8E6227"/>
+    </g>
+  </svg>
+</div>
+
+<div class="wrap">
+
+  <!-- ============ start ============ -->
+  <div id="start-screen" style="flex:1;min-height:0;display:flex;flex-direction:column">
+    <h1>Perfect Pairs</h1>
+    <div class="slate">
+      <div class="panel">
+        <div class="note">
+          Turn over two cards at a time. Can you find the male and female
+          nouns that go together?
+        </div>
+        <div class="peek">
+          <div class="peekcard"><span>3</span></div>
+          <div class="peekcard"><span>7</span></div>
+        </div>
+        <button class="btn" id="start-btn">Start Matching</button>
+      </div>
+    </div>
+    <div class="ledge"></div>
+  </div>
+
+  <!-- ============ game ============ -->
+  <div id="game-screen" class="hidden" style="flex:1;min-height:0;display:flex;flex-direction:column">
+    <div style="position:relative;flex-shrink:0">
+      <button class="icon-btn" id="restart-btn" title="Start over">&#128257;</button>
+      <h1>Perfect Pairs</h1>
+    </div>
+    <div class="slate">
+      <div class="status">
+        <span class="pill" id="found-pill">0 of 30 pairs</span>
+      </div>
+      <div class="chain" id="chain"></div>
+      <div class="chalktext ask">Match the male and female nouns that go together.</div>
+      <div class="board" id="board"></div>
+      <div class="shufstage" id="shufstage"></div>
+      <div class="joined" id="joined"></div>
+      <div class="roundflash" id="roundflash"></div>
+    </div>
+    <div class="ledge"></div>
+  </div>
+
+  <!-- ============ finished ============ -->
+  <div id="end-screen" class="hidden" style="flex:1;min-height:0;display:flex;flex-direction:column">
+    <h1>Perfect Pairs</h1>
+    <div class="slate">
+      <div class="panel">
+        <div class="banner">&#127881; Every pair matched!</div>
+        <div class="note" id="end-note"></div>
+        <button class="btn" id="again-btn">Play Again</button>
+      </div>
+    </div>
+    <div class="ledge"></div>
+  </div>
+
+</div>
+
+<div class="confetti" id="confetti"></div>
+
+<script>
+/* ================= 30 pairs, male word first ================= */
+const PAIRS = [
+  ['boy','girl'], ['man','woman'], ['gentleman','lady'], ['sir','madam'],
+  ['husband','wife'], ['bridegroom','bride'], ['father','mother'],
+  ['brother','sister'], ['son','daughter'], ['uncle','aunt'],
+  ['nephew','niece'], ['grandfather','grandmother'],
+  ['grandson','granddaughter'], ['stepfather','stepmother'],
+  ['godfather','godmother'], ['king','queen'], ['prince','princess'],
+  ['emperor','empress'], ['hero','heroine'], ['giant','giantess'],
+  ['wizard','witch'], ['actor','actress'], ['waiter','waitress'],
+  ['host','hostess'], ['headmaster','headmistress'], ['lion','lioness'],
+  ['tiger','tigress'], ['bull','cow'], ['rooster','hen'], ['horse','mare']
+];
+
+const PER_ROUND = 5;
+const CONF = ["#FFC53D","#EE6B45","#2F9E96","#8262C0","#639F45","#D9882B"];
+
+let pool = [], cursor = 0, roundPairs = [], partner = {}, advancing = false;
+let first = null, matchedInRound = 0, foundTotal = 0, busy = false, timers = [];
+
+const el = id => document.getElementById(id);
+const shuffle = a => a.map(v=>[Math.random(),v]).sort((x,y)=>x[0]-y[0]).map(p=>p[1]);
+function clearTimers(){ timers.forEach(clearTimeout); timers = []; }
+function after(ms, fn){ timers.push(setTimeout(fn, ms)); }
+
+function showOnly(id){
+  ['start-screen','game-screen','end-screen']
+    .forEach(s => el(s).classList.toggle('hidden', s !== id));
+}
+
+/* ================= rounds ================= */
+function startGame(){
+  clearTimers();
+  pool = shuffle(PAIRS.slice());   /* all 30 pairs, shuffled once per game */
+  cursor = 0; foundTotal = 0; advancing = false;
+  showOnly('game-screen');
+  dealRound();
+}
+
+function dealRound(){
+  clearTimers();
+  busy = false; first = null; matchedInRound = 0; advancing = false;
+
+  /* take the next five pairs off the pool and never put them back,
+     so a pair cannot appear in two sets */
+  roundPairs = pool.splice(0, PER_ROUND);
+  if(!roundPairs.length){ finish(); return; }
+
+  partner = {};
+  roundPairs.forEach(p => { partner[p[0]] = p[1]; partner[p[1]] = p[0]; });
+
+  el('found-pill').textContent = foundTotal + ' of ' + PAIRS.length + ' pairs';
+  el('chain').innerHTML = Array.from({length:PER_ROUND},(_,i)=>
+    '<span class="link" id="link'+i+'"></span>').join('');
+
+  const j = el('joined'); j.className = 'joined'; j.innerHTML = '';
+  const rf = el('roundflash'); rf.className = 'roundflash'; rf.textContent = '';
+
+  const words = shuffle(roundPairs.flat());
+  el('board').innerHTML = '';
+  busy = true;                       /* no tapping while the cards shuffle */
+  runShuffle(() => layOut(words));
+}
+
+/* the stack riffles in the middle of the board, then tightens and deals */
+function runShuffle(then){
+  const stage = el('shufstage');
+  stage.className = 'shufstage on';
+  stage.innerHTML = '';
+  for(let i = 0; i < 10; i++){
+    const c = document.createElement('div');
+    c.className = 'shufcard';
+    const dir = i % 2 ? 1 : -1;
+    c.style.setProperty('--rx', dir * (26 + i * 7) + 'px');
+    c.style.setProperty('--rr', dir * (7 + i * 2) + 'deg');
+    c.style.animationDelay = (i * 34) + 'ms';
+    c.style.zIndex = String(i);
+    stage.appendChild(c);
+  }
+  const lab = document.createElement('div');
+  lab.className = 'shuflabel';
+  lab.textContent = 'Shuffling the cards\u2026';
+  stage.appendChild(lab);
+
+  after(1330, () => stage.classList.add('out'));
+  after(1620, () => { stage.className = 'shufstage'; stage.innerHTML = ''; then(); });
+}
+
+function layOut(words){
+  const board = el('board');
+  board.innerHTML = '';
+  words.forEach((w, i) => {
+    const c = document.createElement('button');
+    c.className = 'card' + (w.length > 9 ? ' long' : '');
+    c.dataset.word = w;
+    c.setAttribute('aria-label', 'Card ' + (i + 1) + ', face down');
+    c.style.setProperty('--dx', (i % 2 ? 1 : -1) * (36 + i * 14) + 'px');
+    c.style.setProperty('--dr', (i % 2 ? 1 : -1) * (8 + i * 2) + 'deg');
+    c.style.animationDelay = (i * 55) + 'ms';
+    c.innerHTML =
+      '<span class="inner">' +
+        '<span class="face back"><span class="num">' + (i + 1) + '</span></span>' +
+        '<span class="face front">' + w + '</span>' +
+      '</span>';
+    c.addEventListener('click', () => turn(c));
+    board.appendChild(c);
+  });
+  after(words.length * 55 + 480, () => { busy = false; });
+}
+
+/* ================= turning cards over ================= */
+function turn(card){
+  if(busy) return;
+  if(card.classList.contains('cleared') || card.classList.contains('flipped')) return;
+
+  card.classList.remove('turnback');
+  card.classList.add('flipped');
+
+  if(!first){ first = card; return; }
+
+  const a = first, b = card;
+  const isPair = partner[a.dataset.word] === b.dataset.word;
+  busy = true;
+
+  if(isPair){
+    const pair = roundPairs.find(p =>
+      p[0] === a.dataset.word || p[0] === b.dataset.word);
+    after(420, () => {
+      const j = el('joined');
+      j.innerHTML = '<span>' + pair[0] + '</span><i></i><span>' + pair[1] + '</span>';
+      j.classList.remove('go'); void j.offsetWidth; j.classList.add('go');
+      [a,b].forEach(t => t.classList.add('hit'));
+      const lk = el('link' + matchedInRound);
+      if(lk) lk.classList.add('on');
+      matchedInRound++; foundTotal++;
+      el('found-pill').textContent = foundTotal + ' of ' + PAIRS.length + ' pairs';
+    });
+    after(1300, () => {
+      [a,b].forEach(t => { t.classList.remove('flipped','hit'); t.classList.add('cleared'); });
+      first = null; busy = false;
+      if(matchedInRound === roundPairs.length) after(400, endRound);
+    });
+  } else {
+    after(480, () => [a,b].forEach(t => t.classList.add('miss')));
+    after(1000, () => {
+      [a,b].forEach(t => {
+        t.classList.remove('miss','flipped');
+        t.classList.add('turnback');
+      });
+      first = null; busy = false;
+    });
+  }
+}
+
+/* ================= between rounds ================= */
+function endRound(){
+  if(advancing) return;          /* never advance twice for one set */
+  advancing = true;
+  if(!pool.length){ finish(); return; }
+  const rf = el('roundflash');
+  rf.textContent = foundTotal <= PER_ROUND
+    ? 'Bravo! Five pairs matched.'
+    : 'Bravo! Five more pairs matched.';
+  rf.classList.remove('go'); void rf.offsetWidth; rf.classList.add('go');
+  after(1400, dealRound);
+}
+
+function confettiBurst(){
+  const box = el('confetti');
+  box.innerHTML = '';
+  for(let i = 0; i < 46; i++){
+    const b = document.createElement('div');
+    b.className = 'bit';
+    b.style.left = Math.random()*100 + 'vw';
+    b.style.background = CONF[i % CONF.length];
+    b.style.animationDuration = (1.5 + Math.random()*1.3) + 's';
+    b.style.animationDelay = (Math.random()*0.5) + 's';
+    box.appendChild(b);
+  }
+  after(3200, () => { box.innerHTML = ''; });
+}
+
+function finish(){
+  clearTimers();
+  el('end-note').textContent =
+    'You matched all ' + PAIRS.length + ' pairs. Every male word has a female word to go with it.';
+  showOnly('end-screen');
+  confettiBurst();
+}
+
+function backToStart(){
+  clearTimers();
+  busy = false; first = null;
+  el('confetti').innerHTML = '';
+  showOnly('start-screen');
+}
+
+el('start-btn').addEventListener('click', startGame);
+el('again-btn').addEventListener('click', backToStart);
+el('restart-btn').addEventListener('click', backToStart);
+
+showOnly('start-screen');
+</script>
+</body>
+</html>
