@@ -1,0 +1,77 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Perfect Pairs</title>
+  <link rel="stylesheet" href="css/global_style.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/lottie.js"></script>
+  <script src="js/sketch.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body id="pair-widget">
+  <div class="container">
+    <div class="mainContainerOuter">
+      <div class="wdgetTitle">
+        <h2>Perfect Pairs</h2>
+        <span id="versionId" class="versionText">b4_wg195_260921_01</span>
+        <span class="pill status-pill hidden" id="found-pill">0 of 30 pairs</span>
+      </div>
+      <div class="svg-container">
+           <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="Layer_1" version="1.1" viewBox="0 0 1920 1080">
+  <!-- Generator: Adobe Illustrator 30.8.1, SVG Export Plug-In . SVG Version: 2.1.4 Build 1)  -->
+
+          <foreignObject x="150" y="100" width="1600" height="900">
+                <div class="intro-screen" id="intro-screen">
+                  <span class="i-text" id="i-text">Turn over two cards at a time. Can you find the male and female
+          nouns that go together?</span>
+                  <div class="scene" id="mainScene">
+                    <img src="assets/images/intro.svg" alt="चित्र 1" id="sceneImage">
+                  </div>                
+                
+                  <div class="start-btn" id="start-btn">
+                    <button type="button" class="overlay-title" id="overlayTitle">Start Matching</button>
+                  </div>
+                </div>
+            </foreignObject>
+
+            <foreignObject id="game-screen" class="game-screen hidden" x="50" y="100" width="1820" height="900">
+                  <div class="slate">
+                    <!-- <div class="chain" id="chain"></div> -->
+                    <div class="chalktext ask">Match the male and female nouns that go together.</div>
+                    <div class="board" id="board"></div>
+                    <span class="pill msg-pill" id="msg-pill"></span>
+                    <div class="shufstage" id="shufstage"></div>
+                    <div class="joined" id="joined"></div>
+                    <div class="roundflash" id="roundflash"></div>
+                  </div>
+            </foreignObject>
+
+              <foreignObject id="start-lottie-screen" class="star-lottie-screen hidden" x="750" y="380" width="400" height="400" style="display:none;">
+                  <div class="star-lottie" id="start-lottie-container">
+                  </div>
+            </foreignObject>
+
+            <foreignObject id="final-screen" class="final-screen hidden" x="50" y="100" width="1820" height="900">
+                 <div class="feedback-screen">
+                  <div class="trophy-lottie-container" id="trophy-lottie">
+                  </div>
+                    <div class="feedback-text">You matched all pairs! Great job!</div>
+                    <div class="feedback-box">
+                    <div class="feedback-text-box">You matched all 30 pairs. Every male noun has a female noun to go with it.</div>
+                    </div>
+                    <div class="restart-btn">
+                      <button type="button" class="overlay-title" id="restart-btn">Play Again</button>
+                    </div>
+                  </div>
+            </foreignObject>
+</svg>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
