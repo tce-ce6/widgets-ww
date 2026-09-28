@@ -14,7 +14,7 @@ svg * {
   -webkit-tap-highlight-color: transparent;
 }
 
-#shabda-wrapper body {
+#wild-wrapper body {
   box-sizing: border-box;
   outline: none;
   font-family: "Roboto", sans-serif;
@@ -25,7 +25,7 @@ svg * {
   background-color: #fff !important;
 }
 
-#shabda-wrapper .container {
+#wild-wrapper .container {
   border: none;
   height: 100vh;
   width: 100vw;
@@ -33,7 +33,7 @@ svg * {
   user-select: none !important;
 }
 
-#shabda-wrapper .container::after {
+#wild-wrapper .container::after {
   content: "";
   /* background-image: url("./../assets/bg.png"); */
   background-size: cover;
@@ -47,7 +47,7 @@ svg * {
   background-color: #000;
 }
 
-/* #shabda-wrapper .mainContainerOuter {
+/* #wild-wrapper .mainContainerOuter {
   background: #60360D !important
 } */
 .role-img {
@@ -55,23 +55,23 @@ svg * {
   height: auto;
 }
 
-#shabda-wrapper .button-controls {
+#wild-wrapper .button-controls {
   background: 0 0 !important;
   border: none !important
 }
 
-#shabda-wrapper .d-flex {
+#wild-wrapper .d-flex {
   display: flex
 }
 
-#shabda-wrapper .question {
+#wild-wrapper .question {
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center
 }
 
-#shabda-wrapper .flexContainer {
+#wild-wrapper .flexContainer {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -79,7 +79,7 @@ svg * {
   z-index: 1
 }
 
-#shabda-wrapper .flexItem {
+#wild-wrapper .flexItem {
   padding: 8px;
   transition: box-shadow .3s ease-in-out;
   display: flex;
@@ -87,7 +87,7 @@ svg * {
 }
 
 @media (max-width:768px) {
-  #shabda-wrapper .flexItem {
+  #wild-wrapper .flexItem {
     width: 100%;
     margin: 8px 0
   }
@@ -105,7 +105,7 @@ svg * {
   border-radius: 50%;
 }
 
-#shabda-wrapper .btn {
+#wild-wrapper .btn {
   display: inline-block;
   padding: 12px 25px;
   font-size: 16px;
@@ -122,36 +122,36 @@ svg * {
   margin-right: 10px
 }
 
-#shabda-wrapper .btn:hover {
+#wild-wrapper .btn:hover {
   background-color: #3e80f3;
   transform: translateY(-2px);
   box-shadow: 0 6px 10px rgba(0, 0, 0, .15)
 }
 
-#shabda-wrapper .btn-primary:active {
+#wild-wrapper .btn-primary:active {
   background-color: #3e80f3;
   transform: translateY(1px);
   box-shadow: 0 2px 4px rgba(0, 0, 0, .1)
 }
 
-#shabda-wrapper .btn:focus {
+#wild-wrapper .btn:focus {
   outline: 3px solid #1e6bef;
   outline-offset: 3px
 }
 
-#shabda-wrapper .btn:active {
+#wild-wrapper .btn:active {
   transform: translateY(1px);
   box-shadow: 0 2px 4px rgba(0, 0, 0, .1)
 }
 
-#shabda-wrapper .btn:disabled {
+#wild-wrapper .btn:disabled {
   background-color: #ddd;
   color: #999;
   cursor: not-allowed;
   box-shadow: none
 }
 
-#shabda-wrapper .wdgetTitle {
+#wild-wrapper .wdgetTitle {
   width: 100%;
   display: flex;
   align-items: center;
@@ -161,18 +161,18 @@ svg * {
   z-index: 2;
 }
 
-#shabda-wrapper .wdgetTitle h2 {
+#wild-wrapper .wdgetTitle h2 {
   font-size: 23px;
   font-weight: 600;
   text-align: left;
   padding: 8px 40px;
   color: #fff;
   border-radius: 0 0px 20px 20px;
-  background: #4d1700;
+  background: #e26f98;
   white-space: nowrap;
 }
 
-#shabda-wrapper .versionText {
+#wild-wrapper .versionText {
   position: absolute;
   right: 20px;
   top: 10px !important;
@@ -180,13 +180,13 @@ svg * {
   color: rgb(0 0 0 / 20%);
 }
 
-#shabda-wrapper .svg-container {
+#wild-wrapper .svg-container {
   width: 100%;
   height: 100%;
   z-index: 1;
 }
 
-#shabda-wrapper svg {
+#wild-wrapper svg {
   width: 100% !important;
   height: 100%;
 }
