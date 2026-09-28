@@ -1,0 +1,122 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wild About Articles</title>
+
+  <link rel="stylesheet" href="./css/global_style.css">
+  <link rel="stylesheet" href="./css/styles.css">
+</head>
+
+<body id="shabda-wrapper">
+  <div class="container">
+    <div class="mainContainerOuter">
+      <div class="wdgetTitle">
+        <h2>Wild About Articles</h2>
+        <span id="versionId" class="versionText">b4_wg180_260928_02</span>
+      </div>
+      <div class="svg-container" id="svg-container">
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
+          viewBox="0 0 1920 1080">
+          <foreignObject class="play-btn-wrapper" x="0" y="0" width="1920" height="1080" style="cursor: pointer;">
+            <div id="stage-wrapper" class="stage-wrapper">
+              <div class="attached-html" id="attached-html" data-name="attached-html">
+                <header class="app-header" id="app-header" role="banner">
+                  <div class="header-side header-right">
+                    <div class="counter-pill hidden" id="counter-pill" role="status" aria-live="polite"
+                      aria-label="Photos snapped counter"><span id="counter-text">00/20 snapped</span></div>
+                  </div>
+                </header>
+                <main id="app-stage" class="app-stage" role="main" aria-label="Wild About Articles Educational Game">
+                  <section id="screen-intro" class="game-screen screen-intro active" aria-label="Welcome Screen">
+                    <div class="bg-layer bg-intro" aria-hidden="true"><img src="assets/zoo-01.svg" alt=""
+                        class="bg-svg"></div>
+                    <div class="intro-callout" id="intro-callout">
+                      <p class="intro-instruction">You're visiting the zoo with your camera! Tap <strong>a</strong> or
+                        <strong>an</strong> to snap each animal you spot.
+                      </p>
+                    </div>
+                    <div class="ticket-container" id="ticket-container">
+                      <button id="btn-start" class="ticket-btn" type="button"
+                        aria-label="Start Zoo Visit! Admit One"><img src="assets/zoo-ticket.svg"
+                          alt="Start Zoo Visit! ADMIT ONE" class="ticket-img"></button>
+                    </div>
+                  </section>
+                  <section id="screen-game" class="game-screen screen-game" aria-label="Safari Viewfinder Screen">
+                    <div class="bg-layer bg-safari" aria-hidden="true"><img src="assets/zoo-inner-view.svg" alt=""
+                        class="bg-svg">
+                    </div>
+                    <div class="safari-content-grid">
+                      <div class="camera-column" id="camera-column">
+                        <div class="camera-rig" id="camera-rig">
+                          <div class="camera-frame-wrapper">
+                            <img src="assets/camera-frame.svg" alt="Safari Camera" class="camera-frame-svg"
+                              id="camera-frame-img">
+                            <div class="lens-aperture" id="lens-aperture">
+                              <div class="lens-crosshairs" aria-hidden="true"></div>
+                              <div class="lens-animal-stage" id="lens-animal-stage"><img id="animal-cam-img"
+                                  class="animal-cam-img" src="assets/hippo-cam.svg" alt="Animal in viewfinder"></div>
+                              <div class="lens-glare" aria-hidden="true"></div>
+                              <div class="flash-overlay" id="flash-overlay" aria-hidden="true"></div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="prompt-box" id="prompt-box">
+                          <p class="prompt-text">Tap <strong>a</strong> or <strong>an</strong> to snap each animal you
+                            spot.</p>
+                        </div>
+                        <div class="shutter-choice-row" id="shutter-choice-row" role="group"
+                          aria-label="Select indefinite article">
+                          <button class="choice-pill-btn" id="btn-choice-a" data-choice="a" type="button"
+                            aria-label="Choose article a"><span class="btn-text">a</span></button>
+                          <button class="choice-pill-btn" id="btn-choice-an" data-choice="an" type="button"
+                            aria-label="Choose article an"><span class="btn-text">an</span></button>
+                        </div>
+                      </div>
+                      <div class="album-column" id="album-column">
+                        <div class="album-sheet" id="album-sheet" aria-label="Zoo Photo Album">
+                          <div class="album-grid" id="album-grid"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </section>
+                  <section id="screen-completion" class="game-screen screen-completion" aria-label="Completion Screen">
+                    <div class="bg-layer bg-safari" aria-hidden="true"><img src="assets/zoo-inner-view.svg" alt=""
+                        class="bg-svg">
+                    </div>
+                    <div class="completion-content-grid">
+                      <div class="completion-sidebar">
+                        <div class="celebration-card">
+                          <div class="celebration-badge" aria-hidden="true">🏆</div>
+                          <h2 class="celebration-heading">Zoo Day Complete!</h2>
+                          <p class="celebration-subtext">You snapped all 20 wild animals with the correct articles!</p>
+                        </div>
+                        <button id="btn-replay" class="replay-pill-btn" type="button" aria-label="Play Again"><span
+                            class="btn-text">Play Again</span></button>
+                      </div>
+                      <div class="album-column completion-album-column">
+                        <div class="album-sheet" id="completion-album-sheet" aria-label="Completed Photo Album">
+                          <div class="album-grid" id="final-album-grid"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </section>
+                </main>
+              </div>
+            </div>
+          </foreignObject>
+
+
+        </svg>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="./js/lottie.min.js"></script>
+  <audio id="audio-shutter" src="assets/sound-effect-614.mp3" preload="auto"></audio>
+  <script src="./js/script.js"></script>
+</body>
+
+</html>

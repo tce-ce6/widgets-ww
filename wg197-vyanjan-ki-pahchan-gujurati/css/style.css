@@ -316,6 +316,7 @@ svg * {
 .btn-container {
   display: flex;
   gap: 20px;
+  transform: scale(0.9);
 }
 
 .lottie-wrapper {
