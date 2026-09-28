@@ -107,9 +107,21 @@
     "wg196-perfect-pairs": {
       "updatedAt": "2026-09-28T13:14:27+05:30",
       "author": "tce-ashishg"
+    },
+    "wg197-vyanjan-ki-pahchan-gujurati": {
+      "updatedAt": "2026-09-28T15:22:03+05:30",
+      "author": "tce-ashishg"
     }
   },
   "commits": [
+    {
+      "date": "2026-09-28T15:22:03+05:30",
+      "author": "tce-ashishg",
+      "message": "wg197 started and completed",
+      "widgets": [
+        197
+      ]
+    },
     {
       "date": "2026-09-28T13:14:27+05:30",
       "author": "tce-ashishg",
@@ -347,14 +359,6 @@
       "date": "2026-08-28T15:25:46+05:30",
       "author": "tce-nitinc",
       "message": "wg 188 fixes",
-      "widgets": [
-        188
-      ]
-    },
-    {
-      "date": "2026-08-28T11:32:53+05:30",
-      "author": "tce-ashishg",
-      "message": "wg188 functionality done",
       "widgets": [
         188
       ]
