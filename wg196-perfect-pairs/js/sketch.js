@@ -77,26 +77,52 @@
       path: path
     });
   }
-  var starAnim = createLottie('start-lottie-container', 'assets/JSON/Star.json', false);
-  var trophyAnim = createLottie('trophy-lottie', 'assets/JSON/Trophy.json', true);
+  var starAnim = null, trophyAnim = null;
+  var starLoaded = false, trophyLoaded = false;
   var starHide = null;
+  function loadStar() {
+    if (starLoaded) return;
+    starLoaded = true;
+    starAnim = createLottie('start-lottie-container', 'assets/JSON/star.json', false);
+    if (starAnim) {
+      starAnim.addEventListener('complete', hideStar);
+    }
+  }
+  function loadTrophy() {
+    if (trophyLoaded) return;
+    trophyLoaded = true;
+    trophyAnim = createLottie('trophy-lottie', 'assets/JSON/trophy.json', true);
+  }
   function hideStar() {
     starHide = null;
     var scr = el('star-lottie-screen');
     if (scr) { scr.classList.add('hidden'); scr.style.display = 'none'; }
   }
-  if (starAnim) {
-    starAnim.addEventListener('complete', hideStar);
-  }
   function playStar() {
     var scr = el('star-lottie-screen');
+    var msg = el('bravo-msg');
+    if (msg) {
+      msg.textContent = 'Bravo! ' + matchedInRound + (matchedInRound === 1 ? ' pair' : ' pairs') + ' matched.';
+    }
     if (scr) { scr.classList.remove('hidden'); scr.style.display = ''; }
     if (starHide) clearTimeout(starHide);
     starHide = setTimeout(hideStar, 2600);  /* safety net if the animation fails to load */
-    if (starAnim) { starAnim.stop(); starAnim.setDirection(1); starAnim.goToAndPlay(0); }
+    loadStar();
+    if (starAnim) {
+      starAnim.resize();                     /* re-measure now the screen is visible */
+      starAnim.stop();
+      starAnim.setDirection(1);
+      starAnim.goToAndPlay(0);
+    }
   }
   function playTrophy() {
-    if (trophyAnim) { trophyAnim.stop(); trophyAnim.setDirection(1); trophyAnim.goToAndPlay(0); }
+    loadTrophy();
+    if (trophyAnim) {
+      trophyAnim.resize();
+      trophyAnim.stop();
+      trophyAnim.setDirection(1);
+      trophyAnim.goToAndPlay(0);
+    }
   }
 
   /* ---------- rounds ---------- */
@@ -224,10 +250,8 @@
     if (!pool.length) { finish(); return; }
     var rf = el('roundflash');
     if (rf) {
-      rf.textContent = foundTotal <= PER_ROUND
-        ? 'Bravo! Five pairs matched.'
-        : 'Bravo! Five more pairs matched.';
-      rf.classList.remove('go'); void rf.offsetWidth; rf.classList.add('go');
+      rf.className = 'roundflash';
+      rf.textContent = '';
     }
     after(1400, dealRound);
   }
