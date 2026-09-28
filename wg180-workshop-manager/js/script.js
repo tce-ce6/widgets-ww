@@ -187,7 +187,7 @@
     if (i === 0) {
       done = [false, false, false, false];
       clearMission();
-      setDisplay($('stage_complete'), 'none');
+      setDisplay($('stage_complete'), 'block');
       setDisplay($('stage-1-complete'), 'none');
       setDisplay($('stage-2-complete'), 'none');
       setDisplay($('stage-3-complete'), 'none');

@@ -132,9 +132,9 @@
   font-size: 25px;
   font-weight: 600;
   text-align: left;
-  background: #FC97F2;
-  padding: 8px 40px;
-  color: #960C7C;
+  background: #0295fc;
+  padding: 8px 20px;
+  color: #fff;
   border-radius: 0 0px 20px 20px;
   white-space: nowrap;
 }
@@ -208,22 +208,23 @@
     margin-bottom:6px; flex-wrap:wrap;
   }
   .pill{
-    font-family:'Nunito',sans-serif; font-weight:900; font-size:.7rem; color:var(--ink);
+    font-family:'Nunito',sans-serif; font-weight:600; font-size:.7rem; color:var(--ink);
     background:rgba(255,249,236,.92); border:3px solid var(--ink);
     border-radius:999px; padding:2px 12px; box-shadow:2px 2px 0 rgba(0,0,0,.2);
     white-space:nowrap;
   }
   /* the running score, pinned top-right beside the version text */
-  #pair-widget .status-pill{
-    position:absolute; right:20px; top:34px; z-index:2;
-  }
+  #pair-widget .status-pill{position: absolute;right: 20px;top: 34px;z-index: 2;font-size: 26px;padding: 15px 40px;}
   /* the per-answer message, shown under the cards */
   .msg-pill{
     display:block; align-self:center; margin-top:10px;
     transition:background .2s ease;
+    font-size: 22px;
+    padding: 15px 30px;
+    background-color: #e4ffd2;
   }
   .msg-pill:empty{ visibility:hidden; }
-  .msg-pill.ok{ background:#DFF5E1; }
+  /* .msg-pill.ok{  } */
   .msg-pill.no{ background:#FBE0DC; }
   .chain{
     display:flex; gap:4px; justify-content:center; align-items:center;
@@ -322,7 +323,7 @@
     background-position:center;
     background-repeat:no-repeat;
     background-color:var(--parch);
-    font-family:'Nunito',sans-serif; font-weight:900; color:var(--ink);
+    font-family:'Nunito',sans-serif; font-weight:600; color:var(--ink);
     font-size:clamp(.9rem,3.2vh,1.2rem); text-align:center; line-height:1.12;
     word-break:break-word;
   }
@@ -389,7 +390,7 @@
   }
   .shuflabel{
     position:absolute; left:50%; bottom:6%; transform:translateX(-50%);
-    font-family:'Nunito',sans-serif; font-weight:900; font-size:.76rem;
+    font-family:'Nunito',sans-serif; font-weight:600; font-size:.76rem;
     color:#2C4A33; text-shadow:0 1px 0 rgba(255,255,255,.55);
     letter-spacing:.06em; opacity:0; animation:labelFade 1.55s ease both;
   }
@@ -401,7 +402,7 @@
     display:flex; align-items:stretch; z-index:9;
     background:var(--cream); border:4px solid var(--ink); border-radius:12px;
     box-shadow:0 5px 0 var(--gold-dk), 3px 6px 0 rgba(0,0,0,.28);
-    font-family:'Nunito',sans-serif; font-weight:900; color:var(--ink);
+    font-family:'Nunito',sans-serif; font-weight:600; color:var(--ink);
     font-size:clamp(.86rem,3.4vh,1.18rem); overflow:hidden;
     opacity:0; pointer-events:none; white-space:nowrap;
   }
@@ -515,7 +516,7 @@
     margin-bottom: 30px;
   }
   .start-btn button{
-    background-color: #9163aa;
+    background-color: #a217be;
     font-size: 30px;
     font-weight: 500;
     border-radius: 30px;
@@ -564,4 +565,10 @@
     height: 400px;
     width: 400px;
     margin-bottom: 40px;
+  }
+  .face.front .word{
+    color: #000;
+    font-size: 32px;
+    font-weight: 600;
+    letter-spacing: .4px;
   }

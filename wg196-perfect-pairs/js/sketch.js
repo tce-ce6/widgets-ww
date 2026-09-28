@@ -213,6 +213,7 @@
       after(1000, function () {
         a.classList.remove('miss', 'flipped'); a.classList.add('turnback');
         b.classList.remove('miss', 'flipped'); b.classList.add('turnback');
+        setMessage('');
         first = null; busy = false;
       });
     }
