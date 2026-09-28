@@ -1,0 +1,334 @@
+/* ==========================================================================
+   Determine The Blood Pressure — widget styles
+
+   The visual design (background, title, cards, buttons, panels, feedback
+   text) comes from the master SVG inlined in index.html — it IS the design
+   file provided in resources/assets/layout.svg. This stylesheet only:
+     1. Scales that one fixed 1920x1080 canvas uniformly to fit the page
+        (same design, same proportions, at any viewport — no reflow), and
+     2. Positions/styles the handful of real interactive controls (selects,
+        the back button, the live pressure readout) on top of it.
+   ========================================================================== */
+
+:root {
+  --color-highlight: #ffd54f;
+  --color-success: #43a047;
+  --color-error: #e5393b;
+  --color-overlay-bg: rgba(18, 12, 28, 0.7);
+  font-size: 16px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: #2b1345;
+  height: 100vh;
+  height: 100dvh;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.hidden {
+  display: none !important;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+select:focus,
+button:focus,
+[role="button"]:focus,
+select:focus-visible,
+button:focus-visible,
+[role="button"]:focus-visible {
+  outline: none;
+  outline-offset: 0;
+}
+
+/* ---------------------------------------------------------------------- */
+/* The fixed-aspect stage that the master SVG (and everything overlaid on  */
+/* it) scales inside — constrained by BOTH viewport width and height so    */
+/* the full widget and all buttons are always 100% visible without scroll. */
+/* ---------------------------------------------------------------------- */
+
+.stage-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  padding: 8px;
+  overflow: hidden;
+}
+
+.stage {
+  position: relative;
+  aspect-ratio: 1920 / 1080;
+  width: min(1600px, calc(100vw - 16px), calc((100dvh - 16px) * 1920 / 1080));
+  max-width: 100%;
+  max-height: 100%;
+  container-type: inline-size; /* lets overlay text scale in cqw units with the canvas */
+}
+
+/* Groups inside the master SVG are real DOM nodes that script.js shows/hides
+   and attaches click handlers to (buttons, cards, dropdown boxes). By default
+   an SVG <g> only registers clicks on its own painted pixels, so a click that
+   lands in a gap in the line art (very common in illustrations like the
+   instrument cards) would fall through to whatever is behind it instead of
+   activating the button. `bounding-box` makes the whole box clickable. */
+#master-svg [role="button"] {
+  cursor: pointer;
+  pointer-events: bounding-box;
+}
+
+/* The master SVG paints as one layer, beneath the HTML overlays below (the
+   Lottie needle, the selects, the readout) — fine normally, but the SVG's
+   own "insights" overlay group needs to cover those when it opens. */
+#master-svg {
+  z-index: 1;
+}
+
+#master-svg.is-on-top {
+  z-index: 20;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Lottie needle / mercury column overlay (see index.html for why)         */
+/* ---------------------------------------------------------------------- */
+
+.lottie-stage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.lottie-stage svg {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.live-reading {
+  position: absolute;
+  left: 8.5%;
+  top: 2.2%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  background: rgba(0, 0, 0, 0.55);
+  padding: 0.5% 1.2%;
+  border-radius: 10px;
+  z-index: 5;
+  pointer-events: none;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.live-reading-label {
+  font-size: 0.9cqw;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #cbb9e8;
+}
+
+.live-reading-value {
+  font-size: 2.6cqw;
+  font-weight: 800;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.live-reading-unit {
+  font-size: 1.1cqw;
+  font-weight: 600;
+  color: #cbb9e8;
+  margin-left: 4px;
+}
+
+.live-reading.is-listening {
+  background: var(--color-highlight);
+}
+
+.live-reading.is-listening .live-reading-value,
+.live-reading.is-listening .live-reading-unit,
+.live-reading.is-listening .live-reading-label {
+  color: #2b1345;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Back button (no equivalent artwork in layout.svg, so this stays plain)  */
+/* ---------------------------------------------------------------------- */
+
+.btn-back {
+  position: absolute;
+  left: 2%;
+  top: 3%;
+  width: 5%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+}
+
+.btn-back:hover {
+  background: rgba(255, 255, 255, 0.26);
+}
+
+.btn-back .icon {
+  width: 55%;
+  height: 55%;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Dropdown selects, overlaid exactly on the master SVG's own box artwork  */
+/* (positioned via inline left/top/width/height set in script.js)         */
+/* ---------------------------------------------------------------------- */
+
+.field-select {
+  position: absolute;
+  border-radius: 10px;
+  border: 3px solid transparent;
+  background: transparent;
+  appearance: none;
+  -webkit-appearance: none;
+  color: #2b1345;
+  font-weight: 700;
+  font-size: 1.3cqw;
+  padding: 0 1.8em 0 0.6em;
+  box-sizing: border-box;
+  max-width: 100%;
+  z-index: 4;
+}
+
+.field-select:disabled {
+  cursor: not-allowed;
+}
+
+.field-select.is-correct {
+  border-color: var(--color-success);
+  background: rgba(67, 160, 71, 0.18);
+}
+
+.field-select.is-incorrect {
+  border-color: var(--color-error);
+  background: rgba(229, 57, 59, 0.18);
+}
+
+/* ---------------------------------------------------------------------- */
+/* Final band-description sentence (no baked equivalent for arbitrary      */
+/* reading values, so this stays as plain text under the panel)           */
+/* ---------------------------------------------------------------------- */
+
+.final-feedback {
+  position: absolute;
+  margin: 0;
+  font-size: 1.05cqw;
+  line-height: 1.3;
+  color: var(--color-highlight);
+  font-weight: 600;
+  text-align: center;
+  z-index: 4;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Solution reveal (see index.html comment — no baked artwork for this)    */
+/* ---------------------------------------------------------------------- */
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--color-overlay-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  border-radius: 2%;
+}
+
+.solution-panel {
+  position: relative;
+  width: 60%;
+  background: #e3f5e5;
+  color: #1b3d1c;
+  text-align: center;
+  border-radius: 16px;
+  padding: 3% 4%;
+}
+
+.solution-panel h2 {
+  margin: 0 0 12px;
+  color: var(--color-success);
+}
+
+.solution-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 2% 4%;
+  margin-top: 10px;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.overlay-close {
+  position: absolute;
+  top: 2%;
+  right: 3%;
+  background: transparent;
+  border: none;
+  font-size: 1.6rem;
+  line-height: 1;
+  color: inherit;
+  padding: 4px 8px;
+}
+
+/* The measurement-stage <foreignObject> spans the whole 1920x1080 canvas, so
+   by default its HTML box would swallow every click before it reached the
+   master SVG's own button groups (Reset/Release/Insights, dashboard artwork).
+   Let events pass straight through it except on the real controls it hosts. */
+#measurment-component {
+  pointer-events: none;
+}
+
+#measurment-component select,
+#measurment-component .btn-back,
+#measurment-component .overlay,
+#measurment-component .overlay * {
+  pointer-events: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}

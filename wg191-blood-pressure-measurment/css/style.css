@@ -2,7 +2,7 @@
   box-sizing: border-box
 }
 
-#pair-widgetbody {
+#blood-widgetbody {
   font-family: "Roboto", sans-serif;
   font-size: 16px;
   line-height: 1.2;
@@ -10,7 +10,7 @@
   margin: 0
 }
 
-#pair-widget .container {
+#blood-widget .container {
   border: none;
   height: 100vh;
   width: 100vw;
@@ -18,9 +18,9 @@
   user-select: none !important;
 }
 
-#pair-widget .container::after {
+#blood-widget .container::after {
   content: "";
-  background-image: url("../assets/images/bg.png");
+  background-image: url("../assets/bg.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -32,16 +32,16 @@
   /* filter: blur(5px) */
 }
 
-#pair-widget .mainContainerOuter {
+#blood-widget .mainContainerOuter {
   background: #000 !important
 }
 
-#pair-widget .button-controls {
+#blood-widget .button-controls {
   background: 0 0 !important;
   border: none !important
 }
 
-#pair-widget .d-flex {
+#blood-widget .d-flex {
   display: flex
 }
 
@@ -49,14 +49,14 @@
   display: none !important
 }
 
-#pair-widget .question {
+#blood-widget .question {
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center
 }
 
-#pair-widget .flexContainer {
+#blood-widget .flexContainer {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -64,7 +64,7 @@
   z-index: 1
 }
 
-#pair-widget .flexItem {
+#blood-widget .flexItem {
   padding: 8px;
   transition: box-shadow .3s ease-in-out;
   display: flex;
@@ -72,13 +72,13 @@
 }
 
 @media (max-width:768px) {
-  #pair-widget .flexItem {
+  #blood-widget .flexItem {
     width: 100%;
     margin: 8px 0
   }
 }
 
-#pair-widget .btn {
+#blood-widget .btn {
   display: inline-block;
   padding: 12px 25px;
   font-size: 16px;
@@ -95,30 +95,30 @@
   margin-right: 10px
 }
 
-#pair-widget .btn-primary:active {
+#blood-widget .btn-primary:active {
   background-color: #3e80f3;
   transform: translateY(1px);
   box-shadow: 0 2px 4px rgba(0, 0, 0, .1)
 }
 
-#pair-widget .btn:focus {
-  outline: 3px solid #1e6bef;
-  outline-offset: 3px
+#blood-widget .btn:focus {
+  outline: none;
+  outline-offset: 0
 }
 
-#pair-widget .btn:active {
+#blood-widget .btn:active {
   transform: translateY(1px);
   box-shadow: 0 2px 4px rgba(0, 0, 0, .1)
 }
 
-#pair-widget .btn:disabled {
+#blood-widget .btn:disabled {
   background-color: #ddd;
   color: #999;
   cursor: not-allowed;
   box-shadow: none
 }
 
-#pair-widget .wdgetTitle {
+#blood-widget .wdgetTitle {
   width: 100%;
   display: flex;
   align-items: center;
@@ -128,30 +128,30 @@
   z-index: 1
 }
 
-#pair-widget .wdgetTitle h2 {
+#blood-widget .wdgetTitle h2 {
   font-size: 25px;
   font-weight: 600;
   text-align: left;
-  background: #0295fc;
-  padding: 8px 20px;
-  color: #fff;
+  background: #FC97F2;
+  padding: 8px 40px;
+  color: #960C7C;
   border-radius: 0 0px 20px 20px;
   white-space: nowrap;
 }
 
-#pair-widget .versionText {
+#blood-widget .versionText {
   position: absolute;
   right: 20px;
   top: 10px !important;
   font-size: 12px;
   color: rgb(0 0 0 / 20%);
 }
-#pair-widget .svg-container{
+#blood-widget .svg-container{
   width: 100%;
   height: 100%;
   z-index: 1;
 }
-#pair-widget svg{
+#blood-widget svg{
     width: 100% !important;
     height: 100%;
 }
@@ -208,23 +208,22 @@
     margin-bottom:6px; flex-wrap:wrap;
   }
   .pill{
-    font-family:'Nunito',sans-serif; font-weight:600; font-size:.7rem; color:var(--ink);
+    font-family:'Nunito',sans-serif; font-weight:900; font-size:.7rem; color:var(--ink);
     background:rgba(255,249,236,.92); border:3px solid var(--ink);
     border-radius:999px; padding:2px 12px; box-shadow:2px 2px 0 rgba(0,0,0,.2);
     white-space:nowrap;
   }
   /* the running score, pinned top-right beside the version text */
-  #pair-widget .status-pill{position: absolute;right: 20px;top: 34px;z-index: 2;font-size: 26px;padding: 15px 40px;}
+  #blood-widget .status-pill{
+    position:absolute; right:20px; top:34px; z-index:2;
+  }
   /* the per-answer message, shown under the cards */
   .msg-pill{
     display:block; align-self:center; margin-top:10px;
     transition:background .2s ease;
-    font-size: 22px;
-    padding: 15px 30px;
-    background-color: #e4ffd2;
   }
   .msg-pill:empty{ visibility:hidden; }
-  /* .msg-pill.ok{  } */
+  .msg-pill.ok{ background:#DFF5E1; }
   .msg-pill.no{ background:#FBE0DC; }
   .chain{
     display:flex; gap:4px; justify-content:center; align-items:center;
@@ -323,7 +322,7 @@
     background-position:center;
     background-repeat:no-repeat;
     background-color:var(--parch);
-    font-family:'Nunito',sans-serif; font-weight:600; color:var(--ink);
+    font-family:'Nunito',sans-serif; font-weight:900; color:var(--ink);
     font-size:clamp(.9rem,3.2vh,1.2rem); text-align:center; line-height:1.12;
     word-break:break-word;
   }
@@ -390,19 +389,19 @@
   }
   .shuflabel{
     position:absolute; left:50%; bottom:6%; transform:translateX(-50%);
-    font-family:'Nunito',sans-serif; font-weight:600; font-size:.76rem;
+    font-family:'Nunito',sans-serif; font-weight:900; font-size:.76rem;
     color:#2C4A33; text-shadow:0 1px 0 rgba(255,255,255,.55);
     letter-spacing:.06em; opacity:0; animation:labelFade 1.55s ease both;
   }
   @keyframes labelFade{ 0%{opacity:0} 18%{opacity:1} 78%{opacity:1} 100%{opacity:0} }
 
-  /* the pair joined together for a beat */
+  /* the blood joined together for a beat */
   .joined{
     position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
     display:flex; align-items:stretch; z-index:9;
     background:var(--cream); border:4px solid var(--ink); border-radius:12px;
     box-shadow:0 5px 0 var(--gold-dk), 3px 6px 0 rgba(0,0,0,.28);
-    font-family:'Nunito',sans-serif; font-weight:600; color:var(--ink);
+    font-family:'Nunito',sans-serif; font-weight:900; color:var(--ink);
     font-size:clamp(.86rem,3.4vh,1.18rem); overflow:hidden;
     opacity:0; pointer-events:none; white-space:nowrap;
   }
@@ -516,7 +515,7 @@
     margin-bottom: 30px;
   }
   .start-btn button{
-    background-color: #a217be;
+    background-color: #9163aa;
     font-size: 30px;
     font-weight: 500;
     border-radius: 30px;
@@ -565,10 +564,4 @@
     height: 400px;
     width: 400px;
     margin-bottom: 40px;
-  }
-  .face.front .word{
-    color: #000;
-    font-size: 32px;
-    font-weight: 600;
-    letter-spacing: .4px;
   }
