@@ -69,7 +69,7 @@
       "author": "tce-ashishg"
     },
     "wg180-workshop-manager": {
-      "updatedAt": "2026-09-18T18:33:10+05:30",
+      "updatedAt": "2026-09-28T12:28:21+05:30",
       "author": "tce-ashishg"
     },
     "wg183-the-chola-fortress-jenga": {
@@ -88,6 +88,10 @@
       "updatedAt": "2026-09-07T15:29:08+05:30",
       "author": "tce-ashishg"
     },
+    "wg191-blood-pressure-measurment": {
+      "updatedAt": "2026-09-22T18:53:40+05:30",
+      "author": "tce-ashishg"
+    },
     "wg193-swar-ki-pahchan-gujrati": {
       "updatedAt": "2026-08-21T16:16:03+05:30",
       "author": "tce-ashishg"
@@ -101,11 +105,36 @@
       "author": "tce-ashishg"
     },
     "wg196-perfect-pairs": {
-      "updatedAt": "2026-09-21T18:44:53+05:30",
+      "updatedAt": "2026-09-28T13:14:27+05:30",
       "author": "tce-ashishg"
     }
   },
   "commits": [
+    {
+      "date": "2026-09-28T13:14:27+05:30",
+      "author": "tce-ashishg",
+      "message": "wg196 issue resolved",
+      "widgets": [
+        196
+      ]
+    },
+    {
+      "date": "2026-09-28T12:28:21+05:30",
+      "author": "tce-ashishg",
+      "message": "wg196 issue resolved",
+      "widgets": [
+        180,
+        196
+      ]
+    },
+    {
+      "date": "2026-09-22T18:53:40+05:30",
+      "author": "tce-ashishg",
+      "message": "wg191 done",
+      "widgets": [
+        191
+      ]
+    },
     {
       "date": "2026-09-21T18:44:53+05:30",
       "author": "tce-ashishg",
@@ -328,32 +357,6 @@
       "message": "wg188 functionality done",
       "widgets": [
         188
-      ]
-    },
-    {
-      "date": "2026-08-27T19:21:01+05:30",
-      "author": "tce-ashishg",
-      "message": "wg188 structuring done",
-      "widgets": [
-        188
-      ]
-    },
-    {
-      "date": "2026-08-26T18:14:44+05:30",
-      "author": "tce-ashishg",
-      "message": "wg175 completed",
-      "widgets": [
-        175
-      ]
-    },
-    {
-      "date": "2026-08-26T17:47:39+05:30",
-      "author": "tce-ashishg",
-      "message": "wg175 completed",
-      "widgets": [
-        167,
-        170,
-        175
       ]
     }
   ]
