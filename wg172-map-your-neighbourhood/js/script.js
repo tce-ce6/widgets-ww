@@ -229,11 +229,12 @@ document.addEventListener('DOMContentLoaded', () => {
   };
   const stopFeedbackLottie = (type) => feedbackLottieAnimations[type]?.stop();
   const currentStep = () => SCENARIOS.sets[setIndex].places[stepIndex];
-  const svgPoint = (event) => {
+  const pointInDropSpace = (event) => {
+    const ctm = dropPositions?.getScreenCTM?.() || svg.getScreenCTM();
     const point = svg.createSVGPoint();
     point.x = event.clientX;
     point.y = event.clientY;
-    return point.matrixTransform(svg.getScreenCTM().inverse());
+    return point.matrixTransform(ctm.inverse());
   };
   const hideFeedback = () => {
     clearTimeout(feedbackTimer);
@@ -285,6 +286,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (resetSetIndex) setIndex = 0;
     stepIndex = 0;
     activeDrag = null;
+    detachDragListeners();
     setResetEnabled(false);
     dropPositions?.querySelectorAll('.placed-place-image').forEach((image) => image.remove());
     Object.values(placeElements).forEach((element) => {
@@ -305,16 +307,19 @@ document.addEventListener('DOMContentLoaded', () => {
     image.style.pointerEvents = 'none';
   };
 
-  const getDropDirectionForPoint = (point) => {
+  const getDropDirectionForEvent = (event) => {
     return Object.entries(destinationElements).find(([, element]) => {
-      const box = element.getBBox();
-      const centerX = box.x + box.width / 2;
-      const centerY = box.y + box.height / 2;
-      const dx = point.x - centerX;
-      const dy = point.y - centerY;
-      const distance = Math.sqrt(dx * dx + dy * dy);
-      const maxDistance = Math.min(box.width, box.height) * 0.25;
-      return distance <= maxDistance;
+      const rect = element.getBoundingClientRect();
+      if (!rect.width || !rect.height) return false;
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      const maxDistance = Math.max(Math.min(rect.width, rect.height) * 0.5, 40);
+      const insideX = event.clientX >= rect.left - 12 && event.clientX <= rect.right + 12;
+      const insideY = event.clientY >= rect.top - 12 && event.clientY <= rect.bottom + 12;
+      if (!insideX || !insideY) return false;
+      const dx = event.clientX - centerX;
+      const dy = event.clientY - centerY;
+      return Math.sqrt(dx * dx + dy * dy) <= maxDistance;
     })?.[0];
   };
 
@@ -337,36 +342,35 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const moveDrag = (event) => {
-    if (!activeDrag) return;
-    const point = svgPoint(event);
+    if (!activeDrag || event.pointerId !== activeDrag.pointerId) return;
+    event.preventDefault();
+    const point = pointInDropSpace(event);
     const { image } = activeDrag;
     image.setAttribute('x', point.x - dragImageSize / 2);
     image.setAttribute('y', point.y - dragImageSize / 2);
   };
 
-  const startDrag = (event, place, element) => {
-    if (place !== currentStep().place || activeDrag || incorrectFeedbackOpen) return;
-    event.preventDefault();
-    const image = document.createElementNS(svgNamespace, 'image');
-    image.classList.add('placed-place-image');
-    image.setAttribute('href', placeImages[place]);
-    image.setAttribute('width', dragImageSize);
-    image.setAttribute('height', dragImageSize);
-    image.setAttribute('preserveAspectRatio', 'xMidYMid meet');
-    image.style.pointerEvents = 'none';
-    dropPositions?.appendChild(image);
-    activeDrag = { element, image };
-    element.style.cursor = 'grabbing';
-    element.setPointerCapture?.(event.pointerId);
-    moveDrag(event);
+  const detachDragListeners = () => {
+    window.removeEventListener('pointermove', moveDrag);
+    window.removeEventListener('pointerup', finishDrag);
+    window.removeEventListener('pointercancel', cancelDrag);
   };
 
-  const finishDrag = (event) => {
+  const cancelDrag = () => {
     if (!activeDrag) return;
     const drag = activeDrag;
     activeDrag = null;
-    const point = svgPoint(event);
-    const droppedDirection = getDropDirectionForPoint(point);
+    detachDragListeners();
+    drag.image.remove();
+    drag.element.style.cursor = 'grab';
+  };
+
+  const finishDrag = (event) => {
+    if (!activeDrag || event.pointerId !== activeDrag.pointerId) return;
+    const drag = activeDrag;
+    activeDrag = null;
+    detachDragListeners();
+    const droppedDirection = getDropDirectionForEvent(event);
     const correct = droppedDirection === currentStep().direction;
 
     if (!correct) {
@@ -387,12 +391,34 @@ document.addEventListener('DOMContentLoaded', () => {
     feedbackTimer = setTimeout(continueAfterCorrect, 120000);
   };
 
+  const startDrag = (event, place, element) => {
+    if (place !== currentStep().place || activeDrag || incorrectFeedbackOpen) return;
+    if (event.pointerType === 'mouse' && event.button !== 0) return;
+    event.preventDefault();
+    const image = document.createElementNS(svgNamespace, 'image');
+    image.classList.add('placed-place-image');
+    image.setAttribute('href', placeImages[place]);
+    image.setAttribute('width', dragImageSize);
+    image.setAttribute('height', dragImageSize);
+    image.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+    image.style.pointerEvents = 'none';
+    dropPositions?.appendChild(image);
+    activeDrag = { element, image, pointerId: event.pointerId };
+    element.style.cursor = 'grabbing';
+    try {
+      element.setPointerCapture(event.pointerId);
+    } catch (error) {
+      /* pointer capture unsupported, window listeners still track the drag */
+    }
+    window.addEventListener('pointermove', moveDrag, { passive: false });
+    window.addEventListener('pointerup', finishDrag);
+    window.addEventListener('pointercancel', cancelDrag);
+    moveDrag(event);
+  };
+
   Object.entries(placeElements).forEach(([place, element]) => {
     element?.addEventListener('pointerdown', (event) => startDrag(event, place, element));
   });
-  svg.addEventListener('pointermove', moveDrag);
-  svg.addEventListener('pointerup', finishDrag);
-  svg.addEventListener('pointercancel', finishDrag);
   incorrectCloseButton?.addEventListener('click', hideFeedback);
   correctCloseButton?.addEventListener('click', continueAfterCorrect);
   resetButton?.addEventListener('click', resetGame);
