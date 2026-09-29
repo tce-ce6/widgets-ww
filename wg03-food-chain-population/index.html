@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Food Chain Population Changes</title>
     <script src="p5.js"></script>
-    <script src="p5.sound.min.js"></script>
 
     
     <link rel="stylesheet" href="global_style.css" />
@@ -115,24 +114,11 @@
 
       // --- p5.js Sketch ---
       function preload() {
-        bgImage = loadImage("assets/BG.png");
-        maizeImage = loadImage("assets/Maize.svg");
+        bgImage = loadImage("assets/bg.png");
+        maizeImage = loadImage("assets/maize.svg");
         grasshopperImage = loadImage("assets/grasshopper.svg");
-        lizardImage = loadImage("assets/Lizard.svg");
-        sliderBaseImage = loadImage("assets/Slider_Base.svg");
-      increaseSound = loadSound(
-    "assets/Increase_01.mp3",
-    () => {
-      increaseSound.setVolume(0.3);
-    },
-    (err) => console.error("❌ Error loading Increase_01.mp3:", err)
-  );
-
-  decreaseSound = loadSound(
-    "assets/Decrease_01.mp3",
-    () => console.log("✅ Decrease sound loaded successfully"),
-    (err) => console.error("❌ Error loading Decrease_01.mp3:", err)
-  );
+        lizardImage = loadImage("assets/lizard.svg");
+        sliderBaseImage = loadImage("assets/slider_base.svg");
       }
 
       function setup() {
@@ -141,6 +127,11 @@
         noStroke();
         textFont("Roboto");
         imageMode(CENTER);
+        
+        increaseSound = new Audio("assets/increase_01.mp3");
+        increaseSound.volume = 0.3;
+        decreaseSound = new Audio("assets/decrease_01.mp3");
+
         handleReset();
       }
 
@@ -481,7 +472,6 @@ function setPopulationWithFade(type, newCount) {
       }
 
       function mousePressed() {
-        userStartAudio();
         const sliderY = 540 * scale;
         const buttonY = 620 * scale;
 
@@ -559,9 +549,15 @@ function setPopulationWithFade(type, newCount) {
 
         // **MODIFIED:** Play sound based on direction of change
         if (newValue > organisms[type].slider) {
-          if (increaseSound && increaseSound.isLoaded()) increaseSound.play();
+          if (increaseSound) {
+            increaseSound.currentTime = 0;
+            increaseSound.play().catch(e => {});
+          }
         } else if (newValue < organisms[type].slider) {
-          if (decreaseSound && decreaseSound.isLoaded()) decreaseSound.play();
+          if (decreaseSound) {
+            decreaseSound.currentTime = 0;
+            decreaseSound.play().catch(e => {});
+          }
         }
         
         // If slider dragged to 0, reset the whole simulation
@@ -671,9 +667,15 @@ function setPopulationWithFade(type, newCount) {
 
     const playSound = (type) => {
         if (type === "increase") {
-            if (increaseSound && increaseSound.isLoaded()) increaseSound.play();
+            if (increaseSound) {
+                increaseSound.currentTime = 0;
+                increaseSound.play().catch(e => {});
+            }
         } else if (type === "decrease") {
-            if (decreaseSound && decreaseSound.isLoaded()) decreaseSound.play();
+            if (decreaseSound) {
+                decreaseSound.currentTime = 0;
+                decreaseSound.play().catch(e => {});
+            }
         }
     };
 
