@@ -33,7 +33,7 @@ svg * {
   position: absolute;
   top: 0;
   left: 0;
-  /* filter: blur(5px) */
+  filter: brightness(0.6);
 }
 
 #ginti-widget .mainContainerOuter {
@@ -139,7 +139,7 @@ svg * {
   font-weight: 600;
   text-align: left;
   background: #e63967;
-  padding: 8px 40px;
+  padding: 10px 40px;
   color: #fff;
   border-radius: 0 0px 20px 20px;
   white-space: nowrap;
@@ -329,6 +329,14 @@ svg * {
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
 }
 
+.hint-question.hint-complete {
+  text-align: center;
+}
+
+.hint-question.hint-complete span {
+  display: block;
+}
+
 .ans-btn button {
   padding: 14px 36px;
   border-radius: 50px;
@@ -483,6 +491,12 @@ svg * {
 .lantern-div.solved:hover {
   transform: scale(1) !important;
   filter: none !important;
+  cursor: default;
+  pointer-events: none;
+}
+
+.lantern-div.hint-hidden,
+.lantern-div.round-complete {
   cursor: default;
   pointer-events: none;
 }

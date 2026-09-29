@@ -263,7 +263,7 @@ function render(){
     };
     ctrl.appendChild(mk(d.x-19,-1,"↺"));
     ctrl.appendChild(mk(d.x+19, 1,"↻"));
-    const cap=makeEl("text",{x:d.x,y:y-22,"text-anchor":"middle","font-family":"var(--mono)","font-size":"10","fill":"var(--ink-faint)","letter-spacing":"0.1em"});
+    const cap=makeEl("text",{x:d.x,y:y-22,"text-anchor":"middle","font-family":"var(--mono)","font-size":"15","fill":"#000","letter-spacing":"0.1em"});
     cap.textContent="DRIVE";
     ctrl.appendChild(cap);
     layer.appendChild(ctrl);
