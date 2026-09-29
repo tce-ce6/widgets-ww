@@ -192,9 +192,9 @@ button{
     cursor: pointer;
     font-size: 14px;
 }
-button:hover{
+/* button:hover{
     background-color: #01296e;
-}
+} */
 
 button:disabled{
     pointer-events: none;

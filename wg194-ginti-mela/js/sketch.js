@@ -110,6 +110,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // Reset hint card to initial front view
   function resetCardToFront() {
     isHintRevealed = false;
+    lanternElements.forEach((lantern) => {
+      lantern.classList.add("hint-hidden");
+    });
     if (hintCardImg) {
       hintCardImg.src = "./assets/images/hint-card-front.svg";
     }
@@ -120,6 +123,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (hintQuestion) {
       hintQuestion.style.display = "none";
       hintQuestion.textContent = "";
+      hintQuestion.classList.remove("hint-complete");
     }
     if (showAnsBtn) {
       showAnsBtn.disabled = true;
@@ -133,6 +137,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     playSound("flip");
     isHintRevealed = true;
+    lanternElements.forEach((lantern) => {
+      lantern.classList.remove("hint-hidden");
+    });
 
     if (hintCardImg) {
       hintCardImg.src = "./assets/images/hint-card-back.svg";
@@ -211,7 +218,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       lantern.dataset.number = numKey;
       lantern.dataset.devanagari = devanagari;
-      lantern.classList.remove("solved", "correct-pop", "lantern-glow", "lantern-shake");
+      lantern.classList.remove("solved", "correct-pop", "lantern-glow", "lantern-shake", "round-complete");
 
       const img = lantern.querySelector("img");
       if (img) {
@@ -307,8 +314,12 @@ const lantern = e.currentTarget;
           }
           if (hintQuestion) {
             hintQuestion.style.display = "block";
-            hintQuestion.textContent = "शानदार! आपने सभी 5 हिंट हल कर लिए! 🌟🌟🌟🌟🌟";
+            hintQuestion.classList.add("hint-complete");
+            hintQuestion.innerHTML = "<span>शानदार! आपने सभी 5 हिंट हल कर लिए!</span><span>🌟🌟🌟🌟🌟</span>";
           }
+          lanternElements.forEach((number) => {
+            number.classList.add("round-complete");
+          });
           if (showAnsBtn) {
             showAnsBtn.disabled = true;
           }
