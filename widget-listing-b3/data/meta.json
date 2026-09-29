@@ -73,7 +73,7 @@
       "author": "tce-ashishg"
     },
     "wg181-wild-about-articles": {
-      "updatedAt": "2026-09-28T18:09:38+05:30",
+      "updatedAt": "2026-09-28T19:18:54+05:30",
       "author": "tce-ashishg"
     },
     "wg183-the-chola-fortress-jenga": {
@@ -101,7 +101,7 @@
       "author": "tce-ashishg"
     },
     "wg194-ginti-mela": {
-      "updatedAt": "2026-09-08T18:57:41+05:30",
+      "updatedAt": "2026-09-29T17:27:18+05:30",
       "author": "tce-ashishg"
     },
     "wg195-chitra-dekh-kar-vakya-banaye": {
@@ -113,11 +113,28 @@
       "author": "tce-ashishg"
     },
     "wg197-vyanjan-ki-pahchan-gujurati": {
-      "updatedAt": "2026-09-28T18:09:38+05:30",
+      "updatedAt": "2026-09-29T17:27:18+05:30",
       "author": "tce-ashishg"
     }
   },
   "commits": [
+    {
+      "date": "2026-09-29T17:27:18+05:30",
+      "author": "tce-ashishg",
+      "message": "wg194 issues resolved",
+      "widgets": [
+        194,
+        197
+      ]
+    },
+    {
+      "date": "2026-09-28T19:18:54+05:30",
+      "author": "tce-ashishg",
+      "message": "hover effect removed",
+      "widgets": [
+        181
+      ]
+    },
     {
       "date": "2026-09-28T18:09:38+05:30",
       "author": "tce-ashishg",
@@ -351,22 +368,6 @@
       "message": "wg188 issue resolved",
       "widgets": [
         188,
-        190
-      ]
-    },
-    {
-      "date": "2026-08-31T13:22:58+05:30",
-      "author": "tce-ashishg",
-      "message": "wg166 issue resolved",
-      "widgets": [
-        166
-      ]
-    },
-    {
-      "date": "2026-08-31T12:15:07+05:30",
-      "author": "tce-ashishg",
-      "message": "190 structure done.",
-      "widgets": [
         190
       ]
     }
