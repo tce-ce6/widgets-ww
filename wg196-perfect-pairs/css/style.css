@@ -328,27 +328,14 @@
     word-break:break-word;
   }
   .card.long .front{ font-size:clamp(.72rem,2.5vh,.95rem); }
-  .card.hit .front{
-    background:linear-gradient(180deg,var(--gold-lt) 0%,var(--gold) 100%);
-  }
-  .card.hit{ animation:liftAway .55s ease .25s forwards; }
-  @keyframes liftAway{
-    0%{ opacity:1; transform:none; }
-    100%{ opacity:0; transform:translateY(-26px) scale(.6) rotate(6deg); }
-  }
+  .card.paired{ cursor:default; pointer-events:none; }
+  .card.paired .front{ border:3px solid var(--pair-color); }
   .card.miss .inner{ animation:shake .45s ease; }
   @keyframes shake{
     0%,100%{ transform:rotateY(180deg) translateX(0); }
     28%{ transform:rotateY(180deg) translateX(-9px) rotate(-3deg); }
     62%{ transform:rotateY(180deg) translateX(9px) rotate(3deg); }
   }
-  .card.cleared{
-    pointer-events:none;
-    border:3px dashed var(--board-edge); border-radius:11px;
-    background:rgba(255,255,255,.14);
-  }
-  .card.cleared .inner{ display:none; }
-
   /* ---- the shuffle: a stack that riffles, then deals out ---- */
   .shufstage{
     position:absolute; inset:0; z-index:7; pointer-events:none; display:none;
@@ -557,6 +544,9 @@
   .star-lottie-screen{
     pointer-events: none;
   }
+  .star-celebration{
+    position:relative; width:100%; height:100%;
+  }
   .star-lottie{
     width: 100%;
     height: 100%;
@@ -578,6 +568,7 @@
     margin: 0 auto;
     text-align: center;
     transform: translateY(-40%);
+    z-index:1;
   }
   .trophy-lottie-container{
     height: 400px;
