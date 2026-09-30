@@ -1,7 +1,7 @@
 {
   "folders": {
     "wg160-gears": {
-      "updatedAt": "2026-09-29T19:30:03+05:30",
+      "updatedAt": "2026-09-30T17:37:34+05:30",
       "author": "tce-ashishg"
     },
     "wg161-where-does-my-food-go": {
@@ -73,7 +73,7 @@
       "author": "tce-ashishg"
     },
     "wg181-wild-about-articles": {
-      "updatedAt": "2026-09-29T19:30:03+05:30",
+      "updatedAt": "2026-09-30T17:37:34+05:30",
       "author": "tce-ashishg"
     },
     "wg183-the-chola-fortress-jenga": {
@@ -101,7 +101,7 @@
       "author": "tce-ashishg"
     },
     "wg194-ginti-mela": {
-      "updatedAt": "2026-09-29T17:27:18+05:30",
+      "updatedAt": "2026-09-30T17:37:34+05:30",
       "author": "tce-ashishg"
     },
     "wg195-chitra-dekh-kar-vakya-banaye": {
@@ -109,7 +109,7 @@
       "author": "tce-ashishg"
     },
     "wg196-perfect-pairs": {
-      "updatedAt": "2026-09-29T19:30:03+05:30",
+      "updatedAt": "2026-09-30T17:37:34+05:30",
       "author": "tce-ashishg"
     },
     "wg197-vyanjan-ki-pahchan-gujurati": {
@@ -118,6 +118,17 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-09-30T17:37:34+05:30",
+      "author": "tce-ashishg",
+      "message": "wg160 & wg194 issue resolved",
+      "widgets": [
+        160,
+        181,
+        194,
+        196
+      ]
+    },
     {
       "date": "2026-09-29T19:46:53+05:30",
       "author": "tce-nitinc",
@@ -361,15 +372,6 @@
       "author": "tce-ashishg",
       "message": "wg190 issue resolved related to progress bar",
       "widgets": [
-        190
-      ]
-    },
-    {
-      "date": "2026-09-01T16:45:24+05:30",
-      "author": "tce-ashishg",
-      "message": "wg188 issue resolved related to progress bar",
-      "widgets": [
-        188,
         190
       ]
     }
