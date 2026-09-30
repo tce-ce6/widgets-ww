@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const newGridBtn = document.querySelector(".new-grid-btn");
   const showAnsBtn = document.getElementById("show-ans-btn");
   const hintCardWrapper = document.getElementById("hint-img");
-  const hintCardImg = document.getElementById("hint-card-image");
+  const hintCardInner = document.getElementById("hint-card-inner");
   const hintPrompt = document.getElementById("hint-tap-prompt");
   const hintQuestion = document.getElementById("questions");
 
@@ -107,15 +107,15 @@ document.addEventListener("DOMContentLoaded", () => {
     return shuffle(sixteenList).slice(0, 5);
   }
 
-  // Reset hint card to initial front view
-  function resetCardToFront() {
+  // Reset hint card to its prompt side
+  function resetCardToPromptSide() {
     isHintRevealed = false;
+    if (hintCardWrapper) {
+      hintCardWrapper.classList.remove("is-flipped");
+    }
     lanternElements.forEach((lantern) => {
       lantern.classList.add("hint-hidden");
     });
-    if (hintCardImg) {
-      hintCardImg.src = "./assets/images/hint-card-front.svg";
-    }
     if (hintPrompt) {
       hintPrompt.style.display = "block";
       hintPrompt.textContent = "हिंट देखने के लिए यहाँ टैप करें 👆";
@@ -130,23 +130,20 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Reveal hint card with hint-card-back.svg and show hint text
+  // Flip to the question side and reveal the current hint text
   function revealHintCard() {
     if (isHintRevealed) return;
     if (currentQuestionIndex >= current5TargetNumbers.length) return;
 
     playSound("flip");
     isHintRevealed = true;
+    if (hintCardWrapper) {
+      hintCardWrapper.classList.add("is-flipped");
+    }
     lanternElements.forEach((lantern) => {
       lantern.classList.remove("hint-hidden");
     });
 
-    if (hintCardImg) {
-      hintCardImg.src = "./assets/images/hint-card-back.svg";
-    }
-    if (hintPrompt) {
-      hintPrompt.style.display = "none";
-    }
     if (hintQuestion) {
       hintQuestion.style.display = "block";
       updateHintText();
@@ -238,7 +235,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // 5. Reset Hint Card
-    resetCardToFront();
+    resetCardToPromptSide();
   }
 
   // Handle lantern click
@@ -302,16 +299,10 @@ const lantern = e.currentTarget;
 
         if (currentQuestionIndex < current5TargetNumbers.length) {
           // Next question: card resets to front and hint is hidden until clicked
-          resetCardToFront();
+          resetCardToPromptSide();
         } else {
           // All 5 completed!
           playSound("win");
-          if (hintCardImg) {
-            hintCardImg.src = "./assets/images/hint-card-back.svg";
-          }
-          if (hintPrompt) {
-            hintPrompt.style.display = "none";
-          }
           if (hintQuestion) {
             hintQuestion.style.display = "block";
             hintQuestion.classList.add("hint-complete");

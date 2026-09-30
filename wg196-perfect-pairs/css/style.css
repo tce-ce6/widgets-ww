@@ -329,7 +329,6 @@
   }
   .card.long .front{ font-size:clamp(.72rem,2.5vh,.95rem); }
   .card.paired{ cursor:default; pointer-events:none; }
-  .card.paired .front{ border:3px solid var(--pair-color); }
   .card.miss .inner{ animation:shake .45s ease; }
   @keyframes shake{
     0%,100%{ transform:rotateY(180deg) translateX(0); }

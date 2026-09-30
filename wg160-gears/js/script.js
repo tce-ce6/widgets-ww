@@ -538,6 +538,20 @@ function tick(now){
 document.getElementById("addBtn").addEventListener("click",addGear);
 document.getElementById("clearBtn").addEventListener("click",clearAll);
 document.getElementById("runBtn").addEventListener("click",toggleRun);
+const helpPopup=document.getElementById("help-popup");
+const insightPopup=document.getElementById("insight-popup");
+document.getElementById("help-btn").addEventListener("click",()=>{
+  helpPopup.style.display="block";
+});
+document.getElementById("insight-btn").addEventListener("click",()=>{
+  insightPopup.style.display="block";
+});
+helpPopup.querySelector(".close-btn").addEventListener("click",()=>{
+  helpPopup.style.display="none";
+});
+insightPopup.querySelector(".close-btn").addEventListener("click",()=>{
+  insightPopup.style.display="none";
+});
 document.getElementById("speedToggle").addEventListener("click",function(){
   showSpeed=!showSpeed;
   this.classList.toggle("on",showSpeed);

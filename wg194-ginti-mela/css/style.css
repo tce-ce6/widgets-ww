@@ -267,9 +267,34 @@ svg * {
   margin: 30px 0 20px 0;
   width: 582px;
   max-width: 100%;
+  perspective: 1000px;
   cursor: pointer;
   user-select: none;
   transition: transform 0.25s ease, filter 0.25s ease;
+}
+
+.hint-card-inner {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 582.61 / 202.42;
+  transform-style: preserve-3d;
+  transition: transform 0.7s cubic-bezier(0.2, 0.75, 0.25, 1);
+}
+
+.hint-img-wrapper.is-flipped .hint-card-inner {
+  transform: rotateY(180deg);
+}
+
+.hint-card-face {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.hint-card-front {
+  transform: rotateY(180deg);
 }
 
 .hint-img-wrapper:hover {
@@ -281,8 +306,9 @@ svg * {
   transform: scale(0.98);
 }
 
-.hint-img-wrapper img {
+.hint-card-face img {
   width: 100%;
+  height: 100%;
   display: block;
   pointer-events: none;
 }
@@ -292,7 +318,7 @@ svg * {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  color: #1f3b0e;
+  color: #efff8a;
   font-size: 26px;
   font-weight: 700;
   text-align: center;
@@ -318,7 +344,7 @@ svg * {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  color: #efff8a;
+  color: #1f3b0e;
   font-size: 26px;
   font-weight: 600;
   line-height: 1.35;
@@ -326,7 +352,6 @@ svg * {
   width: 88%;
   word-wrap: break-word;
   pointer-events: none;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
 }
 
 .hint-question.hint-complete {
