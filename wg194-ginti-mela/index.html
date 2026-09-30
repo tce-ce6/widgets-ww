@@ -15,7 +15,7 @@
     <div class="mainContainerOuter">
       <div class="wdgetTitle">
         <h2>गिनती मेला</h2>
-        <span id="versionId" class="versionText">b4_wg194_260929_01</span>
+        <span id="versionId" class="versionText">b4_wg194_260930_01</span>
       </div>
       <div class="svg-container">
         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
@@ -357,9 +357,16 @@
                     </div>
                     <div class="img-container">
                       <div class="hint-img-wrapper" id="hint-img">
-                        <img id="hint-card-image" src="./assets/images/hint-card-front.svg" alt="Hint Card">
-                        <span class="hint-tap-prompt" id="hint-tap-prompt">हिंट देखने के लिए यहाँ टैप करें 👆</span>
-                        <span class="hint-question" id="questions" style="display: none;"></span>
+                        <div class="hint-card-inner" id="hint-card-inner">
+                          <div class="hint-card-face hint-card-back">
+                            <img src="./assets/images/hint-card-back.svg" alt="Hint card back">
+                            <span class="hint-tap-prompt" id="hint-tap-prompt">हिंट देखने के लिए यहाँ टैप करें 👆</span>
+                          </div>
+                          <div class="hint-card-face hint-card-front">
+                            <img src="./assets/images/hint-card-front.svg" alt="Hint card front">
+                            <span class="hint-question" id="questions" style="display: none;"></span>
+                          </div>
+                        </div>
                       </div>
                     </div>
                     <div class="ans-btn">

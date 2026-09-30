@@ -21,10 +21,16 @@
   ];
 
   var PER_ROUND = 5;                 /* 5 pairs = 10 cards per round */
-  var PAIR_COLORS = ['#e84a8a', '#2878d0', '#2a9d70', '#e58b24', '#8654c7', '#d64b43', '#218c9b'];
+  var PAIR_STYLES = [
+    { image: 'card-front-pink.svg' },
+    { image: 'card-front-orange.svg' },
+    { image: 'card-front-green.svg' },
+    { image: 'card-front-blue.svg' },
+    { image: 'card-front-violet.svg' }
+  ];
 
   var PAIRS = [];
-  var pool = [], roundPairs = [], roundColors = [], partner = {};
+  var pool = [], roundPairs = [], roundStyles = [], partner = {};
   var first = null, matchedInRound = 0, foundTotal = 0, busy = false, timers = [], msgTimer = null;
 
   function el(id) { return document.getElementById(id); }
@@ -146,7 +152,7 @@
     /* take the next five pairs off the pool; a pair never repeats a set */
     roundPairs = pool.splice(0, PER_ROUND);
     if (!roundPairs.length) { finish(); return; }
-    roundColors = shuffle(PAIR_COLORS).slice(0, roundPairs.length);
+    roundStyles = shuffle(PAIR_STYLES).slice(0, roundPairs.length);
 
     partner = {};
     roundPairs.forEach(function (p) { partner[p[0]] = p[1]; partner[p[1]] = p[0]; });
@@ -217,9 +223,10 @@
       });
       after(420, function () {
         var pairIndex = roundPairs.indexOf(pair);
-        var pairColor = roundColors[pairIndex];
+        var pairStyle = roundStyles[pairIndex];
         [a, b].forEach(function (card) {
-          card.style.setProperty('--pair-color', pairColor);
+          card.querySelector('.front').style.backgroundImage =
+            'url("assets/images/' + pairStyle.image + '")';
           card.classList.add('paired');
         });
         // var j = el('joined');
