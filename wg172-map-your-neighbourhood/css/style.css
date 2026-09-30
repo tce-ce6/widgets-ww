@@ -8,6 +8,20 @@ svg * {
   -webkit-tap-highlight-color: transparent;
 }
 
+#map-wrapper svg {
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+#map-wrapper #school-icon,
+#map-wrapper #hospital-icon,
+#map-wrapper #park-icon,
+#map-wrapper #supermarket-icon {
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
 #map-wrapper body {
   box-sizing: border-box;
   outline: none;

@@ -1,12 +1,12 @@
 {
   "folders": {
     "wg160-gears": {
-      "updatedAt": "2026-09-11T18:53:14+05:30",
+      "updatedAt": "2026-09-29T19:30:03+05:30",
       "author": "tce-ashishg"
     },
     "wg161-where-does-my-food-go": {
-      "updatedAt": "2026-08-23T22:45:40+05:30",
-      "author": "tce-ashishg"
+      "updatedAt": "2026-09-29T19:46:53+05:30",
+      "author": "tce-nitinc"
     },
     "wg162-shabda-bhandar": {
       "updatedAt": "2026-09-28T18:09:38+05:30",
@@ -41,8 +41,8 @@
       "author": "tce-ashishg"
     },
     "wg172-map-your-neighbourhood": {
-      "updatedAt": "2026-07-21T17:44:19+05:30",
-      "author": "tce-ashishg"
+      "updatedAt": "2026-09-29T19:46:53+05:30",
+      "author": "tce-nitinc"
     },
     "wg173-rhyming-words-gujurati": {
       "updatedAt": "2026-08-21T16:16:03+05:30",
@@ -73,7 +73,7 @@
       "author": "tce-ashishg"
     },
     "wg181-wild-about-articles": {
-      "updatedAt": "2026-09-28T19:18:54+05:30",
+      "updatedAt": "2026-09-29T19:30:03+05:30",
       "author": "tce-ashishg"
     },
     "wg183-the-chola-fortress-jenga": {
@@ -109,7 +109,7 @@
       "author": "tce-ashishg"
     },
     "wg196-perfect-pairs": {
-      "updatedAt": "2026-09-28T13:14:27+05:30",
+      "updatedAt": "2026-09-29T19:30:03+05:30",
       "author": "tce-ashishg"
     },
     "wg197-vyanjan-ki-pahchan-gujurati": {
@@ -118,6 +118,25 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-09-29T19:46:53+05:30",
+      "author": "tce-nitinc",
+      "message": "ui fixes",
+      "widgets": [
+        161,
+        172
+      ]
+    },
+    {
+      "date": "2026-09-29T19:30:03+05:30",
+      "author": "tce-ashishg",
+      "message": "wg160 & wg181 issue resolved",
+      "widgets": [
+        160,
+        181,
+        196
+      ]
+    },
     {
       "date": "2026-09-29T17:27:18+05:30",
       "author": "tce-ashishg",
@@ -349,23 +368,6 @@
       "date": "2026-09-01T16:45:24+05:30",
       "author": "tce-ashishg",
       "message": "wg188 issue resolved related to progress bar",
-      "widgets": [
-        188,
-        190
-      ]
-    },
-    {
-      "date": "2026-08-31T18:35:15+05:30",
-      "author": "tce-ashishg",
-      "message": "wg190 functionality done",
-      "widgets": [
-        190
-      ]
-    },
-    {
-      "date": "2026-08-31T17:22:36+05:30",
-      "author": "tce-ashishg",
-      "message": "wg188 issue resolved",
       "widgets": [
         188,
         190
