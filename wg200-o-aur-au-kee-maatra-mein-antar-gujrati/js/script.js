@@ -167,7 +167,7 @@ function nextStep() {
       const tspan = i_text.querySelector("tspan");
       if (tspan) {
         tspan.textContent =
-          "ऑडियो सुनें। कौन-सा शब्द सुना आपने? सही शब्द पर टैप करें।";
+          "ધ્વનિ સાંભળો. તમે કયો શબ્દ સાંભળ્યો? સાચા શબ્દ ને સ્પર્શ કરો.";
       }
     }
     age_badhe_button = true;
@@ -388,7 +388,7 @@ function naya_shabd() {
     if (i_text) {
       const tspans = i_text.querySelector("tspan");
       if (tspans) {
-        tspans.textContent = "दोनों शब्दों को सुनें और मात्रा का उच्चारण समझें।";
+        tspans.textContent = "બંને શબ્દો સાંભળો અને  માત્રા નો ઉચ્ચાર સમજો.";
       }
     }
   });

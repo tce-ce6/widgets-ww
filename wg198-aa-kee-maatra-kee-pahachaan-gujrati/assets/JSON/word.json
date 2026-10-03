@@ -1,105 +1,133 @@
 {
-  "MAAN": {
-    "incorrect": "मन",
-    "correct": "मान",
-    "wrongAudio": "maan-wr.mp3",
-    "correctAudio": "maan-cr.mp3",
+  "GAAM": {
+    "incorrect": "ગમ",
+    "correct": "ગામ",
+    "wrongAudio": "gaam-wr.mp3",
+    "correctAudio": "gaam-cr.mp3",
     "type": "aa"
   },
   "KAAM": {
-    "incorrect": "कम",
-    "correct": "काम",
+    "incorrect": "કમ",
+    "correct": "કામ",
     "wrongAudio": "kaam-wr.mp3",
     "correctAudio": "kaam-cr.mp3",
     "type": "aa"
   },
   "DAAM": {
-    "incorrect": "दम",
-    "correct": "दाम",
+    "incorrect": "દમ",
+    "correct": "દામ",
     "wrongAudio": "daam-wr.mp3",
     "correctAudio": "daam-cr.mp3",
     "type": "aa"
   },
   "JAAL": {
-    "incorrect": "जल",
-    "correct": "जाल",
+    "incorrect": "જળ",
+    "correct": "જાળ",
     "wrongAudio": "jaal-wr.mp3",
     "correctAudio": "jaal-cr.mp3",
     "type": "aa"
   },
-  "CHAAL": {
-    "incorrect": "चल",
-    "correct": "चाल",
-    "wrongAudio": "chaal-wr.mp3",
-    "correctAudio": "chaal-cr.mp3",
+  "TAAP": {
+    "incorrect": "તપ",
+    "correct": "તાપ",
+    "wrongAudio": "taap-wr.mp3",
+    "correctAudio": "taap-cr.mp3",
     "type": "aa"
   },
-  "PALAK": {
-    "incorrect": "पलक",
-    "correct": "पालक",
-    "wrongAudio": "palak-wr.mp3",
-    "correctAudio": "palak-cr.mp3",
+  "LATA": {
+    "incorrect": "લત",
+    "correct": "લતા",
+    "wrongAudio": "lata-wr.mp3",
+    "correctAudio": "lata-cr.mp3",
     "type": "aa"
   },
-  "BADAL": {
-    "incorrect": "बदल",
-    "correct": "बादल",
-    "wrongAudio": "badal-wr.mp3",
-    "correctAudio": "badal-cr.mp3",
+  "VARAS": {
+    "incorrect": "વરસ",
+    "correct": "વારસ",
+    "wrongAudio": "varas-wr.mp3",
+    "correctAudio": "varas-cr.mp3",
     "type": "aa"
   },
   "BHARAT": {
-    "incorrect": "भरत",
-    "correct": "भारत",
+    "incorrect": "ભરત",
+    "correct": "ભારત",
     "wrongAudio": "bharat-wr.mp3",
     "correctAudio": "bharat-cr.mp3",
     "type": "aa"
   },
-  "JALNA": {
-    "incorrect": "जलन",
-    "correct": "जलना",
-    "wrongAudio": "jalna-wr.mp3",
-    "correctAudio": "jalna-cr.mp3",
+  "SAAR": {
+    "incorrect": "સર",
+    "correct": "સાર",
+    "wrongAudio": "saar-wr.mp3",
+    "correctAudio": "saar-cr.mp3",
     "type": "aa"
   },
-  "GAHNA": {
-    "incorrect": "गहन",
-    "correct": "गहना",
-    "wrongAudio": "gahna-wr.mp3",
-    "correctAudio": "gahna-cr.mp3",
+  "CHAAR": {
+    "incorrect": "ચર",
+    "correct": "ચાર",
+    "wrongAudio": "chaar-wr.mp3",
+    "correctAudio": "chaar-cr.mp3",
     "type": "aa"
   },
-  "CHATRA": {
-    "incorrect": "छत्र",
-    "correct": "छात्र",
-    "wrongAudio": "chatra-wr.mp3",
-    "correctAudio": "chatra-cr.mp3",
+  "VAAL": {
+    "incorrect": "વળ",
+    "correct": "વાળ",
+    "wrongAudio": "vaal-wr.mp3",
+    "correctAudio": "vaal-cr.mp3",
     "type": "aa"
   },
   "NAAM": {
-    "incorrect": "नम",
-    "correct": "नाम",
+    "incorrect": "નમ",
+    "correct": "નામ",
     "wrongAudio": "naam-wr.mp3",
     "correctAudio": "naam-cr.mp3",
     "type": "aa"
   },
-  "MATAKA": {
-    "incorrect": "मटक",
-    "correct": "मटका",
-    "wrongAudio": "mataka-wr.mp3",
-    "correctAudio": "mataka-cr.mp3",
+  "DAAL": {
+    "incorrect": "દળ",
+    "correct": "દાળ",
+    "wrongAudio": "daal-wr.mp3",
+    "correctAudio": "daal-cr.mp3",
     "type": "aa"
   },
-  "KAMARA": {
-    "incorrect": "कमर",
-    "correct": "कमरा",
-    "wrongAudio": "kamara-wr.mp3",
-    "correctAudio": "kamara-cr.mp3",
+  "RAAS": {
+    "incorrect": "રસ",
+    "correct": "રાસ",
+    "wrongAudio": "raas-wr.mp3",
+    "correctAudio": "raas-cr.mp3",
+    "type": "aa"
+  },
+  "TAARA": {
+    "incorrect": "તર",
+    "correct": "તારા",
+    "wrongAudio": "taara-wr.mp3",
+    "correctAudio": "taara-cr.mp3",
+    "type": "aa"
+  },
+  "SHAAK": {
+    "incorrect": "શક",
+    "correct": "શાક",
+    "wrongAudio": "shaak-wr.mp3",
+    "correctAudio": "shaak-cr.mp3",
+    "type": "aa"
+  },
+  "SAARAS": {
+    "incorrect": "સરસ",
+    "correct": "સારસ",
+    "wrongAudio": "saaras-wr.mp3",
+    "correctAudio": "saaras-cr.mp3",
+    "type": "aa"
+  },
+  "RAMA": {
+    "incorrect": "રમ",
+    "correct": "રમા",
+    "wrongAudio": "rama-wr.mp3",
+    "correctAudio": "rama-cr.mp3",
     "type": "aa"
   },
   "KAMALA": {
-    "incorrect": "कमल",
-    "correct": "कमला",
+    "incorrect": "કમળ",
+    "correct": "કમળા",
     "wrongAudio": "kamala-wr.mp3",
     "correctAudio": "kamala-cr.mp3",
     "type": "aa"

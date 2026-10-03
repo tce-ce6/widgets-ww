@@ -8,7 +8,7 @@ svg * {
   -webkit-tap-highlight-color: transparent;
 }
 
-#tambola-wrapper body {
+#gujrati-wrapper body {
   box-sizing: border-box;
   outline: none;
   font-family: "Roboto", sans-serif;
@@ -19,7 +19,7 @@ svg * {
   background-color: #fff !important;
 }
 
-#tambola-wrapper .container {
+#gujrati-wrapper .container {
   border: none;
   height: 100vh;
   width: 100vw;
@@ -27,8 +27,9 @@ svg * {
   user-select: none !important;
 }
 
-#tambola-wrapper .container::after {
+#gujrati-wrapper .container::after {
   content: "";
+  background-image: url("./../assets/bg.png");
   background-color: #000;
   background-size: cover;
   background-position: center;
@@ -40,27 +41,27 @@ svg * {
   left: 0;
 }
 
-/* #tambola-wrapper .mainContainerOuter {
+/* #gujrati-wrapper .mainContainerOuter {
   background: #60360D !important
 } */
 
-#tambola-wrapper .button-controls {
+#gujrati-wrapper .button-controls {
   background: 0 0 !important;
   border: none !important
 }
 
-#tambola-wrapper .d-flex {
+#gujrati-wrapper .d-flex {
   display: flex
 }
 
-#tambola-wrapper .question {
+#gujrati-wrapper .question {
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center
 }
 
-#tambola-wrapper .flexContainer {
+#gujrati-wrapper .flexContainer {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -68,7 +69,7 @@ svg * {
   z-index: 1
 }
 
-#tambola-wrapper .flexItem {
+#gujrati-wrapper .flexItem {
   padding: 8px;
   transition: box-shadow .3s ease-in-out;
   display: flex;
@@ -76,13 +77,13 @@ svg * {
 }
 
 @media (max-width:768px) {
-  #tambola-wrapper .flexItem {
+  #gujrati-wrapper .flexItem {
     width: 100%;
     margin: 8px 0
   }
 }
 
-#tambola-wrapper .btn {
+#gujrati-wrapper .btn {
   display: inline-block;
   padding: 12px 25px;
   font-size: 16px;
@@ -99,36 +100,36 @@ svg * {
   margin-right: 10px
 }
 
-#tambola-wrapper .btn:hover {
+#gujrati-wrapper .btn:hover {
   background-color: #3e80f3;
   transform: translateY(-2px);
   box-shadow: 0 6px 10px rgba(0, 0, 0, .15)
 }
 
-#tambola-wrapper .btn-primary:active {
+#gujrati-wrapper .btn-primary:active {
   background-color: #3e80f3;
   transform: translateY(1px);
   box-shadow: 0 2px 4px rgba(0, 0, 0, .1)
 }
 
-#tambola-wrapper .btn:focus {
+#gujrati-wrapper .btn:focus {
   outline: 3px solid #1e6bef;
   outline-offset: 3px
 }
 
-#tambola-wrapper .btn:active {
+#gujrati-wrapper .btn:active {
   transform: translateY(1px);
   box-shadow: 0 2px 4px rgba(0, 0, 0, .1)
 }
 
-#tambola-wrapper .btn:disabled {
+#gujrati-wrapper .btn:disabled {
   background-color: #ddd;
   color: #999;
   cursor: not-allowed;
   box-shadow: none
 }
 
-#tambola-wrapper .wdgetTitle {
+#gujrati-wrapper .wdgetTitle {
   width: 100%;
   display: flex;
   align-items: center;
@@ -138,18 +139,18 @@ svg * {
   z-index: 2;
 }
 
-#tambola-wrapper .wdgetTitle h2 {
+#gujrati-wrapper .wdgetTitle h2 {
   font-size: 28px;
   font-weight: 600;
   text-align: left;
-  padding: 5px 40px;
+  padding: 8px 40px;
   color: #fff;
   border-radius: 0 0px 20px 20px;
   background: #E63967;
   white-space: nowrap;
 }
 
-#tambola-wrapper .versionText {
+#gujrati-wrapper .versionText {
   position: absolute;
   right: 20px;
   top: 10px !important;
@@ -157,18 +158,18 @@ svg * {
   color: rgb(0 0 0 / 20%);
 }
 
-#tambola-wrapper .svg-container {
+#gujrati-wrapper .svg-container {
   width: 100%;
   height: 100%;
   z-index: 1;
 }
 
-#tambola-wrapper svg {
+#gujrati-wrapper svg {
   width: 100% !important;
   height: 100%;
 }
 
-/* tambola style  */
+/* gujrati style  */
 
 
 
@@ -222,6 +223,13 @@ svg * {
   font-weight: 600;
   font-size: 26px;
   margin-bottom: 20px;
+}
+
+.title{
+   font-weight: 400;
+  font-size: 32px;
+  margin-bottom: 20px;
+  color: #C0005D;
 }
 
 .options {

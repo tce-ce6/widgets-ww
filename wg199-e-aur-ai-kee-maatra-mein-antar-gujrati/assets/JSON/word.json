@@ -1,135 +1,142 @@
 {
-  "SEB": {
-    "incorrect": "सैब",
-    "correct": "सेब",
-    "wrongAudio": "seb-wr.mp3",
-    "correctAudio": "seb-cr.mp3",
-    "type": "ye"
-  },
-  "PAIR": {
-    "incorrect": "पेर",
-    "correct": "पैर",
-    "wrongAudio": "pair-wr.mp3",
-    "correctAudio": "pair-cr.mp3",
-    "type": "ayee"
-  },
-  "DESH": {
-    "incorrect": "दैश",
-    "correct": "देश",
-    "wrongAudio": "desh-wr.mp3",
-    "correctAudio": "desh-cr.mp3",
-    "type": "ye"
-  },
-  "THELA": {
-    "incorrect": "ठैला",
-    "correct": "ठेला",
-    "wrongAudio": "thela-wr.mp3",
-    "correctAudio": "thela-cr.mp3",
-    "type": "ye"
-  },
-  "THAILA": {
-    "incorrect": "थेला",
-    "correct": "थैला",
-    "wrongAudio": "thaila-wr.mp3",
-    "correctAudio": "thaila-cr.mp3",
-    "type": "ayee"
-  },
-  "NETA": {
-    "incorrect": "नैता",
-    "correct": "नेता",
-    "wrongAudio": "neta-wr.mp3",
-    "correctAudio": "neta-cr.mp3",
-    "type": "ye"
-  },
-  "MAINA": {
-    "incorrect": "मेना",
-    "correct": "मैना",
-    "wrongAudio": "maina-wr.mp3",
-    "correctAudio": "maina-cr.mp3",
-    "type": "ayee"
-  },
   "KELA": {
-    "incorrect": "कैला",
-    "correct": "केला",
+    "incorrect": "કૈળા",
+    "correct": "કેળા",
     "wrongAudio": "kela-wr.mp3",
     "correctAudio": "kela-cr.mp3",
     "type": "ye"
   },
-  "MELA": {
-    "incorrect": "मैला",
-    "correct": "मेला",
-    "wrongAudio": "mela-wr.mp3",
-    "correctAudio": "mela-cr.mp3",
+  "TEKO": {
+    "incorrect": "ટૈકો",
+    "correct": "ટેકો",
+    "wrongAudio": "teko-wr.mp3",
+    "correctAudio": "teko-cr.mp3",
     "type": "ye"
   },
-  "PAISA": {
-    "incorrect": "पेसा",
-    "correct": "पैसा",
-    "wrongAudio": "paisa-wr.mp3",
-    "correctAudio": "paisa-cr.mp3",
+  "CHAITALI": {
+    "incorrect": "ચેતાલી",
+    "correct": "ચૈતાલી",
+    "wrongAudio": "chaitali-wr.mp3",
+    "correctAudio": "chaitali-cr.mp3",
     "type": "ayee"
   },
-  "KAMERA": {
-    "incorrect": "केमरा",
-    "correct": "कैमरा",
-    "wrongAudio": "kaimera-wr.mp3",
-    "correctAudio": "kaimera-cr.mp3",
-    "type": "ayee"
-  },
-  "BELAN": {
-    "incorrect": "बैलन",
-    "correct": "बेलन",
-    "wrongAudio": "belan-wr.mp3",
-    "correctAudio": "belan-cr.mp3",
+  "CHEN": {
+    "incorrect": "ચૈન",
+    "correct": "ચેન",
+    "wrongAudio": "chen-wr.mp3",
+    "correctAudio": "chen-cr.mp3",
     "type": "ye"
+  },
+  "VAIBHAV": {
+    "incorrect": "વેભવ",
+    "correct": "વૈભવ",
+    "wrongAudio": "vaibhav-wr.mp3",
+    "correctAudio": "vaibhav-cr.mp3",
+    "type": "ayee"
+  },
+  "DAINIK": {
+    "incorrect": "દેનિક",
+    "correct": "દૈનિક",
+    "wrongAudio": "dainik-wr.mp3",
+    "correctAudio": "dainik-cr.mp3",
+    "type": "ayee"
+  },
+  "VAIGYANIK": {
+    "incorrect": "વેજ્ઞાનિક",
+    "correct": "વૈજ્ઞાનિક",
+    "wrongAudio": "vaigyanik-wr.mp3",
+    "correctAudio": "vaigyanik-cr.mp3",
+    "type": "ayee"
+  },
+  "MAITRI": {
+    "incorrect": "મેત્રી",
+    "correct": "મૈત્રી",
+    "wrongAudio": "maitri-wr.mp3",
+    "correctAudio": "maitri-cr.mp3",
+    "type": "ayee"
   },
   "SAINIK": {
-    "incorrect": "सेनिक",
-    "correct": "सैनिक",
+    "incorrect": "સેનિક",
+    "correct": "સૈનિક",
     "wrongAudio": "sainik-wr.mp3",
     "correctAudio": "sainik-cr.mp3",
     "type": "ayee"
   },
-  "JEWAR": {
-    "incorrect": "जैवर",
-    "correct": "जेवर",
-    "wrongAudio": "jewar-wr.mp3",
-    "correctAudio": "jewar-cr.mp3",
-    "type": "ye"
-  },
-  "MAIDAN": {
-    "incorrect": "मेदान",
-    "correct": "मैदान",
-    "wrongAudio": "maidan-wr.mp3",
-    "correctAudio": "maidan-cr.mp3",
+  "AISHWARYA": {
+    "incorrect": "એશ્વર્ય",
+    "correct": "ઐશ્વર્ય",
+    "wrongAudio": "aishwarya-wr.mp3",
+    "correctAudio": "aishwarya-cr.mp3",
     "type": "ayee"
   },
+  "JAIN": {
+    "incorrect": "જેન",
+    "correct": "જૈન",
+    "wrongAudio": "jain-wr.mp3",
+    "correctAudio": "jain-cr.mp3",
+    "type": "ayee"
+  },
+  "NAITIK": {
+    "incorrect": "નેતિક",
+    "correct": "નૈતિક",
+    "wrongAudio": "naitik-wr.mp3",
+    "correctAudio": "naitik-cr.mp3",
+    "type": "ayee"
+  },
+  "RAMESH": {
+    "incorrect": "રમૈશ",
+    "correct": "રમેશ",
+    "wrongAudio": "ramesh-wr.mp3",
+    "correctAudio": "ramesh-cr.mp3",
+    "type": "ye"
+  },
+  "DESH": {
+    "incorrect": "દૈશ",
+    "correct": "દેશ",
+    "wrongAudio": "desh-wr.mp3",
+    "correctAudio": "desh-cr.mp3",
+    "type": "ye"
+  },
+  "KERI": {
+    "incorrect": "કૈરી",
+    "correct": "કેરી",
+    "wrongAudio": "keri-wr.mp3",
+    "correctAudio": "keri-cr.mp3",
+    "type": "ye"
+  },
+  "KESAR": {
+    "incorrect": "કૈસર",
+    "correct": "કેસર",
+    "wrongAudio": "kesar-wr.mp3",
+    "correctAudio": "kesar-cr.mp3",
+    "type": "ye"
+  },
   "LEKHAK": {
-    "incorrect": "लैखक",
-    "correct": "लेखक",
+    "incorrect": "લૈખક",
+    "correct": "લેખક",
     "wrongAudio": "lekhak-wr.mp3",
     "correctAudio": "lekhak-cr.mp3",
     "type": "ye"
   },
-  "KALASH": {
-    "incorrect": "केलाश",
-    "correct": "कैलाश",
-    "wrongAudio": "kailash-wr.mp3",
-    "correctAudio": "kailash-cr.mp3",
-    "type": "ayee"
-  },
-  "TAIRAK": {
-    "incorrect": "तेराक",
-    "correct": "तैराक",
-    "wrongAudio": "tairak-wr.mp3",
-    "correctAudio": "tairak-cr.mp3",
-    "type": "ayee"
-  },
-  "KESAR": {
-    "incorrect": "कैसर",
-    "correct": "केसर",
-    "wrongAudio": "kesar-wr.mp3",
-    "correctAudio": "kesar-cr.mp3",
+  "SEVA": {
+    "incorrect": "સૈવા",
+    "correct": "સેવા",
+    "wrongAudio": "seva-wr.mp3",
+    "correctAudio": "seva-cr.mp3",
     "type": "ye"
+  },
+  "PAISA": {
+    "incorrect": "પેસા",
+    "correct": "પૈસા",
+    "wrongAudio": "paisa-wr.mp3",
+    "correctAudio": "paisa-cr.mp3",
+    "type": "ayee"
+  },
+  "KAIVALYA": {
+    "incorrect": "કેવલ્ય",
+    "correct": "કૈવલ્ય",
+    "wrongAudio": "kaivalya-wr.mp3",
+    "correctAudio": "kaivalya-cr.mp3",
+    "type": "ayee"
   }
 }
