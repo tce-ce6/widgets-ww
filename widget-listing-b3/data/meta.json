@@ -73,7 +73,7 @@
       "author": "tce-ashishg"
     },
     "wg181-wild-about-articles": {
-      "updatedAt": "2026-09-30T17:37:34+05:30",
+      "updatedAt": "2026-10-03T23:11:43+05:30",
       "author": "tce-ashishg"
     },
     "wg183-the-chola-fortress-jenga": {
@@ -109,7 +109,7 @@
       "author": "tce-ashishg"
     },
     "wg196-perfect-pairs": {
-      "updatedAt": "2026-10-01T17:41:39+05:30",
+      "updatedAt": "2026-10-01T18:03:02+05:30",
       "author": "tce-ashishg"
     },
     "wg197-vyanjan-ki-pahchan-gujurati": {
@@ -117,19 +117,46 @@
       "author": "tce-ashishg"
     },
     "wg198-aa-kee-maatra-kee-pahachaan-gujrati": {
-      "updatedAt": "2026-10-01T17:41:39+05:30",
+      "updatedAt": "2026-10-03T23:11:43+05:30",
       "author": "tce-ashishg"
     },
     "wg199-e-aur-ai-kee-maatra-mein-antar-gujrati": {
-      "updatedAt": "2026-10-01T17:41:39+05:30",
+      "updatedAt": "2026-10-03T23:13:40+05:30",
       "author": "tce-ashishg"
     },
     "wg200-o-aur-au-kee-maatra-mein-antar-gujrati": {
-      "updatedAt": "2026-10-01T17:41:39+05:30",
+      "updatedAt": "2026-10-03T23:11:43+05:30",
       "author": "tce-ashishg"
     }
   },
   "commits": [
+    {
+      "date": "2026-10-03T23:13:40+05:30",
+      "author": "tce-ashishg",
+      "message": "wg198, 199 200 completed",
+      "widgets": [
+        199
+      ]
+    },
+    {
+      "date": "2026-10-03T23:11:43+05:30",
+      "author": "tce-ashishg",
+      "message": "wg198, 199 200 completed",
+      "widgets": [
+        181,
+        198,
+        199,
+        200
+      ]
+    },
+    {
+      "date": "2026-10-01T18:03:02+05:30",
+      "author": "tce-ashishg",
+      "message": "wg196 issue resolved",
+      "widgets": [
+        196
+      ]
+    },
     {
       "date": "2026-10-01T17:41:39+05:30",
       "author": "tce-ashishg",
@@ -362,32 +389,6 @@
       "message": "wg169 done",
       "widgets": [
         169
-      ]
-    },
-    {
-      "date": "2026-09-04T17:42:49+05:30",
-      "author": "tce-ashishg",
-      "message": "wg169 started",
-      "widgets": [
-        169,
-        190,
-        194
-      ]
-    },
-    {
-      "date": "2026-09-02T17:30:30+05:30",
-      "author": "tce-ashishg",
-      "message": "wg190 issue related to summary page resolved",
-      "widgets": [
-        190
-      ]
-    },
-    {
-      "date": "2026-09-02T14:53:05+05:30",
-      "author": "tce-ashishg",
-      "message": "wg190 issue related to summary page resolved",
-      "widgets": [
-        190
       ]
     }
   ]
