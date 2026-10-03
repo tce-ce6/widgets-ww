@@ -109,15 +109,38 @@
       "author": "tce-ashishg"
     },
     "wg196-perfect-pairs": {
-      "updatedAt": "2026-09-30T17:37:34+05:30",
+      "updatedAt": "2026-10-01T17:41:39+05:30",
       "author": "tce-ashishg"
     },
     "wg197-vyanjan-ki-pahchan-gujurati": {
       "updatedAt": "2026-09-29T17:27:18+05:30",
       "author": "tce-ashishg"
+    },
+    "wg198-aa-kee-maatra-kee-pahachaan-gujrati": {
+      "updatedAt": "2026-10-01T17:41:39+05:30",
+      "author": "tce-ashishg"
+    },
+    "wg199-e-aur-ai-kee-maatra-mein-antar-gujrati": {
+      "updatedAt": "2026-10-01T17:41:39+05:30",
+      "author": "tce-ashishg"
+    },
+    "wg200-o-aur-au-kee-maatra-mein-antar-gujrati": {
+      "updatedAt": "2026-10-01T17:41:39+05:30",
+      "author": "tce-ashishg"
     }
   },
   "commits": [
+    {
+      "date": "2026-10-01T17:41:39+05:30",
+      "author": "tce-ashishg",
+      "message": "wg196 issue resolved",
+      "widgets": [
+        196,
+        198,
+        199,
+        200
+      ]
+    },
     {
       "date": "2026-09-30T17:37:34+05:30",
       "author": "tce-ashishg",
@@ -363,14 +386,6 @@
       "date": "2026-09-02T14:53:05+05:30",
       "author": "tce-ashishg",
       "message": "wg190 issue related to summary page resolved",
-      "widgets": [
-        190
-      ]
-    },
-    {
-      "date": "2026-09-01T18:56:01+05:30",
-      "author": "tce-ashishg",
-      "message": "wg190 issue resolved related to progress bar",
       "widgets": [
         190
       ]
