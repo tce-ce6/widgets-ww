@@ -147,7 +147,7 @@ function nextStep() {
     let i_text = document.getElementById("i_text_1");
     const tspans = i_text.querySelector("p");
     tspans.innerHTML =
-      "ऑडियो सुनें।&nbsp;कौन-सा शब्द सुना आपने? सही शब्द पर टैप करें।";
+      "ધ્વનિ સાંભળો. તમે કયો શબ્દ સાંભળ્યો? સાચા શબ્દ ને સ્પર્શ કરો.";
     age_badhe_button = true;
     document.getElementById("audio_button_1").style.display = "none";
     document.getElementById("audio_button_2").style.display = "none";
@@ -370,7 +370,7 @@ function naya_shabd() {
     audioPlayer.pause();
     let i_text = document.getElementById("i_text_1");
     const tspans = i_text.querySelector("p");
-    tspans.innerHTML = "दोनों शब्दों को सुनें और मात्रा का उच्चारण समझें। ";
+    tspans.innerHTML = "બંને શબ્દો સાંભળો અને  માત્રા નો ઉચ્ચાર સમજો.";
   });
 }
 
