@@ -73,7 +73,7 @@
       "author": "tce-ashishg"
     },
     "wg181-wild-about-articles": {
-      "updatedAt": "2026-10-03T23:11:43+05:30",
+      "updatedAt": "2026-10-05T16:00:00+05:30",
       "author": "tce-ashishg"
     },
     "wg183-the-chola-fortress-jenga": {
@@ -130,6 +130,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-10-05T16:00:00+05:30",
+      "author": "tce-ashishg",
+      "message": "wg181 issue resolved",
+      "widgets": [
+        181
+      ]
+    },
     {
       "date": "2026-10-05T15:27:18+05:30",
       "author": "tce-ashishg",
@@ -381,15 +389,6 @@
       "author": "tce-ashishg",
       "message": "wg194 functionality done",
       "widgets": [
-        194
-      ]
-    },
-    {
-      "date": "2026-09-07T15:29:08+05:30",
-      "author": "tce-ashishg",
-      "message": "wg190 issues resolved",
-      "widgets": [
-        190,
         194
       ]
     }
