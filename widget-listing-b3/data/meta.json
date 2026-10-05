@@ -117,19 +117,29 @@
       "author": "tce-ashishg"
     },
     "wg198-aa-kee-maatra-kee-pahachaan-gujrati": {
-      "updatedAt": "2026-10-03T23:34:56+05:30",
+      "updatedAt": "2026-10-05T15:27:18+05:30",
       "author": "tce-ashishg"
     },
     "wg199-e-aur-ai-kee-maatra-mein-antar-gujrati": {
-      "updatedAt": "2026-10-03T23:34:27+05:30",
+      "updatedAt": "2026-10-05T15:27:18+05:30",
       "author": "tce-ashishg"
     },
     "wg200-o-aur-au-kee-maatra-mein-antar-gujrati": {
-      "updatedAt": "2026-10-03T23:11:43+05:30",
+      "updatedAt": "2026-10-05T15:27:18+05:30",
       "author": "tce-ashishg"
     }
   },
   "commits": [
+    {
+      "date": "2026-10-05T15:27:18+05:30",
+      "author": "tce-ashishg",
+      "message": "wg198 199 200 issues resolved",
+      "widgets": [
+        198,
+        199,
+        200
+      ]
+    },
     {
       "date": "2026-10-03T23:34:56+05:30",
       "author": "tce-ashishg",
@@ -381,14 +391,6 @@
       "widgets": [
         190,
         194
-      ]
-    },
-    {
-      "date": "2026-09-07T10:52:10+05:30",
-      "author": "tce-ashishg",
-      "message": "wg169 zhadu audio added",
-      "widgets": [
-        169
       ]
     }
   ]
