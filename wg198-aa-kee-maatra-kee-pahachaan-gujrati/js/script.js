@@ -15,7 +15,7 @@ let placementIndex = 0;
 let correctCloudId = null;
 const LottieAnimations = {
   aa: {
-    CORRECT: "Correct.json",
+    CORRECT: "correct.json",
     INCORRECT: "incorrect.json",
   },
 };
