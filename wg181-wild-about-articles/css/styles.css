@@ -204,7 +204,7 @@ svg * {
 
 /* Semantic Header */
 .app-header {
-  position: absolute; top: 50px; right: 130px;
+  position: absolute; top: 80px; left: 230px;
   height: clamp(52px, 8.6vh, 92px);
   display: flex; align-items: flex-start; justify-content: space-between;
   padding: 0 clamp(16px, 2.5vw, 40px); z-index: 50; pointer-events: none;
@@ -231,7 +231,7 @@ svg * {
 .counter-pill {
   pointer-events: auto; background: #eeff00; border: 2.5px dashed #4caf50; border-radius: 999px;
   padding: clamp(4px, 0.8vh, 8px) clamp(16px, 1.8vw, 32px);
-  font-weight: 600; font-size: clamp(0.95rem, 1.6vw, 1.9rem); color: var(--ink);
+  font-weight: 600; font-size: clamp(0.95rem, 2.3vw, 1.9rem); color: var(--ink);
   box-shadow: 3px 3px 8px rgba(0,0,0,0.22); white-space: nowrap;
 }
 .top-icon-btn:active, .ticket-btn:active, .choice-pill-btn:active, .replay-pill-btn:active { opacity: 0.88; }
@@ -256,7 +256,7 @@ svg * {
 
 /* Camera Viewfinder */
 .camera-column { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 0; }
-.camera-rig { position: relative; width: clamp(250px, 29.5vw, 535px); aspect-ratio: 535 / 360; max-height: 48vh; margin-bottom: 30px; }
+.camera-rig { position: relative; width: 630px;height: auto; margin-bottom: 60px; }
 .camera-frame-wrapper { position: relative; width: 100%; height: 100%; filter: drop-shadow(0 14px 28px rgba(0,0,0,0.38)); }
 .camera-frame-svg { width: 100%; height: 100%; display: block; pointer-events: none; }
 
@@ -279,12 +279,22 @@ svg * {
 .flash-overlay.flash { animation: flashPop 0.38s ease-out forwards; }
 
 .prompt-box { text-align: center; margin-bottom: clamp(8px, 1.4vh, 18px); flex-shrink: 0; }
-.prompt-text { color: var(--red); font-size: clamp(0.95rem, 1.4vw, 1.7rem); font-weight: 400; text-shadow: 0 1px 3px rgba(255,255,255,0.85); }
+.prompt-text { color: var(--red); font-size: 28px; font-weight: 400; text-shadow: 0 1px 3px rgba(255,255,255,0.85); }
 .shutter-choice-row { margin-bottom: 100px;;display: flex; gap: clamp(14px, 2vw, 32px); justify-content: center; width: 100%; }
 .choice-pill-btn {
-  background: var(--pink); border: none; color: #fff; font-weight: 600; font-size: clamp(1.8rem, 2.7vw, 3.2rem);
-  width: clamp(110px, 11vw, 209px); height: clamp(50px, 8.4vh, 93px); border-radius: 999px; cursor: pointer;
-  box-shadow: 0 6px 14px rgba(255,44,104,0.38), 0 3px 6px rgba(0,0,0,0.22); display: flex; align-items: center; justify-content: center;
+  background: var(--pink);
+    border: none;
+    color: #fff;
+    font-weight: 600;
+    font-size: clamp(1.8rem, 3.7vw, 3.2rem);
+    width: clamp(110px, 14vw, 209px);
+    height: clamp(50px, 10.4vh, 93px);
+    border-radius: 999px;
+    cursor: pointer;
+    box-shadow: 0 6px 14px rgba(255, 44, 104, 0.38), 0 3px 6px rgba(0, 0, 0, 0.22);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* Album & Cards */
@@ -328,4 +338,8 @@ svg * {
 @media (max-width: 768px) {
   .safari-content-grid, .completion-content-grid { grid-template-columns: 1fr; grid-template-rows: auto 1fr; padding-top: clamp(60px, 12vh, 85px); }
   .camera-rig { width: clamp(200px, 50vw, 320px); max-height: 28vh; }
+}
+
+.prompt-text strong{
+  color: #000;
 }
