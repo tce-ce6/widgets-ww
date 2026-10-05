@@ -54,7 +54,7 @@ body{
     color: #000;
     line-height: 30px;
     font-family: "Roboto", sans-serif;
-    background-image: url(assets/BG.png);
+    background-image: url(assets/bg.png);
     /* background-color: #f5f5f5; */
     margin: auto;
 }

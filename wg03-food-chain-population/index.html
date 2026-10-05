@@ -118,8 +118,9 @@
         maizeImage = loadImage("assets/maize.svg");
         grasshopperImage = loadImage("assets/grasshopper.svg");
         lizardImage = loadImage("assets/lizard.svg");
-        sliderBaseImage = loadImage("assets/slider_base.svg");
+        sliderBaseImage = loadImage("assets/slider-base.svg");
       }
+
 
       function setup() {
         let canvas = createCanvas(3840, 2160);
@@ -128,9 +129,9 @@
         textFont("Roboto");
         imageMode(CENTER);
         
-        increaseSound = new Audio("assets/increase_01.mp3");
+        increaseSound = new Audio("assets/increase-01.mp3");
         increaseSound.volume = 0.3;
-        decreaseSound = new Audio("assets/decrease_01.mp3");
+        decreaseSound = new Audio("assets/decrease-01.mp3");
 
         handleReset();
       }
