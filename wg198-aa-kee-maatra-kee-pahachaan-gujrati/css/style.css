@@ -29,7 +29,7 @@ svg * {
 
 #gujrati-wrapper .container::after {
   content: "";
-  background-image: url("./../assets/bg.png");
+  /* background-image: url("./../assets/bg.png"); */
   background-color: #000;
   background-size: cover;
   background-position: center;
@@ -337,7 +337,11 @@ svg * {
   background-color: #fee2e2;
   border-color: #ef4444;
 }
-
+.bg-image{
+      object-fit: contain;
+    height: 100%;
+    width: 100%;
+}
 .controls {
   margin-top: 10px;
   display: flex;
