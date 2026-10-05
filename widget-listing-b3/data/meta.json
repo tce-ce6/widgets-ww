@@ -117,7 +117,7 @@
       "author": "tce-ashishg"
     },
     "wg198-aa-kee-maatra-kee-pahachaan-gujrati": {
-      "updatedAt": "2026-10-05T17:32:51+05:30",
+      "updatedAt": "2026-10-05T17:45:06+05:30",
       "author": "tce-ashishg"
     },
     "wg199-e-aur-ai-kee-maatra-mein-antar-gujrati": {
@@ -130,6 +130,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-10-05T17:45:06+05:30",
+      "author": "tce-ashishg",
+      "message": "wg198 199 200 issue resolved",
+      "widgets": [
+        198
+      ]
+    },
     {
       "date": "2026-10-05T17:32:25+05:30",
       "author": "tce-ashishg",
@@ -381,15 +389,6 @@
       "message": "wg160 structuring done",
       "widgets": [
         180,
-        190
-      ]
-    },
-    {
-      "date": "2026-09-11T18:53:14+05:30",
-      "author": "tce-ashishg",
-      "message": "wg160 structuring done",
-      "widgets": [
-        160,
         190
       ]
     }
