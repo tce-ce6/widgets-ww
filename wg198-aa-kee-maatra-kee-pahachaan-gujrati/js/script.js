@@ -8,6 +8,7 @@ let selectedLottie = null;
 let audio_button_1 = false;
 let audio_button_2 = false;
 let age_badhe_button = false;
+let isFeedbackPlaying = false;
 let animationTimeout = null;
 let starAnimationTimeout = null;
 let correctPlacementSequence = [];
@@ -101,6 +102,7 @@ function highlightConsonantWithUmatra(text) {
 }
 
 function resetFeedbackVisuals() {
+  clearFeedbackState();
   const highlights = ["cloud_text_01", "cloud_text_02"];
   const outlines = [
     "cloud_text_outline_correct",
@@ -177,6 +179,8 @@ function textClickEvent() {
   function activateHighlightAndOutline(cloudId, isCorrect) {
     // Reset all first
     resetFeedbackVisuals();
+    isFeedbackPlaying = true;
+    setButtonsDisabled(true);
 
     // Activate clicked highlight
     const highlightId =
@@ -218,25 +222,25 @@ function textClickEvent() {
   }
 
   cloud1.addEventListener("click", () => {
-    if (!age_badhe_button) return;
+    if (!age_badhe_button || isFeedbackPlaying) return;
     const isCorrect = correctCloudId === "cloud_text_01";
     activateHighlightAndOutline("cloud_text_01", isCorrect);
   });
 
   cloud2.addEventListener("click", () => {
-    if (!age_badhe_button) return;
+    if (!age_badhe_button || isFeedbackPlaying) return;
     const isCorrect = correctCloudId === "cloud_text_02";
     activateHighlightAndOutline("cloud_text_02", isCorrect);
   });
 
   text_cloud_01.addEventListener("click", () => {
-    if (!age_badhe_button) return;
+    if (!age_badhe_button || isFeedbackPlaying) return;
     const isCorrect = correctCloudId === "cloud_text_01";
     activateHighlightAndOutline("cloud_text_01", isCorrect);
   });
 
   text_cloud_02.addEventListener("click", () => {
-    if (!age_badhe_button) return;
+    if (!age_badhe_button || isFeedbackPlaying) return;
     const isCorrect = correctCloudId === "cloud_text_02";
     activateHighlightAndOutline("cloud_text_02", isCorrect);
   });
@@ -284,7 +288,7 @@ function playAnimationAudio(bandGroup) {
   audioPlayer.currentTime = 0;
   setButtonsDisabled(true);
   const onFeedbackFinish = () => {
-    setButtonsDisabled(false);
+    clearFeedbackState();
     audioPlayer.removeEventListener("ended", onFeedbackFinish);
     audioPlayer.removeEventListener("error", onFeedbackFinish);
   };
@@ -292,6 +296,11 @@ function playAnimationAudio(bandGroup) {
   audioPlayer.addEventListener("error", onFeedbackFinish);
   audioPlayer.src = `assets/JSON/${name}`;
   audioPlayer.play();
+}
+
+function clearFeedbackState() {
+  isFeedbackPlaying = false;
+  setButtonsDisabled(false);
 }
 
 function hideAndShowText1(state = "none") {
@@ -367,6 +376,7 @@ function naya_shabd() {
     getRandomAnimation();
     audioPlayer.pause();
     audioPlayer.currentTime = 0;
+    clearFeedbackState();
     let i_text = document.getElementById("i_text_1");
     const tspans = i_text.querySelector("p");
     tspans.innerHTML = "બંને શબ્દો સાંભળો અને  માત્રા નો ઉચ્ચાર સમજો.";
