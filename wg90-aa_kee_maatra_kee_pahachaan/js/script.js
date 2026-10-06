@@ -15,8 +15,8 @@ let placementIndex = 0;
 let correctCloudId = null;
 const LottieAnimations = {
   aa: {
-    CORRECT: "correct.json",
-    INCORRECT: "incorrect.json",
+    CORRECT: "Correct.json",
+    INCORRECT: "Incorrect.json",
   },
 };
 
@@ -158,7 +158,7 @@ function nextStep() {
     let i_text = document.getElementById("i_text_1");
     const tspans = i_text.querySelector("p");
     tspans.innerHTML =
-      "ધ્વનિ સાંભળો. તમે કયો શબ્દ સાંભળ્યો? સાચા શબ્દ ને સ્પર્શ કરો.";
+      "ऑडियो सुनें।&nbsp;कौन-सा शब्द सुना आपने? सही शब्द पर टैप करें।";
     age_badhe_button = true;
     document.getElementById("audio_button_1").style.display = "none";
     document.getElementById("audio_button_2").style.display = "none";
@@ -282,14 +282,6 @@ function playAnimationAudio(bandGroup) {
   name = LottieAnimations[selectedWord.type][bandGroup].replace("json", "mp3");
   audioPlayer.pause();
   audioPlayer.currentTime = 0;
-  setButtonsDisabled(true);
-  const onFeedbackFinish = () => {
-    setButtonsDisabled(false);
-    audioPlayer.removeEventListener("ended", onFeedbackFinish);
-    audioPlayer.removeEventListener("error", onFeedbackFinish);
-  };
-  audioPlayer.addEventListener("ended", onFeedbackFinish);
-  audioPlayer.addEventListener("error", onFeedbackFinish);
   audioPlayer.src = `assets/JSON/${name}`;
   audioPlayer.play();
 }
@@ -369,7 +361,7 @@ function naya_shabd() {
     audioPlayer.currentTime = 0;
     let i_text = document.getElementById("i_text_1");
     const tspans = i_text.querySelector("p");
-    tspans.innerHTML = "બંને શબ્દો સાંભળો અને  માત્રા નો ઉચ્ચાર સમજો.";
+    tspans.innerHTML = "दोनों शब्दों को सुनें और मात्रा का उच्चारण समझें। ";
   });
 }
 
@@ -520,7 +512,7 @@ function playLottieAnimationStart(bandGroup) {
       renderer: "svg",
       loop: false,
       autoplay: true,
-      path: `assets/animation/star-animation.json`,
+      path: `assets/Animation/star-animation.json`,
     });
 
     lottieInstances_star.addEventListener("enterFrame", (e) => {
