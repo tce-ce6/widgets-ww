@@ -10,6 +10,7 @@ let age_badhe_button = false;
 let lottieInstances_star = null;
 let animationTimeout = null;
 let starAnimationTimeout = null;
+let audioDelayTimeout = null;
 let correctPlacementSequence = [];
 let placementIndex = 0;
 const LottieAnimations = {
@@ -354,6 +355,7 @@ function naya_shabd() {
     showAnswer();
     // Stop any running lottie animation
     if (animationTimeout) { clearTimeout(animationTimeout); animationTimeout = null; }
+    if (audioDelayTimeout) { clearTimeout(audioDelayTimeout); audioDelayTimeout = null; }
     if (lottieInstances) { lottieInstances.destroy(); lottieInstances = null; }
     if (starAnimationTimeout) { clearTimeout(starAnimationTimeout); starAnimationTimeout = null; }
     if (lottieInstances_star) { lottieInstances_star.destroy(); lottieInstances_star = null; }
@@ -423,6 +425,7 @@ function playLottieAnimation(bandGroup) {
 
   if (lottieInstances) {
     if (animationTimeout) clearTimeout(animationTimeout);
+    if (audioDelayTimeout) { clearTimeout(audioDelayTimeout); audioDelayTimeout = null; }
     lottieInstances.destroy();
     lottieInstances = null;
   }
@@ -442,7 +445,6 @@ function playLottieAnimation(bandGroup) {
     });
 
     lottieInstances.addEventListener("DOMLoaded", () => {
-      playAnimationAudio(bandGroup);
       setTimeout(() => {
         lottieInstances.play();
         // Fallback: make visible if enterFrame is delayed or skipped
@@ -452,6 +454,10 @@ function playLottieAnimation(bandGroup) {
             parentEl.classList.add("visible");
           }
         }, 150);
+        if (audioDelayTimeout) clearTimeout(audioDelayTimeout);
+        audioDelayTimeout = setTimeout(() => {
+          playAnimationAudio(bandGroup);
+        }, 3000);
       }, 10);
     });
 
@@ -469,19 +475,6 @@ function playLottieAnimation(bandGroup) {
         parentEl.classList.remove("visible");
         parentEl.style.display = "none";
         resetFeedbackVisuals();
-        // if (bandGroup === "INCORRECT") {
-        //   document.getElementById("audio_button_1").style.display = "block";
-        //   document.getElementById("audio_button_2").style.display = "block";
-        //   audio_button_1 = false;
-        //   audio_button_2 = false;
-        //   age_badhe_button = false;
-        //   nextbutton();
-        //   hideAndShowAudioButtons("none");
-        //   let i_text = document.getElementById("i_text_1");
-        //   const tspans = i_text.querySelector("p");
-        //   tspans.innerHTML =
-        //     "दोनों शब्दों को सुनें और मात्रा का उच्चारण समझें। ";
-        // }
 
         if (lottieInstances) {
           lottieInstances.destroy();

@@ -10,6 +10,7 @@ let audio_button_2 = false;
 let age_badhe_button = false;
 let animationTimeout = null;
 let starAnimationTimeout = null;
+let audioDelayTimeout = null;
 let correctPlacementSequence = [];
 let placementIndex = 0;
 let correctCloudId = "cloud_text_01";
@@ -377,6 +378,7 @@ function naya_shabd() {
     showAnswer();
     // Stop any running lottie animation
     if (animationTimeout) { clearTimeout(animationTimeout); animationTimeout = null; }
+    if (audioDelayTimeout) { clearTimeout(audioDelayTimeout); audioDelayTimeout = null; }
     if (lottieInstances) { lottieInstances.destroy(); lottieInstances = null; }
     const _lc = document.getElementById("lottie-container");
     if (_lc) _lc.innerHTML = "";
@@ -419,6 +421,7 @@ function playLottieAnimation(bandGroup) {
 
   if (lottieInstances) {
     if (animationTimeout) clearTimeout(animationTimeout);
+    if (audioDelayTimeout) { clearTimeout(audioDelayTimeout); audioDelayTimeout = null; }
     lottieInstances.destroy();
     lottieInstances = null;
   }
@@ -437,8 +440,14 @@ function playLottieAnimation(bandGroup) {
     });
 
     lottieInstances.addEventListener("DOMLoaded", () => {
-      playAnimationAudio(bandGroup);
-      setTimeout(() => { lottieInstances.play(); }, 10);
+      setTimeout(() => {
+        if (lottieInstances) lottieInstances.play();
+        setButtonsDisabled(true);
+        if (audioDelayTimeout) clearTimeout(audioDelayTimeout);
+        audioDelayTimeout = setTimeout(() => {
+          playAnimationAudio(bandGroup);
+        }, 2000);
+      }, 10);
     });
 
     lottieInstances.addEventListener("enterFrame", (e) => {
@@ -484,6 +493,14 @@ function playAnimationAudio(bandGroup) {
   name = LottieAnimations[selectedWord.type][bandGroup].replace("json", "mp3");
   audioPlayer.pause();
   audioPlayer.currentTime = 0;
+  setButtonsDisabled(true);
+  const onFeedbackFinish = () => {
+    setButtonsDisabled(false);
+    audioPlayer.removeEventListener("ended", onFeedbackFinish);
+    audioPlayer.removeEventListener("error", onFeedbackFinish);
+  };
+  audioPlayer.addEventListener("ended", onFeedbackFinish);
+  audioPlayer.addEventListener("error", onFeedbackFinish);
   audioPlayer.src = `assets/JSON/${name}`;
   audioPlayer.play();
 }
