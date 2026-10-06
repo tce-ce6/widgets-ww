@@ -8,6 +8,7 @@ let selectedLottie = null;
 let audio_button_1 = false;
 let audio_button_2 = false;
 let age_badhe_button = false;
+let isFeedbackPlaying = false;
 let animationTimeout = null;
 let starAnimationTimeout = null;
 let audioDelayTimeout = null;
@@ -108,6 +109,7 @@ function highlightConsonantWithMatra(text) {
 }
 
 function resetFeedbackVisuals() {
+  clearFeedbackState();
   const highlights = ["cloud_text_01", "cloud_text_02"];
 
   highlights.forEach((id) => {
@@ -220,6 +222,8 @@ function textClickEvent() {
   function activateHighlightAndOutline(cloudId, isCorrect) {
     // Reset all first
     resetFeedbackVisuals();
+    isFeedbackPlaying = true;
+    setButtonsDisabled(true);
 
 
     if (cloudId === "cloud_text_01") {
@@ -242,25 +246,25 @@ function textClickEvent() {
   }
 
   cloud1.addEventListener("click", () => {
-    if (!age_badhe_button) return;
+    if (!age_badhe_button || isFeedbackPlaying) return;
     const isCorrect = correctCloudId === "cloud_text_01";
     activateHighlightAndOutline("cloud_text_01", isCorrect);
   });
 
   cloud2.addEventListener("click", () => {
-    if (!age_badhe_button) return;
+    if (!age_badhe_button || isFeedbackPlaying) return;
     const isCorrect = correctCloudId === "cloud_text_02";
     activateHighlightAndOutline("cloud_text_02", isCorrect);
   });
 
   text_cloud_01.addEventListener("click", () => {
-    if (!age_badhe_button) return;
+    if (!age_badhe_button || isFeedbackPlaying) return;
     const isCorrect = correctCloudId === "cloud_text_01";
     activateHighlightAndOutline("cloud_text_01", isCorrect);
   });
 
   text_cloud_02.addEventListener("click", () => {
-    if (!age_badhe_button) return;
+    if (!age_badhe_button || isFeedbackPlaying) return;
     const isCorrect = correctCloudId === "cloud_text_02";
     activateHighlightAndOutline("cloud_text_02", isCorrect);
   });
@@ -488,6 +492,10 @@ function playLottieAnimation(bandGroup) {
     parentEl.classList.remove("visible");
   }
 }
+function clearFeedbackState() {
+  isFeedbackPlaying = false;
+  setButtonsDisabled(false);
+}
 function playAnimationAudio(bandGroup) {
   let name = "";
   name = LottieAnimations[selectedWord.type][bandGroup].replace("json", "mp3");
@@ -495,6 +503,7 @@ function playAnimationAudio(bandGroup) {
   audioPlayer.currentTime = 0;
   setButtonsDisabled(true);
   const onFeedbackFinish = () => {
+    isFeedbackPlaying = false;
     setButtonsDisabled(false);
     audioPlayer.removeEventListener("ended", onFeedbackFinish);
     audioPlayer.removeEventListener("error", onFeedbackFinish);
