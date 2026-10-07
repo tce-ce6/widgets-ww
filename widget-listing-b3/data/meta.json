@@ -101,7 +101,7 @@
       "author": "tce-ashishg"
     },
     "wg194-ginti-mela": {
-      "updatedAt": "2026-09-30T17:37:34+05:30",
+      "updatedAt": "2026-10-07T11:35:51+05:30",
       "author": "tce-ashishg"
     },
     "wg195-chitra-dekh-kar-vakya-banaye": {
@@ -117,7 +117,7 @@
       "author": "tce-ashishg"
     },
     "wg198-aa-kee-maatra-kee-pahachaan-gujrati": {
-      "updatedAt": "2026-10-06T16:23:12+05:30",
+      "updatedAt": "2026-10-07T11:35:51+05:30",
       "author": "tce-ashishg"
     },
     "wg199-e-aur-ai-kee-maatra-mein-antar-gujrati": {
@@ -125,15 +125,31 @@
       "author": "tce-ashishg"
     },
     "wg200-o-aur-au-kee-maatra-mein-antar-gujrati": {
-      "updatedAt": "2026-10-06T16:23:12+05:30",
-      "author": "tce-ashishg"
-    },
-    "wg90-aa_kee_maatra_kee_pahachaan": {
-      "updatedAt": "2026-10-06T16:23:12+05:30",
+      "updatedAt": "2026-10-06T18:27:14+05:30",
       "author": "tce-ashishg"
     }
   },
   "commits": [
+    {
+      "date": "2026-10-07T11:35:51+05:30",
+      "author": "tce-ashishg",
+      "message": "wg194 correction done",
+      "widgets": [
+        194,
+        198
+      ]
+    },
+    {
+      "date": "2026-10-06T18:27:14+05:30",
+      "author": "tce-ashishg",
+      "message": "wg198 & 200 btn issue resolved",
+      "widgets": [
+        90,
+        194,
+        198,
+        200
+      ]
+    },
     {
       "date": "2026-10-06T16:23:12+05:30",
       "author": "tce-ashishg",
@@ -380,22 +396,6 @@
       "message": "wg196 functionality done",
       "widgets": [
         196
-      ]
-    },
-    {
-      "date": "2026-09-18T18:33:10+05:30",
-      "author": "tce-ashishg",
-      "message": "wg180 completed",
-      "widgets": [
-        180
-      ]
-    },
-    {
-      "date": "2026-09-18T18:32:38+05:30",
-      "author": "tce-ashishg",
-      "message": "wg180 completed",
-      "widgets": [
-        180
       ]
     }
   ]
