@@ -240,7 +240,7 @@ svg * {
 /* Screen 1: Intro */
 .intro-callout { position: absolute; top: clamp(80px, 14.5vh, 150px); left: 50%; transform: translateX(-50%); width: 90%; max-width: 1200px; text-align: center; z-index: 10; pointer-events: none; }
 .intro-instruction { color: var(--red); font-size: clamp(1.1rem, 2.05vw, 2.3rem); font-weight: 400; line-height: 1.35; }
-.intro-instruction strong, .prompt-text strong { font-weight: 700; text-decoration: underline; }
+.intro-instruction strong, .prompt-text strong { font-weight: 700; text-decoration: underline; color: black; }
 .ticket-container { position: absolute; right: clamp(16px, 4vw, 68px); top: 37%; width: clamp(230px, 29vw, 556px); max-width: 90vw; z-index: 10; }
 .ticket-btn { background: transparent; border: none; padding: 0; cursor: pointer; width: 100%; display: block; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.32)); }
 .ticket-img { width: 100%; height: auto; display: block; pointer-events: none; }
