@@ -492,10 +492,10 @@ svg * {
 
 .lantern-div .lottie-overlay {
   position: absolute;
-  top: -100px;
-  left: -70px;
-  width: 250px;
-  height: 250px;
+  top: -60px;
+    left: -50px;
+    width: 220px;
+    height: 220px;
   z-index: 3;
   pointer-events: none;
   /* border: 2px solid #ffe41d; */
