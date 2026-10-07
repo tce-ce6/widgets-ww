@@ -287,14 +287,24 @@ function playAnimationAudio(bandGroup) {
   audioPlayer.pause();
   audioPlayer.currentTime = 0;
   setButtonsDisabled(true);
-  const onFeedbackFinish = () => {
-    clearFeedbackState();
-    audioPlayer.removeEventListener("ended", onFeedbackFinish);
-    audioPlayer.removeEventListener("error", onFeedbackFinish);
+
+  const playFeedback = () => {
+    audioPlayer.removeEventListener("ended", playFeedback);
+    audioPlayer.removeEventListener("error", playFeedback);
+    const onFeedbackFinish = () => {
+      clearFeedbackState();
+      audioPlayer.removeEventListener("ended", onFeedbackFinish);
+      audioPlayer.removeEventListener("error", onFeedbackFinish);
+    };
+    audioPlayer.addEventListener("ended", onFeedbackFinish);
+    audioPlayer.addEventListener("error", onFeedbackFinish);
+    audioPlayer.src = `assets/JSON/${name}`;
+    audioPlayer.play();
   };
-  audioPlayer.addEventListener("ended", onFeedbackFinish);
-  audioPlayer.addEventListener("error", onFeedbackFinish);
-  audioPlayer.src = `assets/JSON/${name}`;
+
+  audioPlayer.addEventListener("ended", playFeedback);
+  audioPlayer.addEventListener("error", playFeedback);
+  audioPlayer.src = "assets/audio/SFX/kids_train_bell_sound.mp3";
   audioPlayer.play();
 }
 
