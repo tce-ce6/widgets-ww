@@ -11,7 +11,9 @@
   var slots = [];
   var refs = {};
   var bank = [];
+  var hintTile = -1;
   var checkCount = 0;
+  var wrongCheckCount = 0;
   var sentenceAudio = null;
 
   function byId(id){ return document.getElementById(id); }
@@ -81,12 +83,11 @@
   function updateAudioBtn(){
     var btn = byId('audioBtn');
     if (!btn) return;
-    btn.classList.toggle('disabled', checkCount < 3);
-    btn.setAttribute('aria-disabled', checkCount < 3 ? 'true' : 'false');
+    btn.classList.remove('disabled');
+    btn.setAttribute('aria-disabled', 'false');
   }
 
   function playSentenceAudio(){
-    if (checkCount < 3) return;
     var src = currentAudioSrc();
     var btn = byId('audioBtn');
     if (btn) btn.setAttribute('data-src', src);
@@ -99,7 +100,7 @@
 
   function updateMainNextBtn(){
     var btn = byId('mainNextBtn');
-    if (btn) btn.disabled = completed.length < 1;
+    if (btn) btn.disabled = false;
   }
 
   function loadScene(index){
@@ -133,12 +134,16 @@
 
   function startCurrent(){
     checkCount = 0;
+    wrongCheckCount = 0;
     updateAudioBtn();
+    var abtn = byId('audioBtn');
+    if (abtn) { abtn.classList.remove('hint'); abtn.classList.remove('shake'); }
     var s = currentSentences()[sentenceOrder[currentIdx]];
-    slots = new Array(s.words.length).fill(null);
+    slots = new Array(s.words.length + 1).fill(null);
     refs = {};
-    var pool = shuffle(s.words.concat(s.distractors));
+    var pool = shuffle(s.words.concat(s.distractors).concat(['।']));
     bank = pool.map(function(w){ return { word: w, used: false }; });
+    hintTile = bank.findIndex(function(t){ return t.word === s.words[0]; });
 
     var numberEl = byId('activeNumber');
     if (numberEl) numberEl.textContent = (currentIdx + 1) + '.';
@@ -176,6 +181,7 @@
     bank.forEach(function(tile, ti){
       var btn = document.createElement('button');
       btn.className = 'tile' + (tile.used ? ' used' : '');
+      if (ti === hintTile && !tile.used) btn.classList.add('hint');
       btn.textContent = tile.word;
       btn.type = 'button';
       btn.disabled = tile.used;
@@ -184,7 +190,13 @@
     });
   }
 
+  function stopAudioBtnShake(){
+    var ab = byId('audioBtn');
+    if (ab) ab.classList.remove('shake');
+  }
+
   function placeTile(tileIndex){
+    stopAudioBtnShake();
     var emptyIdx = slots.indexOf(null);
     if (emptyIdx === -1) return;
     bank[tileIndex].used = true;
@@ -196,6 +208,7 @@
   }
 
   function removeFromSlot(slotIdx){
+    stopAudioBtnShake();
     var tileRef = refs[slotIdx];
     if (tileRef !== undefined) bank[tileRef].used = false;
     slots[slotIdx] = null;
@@ -212,7 +225,7 @@
     var btn = byId('checkBtn');
     if (!btn) return;
     var count = slots.filter(function(v){ return v !== null; }).length;
-    btn.disabled = (count !== currentSentences()[sentenceOrder[currentIdx]].words.length);
+    btn.disabled = (count !== currentSentences()[sentenceOrder[currentIdx]].words.length + 1);
   }
 
   function checkSentence(){
@@ -221,8 +234,9 @@
     var s = currentSentences()[sentenceOrder[currentIdx]];
     var slotEls = document.querySelectorAll('#activeSlots .slot');
     var allCorrect = true;
-    for (var i = 0; i < s.words.length; i++){
-      if (slots[i] === s.words[i]){
+    var expected = s.words.concat(['।']);
+    for (var i = 0; i < expected.length; i++){
+      if (slots[i] === expected[i]){
         slotEls[i].classList.add('right');
         slotEls[i].classList.remove('wrong');
       } else {
@@ -247,8 +261,29 @@
         }
       }, 800);
     } else {
+      wrongCheckCount++;
+      if (wrongCheckCount >= 2){
+        var ab = byId('audioBtn');
+        if (ab){
+          ab.classList.remove('hint');
+          ab.classList.add('shake');
+        }
+      }
       setTimeout(function(){
         document.querySelectorAll('#activeSlots .slot.wrong').forEach(function(el){ el.classList.remove('wrong'); });
+        // Keep slot 0 in place only if it has the correct first word; otherwise return it too
+        var expectedFirst = currentSentences()[sentenceOrder[currentIdx]].words[0];
+        for (var i = 0; i < slots.length; i++){
+          if (slots[i] === null) continue;
+          if (i === 0 && slots[i] === expectedFirst) continue;
+          var ref = refs[i];
+          if (ref !== undefined) bank[ref].used = false;
+          slots[i] = null;
+          delete refs[i];
+        }
+        renderSlots();
+        renderBank();
+        updateCheckBtn();
       }, 500);
     }
   }
@@ -272,6 +307,8 @@
   function updateOverlayTitleBtn(){
     var btn = byId('overlayTitle');
     if (btn) btn.disabled = completed.length < 1;
+    var list = byId('overlayList');
+    if (list && completed.length > 0) list.style.visibility = 'visible';
   }
 
   function loadNextScene(){
@@ -293,9 +330,7 @@
     overlayTitle.addEventListener('click', function(){
       if (completed.length < 1) return;
       var list = byId('overlayList');
-      if (list){
-        list.style.visibility = (list.style.visibility === 'visible') ? 'hidden' : 'visible';
-      }
+      if (list) list.style.visibility = 'visible';
     });
   }
 
