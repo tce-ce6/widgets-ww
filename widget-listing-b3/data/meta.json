@@ -101,11 +101,11 @@
       "author": "tce-ashishg"
     },
     "wg194-ginti-mela": {
-      "updatedAt": "2026-10-07T17:38:51+05:30",
+      "updatedAt": "2026-10-08T19:01:39+05:30",
       "author": "tce-ashishg"
     },
     "wg195-chitra-dekh-kar-vakya-banaye": {
-      "updatedAt": "2026-09-10T16:08:37+05:30",
+      "updatedAt": "2026-10-08T19:01:39+05:30",
       "author": "tce-ashishg"
     },
     "wg196-perfect-pairs": {
@@ -130,6 +130,15 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-10-08T19:01:39+05:30",
+      "author": "tce-ashishg",
+      "message": "wg195 issue resolved",
+      "widgets": [
+        194,
+        195
+      ]
+    },
     {
       "date": "2026-10-07T17:38:51+05:30",
       "author": "tce-ashishg",
@@ -387,15 +396,6 @@
       "author": "tce-ashishg",
       "message": "wg196 issue resolved",
       "widgets": [
-        196
-      ]
-    },
-    {
-      "date": "2026-09-28T12:28:21+05:30",
-      "author": "tce-ashishg",
-      "message": "wg196 issue resolved",
-      "widgets": [
-        180,
         196
       ]
     }
