@@ -105,7 +105,7 @@
       "author": "tce-ashishg"
     },
     "wg195-chitra-dekh-kar-vakya-banaye": {
-      "updatedAt": "2026-10-08T19:01:39+05:30",
+      "updatedAt": "2026-10-09T16:34:07+05:30",
       "author": "tce-ashishg"
     },
     "wg196-perfect-pairs": {
@@ -130,6 +130,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-10-09T16:34:07+05:30",
+      "author": "tce-ashishg",
+      "message": "img updated",
+      "widgets": [
+        195
+      ]
+    },
     {
       "date": "2026-10-08T19:01:39+05:30",
       "author": "tce-ashishg",
@@ -389,14 +397,6 @@
       "message": "wg197 started and completed",
       "widgets": [
         197
-      ]
-    },
-    {
-      "date": "2026-09-28T13:14:27+05:30",
-      "author": "tce-ashishg",
-      "message": "wg196 issue resolved",
-      "widgets": [
-        196
       ]
     }
   ]
