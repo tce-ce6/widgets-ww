@@ -5,7 +5,7 @@
   var sceneCycle = [];      // shuffled order of scene indices
   var scenePos = 0;         // number of pictures shown in the current cycle
   var sceneIndex = 0;       // index of the current scene in scenes
-  var sentenceOrder = [];   // shuffled order of sentence indices for current scene
+  var sentenceOrder = [];   // sentence indices in their defined order
   var currentIdx = 0;       // position in sentenceOrder
   var completed = [];       // completed sentence texts for current scene
   var slots = [];
@@ -106,7 +106,7 @@
   function loadScene(index){
     sceneIndex = index;
     completed = [];
-    sentenceOrder = shuffle(currentSentences().map(function(_, i){ return i; }));
+    sentenceOrder = currentSentences().map(function(_, i){ return i; });
     currentIdx = 0;
 
     var labelEl = byId('sceneLabel');
