@@ -254,12 +254,13 @@
       updateMainNextBtn();
       renderOverlayList();
       updateOverlayTitleBtn();
+      var correctAnswerDelayMs = 10000;
       setTimeout(function(){
         if (currentIdx < currentSentences().length - 1){
           currentIdx++;
           startCurrent();
         }
-      }, 800);
+      }, correctAnswerDelayMs);
     } else {
       wrongCheckCount++;
       if (wrongCheckCount >= 2){
