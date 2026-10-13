@@ -204,15 +204,6 @@ document.addEventListener('DOMContentLoaded', () => {
      ========================================================================== */
 
   let voice = null;
-  let audioCtx = null;
-
-  const getCtx = () => {
-    const Ctx = window.AudioContext || window.webkitAudioContext;
-    if (!Ctx) return null;
-    if (!audioCtx) audioCtx = new Ctx();
-    if (audioCtx.state === 'suspended') audioCtx.resume();
-    return audioCtx;
-  };
 
   const stopVoice = () => {
     if (voice) {
@@ -252,54 +243,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const wordSrc = (word) => (WORD_AUDIO[word] ? `assets/audio/${WORD_AUDIO[word]}.mp3` : '');
   const playWord = (word) => playVoice(wordSrc(word), word);
-
-  // Short synthesised sound effects (no SFX files were supplied).
-  const tone = (freq, dur, type = 'sine', vol = 0.18, delay = 0, freqEnd) => {
-    const c = getCtx();
-    if (!c) return;
-    const t = c.currentTime + delay;
-    const o = c.createOscillator();
-    const g = c.createGain();
-    o.type = type;
-    o.frequency.setValueAtTime(freq, t);
-    if (freqEnd) o.frequency.linearRampToValueAtTime(freqEnd, t + dur);
-    g.gain.setValueAtTime(vol, t);
-    g.gain.exponentialRampToValueAtTime(0.001, t + dur);
-    o.connect(g);
-    g.connect(c.destination);
-    o.start(t);
-    o.stop(t + dur + 0.02);
-  };
-
-  const sfx = {
-    correct() {
-      tone(660, 0.14, 'sine', 0.2);
-      tone(990, 0.22, 'sine', 0.2, 0.12);
-    },
-    wrong() {
-      tone(220, 0.28, 'triangle', 0.22, 0, 150);
-    },
-    khat() {
-      const c = getCtx();
-      if (!c) return;
-      const len = Math.floor(c.sampleRate * 0.08);
-      const buf = c.createBuffer(1, len, c.sampleRate);
-      const d = buf.getChannelData(0);
-      for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 3);
-      const src = c.createBufferSource();
-      const g = c.createGain();
-      g.gain.value = 0.6;
-      src.buffer = buf;
-      src.connect(g);
-      g.connect(c.destination);
-      src.start();
-      tone(140, 0.09, 'square', 0.12);
-    },
-    whistle() {
-      tone(1100, 0.35, 'sine', 0.16, 0, 1250);
-      tone(1100, 0.6, 'sine', 0.16, 0.42, 1250);
-    },
-  };
 
   /* ==========================================================================
      STATE
@@ -418,8 +361,18 @@ document.addEventListener('DOMContentLoaded', () => {
     engine.innerHTML =
       '<div class="train__smoke"><img src="assets/images/smoke.svg" alt=""></div>' +
       '<img src="assets/images/engine.svg" alt=""><span class="train__engine-word"></span>';
-    engine.querySelector('.train__engine-word').textContent = round.w;
-    engine.setAttribute('aria-label', 'इंजन: ' + round.w);
+    const engineWord = engine.querySelector('.train__engine-word');
+    engineWord.textContent = round.w;
+    engineWord.setAttribute('role', 'button');
+    engineWord.tabIndex = 0;
+    engineWord.setAttribute('aria-label', 'इंजन का शब्द सुनो: ' + round.w);
+    engineWord.addEventListener('click', () => playWord(round.w));
+    engineWord.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        playWord(round.w);
+      }
+    });
     trainEl.appendChild(engine);
   };
 
@@ -520,7 +473,6 @@ document.addEventListener('DOMContentLoaded', () => {
     el.addEventListener('pointerdown', (e) => {
       if (!canPlay() || el.classList.contains('is-locked')) return;
       e.preventDefault();
-      getCtx(); // unlock audio on the first touch
       const startX = e.clientX;
       const startY = e.clientY;
       let dx = 0;
@@ -582,14 +534,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const attempt = (el, dx, dy) => {
     const round = state.level.rounds[state.index];
+    playWord(el.dataset.word);
     if (el.dataset.ok === '1') {
-      sfx.correct();
-      later(() => playWord(el.dataset.word), 300);
       attachCoach(el, dx, dy).then(() => {
         if (state.filled === round.ok.length) trainComplete(true);
       });
     } else {
-      sfx.wrong();
       state.mistake = true;
       slideBack(el, dx, dy).then(() => shake(el));
     }
@@ -622,7 +572,6 @@ document.addEventListener('DOMContentLoaded', () => {
     );
     return animDone(a, FLY_MS).then(() => {
       if (token !== state.token) return new Promise(() => {}); // round changed: stop here
-      sfx.khat();
       const placed = coachEl(el.dataset.word, el.dataset.color, true);
       placed.tabIndex = -1;
       placed.classList.add('is-locked');
@@ -632,15 +581,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
-  // All slots filled: whistle, smoke, fade what is left on the platform.
+  // All slots filled: smoke from the chimney, fade what is left on the platform.
   const trainComplete = (byUser) => {
     if (state.complete) return;
     state.complete = true;
     answerBtn.disabled = true;
+    nextBtn.disabled = false; // Next unlocks only once every correct coach is attached
     if (byUser && !state.mistake) state.perfect++;
     fadeRemaining(false);
     later(() => {
-      sfx.whistle();
       puffSmoke(true);
       later(() => puffSmoke(false), 2200);
     }, 300);
@@ -689,19 +638,18 @@ document.addEventListener('DOMContentLoaded', () => {
     trainEnter().then(() => {
       if (token !== state.token) return;
       state.busy = false;
-      setButtons(true);
+      answerBtn.disabled = false; // Next stays locked until the train is complete
       playWord(round.w);
     });
   };
 
   const next = () => {
-    if (state.busy) return;
+    if (state.busy || !state.complete) return;
     state.busy = true;
     clearTimers();
     stopVoice();
     setButtons(false);
     fadeRemaining(false);
-    sfx.whistle();
     const token = state.token;
     trainExit().then(() => {
       if (token !== state.token) return;
@@ -729,11 +677,9 @@ document.addEventListener('DOMContentLoaded', () => {
         animationData: window.TROPHY_DATA,
       });
     }
-    sfx.whistle();
   };
 
   const startLevel = (key) => {
-    getCtx();
     stopVoice();
     state.level = LEVELS[key];
     state.index = 0;
@@ -755,6 +701,46 @@ document.addEventListener('DOMContentLoaded', () => {
     platformEl.innerHTML = '';
     state.busy = false;
     showScreen('level');
+  };
+
+  /* ==========================================================================
+     TEST HELPER
+     Jumps straight to the result screen, from the console:
+       goToResult()              current level (or छोटी रेलगाड़ी), current score
+       goToResult('badi')        बड़ी रेलगाड़ी, current score
+       goToResult('choti', 18)   छोटी रेलगाड़ी, 18 perfect trains
+     ========================================================================== */
+
+  window.goToResult = (levelKey, perfect) => {
+    const key = levelKey || Object.keys(LEVELS).find((k) => LEVELS[k] === state.level) || 'choti';
+    if (!LEVELS[key]) {
+      console.warn(`goToResult: unknown level "${key}". Use "choti" or "badi".`);
+      return;
+    }
+    const levelChanged = state.level !== LEVELS[key];
+
+    clearTimers();
+    stopVoice();
+    trainEl.getAnimations().forEach((a) => a.cancel());
+    puffSmoke(false);
+
+    state.level = LEVELS[key];
+    state.index = state.level.rounds.length - 1;
+    if (levelChanged) state.perfect = 0;
+    if (typeof perfect === 'number') {
+      state.perfect = Math.max(0, Math.min(state.level.rounds.length, Math.round(perfect)));
+    }
+
+    // Park the last station's train behind the result panel, as in a real finish.
+    const lastRound = state.level.rounds[state.index];
+    buildTrain(lastRound);
+    buildPlatform(lastRound);
+    setTrainX(0);
+    nextBtn.textContent = 'परिणाम देखें';
+    setButtons(false);
+
+    finish();
+    console.log(`Result screen: ${key}, ${state.perfect} / ${state.level.rounds.length}`);
   };
 
   /* ==========================================================================
