@@ -1,0 +1,428 @@
+/* ==========================================================================
+   रेलगाड़ी तैयार करो! (wg211)
+   Layout is authored on a fixed 1920x1080 stage (matching layout.svg) and
+   scaled to the window by script.js, so the widget always fits one screen.
+   ========================================================================== */
+
+:root {
+  --green: #4caf50;
+  --pink: #ff2c68;
+  --purple: #9e4caf;
+  --itext: #770808;
+  --red: #ea0b0b;
+}
+
+html,
+body {
+  overflow: hidden;
+}
+
+body {
+  background: #1d4d00;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mainContainerOuter {
+  background: #1d4d00;
+}
+
+#viewport {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+}
+
+#stage {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1920px;
+  height: 1080px;
+  transform-origin: 0 0;
+  overflow: hidden;
+  font-family: "Roboto", sans-serif;
+  line-height: 1.3;
+}
+
+.stage-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+button {
+  font-family: "Roboto", sans-serif;
+}
+
+button:focus-visible {
+  outline: 5px solid #1565c0;
+  outline-offset: 4px;
+}
+
+/* ---------- screens ---------- */
+.screen {
+  position: absolute;
+  inset: 0;
+  display: none;
+}
+
+.screen.is-active {
+  display: block;
+}
+
+/* ---------- i-text ---------- */
+.itext {
+  position: absolute;
+}
+
+.itext p {
+  margin: 0;
+  color: #000;
+  font-size: 32px;
+  line-height: 1.25;
+}
+
+/* ---------- level screen ---------- */
+.itext--level {
+  top: 192px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
+.itext--level p {
+  color: var(--itext);
+}
+
+.level-panels {
+  position: absolute;
+  top: 326px;
+  left: 196px;
+  width: 1518px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.level-panel {
+  position: relative;
+  width: 741px;
+  height: 392px;
+  padding: 0;
+  background: none;
+  border: none;
+  border-radius: 40px;
+  cursor: pointer;
+}
+
+.level-panel img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.level-panel:active {
+  transform: translateY(2px);
+}
+
+.level-panel__name,
+.level-panel__hint {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  line-height: 1;
+}
+
+.level-panel__name {
+  top: 250px;
+  color: var(--red);
+  font-size: 45px;
+  font-weight: 700;
+}
+
+.level-panel__hint {
+  top: 310px;
+  color: #000;
+  font-size: 30px;
+}
+
+/* ---------- game screen: top row ---------- */
+.itext--game {
+  top: 160px;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 900px;
+}
+
+/* ---------- train ---------- */
+.train {
+  position: absolute;
+  bottom: 460px; /* wheels sit on the track drawn in bg.svg */
+  left: 0;
+  height: 245px;
+  transform-origin: 0 100%;
+  pointer-events: none;
+}
+
+.train__engine,
+.train__slot,
+.train__coupler,
+.train__smoke {
+  position: absolute;
+}
+
+.train__engine {
+  top: -39.5px;
+  width: 382px;
+  height: 287px;
+}
+
+.train__engine img,
+.train__slot > img {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.train__engine-word {
+  position: absolute;
+  left: 116px;
+  top: 66px;
+  width: 200px;
+  height: 128px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000;
+  font-size: 48px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.train__smoke {
+  left: -24px;
+  top: -76px;
+  width: 250px;
+  height: 75px;
+  opacity: 0;
+  transform-origin: 100% 100%;
+}
+
+.train__smoke img {
+  width: 100%;
+  height: 100%;
+}
+
+.train__slot {
+  top: 0;
+  width: 216.5px;
+  height: 245px;
+}
+
+.train__coupler {
+  top: 178px;
+  width: 30px;
+  height: 6px;
+  background: #58595b;
+}
+
+/* ---------- coaches (platform + filled slots) ---------- */
+.coach {
+  position: absolute;
+  padding: 0;
+  background: none;
+  border: none;
+  border-radius: 0;
+  touch-action: none;
+  cursor: grab;
+}
+
+.coach > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.coach__word {
+  position: absolute;
+  left: 5%;
+  top: 10%;
+  width: 88%;
+  height: 54%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000;
+  font-size: 42px;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.coach.is-dragging {
+  z-index: 40;
+  cursor: grabbing;
+}
+
+.coach.is-faded {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.coach.is-locked {
+  pointer-events: none;
+}
+
+.train__slot .coach {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  cursor: default;
+}
+
+.platform {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.platform .coach {
+  pointer-events: auto;
+  transform-origin: 0 0;
+  transition: opacity 0.4s;
+}
+
+/* ---------- buttons ---------- */
+.action-btns {
+  position: absolute;
+  top: 939px;
+  left: 682px;
+  display: flex;
+  gap: 40px;
+}
+
+.pill-btn {
+  height: 80px;
+  padding: 0 40px;
+  border: none;
+  border-radius: 47px;
+  color: #fff;
+  font-size: 35px;
+  font-weight: 500;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.pill-btn:active {
+  transform: translateY(4px);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.25);
+}
+
+.pill-btn--answer {
+  min-width: 210px;
+  background: var(--green);
+}
+
+.pill-btn--next {
+  min-width: 303px;
+  background: var(--pink);
+}
+
+.pill-btn--replay {
+  position: relative;
+  background: var(--purple);
+}
+
+.pill-btn:disabled {
+  opacity: 0.5;
+}
+
+.home-btn {
+  position: absolute;
+  left: 48px;
+  top: 967px;
+  width: 66px;
+  height: 66px;
+  padding: 0;
+  background: none;
+  border-radius: 6px;
+}
+
+.home-btn img {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ---------- end screen ---------- */
+#screen-end {
+  background: rgba(0, 0, 0, 0.35);
+  z-index: 50;
+}
+
+.summary {
+  position: absolute;
+  top: 160px;
+  left: 480px;
+  width: 983px;
+  height: 630px;
+  text-align: center;
+}
+
+.summary__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.summary__trophy {
+  position: relative;
+  width: 260px;
+  height: 260px;
+  margin: 50px auto 0;
+}
+
+.summary__title {
+  position: relative;
+  margin: 0;
+  color: var(--red);
+  font-size: 64px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.summary__score {
+  position: relative;
+  margin: 14px 40px 36px;
+  color: #000;
+  font-size: 36px;
+  font-weight: 700;
+}
+
+/* ---------- animations ---------- */
+@keyframes coach-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-14px); }
+  40% { transform: translateX(12px); }
+  60% { transform: translateX(-8px); }
+  80% { transform: translateX(5px); }
+}
+
+.coach.is-shaking {
+  animation: coach-shake 0.45s linear;
+}
+
+/* The spec requires the train/coach motion to play even when the device's
+   reduce-motion setting is on, so there is deliberately no
+   prefers-reduced-motion override here. */
