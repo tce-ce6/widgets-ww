@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>रेलगाड़ी तैयार करो! – समान अर्थ वाले शब्द (कक्षा 2–3)</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--sky:#FFF3D6;--ink:#2A2A3A;--engine:#D7263D;--track:#6B4F3A;--plat:#9AA7B4;--good:#2E9E5B;--sign:#1F4E79;
+  --cw:clamp(74px,14.5vh,128px);--ch:calc(var(--cw)*.74)}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;overflow:hidden}
+body{font-family:'Baloo 2','Noto Sans Devanagari','Mangal',sans-serif;color:var(--ink);background:var(--sky);user-select:none}
+/* पूरा widget एक स्क्रीन में — कोई scroll नहीं */
+.app{height:100vh;height:100dvh;max-width:1000px;margin:0 auto;display:flex;flex-direction:column;padding:1.2vh 2vw}
+header{flex:0 0 auto;display:flex;justify-content:space-between;align-items:center}
+h1{margin:0;font-size:clamp(20px,4.2vh,34px);font-weight:800;color:var(--engine);line-height:1.1}
+.meta{font-size:clamp(14px,2.4vh,19px);font-weight:700}
+.top{flex:0 0 auto;display:flex;align-items:center;gap:1.6vw;margin-top:.8vh}
+.img-holder{width:clamp(44px,8vh,76px);height:clamp(44px,8vh,76px);border:2px dashed #b9a98f;border-radius:10px;display:flex;align-items:center;justify-content:center;
+  font-size:11px;line-height:1.2;text-align:center;color:#8b7b63;overflow:hidden;background:#fffaf0;flex:0 0 auto}
+.img-holder img{width:100%;height:100%;object-fit:contain}.img-holder.has-img{border:none;background:none}
+.sign{background:var(--sign);color:#fff;border:3px solid #fff;outline:3px solid var(--sign);border-radius:8px;padding:.2vh 16px;font-size:clamp(18px,3.6vh,28px);font-weight:700;white-space:nowrap}
+.say{border:none;background:#FFD600;border-radius:50%;width:clamp(32px,5vh,42px);height:clamp(32px,5vh,42px);font-size:clamp(15px,2.4vh,20px);cursor:pointer;flex:0 0 auto}
+.itext{flex:1;display:flex;align-items:center;gap:8px;background:#ffffffcc;border-radius:14px;padding:.6vh 10px}
+.itext p{margin:0;font-size:clamp(14px,2.6vh,20px);line-height:1.3}
+.say:focus-visible,.coach:focus-visible,button:focus-visible{outline:4px solid #1565C0;outline-offset:3px}
+/* रेल का दृश्य */
+.scene{position:relative;overflow:hidden;flex:1 1 auto;min-height:0;display:flex;flex-direction:column;justify-content:flex-end}
+.train{display:flex;align-items:flex-end;gap:6px;padding:0 6px;transform:translateX(0)}
+.train.anim{transition:transform 1.5s ease-in-out}
+.engine{position:relative;flex:0 0 auto;width:calc(var(--cw)*1.45);height:calc(var(--ch)*1.75)}
+.engine .body{position:absolute;bottom:22%;left:0;width:79%;height:56%;background:var(--engine);border-radius:12px 34px 8px 8px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:clamp(18px,3.8vh,30px);font-weight:800}
+.engine .cab{position:absolute;bottom:78%;left:4%;width:32%;height:22%;background:#A61B2E;border-radius:8px 8px 0 0}
+.engine .chim{position:absolute;bottom:78%;left:58%;width:11%;height:22%;background:#333;border-radius:4px 4px 0 0}
+.engine .front{position:absolute;bottom:22%;left:78%;width:20%;height:34%;background:#333;clip-path:polygon(0 0,100% 100%,0 100%)}
+.smoke{position:absolute;left:54%;bottom:96%;font-size:clamp(18px,3.4vh,26px);opacity:0}
+.train.puff .smoke{animation:puff 1s ease-out infinite}
+@keyframes puff{0%{opacity:.8;transform:translate(0,0) scale(.6)}100%{opacity:0;transform:translate(-30px,-40px) scale(1.4)}}
+.wheels{position:absolute;bottom:0;left:0;right:0;display:flex;justify-content:space-around}
+.wheels i{width:calc(var(--cw)*.2);height:calc(var(--cw)*.2);border-radius:50%;background:#333;border:4px solid #888}
+.slot{position:relative;flex:0 0 auto;width:var(--cw);height:calc(var(--ch)*1.3)}
+.box{position:absolute;bottom:22%;left:0;right:0;height:72%;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:clamp(16px,3.3vh,26px);font-weight:700}
+.slot.empty .box{border:3px dashed #8a7a6a;background:#ffffff80}
+.slot.empty .wheels{opacity:.35}
+.coach-fill{background:var(--c);color:#fff;box-shadow:inset 0 -8px 0 #0002}
+.coupler{position:absolute;right:-8px;bottom:40%;width:12px;height:8px;background:#333}
+.rail{flex:0 0 auto;height:14px;background:repeating-linear-gradient(90deg,var(--track) 0 14px,transparent 14px 34px),linear-gradient(#777,#777);background-size:auto,100% 4px;background-repeat:repeat,no-repeat;background-position:0 0,0 5px}
+.platform{flex:0 0 auto;background:var(--plat);border-top:6px solid #7B8794;padding:1.2vh 8px;display:flex;flex-wrap:wrap;gap:1.4vh 14px;justify-content:center;min-height:calc(var(--ch)*1.3 + 2.4vh)}
+.coach{position:relative;width:var(--cw);height:calc(var(--ch)*1.3);touch-action:none;cursor:grab}
+.coach .box{background:var(--c);color:#fff;box-shadow:inset 0 -8px 0 #0002,0 4px 0 #0003}
+.coach.dragging{z-index:20;cursor:grabbing}
+.coach.shake{animation:shake .45s}
+.coach.faded{opacity:.3;pointer-events:none}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-9px)}75%{transform:translateX(9px)}}
+.bottom{flex:0 0 auto;display:flex;align-items:center;gap:12px;margin-top:.8vh}
+.msg{flex:1;min-height:5vh;font-size:clamp(14px,2.6vh,21px);font-weight:700;text-align:center;line-height:1.25}
+.msg.good{color:var(--good)}.msg.info{color:#1F5FA8}
+.btn{border:none;border-radius:30px;font:800 clamp(15px,2.7vh,22px) 'Baloo 2',sans-serif;padding:.6vh 22px;cursor:pointer;white-space:nowrap}
+.btn.ans{background:#fff;color:var(--sign);border:3px solid var(--sign);box-shadow:0 4px 0 #9fb3c8}
+.btn.next{background:var(--sign);color:#fff;box-shadow:0 4px 0 #0f2d49}
+.btn:disabled{opacity:.4;cursor:default}
+.screen{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:2vh}
+.screen h2{font-size:clamp(26px,6vh,44px);margin:0;color:var(--engine)}
+.screen p{font-size:clamp(16px,3vh,23px);max-width:620px;margin:0}
+.big-engine{font-size:clamp(60px,14vh,120px);line-height:1}
+#game{display:none;flex:1;min-height:0;flex-direction:column}
+#end{display:none}
+.start-itext{flex:0 0 auto;max-width:620px}
+.levels{display:flex;gap:4vw;justify-content:center;flex-wrap:wrap}
+.lvl{border:none;background:#fff;border-radius:22px;padding:2vh 3vw;cursor:pointer;box-shadow:0 6px 0 #d9c7a3;font-family:inherit;color:var(--ink);min-width:220px}
+.lvl:hover{transform:translateY(-3px)}
+.lvl .mini{font-size:clamp(30px,7vh,56px);line-height:1.1;letter-spacing:-4px}
+.lvl b{display:block;font-size:clamp(20px,4vh,30px);color:var(--engine)}
+.lvl span{font-size:clamp(14px,2.6vh,19px)}
+@media (max-width:600px){.top{flex-wrap:wrap}.itext{flex-basis:100%}.btn{padding:.6vh 14px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header><h1>🚂 रेलगाड़ी तैयार करो!</h1><div class="meta" id="meta"></div></header>
+
+<section class="screen" id="start">
+  <h2>कौन-सी रेलगाड़ी तैयार करोगे?</h2>
+  <div class="itext start-itext"><button class="say" id="sayStart" aria-label="निर्देश सुनो">🔊</button><p id="startItext"></p></div>
+  <div class="levels">
+    <button class="lvl" data-l="1"><div class="mini">🚃🚃🚂</div><b>छोटी रेलगाड़ी</b><span>2 डिब्बे जोड़ो</span></button>
+    <button class="lvl" data-l="2"><div class="mini">🚃🚃🚃🚂</div><b>बड़ी रेलगाड़ी</b><span>3 डिब्बे जोड़ो</span></button>
+  </div>
+</section>
+
+<section id="game">
+  <div class="top">
+    <div class="img-holder" id="imgHolder"></div>
+    <div class="sign" id="sign"></div>
+    <button class="say" id="sayWord" aria-label="शब्द सुनो">🔊</button>
+    <div class="itext"><button class="say" id="sayItext" aria-label="निर्देश सुनो">🔊</button><p id="itext"></p></div>
+  </div>
+  <div class="scene" id="scene">
+    <div class="train" id="train"></div>
+    <div class="rail"></div>
+  </div>
+  <div class="platform" id="platform" aria-label="प्लेटफ़ॉर्म"></div>
+  <div class="bottom">
+    <button class="btn ans" id="ansBtn">उत्तर देखें</button>
+    <div class="msg" id="msg" role="status" aria-live="polite"></div>
+    <button class="btn next" id="nextBtn">अगला उदाहरण ➜</button>
+  </div>
+</section>
+
+<section class="screen" id="end">
+  <div class="big-engine">🎉</div>
+  <h2>सभी स्टेशन पूरे!</h2>
+  <p id="score"></p>
+  <button class="btn next" onclick="location.reload()">फिर से खेलो</button>
+</section>
+</div>
+
+<script>
+/* =========================================================
+   ASSET HOLDERS — चित्र और ऑडियो की फ़ाइलें यहाँ जोड़ें
+   img   : मुख्य शब्द का चित्र (खाली छोड़ने पर डैश वाला होल्डर दिखेगा)
+   aud   : मुख्य शब्द का ऑडियो
+   optAud: डिब्बों पर लिखे शब्दों के ऑडियो (शब्द: फ़ाइल)
+   कोई ऑडियो खाली हो तो browser की हिंदी आवाज़ / बनी हुई ध्वनि चलेगी।
+   ========================================================= */
+const AUDIO={startItext:'',itext:'',correct:'',wrong:'',khat:'',whistle:'',end:''};
+const START_ITEXT='कोई एक रेलगाड़ी चुनो और खेल शुरू करो।';
+const ITEXT='समान अर्थ वाले शब्द ढूँढो। डिब्बों को इंजन से जोड़ो।';
+/* छोटी रेलगाड़ी: 20 नए शब्द + पिछले (फूल वाले) widget के 5 कठिन शब्द (rev:true) — 2 डिब्बे
+   बड़ी रेलगाड़ी: 20 नए शब्द + छोटी रेलगाड़ी के 5 कठिन शब्द (rev:true) — 3 डिब्बे */
+const fill=R=>({img:'',aud:'',optAud:{},...R});
+const LEVELS={
+ 1:[
+ {w:'दीपक', ok:['दीया','दीप'], no:['बाती','तेल']},
+ {w:'किताब', ok:['पुस्तक','ग्रंथ'], no:['कलम','बस्ता']},
+ {w:'माँ', ok:['माता','जननी'], no:['मौसी','बहन'], rev:true},
+ {w:'शाम', ok:['संध्या','साँझ'], no:['सुबह','दोपहर']},
+ {w:'तोता', ok:['शुक','सुआ'], no:['मैना','कबूतर']},
+ {w:'गुस्सा', ok:['क्रोध','रोष'], no:['हँसी','डर']},
+ {w:'सिर', ok:['शीश','मस्तक'], no:['बाल','गर्दन']},
+ {w:'पेड़', ok:['वृक्ष','तरु'], no:['पौधा','डाल'], rev:true},
+ {w:'घड़ा', ok:['कलश','घट'], no:['थाली','कटोरी']},
+ {w:'भाई', ok:['भ्राता','सहोदर'], no:['बहन','चाचा']},
+ {w:'कौआ', ok:['काक','काग'], no:['कोयल','चील']},
+ {w:'गाय', ok:['गौ','धेनु'], no:['बछड़ा','भैंस']},
+ {w:'चाँद', ok:['चंद्रमा','शशि'], no:['तारा','सूरज'], rev:true},
+ {w:'हिरन', ok:['मृग','हरिण'], no:['बकरी','खरगोश']},
+ {w:'मछली', ok:['मीन','मत्स्य'], no:['मेंढक','कछुआ']},
+ {w:'बाग', ok:['उपवन','उद्यान'], no:['खेत','जंगल']},
+ {w:'पत्थर', ok:['पाषाण','शिला'], no:['मिट्टी','रेत']},
+ {w:'बंदर', ok:['वानर','कपि'], no:['भालू','गिलहरी'], rev:true},
+ {w:'भौंरा', ok:['भ्रमर','मधुकर'], no:['मधुमक्खी','तितली']},
+ {w:'कोयल', ok:['कोकिला','पिक'], no:['कौआ','तोता']},
+ {w:'जीभ', ok:['जिह्वा','रसना'], no:['दाँत','होंठ']},
+ {w:'नदी', ok:['सरिता','तटिनी'], no:['नहर','किनारा']},
+ {w:'हाथी', ok:['गज','हस्ती'], no:['सूँड़','ऊँट'], rev:true},
+ {w:'इच्छा', ok:['चाह','अभिलाषा'], no:['डर','गुस्सा']},
+ {w:'पहाड़', ok:['पर्वत','गिरि'], no:['चट्टान','घाटी']}
+ ],
+ 2:[
+ {w:'सुबह', ok:['प्रातः','सवेरा','भोर'], no:['शाम','रात','धूप']},
+ {w:'खुशी', ok:['प्रसन्नता','हर्ष','आनंद'], no:['दुख','हँसी','मुस्कान']},
+ {w:'भाई', ok:['भ्राता','सहोदर','बंधु'], no:['बहन','चाचा','पिता'], rev:true},
+ {w:'दुनिया', ok:['संसार','जगत','विश्व'], no:['देश','शहर','गाँव']},
+ {w:'बिजली', ok:['विद्युत','तड़ित','दामिनी'], no:['बादल','बारिश','गरज']},
+ {w:'शरीर', ok:['देह','तन','काया'], no:['हाथ','मन','चेहरा']},
+ {w:'आग', ok:['अग्नि','अनल','पावक'], no:['धुआँ','राख','लकड़ी']},
+ {w:'नदी', ok:['सरिता','तटिनी','तरंगिणी'], no:['नहर','किनारा','पुल'], rev:true},
+ {w:'बेटा', ok:['पुत्र','सुत','तनय'], no:['बेटी','पिता','भाई']},
+ {w:'समुद्र', ok:['सागर','सिंधु','जलधि'], no:['लहर','नदी','किनारा']},
+ {w:'जंगल', ok:['वन','कानन','अरण्य'], no:['पेड़','बाग','खेत']},
+ {w:'दुश्मन', ok:['शत्रु','बैरी','रिपु'], no:['मित्र','सैनिक','पड़ोसी']},
+ {w:'गाय', ok:['गौ','धेनु','सुरभि'], no:['बछड़ा','भैंस','बकरी'], rev:true},
+ {w:'घोड़ा', ok:['अश्व','हय','तुरंग'], no:['गधा','ऊँट','खच्चर']},
+ {w:'अमृत', ok:['सुधा','पीयूष','अमिय'], no:['विष','शहद','दूध']},
+ {w:'साँप', ok:['सर्प','नाग','भुजंग'], no:['केंचुआ','बिच्छू','नेवला']},
+ {w:'सुंदर', ok:['मनोहर','रमणीय','सुरम्य'], no:['बड़ा','कोमल','चमकीला']},
+ {w:'पत्थर', ok:['पाषाण','शिला','प्रस्तर'], no:['मिट्टी','रेत','ईंट'], rev:true},
+ {w:'सोना', ok:['स्वर्ण','कनक','कंचन'], no:['चाँदी','लोहा','गहना']},
+ {w:'मेहनत', ok:['परिश्रम','श्रम','उद्यम'], no:['आलस','आराम','खेल']},
+ {w:'राजा', ok:['नृप','भूप','महीप'], no:['रानी','महल','मंत्री']},
+ {w:'नाव', ok:['नौका','तरणी','तरी'], no:['पतवार','किनारा','जहाज़']},
+ {w:'गुस्सा', ok:['क्रोध','रोष','कोप'], no:['डर','हँसी','दुख'], rev:true},
+ {w:'तालाब', ok:['सरोवर','ताल','जलाशय'], no:['कुआँ','नहर','झरना']},
+ {w:'आकाश', ok:['नभ','अंबर','गगन'], no:['बादल','तारा','धरती']}
+ ]};
+LEVELS[1]=LEVELS[1].map(fill);LEVELS[2]=LEVELS[2].map(fill);
+const NUM={1:'एक',2:'दो',3:'तीन'};
+const COLORS=['#2E86AB','#F18F01','#6A4C93','#1B998B','#E84855','#3D5A80'];
+let rounds=[],r=0,filled=0,firstTry=0,miss=false,done=false,busy=false;
+const $=id=>document.getElementById(id);
+const reduce=false; // OS की 'animation बंद' सेटिंग से widget की हलचल नहीं रुकेगी
+
+/* ---- audio ---- */
+let AC;function ac(){return AC||(AC=new (window.AudioContext||window.webkitAudioContext)())}
+function tone(f,d,type='sine',v=.18,delay=0,f2){try{const c=ac(),o=c.createOscillator(),g=c.createGain();o.type=type;o.frequency.setValueAtTime(f,c.currentTime+delay);if(f2)o.frequency.linearRampToValueAtTime(f2,c.currentTime+delay+d);g.gain.setValueAtTime(v,c.currentTime+delay);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+delay+d);o.connect(g).connect(c.destination);o.start(c.currentTime+delay);o.stop(c.currentTime+delay+d)}catch(e){}}
+let player=new Audio();
+function playFile(src){if(!src)return false;try{player.pause();player=new Audio(src);player.play().catch(()=>{});return true}catch(e){return false}}
+function speak(t){try{if(!('speechSynthesis'in window))return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='hi-IN';u.rate=.85;speechSynthesis.speak(u)}catch(e){}}
+function voice(src,text){if(!playFile(src))speak(text)}
+function khat(){if(playFile(AUDIO.khat))return;try{const c=ac(),n=c.sampleRate*.08,b=c.createBuffer(1,n,c.sampleRate),d=b.getChannelData(0);for(let i=0;i<n;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/n,3);const s=c.createBufferSource(),g=c.createGain();g.gain.value=.5;s.buffer=b;s.connect(g).connect(c.destination);s.start();tone(140,.08,'square',.12)}catch(e){}}
+const whistle=()=>{if(!playFile(AUDIO.whistle)){tone(1100,.35,'sine',.16,0,1250);tone(1100,.6,'sine',.16,.42,1250)}};
+const sBad=()=>{if(!playFile(AUDIO.wrong))tone(200,.25,'triangle',.15)};
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+
+/* ---- train movement: दाईं ओर जाती है, बाईं ओर से आती है ---- */
+function sceneW(){return $('scene').getBoundingClientRect().width+40}
+function enterFromLeft(cb){const t=$('train');t.classList.remove('anim');t.style.transform=`translateX(${-sceneW()}px)`;void t.offsetWidth;
+ if(reduce){t.style.transform='translateX(0)';cb&&cb();return}
+ t.classList.add('anim','puff');t.style.transform='translateX(0)';setTimeout(()=>{t.classList.remove('puff');cb&&cb()},1550)}
+function exitRight(cb){const t=$('train');if(reduce){cb();return}
+ t.classList.add('anim','puff');t.style.transform=`translateX(${sceneW()}px)`;setTimeout(()=>{t.classList.remove('puff');cb()},1550)}
+
+/* ---- game ---- */
+function load(){
+ const R=rounds[r];filled=0;miss=false;done=false;busy=true;
+ $('meta').textContent=`स्टेशन ${r+1} / ${rounds.length}`;
+ const ih=$('imgHolder');
+ if(R.img){ih.className='img-holder has-img';ih.innerHTML=`<img src="${R.img}" alt="${R.w}">`}else{ih.className='img-holder';ih.textContent=`चित्र: ${R.w}`}
+ $('sign').textContent=`स्टेशन: ${R.w}`;say('','');
+ $('ansBtn').disabled=true;$('nextBtn').disabled=true;
+ $('nextBtn').textContent=r<rounds.length-1?'अगला उदाहरण ➜':'परिणाम देखें ➜';
+ $('train').innerHTML=R.ok.map(()=>`<div class="slot empty"><div class="box"></div><div class="wheels"><i></i><i></i></div><div class="coupler"></div></div>`).join('')+
+  `<div class="engine"><div class="smoke">💨</div><div class="chim"></div><div class="cab"></div><div class="body">${R.w}</div><div class="front"></div><div class="wheels"><i></i><i></i><i></i></div></div>`;
+ $('platform').innerHTML='';
+ shuffle([...R.ok.map(w=>({w,ok:1})),...R.no.map(w=>({w,ok:0}))]).forEach((o,i)=>{
+  const c=document.createElement('div');c.className='coach';c.dataset.ok=o.ok;c.dataset.w=o.w;c.style.setProperty('--c',COLORS[i%COLORS.length]);
+  c.innerHTML=`<div class="box">${o.w}</div><div class="wheels"><i></i><i></i></div>`;c.setAttribute('aria-label','डिब्बा: '+o.w);
+  dragify(c);$('platform').appendChild(c)});
+ enterFromLeft(()=>{busy=false;$('ansBtn').disabled=false;$('nextBtn').disabled=false;voice(R.aud,R.w)});
+}
+function nextSlot(){const s=[...document.querySelectorAll('.slot.empty')];return s[s.length-1]} // इंजन के सबसे पास वाला
+function dragify(el){
+ el.tabIndex=0;el.setAttribute('role','button');
+ el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();attempt(el)}});
+ el.addEventListener('pointerdown',e=>{if(el.dataset.locked||done||busy)return;e.preventDefault();ac();
+  const sx=e.clientX,sy=e.clientY;let moved=false;el.setPointerCapture(e.pointerId);el.classList.add('dragging');
+  const mv=ev=>{const dx=ev.clientX-sx,dy=ev.clientY-sy;if(Math.hypot(dx,dy)>6)moved=true;if(moved)el.style.transform=`translate(${dx}px,${dy}px) rotate(-3deg)`};
+  const up=ev=>{['pointermove','pointerup','pointercancel'].forEach((n,i)=>el.removeEventListener(n,i?up:mv));el.classList.remove('dragging');el.style.transform='';
+   if(!moved){attempt(el);return}
+   const sr=$('scene').getBoundingClientRect();if(ev.clientY>=sr.top&&ev.clientY<=sr.bottom+10)attempt(el)};
+  el.addEventListener('pointermove',mv);el.addEventListener('pointerup',up);el.addEventListener('pointercancel',up)});
+}
+function attachCoach(el,cb){
+ el.dataset.locked=1;const slot=nextSlot();
+ const from=el.getBoundingClientRect(),to=slot.getBoundingClientRect();
+ const a=el.animate([{transform:'translate(0,0)'},{transform:`translate(${to.left-from.left}px,${to.top-from.top}px)`}],{duration:reduce?1:450,easing:'ease-in-out',fill:'forwards'});
+ a.onfinish=()=>{khat();slot.classList.remove('empty');const b=slot.querySelector('.box');b.textContent=el.dataset.w;b.classList.add('coach-fill');
+  b.style.setProperty('--c',el.style.getPropertyValue('--c'));el.style.visibility='hidden';filled++;cb&&cb()};
+}
+function trainComplete(){
+ const R=rounds[r];done=true;$('ansBtn').disabled=true;
+ document.querySelectorAll('.coach').forEach(c=>{if(!c.dataset.locked)c.classList.add('faded')});
+ setTimeout(()=>{whistle();$('train').classList.add('puff');setTimeout(()=>$('train').classList.remove('puff'),1200)},300);
+}
+function attempt(el){
+ if(done||busy||el.dataset.locked)return;const R=rounds[r];
+ if(el.dataset.ok==='1'){
+  if(!playFile(AUDIO.correct))tone(660,.12);voice(R.optAud[el.dataset.w],el.dataset.w);
+  attachCoach(el,()=>{
+   if(filled===R.ok.length){if(!miss)firstTry++;say('','');trainComplete()}
+   else say('','')});
+ }else{
+  sBad();miss=true;el.classList.add('shake');setTimeout(()=>el.classList.remove('shake'),460);say('','');
+ }
+}
+function showAnswer(){
+ if(done||busy)return;const R=rounds[r];miss=true;done=true;$('ansBtn').disabled=true;
+ const rest=[...document.querySelectorAll('.coach')].filter(c=>c.dataset.ok==='1'&&!c.dataset.locked);
+ document.querySelectorAll('.coach').forEach(c=>{if(c.dataset.ok!=='1')c.classList.add('faded')});
+ const list=R.ok.map(w=>'‘'+w+'’');const joined=list.length>2?list.slice(0,-1).join(', ')+' और '+list[list.length-1]:list.join(' और ');
+ say(`सही उत्तर: ‘${R.w}’ के समान अर्थ वाले शब्द हैं — ${joined}।`,'info');
+ speak(`${R.w} के समान अर्थ वाले शब्द हैं ${R.ok.join(', ')}`);
+ rest.forEach((c,i)=>setTimeout(()=>attachCoach(c,()=>{if(filled===R.ok.length)trainComplete()}),i*550));
+}
+function next(){
+ if(busy)return;busy=true;try{speechSynthesis.cancel()}catch(e){}
+ $('ansBtn').disabled=true;$('nextBtn').disabled=true;say('','');
+ document.querySelectorAll('.coach').forEach(c=>c.classList.add('faded'));
+ whistle();
+ exitRight(()=>{r++;if(r<rounds.length)load();else finish()});
+}
+function finish(){$('game').style.display='none';$('end').style.display='flex';$('meta').textContent='';
+ $('score').textContent=`${rounds.length} में से ${firstTry} रेलगाड़ियाँ तुमने खुद, बिना गलती के तैयार कीं!`;
+ if(!playFile(AUDIO.end))whistle()}
+function say(t,c){$('msg').textContent=t;$('msg').className='msg '+c}
+$('sayWord').onclick=()=>voice(rounds[r].aud,rounds[r].w);
+$('sayItext').onclick=()=>voice(AUDIO.itext,ITEXT);
+$('ansBtn').onclick=showAnswer;
+$('nextBtn').onclick=next;
+$('itext').textContent=ITEXT;
+$('startItext').textContent=START_ITEXT;
+$('sayStart').onclick=()=>voice(AUDIO.startItext,START_ITEXT);
+document.querySelectorAll('.lvl').forEach(b=>b.onclick=()=>{ac();rounds=LEVELS[b.dataset.l];
+ $('start').style.display='none';$('game').style.display='flex';load()});
+</script>
+</body>
+</html>
