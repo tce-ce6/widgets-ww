@@ -127,9 +127,21 @@
     "wg200-o-aur-au-kee-maatra-mein-antar-gujrati": {
       "updatedAt": "2026-10-06T18:27:14+05:30",
       "author": "tce-ashishg"
+    },
+    "wg202-egyptian-museum": {
+      "updatedAt": "2026-10-13T12:53:32+05:30",
+      "author": "tce-nitinc"
     }
   },
   "commits": [
+    {
+      "date": "2026-10-13T12:53:32+05:30",
+      "author": "tce-nitinc",
+      "message": "added wg-202",
+      "widgets": [
+        202
+      ]
+    },
     {
       "date": "2026-10-09T17:03:30+05:30",
       "author": "tce-ashishg",
@@ -386,17 +398,6 @@
       "message": "hover effect removed",
       "widgets": [
         181
-      ]
-    },
-    {
-      "date": "2026-09-28T18:09:38+05:30",
-      "author": "tce-ashishg",
-      "message": "wg181 structuring done",
-      "widgets": [
-        162,
-        176,
-        181,
-        197
       ]
     }
   ]
