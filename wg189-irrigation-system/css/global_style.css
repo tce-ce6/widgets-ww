@@ -318,12 +318,11 @@ button:disabled{
     font-size: 35px;
     font-weight: 600;
     text-align: left;
-    background: #1e6bef;
+    background: #09f2ec;
     padding: 15px 50px;
-    color: #fff;
+    color: #000;
     border-radius: 0 0px 30px 30px;
-    background: #099eed;
-    background: linear-gradient(90deg, #099eed 0%, #1779e6 48%, #09f 100%);
+    /* background: linear-gradient(90deg, #099eed 0%, #1779e6 48%, #09f 100%); */
     margin: 0px 0px;
     position: absolute;
     top: 0;
