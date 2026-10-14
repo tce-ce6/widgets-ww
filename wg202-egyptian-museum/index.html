@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Egyptian Civilisation Museum</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="./css/global_style.css">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+  <noscript>This interactive widget needs JavaScript to run.</noscript>
+
+  <!-- Polite live region so screen readers hear feedback messages -->
+  <div id="liveRegion" class="sr-only" aria-live="polite"></div>
+
+  <div id="viewport">
+    <!-- Fixed 1920x1080 design stage, scaled to fit the window by script.js -->
+    <div id="stage">
+
+      <div class="museum-banner"><h1>The Egyptian Civilisation Museum</h1></div>
+      <button id="soundToggle" class="sound-toggle" type="button" aria-pressed="true" aria-label="Sound on. Tap to mute.">
+        <span aria-hidden="true">&#9835;</span>
+      </button>
+
+      <!-- SCREEN 1: TITLE -->
+      <section id="screen-title" class="screen" data-screen="title" aria-label="Museum entrance">
+        <div id="titleLottie" class="screen__lottie" role="img" aria-label="The front of the Egyptian Civilisation Museum at sunset, guarded by two jackal statues."></div>
+        <p class="hint-pill hint-pill--title">Click the downward arrow to open the museum door.</p>
+        <button id="btnOpenDoor" class="arrow-btn" type="button" aria-label="Open the museum door">
+          <img src="assets/svg/intro-arrow.svg" alt="">
+        </button>
+      </section>
+
+      <!-- SCREEN 2: RECEPTION HALL -->
+      <section id="screen-reception" class="screen" data-screen="reception" aria-label="Reception hall">
+        <div id="receptionLottie" class="screen__lottie" role="img" aria-label="The museum reception hall with a pharaoh's coffin, pottery, a papyrus scroll, a winged symbol and statues."></div>
+        <div class="reception-scroll">
+          <img class="reception-scroll__bg" src="assets/svg/reception-scroll.svg" alt="">
+          <div class="welcome-ribbon"><h2>Welcome, Explorer.</h2></div>
+          <p>Everything in this museum was pieced together from things people left behind&hellip; Four galleries lie ahead. Walk through these galleries, observe and solve the challenges.</p>
+        </div>
+        <button id="btnFirstKey" class="btn btn--maroon reception-btn" type="button">Collect Your First Key</button>
+      </section>
+
+      <!-- SCREEN 3 / 6 / 10 / 14: KEEPER'S HALL -->
+      <section id="screen-hub" class="screen screen--wall" data-screen="hub" aria-labelledby="hubTitle">
+        <img class="screen__bg" src="assets/images/wall.png" alt="">
+        <div class="screen__tint"></div>
+        <h2 id="hubTitle" class="sr-only">The Keeper's Hall</h2>
+        <p class="hint-pill hint-pill--hub">Four galleries, four keys. Solve a gallery to earn its seal and unlock the next. Tap a glowing key to begin.</p>
+        <ul id="cardList" class="card-list"></ul>
+      </section>
+
+      <!-- SCREEN 4-5: SOURCES GALLERY -->
+      <section id="screen-sources" class="screen screen--wall gallery" data-screen="sources"
+               data-gallery="0" data-title="How We Know" aria-labelledby="title-sources">
+        <img class="screen__bg" src="assets/images/wall.png" alt="">
+        <div class="screen__tint"></div>
+        <p class="itext">Drag one object onto another, then answer the question about what they reveal together.</p>
+        <div id="objectRow" class="object-row"></div>
+        <p id="tableNote" class="table-note" hidden>Keep pairing objects for as long as you like, or claim your key and move on.</p>
+        <button id="btnClaimTable" class="btn btn--yellow table-claim" type="button" hidden>Claim the Key</button>
+
+        <!-- Overlay: What can you claim? -->
+        <div id="claimOverlay" class="overlay claim" hidden role="dialog" aria-modal="true" aria-labelledby="claimTitle">
+          <div class="panel"><div class="panel__bar"><h2 id="claimTitle" class="ribbon">What Can You Claim?</h2></div></div>
+          <button id="btnClaimClose" class="icon-btn claim__close" type="button" aria-label="Close and choose other objects"><img src="assets/svg/icon-close.svg" alt=""></button>
+          <p id="claimPairName" class="claim__pair"></p>
+          <div id="claimObjects" class="claim__objects"></div>
+          <p class="claim__itext">Tap the claim that only works if you use both objects.</p>
+          <div id="slipGrid" class="slip-grid"></div>
+          <p id="claimFeedback" class="claim__feedback" role="status"></p>
+          <button id="btnDig" class="btn btn--amber claim__dig" type="button" hidden>Dig</button>
+          <button id="btnClaimKey" class="btn btn--yellow claim__key" type="button" hidden>Claim the Key</button>
+
+          <div id="infoModal" class="info-modal" hidden role="dialog" aria-modal="true" aria-labelledby="infoTitle">
+            <div class="info-modal__card">
+              <p id="infoPair" class="info-modal__pair"></p>
+              <h3 id="infoTitle" class="info-modal__title"></h3>
+              <p id="infoBody" class="info-modal__body"></p>
+            </div>
+            <button id="btnInfoClose" class="icon-btn info-modal__close" type="button" aria-label="Close information"><img src="assets/svg/icon-close.svg" alt=""></button>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 7: DRAW THE NILE -->
+      <section id="screen-nile" class="screen screen--wall gallery" data-screen="nile"
+               data-gallery="1" data-title="Draw the Nile" aria-labelledby="title-nile">
+        <img class="screen__bg" src="assets/images/wall.png" alt="">
+        <div class="screen__tint"></div>
+        <p class="itext">Trace the course of the Nile on the map, then tap Submit.</p>
+        <div id="mapWrap" class="map-wrap">
+          <img src="assets/images/nile-river.png" alt="A map of Egypt without its river. It shows the Mediterranean Sea at the top, the Delta, Lower and Upper Egypt, the Gulf of Suez and the cities Giza, Memphis, Sakkara, Heliopolis, Turah and Hermopolis.">
+          <canvas id="nileCanvas" width="760" height="507" aria-label="Drawing area. Trace the Nile on the map with a finger, stylus or mouse."></canvas>
+        </div>
+        <div class="nile-buttons">
+          <button id="btnNileClear" class="btn btn--pink" type="button">Clear</button>
+          <button id="btnNileSubmit" class="btn btn--green" type="button">Submit</button>
+        </div>
+        <div id="nileFeedback" class="nile-feedback" role="status" hidden>
+          <img class="nile-feedback__icon" src="assets/svg/icon-correct.svg" alt="">
+          <p></p>
+        </div>
+        <button id="btnNileNext" class="btn btn--yellow next-btn" type="button" hidden>Next: The Farming Year</button>
+      </section>
+
+      <!-- SCREEN 8: THE FARMING YEAR -->
+      <section id="screen-season" class="screen screen--wall gallery" data-screen="season"
+               data-gallery="1" data-title="The Farming Year" aria-labelledby="title-season">
+        <img class="screen__bg" src="assets/images/wall.png" alt="">
+        <div class="screen__tint"></div>
+        <p class="itext">The Egyptian year turned through three seasons. Spin the wheel round and name the season the pointer lands on by dragging the right label below the image.</p>
+        <div class="wheel-zone">
+          <div class="wheel-pointer" aria-hidden="true"></div>
+          <div id="wheel" class="wheel" tabindex="0" role="slider" aria-label="Season wheel. Use the left and right arrow keys or drag to turn."
+               aria-valuemin="0" aria-valuemax="2" aria-valuenow="0" aria-valuetext="Blue segment"></div>
+          <p id="wheelHint" class="wheel-hint">Name this season</p>
+        </div>
+        <figure class="season-frame"><img id="seasonImg" src="assets/images/01-autumn.png" alt="The Nile flooding the fields."></figure>
+        <button id="seasonPlacard" class="placard season-placard" type="button" aria-label="Season placard. Drop the season label here.">Drag here</button>
+        <div id="seasonTray" class="season-tray"></div>
+        <p id="seasonNote" class="note-strip" role="status"></p>
+        <button id="btnSeasonNext" class="btn btn--yellow next-btn" type="button" hidden>Next: What the River Gave</button>
+      </section>
+
+      <!-- SCREEN 9: WHAT THE RIVER GAVE -->
+      <section id="screen-river" class="screen screen--wall gallery" data-screen="river"
+               data-gallery="1" data-title="What the River Gave" aria-labelledby="title-river">
+        <img class="screen__bg" src="assets/images/wall.png" alt="">
+        <div class="screen__tint"></div>
+        <p class="itext">Four scenes, four ways the Nile was turned into farmland. Read the labels and drag each one to its scene.</p>
+        <div id="riverScenes" class="scene-row scene-row--4"></div>
+        <div id="riverTray" class="tray tray--4"></div>
+        <p id="riverNote" class="note-strip" role="status"></p>
+        <button id="btnRiverDone" class="btn btn--yellow next-btn" type="button" hidden>Return to the Keeper's Hall</button>
+      </section>
+
+      <!-- SCREEN 11: THE SOCIAL PYRAMID -->
+      <section id="screen-pyramid" class="screen screen--wall gallery" data-screen="pyramid"
+               data-gallery="2" data-title="The Social Pyramid" aria-labelledby="title-pyramid">
+        <img class="screen__bg" src="assets/images/wall.png" alt="">
+        <div class="screen__tint"></div>
+        <p class="itext">Each tier of this pyramid holds a painting of one class of Egyptian society. Drag the rank names onto the tier they belong to.</p>
+        <div id="pyramid" class="pyramid"></div>
+        <aside class="curator-notes" aria-live="polite">
+          <h3>Curator's Notes</h3>
+          <p id="curatorText">Match a rank to reveal what that class did.</p>
+        </aside>
+        <div id="pyramidTray" class="pyramid-tray"></div>
+        <p id="pyramidNote" class="note-strip note-strip--pyramid" role="status"></p>
+        <button id="btnInsights" class="insights-btn" type="button" hidden aria-label="Insights">
+          <img src="assets/svg/icon-insights.svg" alt=""><span>Insights</span>
+        </button>
+        <button id="btnPyramidNext" class="btn btn--yellow next-btn next-btn--right" type="button" hidden>Next: Portrait of a Queen</button>
+
+        <div id="insightModal" class="overlay insight" hidden role="dialog" aria-modal="true" aria-labelledby="insightTitle">
+          <div class="info-modal__card insight__card">
+            <h3 id="insightTitle">The Classes Of Egypt</h3>
+            <dl id="insightList"></dl>
+          </div>
+          <button id="btnInsightClose" class="icon-btn info-modal__close" type="button" aria-label="Close insights"><img src="assets/svg/icon-close.svg" alt=""></button>
+        </div>
+      </section>
+
+      <!-- SCREEN 12-13: PICTURE RESTORATION -->
+      <section id="screen-portrait" class="screen screen--wall gallery" data-screen="portrait"
+               data-gallery="2" data-title="Portrait of a Queen" aria-labelledby="title-portrait">
+        <img class="screen__bg" src="assets/images/wall.png" alt="">
+        <div class="screen__tint"></div>
+        <p class="itext">The frame has been shattered. Tap two tiles at a time to swap them and restore the picture and then answer the question that follows.</p>
+        <div id="puzzleGrid" class="puzzle-grid" role="group" aria-label="Picture puzzle"></div>
+        <p id="puzzleCaption" class="puzzle-caption" role="status"></p>
+        <div class="question-card">
+          <div id="questionBody" class="question-card__body">
+            <p id="questionText" class="question-card__text"></p>
+            <div id="optionList" class="option-list"></div>
+            <p id="questionFeedback" class="question-card__feedback" role="status"></p>
+          </div>
+          <div id="questionVeil" class="question-card__veil"><p>Restore the picture first</p></div>
+        </div>
+        <button id="btnPortraitNext" class="btn btn--yellow next-btn" type="button" hidden>Next</button>
+      </section>
+
+      <!-- SCREEN 15: LEISURE BY THE RIVER -->
+      <section id="screen-leisure" class="screen screen--wall gallery" data-screen="leisure"
+               data-gallery="3" data-title="Leisure by the River" aria-labelledby="title-leisure">
+        <img class="screen__bg" src="assets/images/wall.png" alt="">
+        <div class="screen__tint"></div>
+        <p class="itext">Egypt was not all work. Drag each label to the pastime it names.</p>
+        <div id="leisureScenes" class="scene-row scene-row--5"></div>
+        <div id="leisureTray" class="tray tray--7"></div>
+        <p id="leisureNote" class="note-strip" role="status"></p>
+        <button id="btnLeisureNext" class="btn btn--yellow next-btn" type="button" hidden>Way to the Festival Procession &rarr;</button>
+      </section>
+
+      <!-- SCREEN 16: INSIDE THE PROCESSION -->
+      <section id="screen-procession" class="screen screen--wall gallery" data-screen="procession"
+               data-gallery="3" data-title="Inside the Procession" aria-labelledby="title-procession">
+        <img class="screen__bg" src="assets/images/wall.png" alt="">
+        <div class="screen__tint"></div>
+        <p class="itext">A god's statue is being carried through the streets. Drag each label to the part of the festival it names.</p>
+        <div id="processionScenes" class="scene-row scene-row--6"></div>
+        <div id="processionTray" class="tray tray--6"></div>
+        <p id="processionNote" class="note-strip" role="status"></p>
+        <button id="btnProcessionNext" class="btn btn--yellow next-btn" type="button" hidden>Begin the Procession</button>
+      </section>
+
+      <!-- SCREEN 17: THE HALL OF ECHOES -->
+      <section id="screen-echoes" class="screen screen--wall gallery" data-screen="echoes"
+               data-gallery="3" data-title="The Hall of Echoes" aria-labelledby="title-echoes">
+        <img class="screen__bg" src="assets/images/wall.png" alt="">
+        <div class="screen__tint"></div>
+        <p class="itext">A god's statue is carried out of the temple and through the streets. Stand still and let it pass.</p>
+        <div id="processionView" class="procession-view" role="img"
+             aria-label="A festival procession passing from left to right: women shaking sistrums, priests with standards, bearers carrying the god's statue on a barque, and a crowd bowing low.">
+          <div id="processionLottie" class="procession-view__lottie" aria-hidden="true"></div>
+        </div>
+        <ul id="soundChips" class="sound-chips" aria-label="Sounds of the procession">
+          <li data-chip="sistrum">Sistrum</li>
+          <li data-chip="drums">Drums</li>
+          <li data-chip="voices">Voices</li>
+          <li data-chip="statue">The Statue</li>
+        </ul>
+        <button id="btnBegin" class="btn btn--yellow echo-btn" type="button">Begin the Procession</button>
+        <button id="btnFinish" class="btn btn--yellow echo-btn" type="button" hidden>Collect the Curator's Seal</button>
+        <div id="closingLine" class="closing-line" role="status" hidden>
+          <p>The statue was carried out to the people, not kept inside the temple. Why?</p>
+        </div>
+      </section>
+
+      <!-- SCREEN 18: END -->
+      <section id="screen-end" class="screen screen--wall screen--end" data-screen="end" aria-labelledby="endTitle">
+        <img class="screen__bg" src="assets/images/wall.png" alt="">
+        <div class="screen__tint screen__tint--dark"></div>
+        <img class="seal-tray" src="assets/svg/seal-tray.svg" alt="All four gallery seals are earned.">
+        <div class="end-card">
+          <img class="end-card__medal" src="assets/svg/seal-medal.svg" alt="A gold medallion showing a pharaoh's mask on a red ribbon.">
+          <p class="end-card__label">MUSEUM EXPLORATION COMPLETE</p>
+          <h2 id="endTitle">You Have Earned the Curator's Seal</h2>
+          <p class="end-card__text">All four galleries are open. The museum is yours to explore again whenever you wish.</p>
+        </div>
+        <button id="btnExploreAgain" class="btn btn--yellow end-btn" type="button">Explore Again</button>
+      </section>
+
+    </div>
+  </div>
+
+  <div id="rotateHint" class="rotate-hint" hidden>
+    <p>Please turn your device sideways for the best view of the museum.</p>
+  </div>
+
+  <script src="./js/lottie.min.js"></script>
+  <script src="./js/script.js"></script>
+</body>
+</html>

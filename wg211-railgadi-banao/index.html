@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="hi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>रेलगाड़ी तैयार करो!</title>
+
+  <link rel="stylesheet" href="./css/global_style.css">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body id="railgadi-widget">
+  <div class="container">
+    <div class="mainContainerOuter">
+      <div id="viewport">
+        <!-- Fixed 1920x1080 design stage, scaled to fit the window by script.js -->
+        <div id="stage">
+          <img class="stage-bg" src="assets/images/bg.svg" alt="">
+
+          <div class="wdgetTitle">
+            <h2>रेलगाड़ी तैयार करो!</h2>
+            <span id="versionId" class="versionText">b4_wg211_261013_01</span>
+          </div>
+
+          <!-- ============ LEVEL SCREEN ============ -->
+          <section id="screen-level" class="screen is-active" aria-label="रेलगाड़ी चुनो">
+            <div class="itext itext--level">
+              <p id="levelItext"></p>            </div>
+            <div class="level-panels">
+              <button class="level-panel" type="button" data-level="choti">
+                <img src="assets/images/panel-choti.svg" alt="">
+                <span class="level-panel__name">छोटी रेलगाड़ी</span>
+                <span class="level-panel__hint">2 डिब्बे जोड़ो</span>
+              </button>
+              <button class="level-panel" type="button" data-level="badi">
+                <img src="assets/images/panel-badi.svg" alt="">
+                <span class="level-panel__name">बड़ी रेलगाड़ी</span>
+                <span class="level-panel__hint">3 डिब्बे जोड़ो</span>
+              </button>
+            </div>
+          </section>
+
+          <!-- ============ GAME SCREEN ============ -->
+          <section id="screen-game" class="screen" aria-label="रेलगाड़ी तैयार करो">
+            <div class="itext itext--game">
+              <p id="gameItext"></p>            </div>
+
+            <div class="train" id="train" aria-live="polite"></div>
+            <div class="platform" id="platform" aria-label="प्लेटफ़ॉर्म"></div>
+
+            <div class="action-btns">
+              <button class="pill-btn pill-btn--answer" id="answerBtn" type="button">उत्तर देखें</button>
+              <button class="pill-btn pill-btn--next" id="nextBtn" type="button">अगला उदाहरण</button>
+            </div>
+
+            <button class="home-btn" id="homeBtn" type="button" aria-label="रेलगाड़ी चुनने वाली स्क्रीन पर जाओ">
+              <img src="assets/images/home-btn.svg" alt="">
+            </button>
+          </section>
+
+          <!-- ============ END SCREEN ============ -->
+          <section id="screen-end" class="screen" aria-label="परिणाम">
+            <div class="summary">
+              <img class="summary__bg" src="assets/images/feedback-panel.svg" alt="">
+              <div class="summary__trophy" id="trophy"></div>
+              <h3 class="summary__title">सभी स्टेशन पूरे!</h3>
+              <p class="summary__score" id="scoreText"></p>
+              <button class="pill-btn pill-btn--replay" id="replayBtn" type="button">फिर से खेलो</button>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./js/lottie.js"></script>
+  <script src="./js/trophy-data.js"></script>
+  <script src="./js/script.js"></script>
+</body>
+
+</html>

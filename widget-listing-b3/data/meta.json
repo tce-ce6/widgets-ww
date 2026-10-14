@@ -105,7 +105,7 @@
       "author": "tce-ashishg"
     },
     "wg195-chitra-dekh-kar-vakya-banaye": {
-      "updatedAt": "2026-10-08T19:01:39+05:30",
+      "updatedAt": "2026-10-09T17:03:30+05:30",
       "author": "tce-ashishg"
     },
     "wg196-perfect-pairs": {
@@ -127,9 +127,57 @@
     "wg200-o-aur-au-kee-maatra-mein-antar-gujrati": {
       "updatedAt": "2026-10-06T18:27:14+05:30",
       "author": "tce-ashishg"
+    },
+    "wg202-egyptian-museum": {
+      "updatedAt": "2026-10-13T12:53:32+05:30",
+      "author": "tce-nitinc"
+    },
+    "wg211-railgadi-banao": {
+      "updatedAt": "2026-10-13T18:23:56+05:30",
+      "author": "tce-nitinc"
     }
   },
   "commits": [
+    {
+      "date": "2026-10-13T18:23:56+05:30",
+      "author": "tce-nitinc",
+      "message": "wg211 fixes",
+      "widgets": [
+        211
+      ]
+    },
+    {
+      "date": "2026-10-13T17:22:45+05:30",
+      "author": "tce-nitinc",
+      "message": "asded new widget wg211",
+      "widgets": [
+        211
+      ]
+    },
+    {
+      "date": "2026-10-13T12:53:32+05:30",
+      "author": "tce-nitinc",
+      "message": "added wg-202",
+      "widgets": [
+        202
+      ]
+    },
+    {
+      "date": "2026-10-09T17:03:30+05:30",
+      "author": "tce-ashishg",
+      "message": "img updated",
+      "widgets": [
+        195
+      ]
+    },
+    {
+      "date": "2026-10-09T16:34:07+05:30",
+      "author": "tce-ashishg",
+      "message": "img updated",
+      "widgets": [
+        195
+      ]
+    },
     {
       "date": "2026-10-08T19:01:39+05:30",
       "author": "tce-ashishg",
@@ -352,50 +400,6 @@
       "widgets": [
         160,
         181,
-        196
-      ]
-    },
-    {
-      "date": "2026-09-29T17:27:18+05:30",
-      "author": "tce-ashishg",
-      "message": "wg194 issues resolved",
-      "widgets": [
-        194,
-        197
-      ]
-    },
-    {
-      "date": "2026-09-28T19:18:54+05:30",
-      "author": "tce-ashishg",
-      "message": "hover effect removed",
-      "widgets": [
-        181
-      ]
-    },
-    {
-      "date": "2026-09-28T18:09:38+05:30",
-      "author": "tce-ashishg",
-      "message": "wg181 structuring done",
-      "widgets": [
-        162,
-        176,
-        181,
-        197
-      ]
-    },
-    {
-      "date": "2026-09-28T15:22:03+05:30",
-      "author": "tce-ashishg",
-      "message": "wg197 started and completed",
-      "widgets": [
-        197
-      ]
-    },
-    {
-      "date": "2026-09-28T13:14:27+05:30",
-      "author": "tce-ashishg",
-      "message": "wg196 issue resolved",
-      "widgets": [
         196
       ]
     }
