@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Capitals of Indian States and Union Territories</title>
+
+  <link rel="stylesheet" href="./css/global_style.css">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body id="capitals-widget">
+  <div class="container">
+    <div class="mainContainerOuter">
+      <div id="viewport">
+        <!-- Fixed 1920x1080 design stage, scaled to fit the window by script.js -->
+        <div id="stage">
+
+
+          <!-- ============ GATEWAY SCREEN ============ -->
+          <section id="screen-intro" class="screen is-active" aria-label="Choose a gateway">
+            <p class="itext itext--intro">Choose any one Gateway and tap “<b>Start Journey</b>” to explore the Indian
+              states/Union territories and their capital.</p>
+            <div class="gateways" id="gateways"></div>
+          </section>
+
+          <!-- ============ JOURNEY SCREEN ============ -->
+          <section id="screen-game" class="screen" aria-label="Journey">
+            <p class="itext itext--game" id="gameItext" aria-live="polite"></p>
+
+            <div class="clue-box">
+              <img class="clue-box__icon" src="assets/images/clue-bulb.svg" alt="">
+              <p class="clue-box__text" id="clueText"></p>
+            </div>
+
+            <div class="state-list">
+              <h3 class="state-list__title" id="stateListTitle"></h3>
+              <ul class="state-list__items" id="stateList"></ul>
+            </div>
+
+            <div class="signal" role="img" id="signal" aria-label="Signal: red">
+              <span class="signal__light signal__light--red is-on"></span>
+              <span class="signal__light signal__light--yellow"></span>
+              <span class="signal__light signal__light--green"></span>
+            </div>
+
+            <div class="feedback" id="feedback" role="status" hidden>
+              <img class="feedback__bg" id="feedbackBg" src="" alt="">
+              <p class="feedback__text" id="feedbackText"></p>
+            </div>
+
+            <div class="capital-popup" id="capitalPopup" hidden>
+              <h3 class="capital-popup__title">List of Capitals:</h3>
+              <div class="capital-popup__list" id="capitalList" role="group" aria-label="Capitals"></div>
+            </div>
+
+            <button class="home-btn" id="homeBtn" type="button" aria-label="Home">
+              <img src="assets/images/home-btn.svg" alt="">
+            </button>
+            <button class="pill-btn pill-btn--insights" id="insightsBtn" type="button">
+              <img src="assets/images/insights-icon.svg" alt="">Insights
+            </button>
+            <button class="pill-btn pill-btn--answer" id="answerBtn" type="button">Show Answer</button>
+            <button class="pill-btn pill-btn--proceed" id="proceedBtn" type="button" disabled>Proceed</button>
+
+            <!-- map -->
+            <div class="map-panel" id="mapPanel">
+              <svg class="map" id="map" xmlns="http://www.w3.org/2000/svg" role="group" aria-label="Map of India"></svg>
+              <svg class="map-overlay" id="mapOverlay" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path class="trail" id="trail" d=""></path>
+                <g id="pins"></g>
+              </svg>
+              <div class="map-labels" id="mapLabels"></div>
+              <div class="plane" id="plane" hidden></div>
+              <div class="celebration" id="celebration" hidden></div>
+
+              <div class="map-compass" aria-hidden="true">
+                <span class="map-compass__n">N</span>
+                <img src="assets/images/north-arrow.svg" alt="">
+              </div>
+              <span class="map-title" aria-hidden="true">INDIA</span>
+
+              <div class="zoom-controls">
+                <button class="zoom-btn" id="zoomIn" type="button" aria-label="Zoom in">+</button>
+                <button class="zoom-btn" id="zoomOut" type="button" aria-label="Zoom out">&minus;</button>
+                <button class="zoom-btn zoom-btn--reset" id="zoomReset" type="button" aria-label="Reset zoom">&#8634;</button>
+              </div>
+            </div>
+          </section>
+
+        </div>
+      </div>
+      <!-- Modals live in their own scaled layer above the body::before backdrop,
+           so the dark backdrop can cover the whole viewport, not just the stage. -->
+      <div id="modal-layer">
+        <div id="modal-stage">
+          <!-- title bar sits in this top layer so it stays bright above the modal backdrop -->
+          <div class="wdgetTitle">
+            <h2>Capitals of Indian States and Union Territories</h2>
+            <span id="versionId" class="versionText">b4_wg204_261014_01</span>
+          </div>
+
+          <!-- ============ FACT CARD ============ -->
+          <div class="modal" id="factCard" role="dialog" aria-modal="true" aria-labelledby="factTitle" hidden>
+            <div class="card card--fact">
+              <span class="card__tab" id="factTitle">Fact card</span>
+              <button class="card__close" id="factClose" type="button" aria-label="Close fact card">&times;</button>
+              <p class="fact__state"><b>State:</b> <span id="factState"></span></p>
+              <p class="fact__capital"><b>Capital:</b> <span id="factCapital"></span></p>
+              <p class="fact__text" id="factText"></p>
+            </div>
+          </div>
+
+          <!-- ============ INSIGHTS ============ -->
+          <div class="modal" id="insights" role="dialog" aria-modal="true" aria-labelledby="insightsTitle" hidden>
+            <div class="card card--insights">
+              <span class="card__tab" id="insightsTitle">Insights</span>
+              <button class="card__close" id="insightsClose" type="button" aria-label="Close insights">&times;</button>
+              <div class="insights__tables" id="insightsTables"></div>
+            </div>
+          </div>
+
+          <!-- ============ CORRIDOR COMPLETE ============ -->
+          <div class="modal" id="complete" role="dialog" aria-modal="true" aria-labelledby="completeTitle" hidden>
+            <div class="card card--complete">
+              <span class="card__tab" id="completeTitle">Well done!</span>
+              <p class="complete__text" id="completeText"></p>
+              <button class="pill-btn pill-btn--home" id="completeHome" type="button">Home</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./js/lottie.js"></script>
+  <script src="./js/anim-data.js"></script>
+  <script src="./js/map-data.js"></script>
+  <script src="./js/content-data.js"></script>
+  <script src="./js/script.js"></script>
+</body>
+
+</html>
