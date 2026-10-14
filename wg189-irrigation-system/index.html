@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Irrigation System</title>
+
+  <link rel="stylesheet" href="./css/global_style.css">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body id="irrigation-widget">
+  <div class="container">
+    <div class="mainContainerOuter">
+      <div id="viewport">
+        <!-- Fixed 1920x1080 design stage, scaled to fit the window by script.js -->
+        <div id="stage">
+          <img class="stage-bg" src="assets/images/bg.svg" alt="">
+          <div class="stage-dim" id="stageDim" hidden></div>
+
+          <div class="wdgetTitle">
+            <h2>Irrigation System</h2>
+            <span id="versionId" class="versionText">b4_wg189_261013_01</span>
+          </div>
+
+          <!-- ============ HOME SCREEN ============ -->
+          <section id="screen-home" class="screen is-active" aria-label="Introduction">
+            <p class="itext itext--home">Tap Enter to get started.</p>
+            <div class="intro-panel">
+              <p>Irrigation is the artificial supply of water to crops, used to enhance farm productivity and reduce
+                a farmer's dependence on monsoon rains. Different terrains and soils require different types of
+                irrigation techniques.</p>
+              <p>You are provided with a particular terrain. Select your crop that suits the terrain and plan smart
+                irrigation choice to keep the crops healthy and conserve water.</p>
+            </div>
+            <button class="pill-btn pill-btn--enter" id="enterBtn" type="button">Enter</button>
+          </section>
+
+          <!-- ============ SCREEN 1: CHOOSE CROP + IRRIGATION ============ -->
+          <section id="screen-activity" class="screen" aria-label="Choose a crop and an irrigation method">
+            <p class="itext itext--activity">Tap the suitable crop and the best irrigation method for the given terrain.</p>
+            <div class="main-panel"></div>
+
+            <div class="terrain-panel">
+              <img class="terrain-panel__img" id="terrainImg" src="" alt="">
+              <h3 class="terrain-panel__name" id="terrainName"></h3>
+              <p class="terrain-panel__desc" id="terrainDesc"></p>
+            </div>
+
+            <h4 class="choice-heading choice-heading--crop" id="cropHeading">Choose your crop</h4>
+            <h4 class="choice-heading choice-heading--irrigation" id="irrigationHeading">Choose your irrigation system</h4>
+
+            <div class="crop-cards" id="cropCards" role="group" aria-labelledby="cropHeading"></div>
+            <div class="irrigation-cards" id="irrigationCards" role="group" aria-labelledby="irrigationHeading"></div>
+
+            <div class="crop-warning" id="cropWarning" role="alert" hidden>
+              <img src="assets/images/incorrect-feedback-panel.svg" alt="">
+              <p>This crop wont grow well on this terrain, try the other crop.</p>
+            </div>
+
+            <button class="pill-btn pill-btn--check" id="checkBtn" type="button" disabled>Check</button>
+            <button class="pill-btn pill-btn--insights" type="button" data-insights>
+              <img src="assets/images/insights-icon.svg" alt="">Insights
+            </button>
+          </section>
+
+          <!-- ============ SCREEN 3: RESULT ============ -->
+          <section id="screen-result" class="screen" aria-label="Result">
+            <div class="main-panel main-panel--result"></div>
+
+            <div class="water-bar" role="img" id="waterBar">
+              <span class="water-bar__seg water-bar__seg--useful" id="segUseful"></span>
+              <span class="water-bar__seg water-bar__seg--evap" id="segEvap"></span>
+              <span class="water-bar__seg water-bar__seg--runoff" id="segRunoff"></span>
+            </div>
+
+            <ul class="legend">
+              <li><i class="legend__key legend__key--useful"></i>Water available for crops</li>
+              <li><i class="legend__key legend__key--evap"></i>Water getting evaporated</li>
+              <li><i class="legend__key legend__key--runoff"></i>Runoff water</li>
+            </ul>
+
+            <div class="star-card star-card--water">
+              <h4>Water saved</h4>
+              <div class="stars" id="starsWater"></div>
+            </div>
+            <div class="star-card star-card--yield">
+              <h4>Crop yield</h4>
+              <div class="stars" id="starsYield"></div>
+            </div>
+
+            <div class="feedback-panel">
+              <div class="efficiency">
+                <span class="efficiency__label">Efficiency</span>
+                <span class="efficiency__value" id="efficiencyValue">0%</span>
+              </div>
+              <p class="feedback-panel__text" id="feedbackText"></p>
+            </div>
+
+            <button class="pill-btn pill-btn--retry" id="retryBtn" type="button">Try a Different Combination</button>
+            <button class="pill-btn pill-btn--next" id="nextTerrainBtn" type="button">Next Terrain</button>
+            <button class="pill-btn pill-btn--insights pill-btn--insights-result" type="button" data-insights>
+              <img src="assets/images/insights-icon.svg" alt="">Insights
+            </button>
+          </section>
+
+          <!-- ============ INSIGHTS POPUP ============ -->
+          <div class="insights" id="insights" role="dialog" aria-modal="true" aria-labelledby="insightsTitle" hidden>
+            <div class="insights__panel">
+              <button class="insights__close" id="insightsClose" type="button" aria-label="Close insights">&times;</button>
+              <h3 class="insights__title" id="insightsTitle">Insights</h3>
+              <p>Irrigation is the artificial supply of water to crops, used to enhance farm productivity and reduce a
+                farmer's dependence on monsoon rains. Different terrains and soils require different types of irrigation
+                techniques.</p>
+              <div class="insights__grid">
+                <div class="insights__item">
+                  <h4>Canal Irrigation (Phad Irrigation)</h4>
+                  <p><b>Source of water:</b> Rivers, reservoirs, lakes, or dams.</p>
+                  <p><b>Insight:</b> Water is carried through canals to fields. The Phad irrigation system of Maharashtra
+                    uses canals and community-managed water sharing to irrigate crops efficiently.</p>
+                </div>
+                <div class="insights__item">
+                  <h4>Drip Irrigation</h4>
+                  <p><b>Source of water:</b> Wells, borewells, tanks, reservoirs, or pipelines. Water is usually supplied
+                    using pumps.</p>
+                  <p><b>Insight:</b> Water is delivered drop by drop directly to plant roots through pipes, reducing water
+                    wastage and improving crop growth.</p>
+                </div>
+                <div class="insights__item">
+                  <h4>Sprinkler Irrigation</h4>
+                  <p><b>Source of water:</b> Wells, borewells, tanks, reservoirs, or pipelines. Water is usually supplied
+                    using pumps.</p>
+                  <p><b>Insight:</b> Water is sprayed over crops through rotating sprinklers, creating an effect like
+                    rainfall. It is suitable for uneven and sandy terrain.</p>
+                </div>
+                <div class="insights__item">
+                  <h4>Bamboo Drip Irrigation</h4>
+                  <p><b>Source of water:</b> Natural springs and hill streams.</p>
+                  <p><b>Insight:</b> Practised in Meghalaya, this traditional method uses hollow bamboo channels to carry
+                    water by gravity and drip it slowly onto crops.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./js/script.js"></script>
+</body>
+
+</html>
