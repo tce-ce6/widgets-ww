@@ -136,12 +136,24 @@
       "updatedAt": "2026-10-13T12:53:32+05:30",
       "author": "tce-nitinc"
     },
+    "wg204-capitals-of-india": {
+      "updatedAt": "2026-10-14T17:04:01+05:30",
+      "author": "tce-nitinc"
+    },
     "wg211-railgadi-banao": {
       "updatedAt": "2026-10-14T11:11:04+05:30",
       "author": "tce-nitinc"
     }
   },
   "commits": [
+    {
+      "date": "2026-10-14T17:04:01+05:30",
+      "author": "tce-nitinc",
+      "message": "wg204 fixes",
+      "widgets": [
+        204
+      ]
+    },
     {
       "date": "2026-10-14T11:43:15+05:30",
       "author": "tce-nitinc",
@@ -389,14 +401,6 @@
         198,
         199,
         200
-      ]
-    },
-    {
-      "date": "2026-10-01T18:03:02+05:30",
-      "author": "tce-ashishg",
-      "message": "wg196 issue resolved",
-      "widgets": [
-        196
       ]
     }
   ]
