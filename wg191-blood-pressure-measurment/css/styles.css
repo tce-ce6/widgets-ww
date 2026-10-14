@@ -208,38 +208,233 @@ button:focus-visible,
 }
 
 /* ---------------------------------------------------------------------- */
-/* Dropdown selects, overlaid exactly on the master SVG's own box artwork  */
-/* (positioned via inline left/top/width/height set in script.js)         */
+/* Answer dashboards (#dashboard = aneroid, #dashboard-2 = mercury)        */
+/* Plain HTML inside a <foreignObject> of the master SVG. Inside it one   */
+/* CSS px equals one SVG user unit, so every value below is the original  */
+/* layout.svg coordinate measured from the panel's top-left corner.       */
 /* ---------------------------------------------------------------------- */
 
-.field-select {
-  position: absolute;
-  border-radius: 10px;
-  border: 3px solid transparent;
-  background: transparent;
-  appearance: none;
-  -webkit-appearance: none;
-  color: #2b1345;
-  font-weight: 700;
-  font-size: 1.3cqw;
-  padding: 0 1.8em 0 0.6em;
-  box-sizing: border-box;
-  max-width: 100%;
-  z-index: 4;
+.dash-wrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  font-family: "Roboto", sans-serif;
+  line-height: 1;
+  color: #000;
+  pointer-events: none; /* the transparent area around the panel passes clicks through */
 }
 
-.field-select:disabled {
+/* Scoped + !important to beat style.css's `#blood-widget svg { width: 100% !important }` */
+#blood-widget .dash-arrow {
+  position: absolute;
+  left: 7px;
+  top: 244px;
+  width: 142px !important;
+  height: 156px;
+  fill: #7f3da7;
+}
+
+#blood-widget .dash-arrow.is-faint {
+  top: 241px;
+  width: 168px !important;
+  height: 162px;
+  fill: #6c378c;
+  opacity: 0.5;
+}
+
+.dash-panel {
+  position: absolute;
+  top: 0;
+  left: 169px;
+  width: 484px;
+  height: 699px;
+  background: #1a116b;
+  border: 1px solid #1a1824;
+  border-radius: 30px;
+  pointer-events: auto;
+}
+
+#dashboard-2 .dash-panel {
+  left: 205.48px;
+}
+
+/* Children are placed relative to the panel's outer edge (as in the SVG),
+   so offset by the panel's own 1px border. */
+.dash-panel > * {
+  position: absolute;
+  margin: -1px 0 0 -1px;
+}
+
+.dash-title {
+  top: 26px;
+  left: 0;
+  width: 484px;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 37px;
+  letter-spacing: 0.06em;
+  color: #fbff8b;
+  text-align: center;
+}
+
+.dash-card {
+  left: 17px;
+  top: 136px;
+  width: 450px;
+  height: 493px;
+  background: #e65f95;
+  border-radius: 30px;
+}
+
+.dash-card::after {
+  content: "";
+  position: absolute;
+  left: 16px;
+  top: 20px;
+  width: 418px;
+  height: 442px;
+  border: 4px dashed #d43c6f;
+  border-radius: 30px;
+}
+
+.dash-label {
+  left: 0;
+  width: 484px;
+  font-size: 30px;
+  font-weight: 400;
+  line-height: 30px;
+  text-align: center;
+}
+
+.dash-label.dash-row-systolic { top: 175px; }
+.dash-label.dash-row-diastolic { top: 382px; }
+
+.dash-field {
+  left: 132px;
+  width: 220px;
+  height: 59px;
+}
+
+.dash-field.dash-row-systolic { top: 225px; }
+.dash-field.dash-row-diastolic { top: 424px; }
+
+/* Down-pointing triangle from the artwork (Path_1810 / Path_1811) */
+.dash-field::after {
+  content: "";
+  position: absolute;
+  left: 182px;
+  top: 20px;
+  width: 24px;
+  height: 19px;
+  background: #f05454;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  pointer-events: none;
+}
+
+.dash-select {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0 136px 0 0; /* chosen value ends at x=84, left of the "mmHg" unit */
+  border: 1px solid #707070;
+  border-radius: 12px;
+  background: #fff;
+  appearance: none;
+  -webkit-appearance: none;
+  font-family: inherit;
+  font-size: 30px;
+  font-weight: 500;
+  color: #000;
+  text-align: right;
+  text-align-last: right;
+  cursor: pointer;
+}
+
+.dash-select:disabled {
+  color: #000;
+  opacity: 1;
   cursor: not-allowed;
 }
 
-.field-select.is-correct {
-  border-color: var(--color-success);
-  background: rgba(67, 160, 71, 0.18);
+.dash-select option {
+  font-size: 20px;
+  text-align: left;
 }
 
-.field-select.is-incorrect {
+.dash-select.is-correct {
+  border-color: var(--color-success);
+}
+
+.dash-select.is-incorrect {
   border-color: var(--color-error);
-  background: rgba(229, 57, 59, 0.18);
+}
+
+.dash-unit {
+  position: absolute;
+  left: 109px;
+  top: 19px;
+  font-size: 20px;
+  line-height: 20px;
+  color: #a09f9f;
+  pointer-events: none;
+}
+
+.dash-feedback {
+  height: 47px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  border: 3px dashed;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.dash-feedback.dash-row-systolic { top: 297px; }
+.dash-feedback.dash-row-diastolic { top: 496px; }
+
+.dash-feedback.is-positive {
+  left: 165px;
+  width: 168px;
+  background: #fffca7;
+  border-color: #00640a;
+  color: #00640a;
+}
+
+.dash-feedback.is-negative {
+  left: 79px;
+  width: 329px;
+  background: #ffdcdc;
+  border-color: red;
+  color: #ae0202;
+}
+
+.dash-btn {
+  left: 173px;
+  width: 139px;
+  height: 37px;
+  padding: 0;
+  border: 1px solid #707070;
+  border-radius: 18.5px;
+  font-family: inherit;
+  font-size: 19px;
+  font-weight: 700;
+  color: #000;
+}
+
+.dash-btn.is-enter {
+  top: 575px;
+  background: #a5f62c;
+}
+
+.dash-btn.is-answer {
+  top: 642px;
+  background: #00ffdc;
+}
+
+.dash-btn:disabled {
+  opacity: 0.45;
+  cursor: default;
 }
 
 /* ---------------------------------------------------------------------- */
@@ -259,57 +454,123 @@ button:focus-visible,
 }
 
 /* ---------------------------------------------------------------------- */
-/* Solution reveal (see index.html comment — no baked artwork for this)    */
+/* Answer popup (#answer-popup foreignObject). Same rule as the dashboards: */
+/* 1 CSS px = 1 SVG unit; values are layout.svg coordinates measured from  */
+/* the panel's top-left corner (panel itself sits at 631.48, 258.55).     */
 /* ---------------------------------------------------------------------- */
 
-.overlay {
+.answer-backdrop {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #3b1f4d; /* artboard's white base + #50236b @ 95% + black @ 33%, flattened */
+  font-family: "Roboto", sans-serif;
+  line-height: 1;
+  color: #000;
+}
+
+.answer-panel {
   position: absolute;
-  inset: 0;
-  background: var(--color-overlay-bg);
+  left: 631.48px;
+  top: 258.55px;
+  width: 676px;
+  height: 532px;
+  background: #eaffeb;
+  border-radius: 16px;
+  box-shadow: inset 0 0 0 6px #4caf50; /* drawn inside, so it doesn't shift the children */
+}
+
+.answer-panel > * {
+  position: absolute;
+  margin: 0;
+}
+
+.answer-title {
+  left: 202px;
+  top: 0;
+  width: 268px;
+  height: 85px;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 50;
-  border-radius: 2%;
+  background: #4caf50;
+  border-radius: 0 0 18px 18px;
+  font-size: 36px;
+  font-weight: 700;
+  color: #fff;
 }
 
-.solution-panel {
-  position: relative;
-  width: 60%;
-  background: #e3f5e5;
-  color: #1b3d1c;
-  text-align: center;
-  border-radius: 16px;
-  padding: 3% 4%;
-}
-
-.solution-panel h2 {
-  margin: 0 0 12px;
-  color: var(--color-success);
-}
-
-.solution-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #ffffff;
-  border-radius: 10px;
-  padding: 2% 4%;
-  margin-top: 10px;
-  font-weight: 600;
-  font-size: 0.95rem;
-}
-
-.overlay-close {
-  position: absolute;
-  top: 2%;
-  right: 3%;
-  background: transparent;
+/* Round close button straddling the panel's top-right corner, X in CSS */
+.answer-close {
+  left: 641px;
+  top: -29px;
+  width: 70px;
+  height: 70px;
+  padding: 0;
   border: none;
-  font-size: 1.6rem;
-  line-height: 1;
-  color: inherit;
-  padding: 4px 8px;
+  border-radius: 50%;
+  background: #4caf50;
+}
+
+.answer-close::before,
+.answer-close::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 50.3px; /* 42.3px diagonal + 8px round caps */
+  height: 8px;
+  border-radius: 4px;
+  background: #fff;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.answer-close::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.answer-card {
+  left: 123px;
+  top: 127px;
+  width: 418px;
+  height: 312px;
+  border: 4px dashed #82cd96;
+  border-radius: 30px / 21px;
+}
+
+.answer-label {
+  left: 123px;
+  width: 418px;
+  font-size: 30px;
+  font-weight: 400;
+  line-height: 30px;
+  text-align: center;
+}
+
+.answer-label.answer-row-systolic { top: 146px; }
+.answer-label.answer-row-diastolic { top: 293px; }
+
+.answer-box {
+  left: 222px;
+  width: 220px;
+  height: 59px;
+  background: #fff;
+  border: 1px solid #707070;
+  border-radius: 12px;
+}
+
+.answer-box.answer-row-systolic { top: 196px; }
+.answer-box.answer-row-diastolic { top: 335px; }
+
+/* Value ends at x=84 inside the box, like the dashboard selects */
+.answer-value {
+  position: absolute;
+  right: 135px;
+  top: 0;
+  line-height: 57px;
+  font-size: 30px;
+  font-weight: 500;
+  color: #007918;
 }
 
 /* The measurement-stage <foreignObject> spans the whole 1920x1080 canvas, so
@@ -320,10 +581,7 @@ button:focus-visible,
   pointer-events: none;
 }
 
-#measurment-component select,
-#measurment-component .btn-back,
-#measurment-component .overlay,
-#measurment-component .overlay * {
+#measurment-component .btn-back {
   pointer-events: auto;
 }
 

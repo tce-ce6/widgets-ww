@@ -53,35 +53,31 @@ const DIASTOLIC_BANDS = {
   120: 'very high', 130: 'very high', 140: 'very high',
 };
 
-// Pixel coordinates (in the master SVG's 1920x1080 space) of the bits of
-// each instrument's dashboard that a real control needs to sit on top of.
-// Measured directly from the inlined SVG via getBBox() — see src/README.md.
+// Per-instrument ids. Each answer dashboard is plain HTML inside its own
+// <foreignObject> in the master SVG (#dashboard / #dashboard-2); `panel` is
+// its position in the 1920x1080 canvas, used to place the final sentence.
 const LAYOUT = {
   aneroid: {
     group: 'dashboard',
     instructionGroup: 'i_text',
     illustrationGroups: ['illustration', 'meter'],
-    enterGroup: 'Group_644',
-    answerGroup: 'Group_647',
-    positive: { systolic: 'Group_642', diastolic: 'Group_645' },
-    negative: { systolic: 'Group_643', diastolic: 'Group_646' },
-    placeholderGroups: ['mmHg-2', 'mmHg-3'],
-    systolicBox: { x: 1501, y: 386, w: 220, h: 59 },
-    diastolicBox: { x: 1501, y: 585, w: 220, h: 59 },
+    selects: { systolic: 'systolic-select', diastolic: 'diastolic-select' },
+    enterButton: 'enter-btn',
+    answerButton: 'answer-btn',
+    positive: { systolic: 'systolic-correct', diastolic: 'diastolic-correct' },
+    negative: { systolic: 'systolic-wrong', diastolic: 'diastolic-wrong' },
     panel: { x: 1369, y: 161, w: 484, h: 699 },
     cuffBalloon: 'itext_2',
   },
   mercury: {
-    group: 'dashdoard_2',
+    group: 'dashboard-2',
     instructionGroup: 'i_text1',
     illustrationGroups: ['illustration1', 'meter1'],
-    enterGroup: 'Group_6441',
-    answerGroup: 'Group_6471',
-    positive: { systolic: 'Group_6421', diastolic: 'Group_6451' },
-    negative: { systolic: 'Group_6431', diastolic: 'Group_6461' },
-    placeholderGroups: ['mmHg2', 'mmHg-22'],
-    systolicBox: { x: 1448, y: 386, w: 220, h: 59 },
-    diastolicBox: { x: 1448, y: 585, w: 220, h: 59 },
+    selects: { systolic: 'systolic-select-2', diastolic: 'diastolic-select-2' },
+    enterButton: 'enter-btn-2',
+    answerButton: 'answer-btn-2',
+    positive: { systolic: 'systolic-correct-2', diastolic: 'diastolic-correct-2' },
+    negative: { systolic: 'systolic-wrong-2', diastolic: 'diastolic-wrong-2' },
     panel: { x: 1315, y: 161, w: 484, h: 699 },
     cuffBalloon: 'Group_12301',
   },
@@ -122,14 +118,14 @@ const liveReadingValue = document.getElementById('live-reading-value');
 const liveReadingLabel = document.getElementById('live-reading-label');
 const valueAnnouncer = document.getElementById('value-announcer');
 
-const selectSystolic = document.getElementById('select-systolic');
-const selectDiastolic = document.getElementById('select-diastolic');
 const finalFeedback = document.getElementById('final-feedback');
 const btnBack = document.getElementById('btn-back');
 
-// const overlaySolution = document.getElementById('overlay-solution');
-const solutionSystolic = document.getElementById('solution-systolic');
-const solutionDiastolic = document.getElementById('solution-diastolic');
+const answerPopup = document.getElementById('answer-popup');
+const answerBackdrop = document.getElementById('answer-backdrop');
+const answerClose = document.getElementById('answer-close');
+const answerSystolic = document.getElementById('answer-systolic');
+const answerDiastolic = document.getElementById('answer-diastolic');
 const audio = document.getElementById('tap-audio');
 const measurementComponent = document.getElementById('measurment-component');
 
@@ -188,11 +184,9 @@ function setSvgButtonEnabled(id, enabled) {
   el.setAttribute('tabindex', enabled ? '0' : '-1');
 }
 
-function positionOverlay(el, box) {
-  el.style.left = `${(box.x / 1920) * 100}%`;
-  el.style.top = `${(box.y / 1080) * 100}%`;
-  el.style.width = `${(box.w / 1920) * 100}%`;
-  el.style.height = `${(box.h / 1080) * 100}%`;
+function setDashButtonsEnabled(layout, enabled) {
+  byId(layout.enterButton).disabled = !enabled;
+  byId(layout.answerButton).disabled = !enabled;
 }
 
 // The Release button's label is baked as real SVG text ("Release") — update
@@ -227,8 +221,10 @@ function bandSentence(systolic, diastolic) {
   return `The blood pressure measured is ${systolic}/${diastolic} mmHg. ${comparison}`;
 }
 
+// The empty first option keeps the box blank (just the "mmHg" unit and the
+// arrow from the artwork) until a value is picked.
 function populateSelect(select, options) {
-  select.innerHTML = '<option value="" selected>mmHg</option>';
+  select.innerHTML = '<option value="" selected hidden></option>';
   options.forEach((value) => {
     const opt = document.createElement('option');
     opt.value = String(value);
@@ -249,6 +245,11 @@ function cloneAnimationData(data) {
 
 function currentLayout() {
   return LAYOUT[state.instrument];
+}
+
+function currentSelects() {
+  const { selects } = currentLayout();
+  return { systolic: byId(selects.systolic), diastolic: byId(selects.diastolic) };
 }
 
 /* ---------------------------------------------------------------------- */
@@ -319,8 +320,6 @@ function showSelectionScreen() {
   hideGroup(SOUND_REACTION_GROUP);
 
   btnBack.classList.add('hidden');
-  selectSystolic.classList.add('hidden');
-  selectDiastolic.classList.add('hidden');
   finalFeedback.classList.add('hidden');
   lottieStage.classList.add('hidden');
   liveReading.classList.add('hidden');
@@ -373,14 +372,13 @@ function selectInstrument(instrument) {
   liveReadingValue.textContent = '200';
   liveReadingLabel.textContent = 'Current pressure';
 
-  positionOverlay(selectSystolic, layout.systolicBox);
-  positionOverlay(selectDiastolic, layout.diastolicBox);
   finalFeedback.style.left = `${(layout.panel.x / 1920) * 100}%`;
   finalFeedback.style.top = `${((layout.panel.y + layout.panel.h + 10) / 1080) * 100}%`;
   finalFeedback.style.width = `${(layout.panel.w / 1920) * 100}%`;
 
-  populateSelect(selectSystolic, Object.keys(VALID_COMBOS).map(Number));
-  populateSelect(selectDiastolic, Array.from(new Set(Object.values(VALID_COMBOS).flat())).sort((a, b) => a - b));
+  const selects = currentSelects();
+  populateSelect(selects.systolic, Object.keys(VALID_COMBOS).map(Number));
+  populateSelect(selects.diastolic, Array.from(new Set(Object.values(VALID_COMBOS).flat())).sort((a, b) => a - b));
   resetFormState();
 
   // Release stays disabled until loadMainAnimation's DOMLoaded handler fires
@@ -405,14 +403,11 @@ function isReleaseEnabled() {
 }
 
 function resetFormState() {
-  selectSystolic.value = '';
-  selectDiastolic.value = '';
-  selectSystolic.disabled = true;
-  selectDiastolic.disabled = true;
-  selectSystolic.classList.remove('is-correct', 'is-incorrect');
-  selectDiastolic.classList.remove('is-correct', 'is-incorrect');
-  selectSystolic.classList.add('hidden');
-  selectDiastolic.classList.add('hidden');
+  Object.values(currentSelects()).forEach((select) => {
+    select.value = '';
+    select.disabled = true;
+    select.classList.remove('is-correct', 'is-incorrect');
+  });
   finalFeedback.textContent = '';
   finalFeedback.classList.add('hidden');
   const layout = currentLayout();
@@ -420,9 +415,7 @@ function resetFormState() {
   hideGroup(layout.positive.diastolic);
   hideGroup(layout.negative.systolic);
   hideGroup(layout.negative.diastolic);
-  setSvgButtonEnabled(layout.enterGroup, false);
-  setSvgButtonEnabled(layout.answerGroup, false);
-  layout.placeholderGroups.forEach(showGroup);
+  setDashButtonsEnabled(layout, false);
 }
 
 /* ---------------------------------------------------------------------- */
@@ -515,16 +508,12 @@ function onReleaseComplete() {
   disableRelease();
   byId(BTN_RELEASE).setAttribute('aria-label', 'Release (already used — tap Reset to try again)');
   setReleaseLabel('Release');
-  selectSystolic.disabled = false;
-  selectDiastolic.disabled = false;
-  selectSystolic.classList.remove('hidden');
-  selectDiastolic.classList.remove('hidden');
-  const layout = currentLayout();
-  setSvgButtonEnabled(layout.enterGroup, true);
-  setSvgButtonEnabled(layout.answerGroup, true);
-  layout.placeholderGroups.forEach(hideGroup); // the real <select>s take over these boxes
+  const selects = currentSelects();
+  selects.systolic.disabled = false;
+  selects.diastolic.disabled = false;
+  setDashButtonsEnabled(currentLayout(), true);
   valueAnnouncer.textContent = 'Pressure at 0 millimeters of mercury. Enter your readings.';
-  selectSystolic.focus();
+  selects.systolic.focus();
 }
 
 function resetMeasurement() {
@@ -559,6 +548,7 @@ function resetMeasurement() {
 
 function checkAnswers() {
   if (state.phase !== 'done') return;
+  const { systolic: selectSystolic, diastolic: selectDiastolic } = currentSelects();
   if (!selectSystolic.value || !selectDiastolic.value) {
     finalFeedback.textContent = 'Please choose both a systolic and a diastolic reading.';
     finalFeedback.classList.remove('hidden');
@@ -595,9 +585,9 @@ function checkAnswers() {
 
 function showSolution() {
   if (!state.reading || state.phase !== 'done') return;
-  solutionSystolic.textContent = `${state.reading.systolic} mmHg`;
-  solutionDiastolic.textContent = `${state.reading.diastolic} mmHg`;
-  // openOverlay(overlaySolution, byId(currentLayout().answerGroup));
+  answerSystolic.textContent = String(state.reading.systolic);
+  answerDiastolic.textContent = String(state.reading.diastolic);
+  openAnswer();
 }
 
 /* ---------------------------------------------------------------------- */
@@ -622,16 +612,19 @@ function closeInsights() {
   if (lastFocusedElement) lastFocusedElement.focus();
 }
 
-function openOverlay(overlay, trigger) {
-  lastFocusedElement = trigger || document.activeElement;
-  overlay.classList.remove('hidden');
-  const closeBtn = overlay.querySelector('.overlay-close');
-  if (closeBtn) closeBtn.focus();
-  document.addEventListener('keydown', handleOverlayKeydown);
+function isAnswerOpen() {
+  return answerPopup.style.display !== 'none';
 }
 
-function closeOverlay(overlay) {
-  overlay.classList.add('hidden');
+function openAnswer() {
+  lastFocusedElement = byId(currentLayout().answerButton);
+  answerPopup.style.display = '';
+  document.addEventListener('keydown', handleOverlayKeydown);
+  answerClose.focus();
+}
+
+function closeAnswer() {
+  answerPopup.style.display = 'none';
   document.removeEventListener('keydown', handleOverlayKeydown);
   if (lastFocusedElement) lastFocusedElement.focus();
 }
@@ -639,7 +632,7 @@ function closeOverlay(overlay) {
 function handleOverlayKeydown(event) {
   if (event.key !== 'Escape') return;
   if (byId('insights').style.display !== 'none') closeInsights();
-  // if (!overlaySolution.classList.contains('hidden')) closeOverlay(overlaySolution);
+  else if (isAnswerOpen()) closeAnswer();
 }
 
 /* ---------------------------------------------------------------------- */
@@ -662,16 +655,16 @@ wireSvgButton(BTN_RESET, resetMeasurement);
 wireSvgButton(BTN_RELEASE, handleReleaseClick);
 wireSvgButton(BTN_INSIGHTS, openInsights);
 wireSvgButton(INSIGHTS_CLOSE, closeInsights);
-wireSvgButton(LAYOUT.aneroid.enterGroup, checkAnswers);
-wireSvgButton(LAYOUT.mercury.enterGroup, checkAnswers);
-wireSvgButton(LAYOUT.aneroid.answerGroup, showSolution);
-wireSvgButton(LAYOUT.mercury.answerGroup, showSolution);
+Object.values(LAYOUT).forEach((layout) => {
+  byId(layout.enterButton).addEventListener('click', checkAnswers);
+  byId(layout.answerButton).addEventListener('click', showSolution);
+});
 
 btnBack.addEventListener('click', showSelectionScreen);
-// document.getElementById('close-solution').addEventListener('click', () => closeOverlay(overlaySolution));
-// overlaySolution.addEventListener('click', (event) => {
-//   if (event.target === overlaySolution) closeOverlay(overlaySolution);
-// });
+answerClose.addEventListener('click', closeAnswer);
+answerBackdrop.addEventListener('click', (event) => {
+  if (event.target === answerBackdrop) closeAnswer();
+});
 
 /* ---------------------------------------------------------------------- */
 /* Init                                                                     */
@@ -679,15 +672,7 @@ btnBack.addEventListener('click', showSelectionScreen);
 
 // Every group in the master SVG renders by default (it's a flat design export,
 // not a state machine) — permanently hide the pieces this widget doesn't use:
-// the pre-baked "open option list" art (native <select>s handle that instead),
-// the fixed-value "wrong answer" demo art (tied to one specific example, not
-// arbitrary readings), duplicate/unused button artwork, and "Layer_20" — an
-// Illustrator pasteboard layer that turned out to hold an entire leftover
-// duplicate "Answer" panel (baked to the 120/80 worked example) not used by
-// any screen here.
-['insights', 'dropdown', 'dropdown1', 'drop_down_2', 'dropdown2a', 'wrong_answer', 'wrong_feed', 'Group_1566', 'Group_2781', 'Layer_20',
-  // demo values (150 / 60) baked into each dashboard's dropdown boxes
-  '_150', '_60-2', '_150-21', '_60-21']
-  .forEach(hideGroup);
+// the Insights overlay (until opened) and duplicate/unused button artwork.
+['insights', 'Group_1566', 'Group_2781'].forEach(hideGroup);
 
 showSelectionScreen();
