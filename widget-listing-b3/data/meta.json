@@ -88,12 +88,16 @@
       "updatedAt": "2026-09-01T16:45:24+05:30",
       "author": "tce-ashishg"
     },
+    "wg189-irrigation-system": {
+      "updatedAt": "2026-10-14T11:43:15+05:30",
+      "author": "tce-nitinc"
+    },
     "wg190-my-healthy-plate": {
       "updatedAt": "2026-09-07T15:29:08+05:30",
       "author": "tce-ashishg"
     },
     "wg191-blood-pressure-measurment": {
-      "updatedAt": "2026-09-22T18:53:40+05:30",
+      "updatedAt": "2026-10-14T09:54:22+05:30",
       "author": "tce-ashishg"
     },
     "wg193-swar-ki-pahchan-gujrati": {
@@ -132,12 +136,57 @@
       "updatedAt": "2026-10-13T12:53:32+05:30",
       "author": "tce-nitinc"
     },
+    "wg204-capitals-of-india": {
+      "updatedAt": "2026-10-14T17:04:01+05:30",
+      "author": "tce-nitinc"
+    },
     "wg211-railgadi-banao": {
-      "updatedAt": "2026-10-13T18:23:56+05:30",
+      "updatedAt": "2026-10-14T11:11:04+05:30",
       "author": "tce-nitinc"
     }
   },
   "commits": [
+    {
+      "date": "2026-10-14T17:04:01+05:30",
+      "author": "tce-nitinc",
+      "message": "wg204 fixes",
+      "widgets": [
+        204
+      ]
+    },
+    {
+      "date": "2026-10-14T11:43:15+05:30",
+      "author": "tce-nitinc",
+      "message": "wg189 fixes",
+      "widgets": [
+        189
+      ]
+    },
+    {
+      "date": "2026-10-14T11:41:07+05:30",
+      "author": "tce-nitinc",
+      "message": "wg 189 fixes",
+      "widgets": [
+        189
+      ]
+    },
+    {
+      "date": "2026-10-14T11:11:04+05:30",
+      "author": "tce-nitinc",
+      "message": "wg-189 fixes",
+      "widgets": [
+        189,
+        211
+      ]
+    },
+    {
+      "date": "2026-10-14T09:54:22+05:30",
+      "author": "tce-ashishg",
+      "message": "wg191 completed",
+      "widgets": [
+        191
+      ]
+    },
     {
       "date": "2026-10-13T18:23:56+05:30",
       "author": "tce-nitinc",
@@ -352,55 +401,6 @@
         198,
         199,
         200
-      ]
-    },
-    {
-      "date": "2026-10-01T18:03:02+05:30",
-      "author": "tce-ashishg",
-      "message": "wg196 issue resolved",
-      "widgets": [
-        196
-      ]
-    },
-    {
-      "date": "2026-10-01T17:41:39+05:30",
-      "author": "tce-ashishg",
-      "message": "wg196 issue resolved",
-      "widgets": [
-        196,
-        198,
-        199,
-        200
-      ]
-    },
-    {
-      "date": "2026-09-30T17:37:34+05:30",
-      "author": "tce-ashishg",
-      "message": "wg160 & wg194 issue resolved",
-      "widgets": [
-        160,
-        181,
-        194,
-        196
-      ]
-    },
-    {
-      "date": "2026-09-29T19:46:53+05:30",
-      "author": "tce-nitinc",
-      "message": "ui fixes",
-      "widgets": [
-        161,
-        172
-      ]
-    },
-    {
-      "date": "2026-09-29T19:30:03+05:30",
-      "author": "tce-ashishg",
-      "message": "wg160 & wg181 issue resolved",
-      "widgets": [
-        160,
-        181,
-        196
       ]
     }
   ]
