@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 400 400">
+  <!-- Generator: Adobe Illustrator 30.2.1, SVG Export Plug-In . SVG Version: 2.1.1 Build 1)  -->
+  <defs>
+    <style>
+      .st0 {
+        clip-path: url(#clippath-6);
+      }
+
+      .st1 {
+        fill: #020202;
+      }
+
+      .st1, .st2, .st3, .st4 {
+        fill-rule: evenodd;
+      }
+
+      .st5 {
+        clip-path: url(#clippath-4);
+      }
+
+      .st2 {
+        fill: #fff;
+      }
+
+      .st6 {
+        fill: none;
+      }
+
+      .st7 {
+        clip-path: url(#clippath-1);
+      }
+
+      .st8 {
+        clip-path: url(#clippath-5);
+      }
+
+      .st9 {
+        clip-path: url(#clippath-3);
+      }
+
+      .st3 {
+        fill: #3ca0eb;
+      }
+
+      .st10 {
+        fill: #fc6baf;
+      }
+
+      .st11 {
+        isolation: isolate;
+        opacity: .2;
+      }
+
+      .st12 {
+        fill: #43b7ff;
+      }
+
+      .st13 {
+        clip-path: url(#clippath-2);
+      }
+
+      .st14 {
+        fill: #7b00e6;
+      }
+
+      .st15 {
+        fill: #7dbcec;
+      }
+
+      .st4 {
+        fill: #e9f5f2;
+      }
+
+      .st16 {
+        clip-path: url(#clippath);
+      }
+    </style>
+    <clipPath id="clippath">
+      <rect class="st6" x="36.76" y="85.67" width="328.11" height="226.96"/>
+    </clipPath>
+    <clipPath id="clippath-1">
+      <rect class="st6" x="-99.53" y="-41.72" width="549.64" height="508.01"/>
+    </clipPath>
+    <clipPath id="clippath-2">
+      <rect class="st6" x="-99.53" y="-41.72" width="549.64" height="508.01"/>
+    </clipPath>
+    <clipPath id="clippath-3">
+      <rect class="st6" x="43.88" y="92.85" width="320.99" height="219.78"/>
+    </clipPath>
+    <clipPath id="clippath-4">
+      <rect class="st6" x="36.76" y="85.67" width="320.99" height="219.78"/>
+    </clipPath>
+    <clipPath id="clippath-5">
+      <polygon class="st6" points="344.82 97.29 344.82 293.23 49.69 293.23 49.69 97.49 36.76 85.64 36.76 305.49 357.75 305.49 357.75 85.64 344.82 97.29"/>
+    </clipPath>
+    <clipPath id="clippath-6">
+      <rect class="st6" x="-99.53" y="-41.72" width="549.64" height="508.01"/>
+    </clipPath>
+  </defs>
+  <g class="st16">
+    <g id="option-3">
+      <g id="Group_2463">
+        <g id="Group_2115">
+          <g class="st7">
+            <g id="Group_2110-3">
+              <g id="Group_2105-3">
+                <g class="st13">
+                  <g id="Group_2104-3">
+                    <g id="Group_2100-3" class="st11">
+                      <g id="Group_2099-3">
+                        <g class="st9">
+                          <g id="Group_2098-3">
+                            <path id="Path_10585-3" class="st1" d="M43.88,92.85v219.78h320.99V92.85H43.88Z"/>
+                          </g>
+                        </g>
+                      </g>
+                    </g>
+                    <g id="Group_2103-3" class="st11">
+                      <g id="Group_2102-3">
+                        <g class="st5">
+                          <g id="Group_2101-3">
+                            <path id="Path_10586-3" class="st1" d="M36.76,85.67v219.78h320.99V85.67H36.76Z"/>
+                          </g>
+                        </g>
+                      </g>
+                    </g>
+                  </g>
+                </g>
+              </g>
+              <path id="Path_10587-3" class="st4" d="M197.25,233.4L36.75,85.64v219.85h320.99V85.63l-160.49,147.77h0Z"/>
+              <path id="Path_10588-3" class="st2" d="M243.14,191.56h-91.77l-114.61,113.93h320.99l-114.61-113.93h0Z"/>
+              <path id="Path_10589-3" class="st3" d="M197.22,233.4L36.72,85.64v219.85h320.99V85.63l-160.49,147.77h0Z"/>
+              <path id="Path_10590-3" class="st15" d="M36.72,305.49l114.61-113.93h91.77l114.61,113.92H36.72Z"/>
+              <path id="Path_10591-3" class="st2" d="M357.75,293.22V85.63l-12.94,11.65v195.94H49.69V97.49l-12.93-11.85v219.85h320.99v-12.27h0Z"/>
+              <path id="Path_10592-3" class="st14" d="M357.75,293.22V85.63l-12.94,11.65v195.94H49.69V97.49l-12.93-11.85v219.85h320.99v-12.27h0Z"/>
+              <path id="Path_10593-3" class="st10" d="M36.76,100.96l8.49-7.55-8.49-7.78v15.33Z"/>
+              <path id="Path_10594-3" class="st10" d="M36.76,114.87v15.95l12.93-11.5v-15.95l-12.93,11.5Z"/>
+              <path id="Path_10595-3" class="st10" d="M36.76,144.62v15.95l12.93-11.5v-15.95l-12.93,11.5Z"/>
+              <path id="Path_10596-3" class="st10" d="M36.76,174.43v15.94l12.93-11.49v-15.95l-12.93,11.5Z"/>
+              <path id="Path_10597-3" class="st10" d="M36.76,204.23v15.95l12.93-11.5v-15.95l-12.93,11.5Z"/>
+              <path id="Path_10598-3" class="st10" d="M36.76,233.96v15.95l12.93-11.5v-15.95l-12.93,11.5Z"/>
+              <path id="Path_10599-3" class="st10" d="M36.76,263.83v15.94l12.93-11.5v-15.95l-12.93,11.51Z"/>
+              <path id="Path_10600-3" class="st10" d="M36.76,293.68v11.82h4.64l13.79-12.27h-5.5v-11.06l-12.93,11.51h0Z"/>
+              <path id="Path_10601-3" class="st10" d="M70.7,293.22l-13.79,12.27h17.93l13.79-12.27h-17.93Z"/>
+              <path id="Path_10602-3" class="st10" d="M104.19,293.22l-13.79,12.27h17.93l13.79-12.27h-17.93Z"/>
+              <path id="Path_10603-3" class="st10" d="M137.77,293.22l-13.79,12.27h17.93l13.79-12.27h-17.93ZM344.82,109.06v15.94l12.93-11.5v-15.95l-12.93,11.51Z"/>
+              <path id="Path_10604-3" class="st10" d="M171.21,293.22l-13.8,12.27h17.93l13.79-12.27h-17.92ZM344.81,138.8v15.94l12.93-11.5v-15.95l-12.93,11.51Z"/>
+              <path id="Path_10605-3" class="st10" d="M204.66,293.22l-13.79,12.27h17.91l13.79-12.27h-17.91ZM344.82,168.53v15.93l12.93-11.51v-15.93l-12.93,11.51Z"/>
+              <path id="Path_10606-3" class="st10" d="M238.16,293.22l-13.79,12.27h17.93l13.79-12.27h-17.93ZM344.82,198.36v15.94l12.93-11.5v-15.95l-12.93,11.51Z"/>
+              <path id="Path_10607-3" class="st10" d="M271.67,293.22l-13.79,12.27h17.87l13.79-12.27h-17.87ZM344.82,228.15v15.91l12.93-11.5v-15.91l-12.93,11.5Z"/>
+              <path id="Path_10608-3" class="st10" d="M305.28,293.22l-13.79,12.26h17.93l13.79-12.26h-17.93ZM344.82,258.05v15.94l12.93-11.5v-15.95l-12.93,11.51Z"/>
+              <path id="Path_10609-3" class="st10" d="M344.82,287.78v5.45h-6.12l-13.79,12.26h17.93l14.92-13.27v-15.94l-12.94,11.5h0Z"/>
+              <g id="Group_2107-3">
+                <g class="st8">
+                  <g id="Group_2106-3">
+                    <path id="Path_10612-2" class="st10" d="M259.68,393.33l182.52-162.35,7.9,8.92-182.51,162.35-7.91-8.92h0Z"/>
+                  </g>
+                </g>
+              </g>
+              <g id="Group_2109-3">
+                <g class="st0">
+                  <g id="Group_2108-3">
+                    <path id="Path_10611-3" class="st12" d="M36.76,85.67h320.99l-126.88,119.84s-31.71,39-63.49.41L36.76,85.67Z"/>
+                  </g>
+                </g>
+              </g>
+            </g>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>
