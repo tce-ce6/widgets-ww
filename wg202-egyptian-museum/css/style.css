@@ -141,7 +141,7 @@ button { font-family: inherit; }
 }
 .hint-pill--title { left: 607px; top: 67px; width: 707px; }
 .hint-pill--hub {
-  left: 50%; top: 190px; transform: translateX(-50%);
+  left: 50%; top: 205px; transform: translateX(-50%);
   width: auto; max-width: 1500px; height: auto; line-height: 1.35; padding: 12px 34px; white-space: normal;
 }
 
@@ -175,7 +175,7 @@ button { font-family: inherit; }
 /* ---------- Keeper's Hall cards ---------- */
 .card-list { list-style: none; margin: 0; padding: 0; }
 .hall-card {
-  position: absolute; top: 386px; width: 384px; height: 500px;
+  position: absolute; top: 350px; width: 384px; height: 500px;
   padding: 0; border: 0; background: none; cursor: pointer;
   transition: transform .2s ease, filter .3s ease, opacity .3s ease;
 }
@@ -192,16 +192,7 @@ button { font-family: inherit; }
 }
 .hall-card__badge { position: absolute; left: 160px; top: 384px; width: 60px; height: 60px; }
 
-.hall-card.is-locked { filter: grayscale(.5) brightness(1.1); opacity: .62; cursor: not-allowed; }
-.hall-card.is-done:hover, .hall-card.is-next:hover { transform: translateY(-6px); }
-.hall-card.is-shaking { animation: shake .45s ease; }
-.hall-card.is-next { animation: bob 1.8s ease-in-out infinite; }
-.hall-card.is-next::after {
-  content: ""; position: absolute; inset: 2px 10px 6px 4px; border-radius: 32px;
-  border: 7px solid var(--red); box-shadow: 0 0 28px 6px rgba(237, 32, 36, .55);
-  pointer-events: none;
-}
-.hall-card.is-next .hall-card__badge { animation: glow 1.4s ease-in-out infinite; }
+.hall-card.is-done:hover, .hall-card.is-open:hover { transform: translateY(-6px); }
 
 /* ---------- Gallery panel frame (injected by script.js) ---------- */
 .panel { position: absolute; left: 93px; top: 206px; width: 1734px; height: 787px; background: var(--cream); border-radius: 27px; box-shadow: 0 8px 0 rgba(0, 0, 0, .3); }
@@ -267,7 +258,7 @@ button { font-family: inherit; }
 }
 .note-strip.is-error { color: #b01d22; }
 
-.scene-row { position: absolute; top: 370px; left: 0; width: 100%; height: 400px; }
+.scene-row { position: absolute; top: 340px; left: 0; width: 100%; height: 400px; }
 .scene {
   position: absolute; top: 0; margin: 0; border: 2px solid #3c2415; border-radius: 36px; overflow: hidden;
   background: #fff;
@@ -363,8 +354,10 @@ button { font-family: inherit; }
 .map-wrap img { position: absolute; inset: 0; width: 100%; height: 100%; display: block; pointer-events: none; }
 .map-wrap canvas { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: none; cursor: crosshair; }
 .nile-buttons .btn { top: 903px; padding: 0; text-align: center; }
-#btnNileClear { left: 802px; width: 129px; }
-#btnNileSubmit { left: 957px; width: 162px; }
+#btnNileClear { left: 690px; width: 129px; }
+#btnNileSubmit { left: 845px; width: 162px; }
+#btnNileAnswer { left: 1033px; width: 220px; }
+.nile-hint { left: 1390px; top: 356px; width: 220px; padding: 0; text-align: center; }
 .nile-feedback {
   position: absolute; left: 1390px; top: 514px; width: 383px; padding: 24px 22px 22px;
   background: var(--green-soft); border: 1px solid var(--green-line); border-radius: 20px;
@@ -376,6 +369,8 @@ button { font-family: inherit; }
 .nile-feedback.is-bad { background: var(--red-soft); border-color: var(--red); }
 .nile-feedback.is-bad .nile-feedback__icon { display: none; }
 .nile-feedback.is-bad p { color: #b01d22; font-style: normal; font-weight: 500; }
+.nile-feedback.is-hint { background: #e6f4ff; border-color: #58a9df; }
+.nile-feedback.is-hint .nile-feedback__icon { display: none; }
 
 .wheel-zone { position: absolute; left: 150px; top: 410px; width: 380px; height: 430px; }
 .wheel-pointer {
@@ -403,7 +398,7 @@ button { font-family: inherit; }
 .tray--4 { top: 790px; }
 .tray--4 .chip { width: 401px; height: 65px; }
 .tray--4 { gap: 15px; }
-#screen-river .note-strip { top: 880px; }
+#screen-river .note-strip { top: 905px; }
 
 /* ---------- Gallery 3: pyramid and picture puzzles ---------- */
 .pyramid { position: absolute; left: 0; top: 399px; width: 1300px; height: 390px; }
@@ -418,6 +413,7 @@ button { font-family: inherit; }
 .curator-notes {
   position: absolute; left: 1290px; top: 400px; width: 440px; padding: 20px 26px; min-height: 250px;
   background: #fff; border: 1px solid var(--maroon); border-radius: 20px;
+  display:none;
 }
 .curator-notes h3 { margin: 0 0 12px; font-size: 24px; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; color: var(--maroon); }
 .curator-notes p { margin: 0; font-size: 28px; font-style: italic; line-height: 1.3; color: var(--itext); }
@@ -457,7 +453,7 @@ button { font-family: inherit; }
   position: absolute; left: 720px; top: 390px; width: 1055px; height: 540px;
   background: #fff; border: 1px solid var(--maroon); border-radius: 20px; overflow: hidden;
 }
-.question-card__body { position: absolute; inset: 0; padding: 26px 110px 0; text-align: center; }
+.question-card__body { position: absolute; inset: 0; padding: 26px 90px 0; text-align: center; }
 .question-card__text { margin: 0 0 22px; font-size: 28px; font-weight: 500; line-height: 1.25; }
 .option-list { display: flex; flex-direction: column; gap: 17px; }
 .option {
@@ -528,7 +524,6 @@ button { font-family: inherit; }
 
 /* ---------- Animations ---------- */
 @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
-@keyframes glow { 0%, 100% { filter: drop-shadow(0 0 0 rgba(255, 215, 0, 0)); } 50% { filter: drop-shadow(0 0 12px rgba(255, 215, 0, .95)); } }
 @keyframes pulseRing { 0%, 100% { box-shadow: 0 0 0 0 rgba(237, 32, 36, .0); } 50% { box-shadow: 0 0 0 5px rgba(237, 32, 36, .35); } }
 @keyframes shake { 0%, 100% { transform: translateX(0); } 20% { transform: translateX(-12px); } 40% { transform: translateX(10px); } 60% { transform: translateX(-8px); } 80% { transform: translateX(6px); } }
 @keyframes medal { 0%, 100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-8px) rotate(2deg); } }
@@ -541,3 +536,5 @@ button { font-family: inherit; }
 #btnNileNext:hover { transform: translateY(-2px); }
 #btnNileNext:active { transform: translateY(3px); }
 .puzzle-grid.is-solved { gap: 0; }
+.flex-wrap{flex-wrap: wrap;}
+.option-wrapper{top: 750px}
