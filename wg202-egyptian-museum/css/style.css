@@ -141,7 +141,7 @@ button { font-family: inherit; }
 }
 .hint-pill--title { left: 607px; top: 67px; width: 707px; }
 .hint-pill--hub {
-  left: 50%; top: 190px; transform: translateX(-50%);
+  left: 50%; top: 205px; transform: translateX(-50%);
   width: auto; max-width: 1500px; height: auto; line-height: 1.35; padding: 12px 34px; white-space: normal;
 }
 
@@ -175,7 +175,7 @@ button { font-family: inherit; }
 /* ---------- Keeper's Hall cards ---------- */
 .card-list { list-style: none; margin: 0; padding: 0; }
 .hall-card {
-  position: absolute; top: 386px; width: 384px; height: 500px;
+  position: absolute; top: 350px; width: 384px; height: 500px;
   padding: 0; border: 0; background: none; cursor: pointer;
   transition: transform .2s ease, filter .3s ease, opacity .3s ease;
 }
@@ -258,7 +258,7 @@ button { font-family: inherit; }
 }
 .note-strip.is-error { color: #b01d22; }
 
-.scene-row { position: absolute; top: 370px; left: 0; width: 100%; height: 400px; }
+.scene-row { position: absolute; top: 340px; left: 0; width: 100%; height: 400px; }
 .scene {
   position: absolute; top: 0; margin: 0; border: 2px solid #3c2415; border-radius: 36px; overflow: hidden;
   background: #fff;
@@ -398,7 +398,7 @@ button { font-family: inherit; }
 .tray--4 { top: 790px; }
 .tray--4 .chip { width: 401px; height: 65px; }
 .tray--4 { gap: 15px; }
-#screen-river .note-strip { top: 945px; }
+#screen-river .note-strip { top: 905px; }
 
 /* ---------- Gallery 3: pyramid and picture puzzles ---------- */
 .pyramid { position: absolute; left: 0; top: 399px; width: 1300px; height: 390px; }
@@ -453,7 +453,7 @@ button { font-family: inherit; }
   position: absolute; left: 720px; top: 390px; width: 1055px; height: 540px;
   background: #fff; border: 1px solid var(--maroon); border-radius: 20px; overflow: hidden;
 }
-.question-card__body { position: absolute; inset: 0; padding: 26px 110px 0; text-align: center; }
+.question-card__body { position: absolute; inset: 0; padding: 26px 90px 0; text-align: center; }
 .question-card__text { margin: 0 0 22px; font-size: 28px; font-weight: 500; line-height: 1.25; }
 .option-list { display: flex; flex-direction: column; gap: 17px; }
 .option {
@@ -537,3 +537,4 @@ button { font-family: inherit; }
 #btnNileNext:active { transform: translateY(3px); }
 .puzzle-grid.is-solved { gap: 0; }
 .flex-wrap{flex-wrap: wrap;}
+.option-wrapper{top: 750px}

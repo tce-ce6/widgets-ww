@@ -39,6 +39,12 @@
 
   // Reference course of the Nile in map-pixel coordinates (760 x 507 map image).
   const NILE_PATH = [[330, 507], [340, 440], [360, 370], [385, 300], [405, 235], [415, 175], [418, 120], [415, 70]];
+  const NILE_ANSWER_PATHS = [
+    NILE_PATH.slice(0, -1),
+    [[418, 120], [395, 95], [365, 65]],
+    [[418, 120], [415, 80], [415, 35]],
+    [[418, 120], [435, 90], [465, 60]]
+  ];
   const NILE_TOLERANCE = 60;
 
   const SEASONS = [
@@ -64,16 +70,16 @@
   const PUZZLES = [
     {
       heading: 'Portrait of a Queen', img: 'cleopatra.png', doneCaption: 'Restored! Cleopatra',
-      question: 'Cleopatra was trained from childhood to rule and became queen at eighteen. What does her position suggest about women in Egypt?',
-      options: ['Women held no rights of any kind', 'Only foreign women could hold power', 'Women could own property and run businesses', 'Women were barred from public life.'],
-      answer: 2,
-      explanation: 'Egyptian women could own property and run businesses, so a woman holding power was not the impossibility it was in many ancient societies.',
+      question: 'Cleopatra became queen at eighteen. What helped prepare her for leadership?',
+      options: [ 'Received a royal education', 'Chosen as queen by the Roman Senate', 'Won the throne by leading an army', 'Appointed by the priests of Egypt'],
+      answer: 0,
+      explanation: 'Cleopatra was trained from childhood to rule. That long preparation is what made her ready to take the throne at eighteen. Her authority came from an upbringing shaped for leadership, not from an army or an outside power.',
       next: 'Next: The Preserved Body'
     },
     {
       heading: 'The Preserved Body', img: 'mummy.png', doneCaption: 'Restored! The mummification scene',
       question: 'Why did the Egyptians go to such lengths to preserve the body after death?',
-      options: ['To display the body at yearly festivals', 'To keep the tomb free of damp', 'To prove the person had been wealthy.', 'To keep the body fit for the ka to return to'],
+      options: ['To display the body at yearly festivals', 'To keep the tomb free of damp', 'To prove the person had been wealthy', 'To keep the body fit for the ka to return to'],
       answer: 3,
       explanation: 'Egyptians believed each person had a ka, a spiritual double that lived on after death only if the body was preserved. That belief is why pyramids were built at all.',
       next: 'Return to the Keeper’s Hall'
@@ -805,7 +811,7 @@
     let current = null;
     let attempts = 0;
     let showGuide = false;
-    let completed = false;
+    let answerShown = false;
 
     function showFeedback(text, good, hint = false) {
       feedback.hidden = false;
@@ -815,9 +821,9 @@
       announce(text);
     }
 
-    function drawPath(colour, width, dashed) {
+    function drawPath(path, colour, width, dashed) {
       context.beginPath();
-      NILE_PATH.forEach((point, index) => (index ? context.lineTo(point[0], point[1]) : context.moveTo(point[0], point[1])));
+      path.forEach((point, index) => (index ? context.lineTo(point[0], point[1]) : context.moveTo(point[0], point[1])));
       context.strokeStyle = colour;
       context.lineWidth = width;
       context.setLineDash(dashed ? [2, 12] : []);
@@ -839,8 +845,8 @@
           context.stroke();
         });
       });
-      if (showGuide) drawPath('#ffd400', 8, true);
-      if (completed) drawPath('#2f8fe8', 10, false);
+      if (showGuide) NILE_ANSWER_PATHS.forEach((path) => drawPath(path, '#168de2', 8, true));
+      if (answerShown) NILE_ANSWER_PATHS.forEach((path) => drawPath(path, '#2f8fe8', 10, false));
     }
 
     function pointFrom(event) {
@@ -871,7 +877,8 @@
     function reset() {
       attempts = 0;
       showGuide = false;
-      completed = false;
+      answerShown = false;
+      $('#btnNileAnswer').textContent = 'Show Answer';
       $('#btnNileNext').hidden = true;
       clearDrawing();
     }
@@ -890,8 +897,6 @@
       } else if (judgeNileTrace(strokes)) {
         showFeedback('Correct! The Nile flows north into the Mediterranean, dividing Egypt into Lower Egypt in the north and Upper Egypt in the south.', true);
         Sound.play('correct');
-        completed = true;
-        redraw();
         $('#btnNileNext').hidden = false;
       } else {
         attempts++;
@@ -906,11 +911,17 @@
       }
     });
     $('#btnNileAnswer').addEventListener('click', () => {
-      completed = true;
+      answerShown = !answerShown;
+      $('#btnNileAnswer').textContent = answerShown ? 'Hide Answer' : 'Show Answer';
       redraw();
-      showFeedback('The Nile flows north from its source in the south, through Egypt, into the Mediterranean Sea.', true);
-      Sound.play('correct');
-      $('#btnNileNext').hidden = false;
+      if (answerShown) {
+        showFeedback('The Nile flows north from its source in the south, through Egypt, into the Mediterranean Sea.', true);
+        $('#btnNileNext').hidden = false;
+      } else {
+        feedback.hidden = true;
+        $('#btnNileNext').hidden = true;
+      }
+      Sound.play('tap');
     });
     $('#btnNileNext').addEventListener('click', () => goTo('season'));
     enterHooks.nile = reset;
