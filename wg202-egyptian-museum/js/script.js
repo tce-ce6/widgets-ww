@@ -107,7 +107,7 @@
   const stage = $('#stage');
   const liveRegion = $('#liveRegion');
 
-  const state = { progress: 0, current: null, portraitRound: 0 };
+  const state = { completedGalleries: new Set(), current: null, portraitRound: 0 };
   const enterHooks = {};
   const leaveHooks = {};
 
@@ -189,7 +189,7 @@
   }
 
   function unlockNext(galleryIndex) {
-    if (state.progress <= galleryIndex) state.progress = galleryIndex + 1;
+    state.completedGalleries.add(galleryIndex);
     Sound.play('key');
   }
 
@@ -577,16 +577,15 @@
     const list = $('#cardList');
     list.innerHTML = '';
     GALLERIES.forEach((gallery, index) => {
-      const status = index < state.progress ? 'done' : (index === state.progress ? 'next' : 'locked');
+      const status = state.completedGalleries.has(index) ? 'done' : 'open';
       const item = document.createElement('li');
       const card = document.createElement('button');
       card.type = 'button';
       card.className = `hall-card is-${status}`;
       card.style.left = `${150 + index * 412}px`;
-      const statusText = { done: 'Completed. Tap to revisit.', next: 'Unlocked. Tap to begin.', locked: 'Locked.' }[status];
+      const statusText = status === 'done' ? 'Completed. Tap to revisit.' : 'Unlocked. Tap to begin.';
       card.setAttribute('aria-label', `Gallery ${index + 1}: ${gallery.name}. ${statusText}`);
-      if (status === 'locked') card.setAttribute('aria-disabled', 'true');
-      const badge = { done: 'badge-done.svg', next: 'badge-key.svg', locked: 'badge-lock.svg' }[status];
+      const badge = status === 'done' ? 'badge-done.svg' : 'badge-key.svg';
       card.innerHTML = `
         <img class="hall-card__frame" src="assets/svg/card-frame.svg" alt="">
         <span class="hall-card__plate">Gallery ${index + 1}</span>
@@ -595,12 +594,6 @@
         <img class="hall-card__badge" src="assets/svg/${badge}" alt="">`;
       $('.hall-card__title', card).innerHTML = gallery.name.replace(' Gallery', '<br>Gallery');
       card.addEventListener('click', () => {
-        if (status === 'locked') {
-          restartAnimation(card, 'is-shaking');
-          Sound.play('wrong');
-          announce('This gallery is locked. Solve the previous gallery to unlock it.');
-          return;
-        }
         Sound.play('tap');
         goTo(gallery.start);
       });
@@ -810,12 +803,26 @@
     const feedback = $('#nileFeedback');
     let strokes = [];
     let current = null;
+    let attempts = 0;
+    let showGuide = false;
+    let completed = false;
 
-    function showFeedback(text, good) {
+    function showFeedback(text, good, hint = false) {
       feedback.hidden = false;
-      feedback.classList.toggle('is-bad', !good);
+      feedback.classList.toggle('is-bad', !good && !hint);
+      feedback.classList.toggle('is-hint', hint);
       setText($('p', feedback), text);
       announce(text);
+    }
+
+    function drawPath(colour, width, dashed) {
+      context.beginPath();
+      NILE_PATH.forEach((point, index) => (index ? context.lineTo(point[0], point[1]) : context.moveTo(point[0], point[1])));
+      context.strokeStyle = colour;
+      context.lineWidth = width;
+      context.setLineDash(dashed ? [2, 12] : []);
+      context.stroke();
+      context.setLineDash([]);
     }
 
     function redraw() {
@@ -832,6 +839,8 @@
           context.stroke();
         });
       });
+      if (showGuide) drawPath('#ffd400', 8, true);
+      if (completed) drawPath('#2f8fe8', 10, false);
     }
 
     function pointFrom(event) {
@@ -852,15 +861,28 @@
     });
     ['pointerup', 'pointercancel'].forEach((name) => canvas.addEventListener(name, () => { current = null; }));
 
-    function reset() {
+    function clearDrawing() {
       strokes = [];
       current = null;
       redraw();
       feedback.hidden = true;
-      $('#btnNileNext').hidden = true;
     }
 
-    $('#btnNileClear').addEventListener('click', () => { Sound.play('tap'); reset(); });
+    function reset() {
+      attempts = 0;
+      showGuide = false;
+      completed = false;
+      $('#btnNileNext').hidden = true;
+      clearDrawing();
+    }
+
+    $('#btnNileClear').addEventListener('click', () => { Sound.play('tap'); clearDrawing(); });
+    $('#btnNileHint').addEventListener('click', () => {
+      showGuide = true;
+      redraw();
+      showFeedback('Follow the dotted line from the Nile Delta south through Egypt.', false, true);
+      Sound.play('tap');
+    });
     $('#btnNileSubmit').addEventListener('click', () => {
       if (!strokes.length) {
         showFeedback('The river bed is still empty. Trace the Nile before you submit.', false);
@@ -868,11 +890,27 @@
       } else if (judgeNileTrace(strokes)) {
         showFeedback('Correct! The Nile flows north into the Mediterranean, dividing Egypt into Lower Egypt in the north and Upper Egypt in the south.', true);
         Sound.play('correct');
+        completed = true;
+        redraw();
         $('#btnNileNext').hidden = false;
       } else {
-        showFeedback('Incorrect – Try again!', false);
+        attempts++;
+        if (attempts >= 2) {
+          showGuide = true;
+          redraw();
+          showFeedback('Incorrect – follow the dotted line and try again.', false);
+        } else {
+          showFeedback('Incorrect – Try again!', false);
+        }
         Sound.play('wrong');
       }
+    });
+    $('#btnNileAnswer').addEventListener('click', () => {
+      completed = true;
+      redraw();
+      showFeedback('The Nile flows north from its source in the south, through Egypt, into the Mediterranean Sea.', true);
+      Sound.play('correct');
+      $('#btnNileNext').hidden = false;
     });
     $('#btnNileNext').addEventListener('click', () => goTo('season'));
     enterHooks.nile = reset;
@@ -1103,6 +1141,7 @@
     setupMatchActivity({
       screen: 'river', scenesEl: '#riverScenes', trayEl: '#riverTray', noteEl: '#riverNote',
       items: RIVER,
+      extras: ['Water lifted from the river', 'Mud dug out to make bricks'],
       scene: { size: 300, lefts: [185, 601, 1018, 1434] },
       placard: { top: 313, width: 401, height: 65 },
       wrongMessage: 'Incorrect! Try again. Look closely at where the water actually is.',
@@ -1403,7 +1442,7 @@
 
   function initEnd() {
     $('#btnExploreAgain').addEventListener('click', () => {
-      state.progress = 0;
+      state.completedGalleries.clear();
       $('#screen-title').classList.remove('is-zooming');
       goTo('title');
     });
@@ -1415,8 +1454,7 @@
   function initGlobal() {
     enterHooks.hub = () => {
       renderHub();
-      const next = $('.hall-card.is-next');
-      announce(next ? 'Keeper’s Hall. The next gallery is unlocked. Tap the glowing key to begin.' : 'Keeper’s Hall. All galleries are open.');
+      announce('Keeper’s Hall. All galleries are open. Choose any gallery to begin.');
     };
 
     const toggle = $('#soundToggle');
@@ -1455,8 +1493,8 @@
   /* ---- Dev helper: run `dev.help()` in the browser console. Remove before shipping. ---- */
   window.dev = {
     screens: () => $$('.screen').map((s) => s.dataset.screen),
-    go(id) { state.progress = GALLERIES.length; goTo(id); },
-    unlockAll() { state.progress = GALLERIES.length; goTo('hub'); },
+    go(id) { goTo(id); },
+    unlockAll() { goTo('hub'); },
     next() {
       const ids = this.screens();
       this.go(ids[Math.min(ids.indexOf(state.current) + 1, ids.length - 1)]);

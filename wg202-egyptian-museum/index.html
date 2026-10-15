@@ -41,7 +41,7 @@
           <div class="welcome-ribbon"><h2>Welcome, Explorer.</h2></div>
           <p>Everything in this museum was pieced together from things people left behind&hellip; Four galleries lie ahead. Walk through these galleries, observe and solve the challenges.</p>
         </div>
-        <button id="btnFirstKey" class="btn btn--maroon reception-btn" type="button">Collect Your First Key</button>
+        <button id="btnFirstKey" class="btn btn--maroon reception-btn" type="button">Explore the Galleries</button>
       </section>
 
       <!-- SCREEN 3 / 6 / 10 / 14: KEEPER'S HALL -->
@@ -49,7 +49,7 @@
         <img class="screen__bg" src="assets/images/wall.png" alt="">
         <div class="screen__tint"></div>
         <h2 id="hubTitle" class="sr-only">The Keeper's Hall</h2>
-        <p class="hint-pill hint-pill--hub">Four galleries, four keys. Solve a gallery to earn its seal and unlock the next. Tap a glowing key to begin.</p>
+        <p class="hint-pill hint-pill--hub">Four galleries, four keys. Choose any gallery to begin.</p>
         <ul id="cardList" class="card-list"></ul>
       </section>
 
@@ -99,7 +99,9 @@
         <div class="nile-buttons">
           <button id="btnNileClear" class="btn btn--pink" type="button">Clear</button>
           <button id="btnNileSubmit" class="btn btn--green" type="button">Submit</button>
+          <button id="btnNileAnswer" class="btn btn--yellow" type="button">Show Answer</button>
         </div>
+        <button id="btnNileHint" class="btn btn--yellow nile-hint" type="button">Hint</button>
         <div id="nileFeedback" class="nile-feedback" role="status" hidden>
           <img class="nile-feedback__icon" src="assets/svg/icon-correct.svg" alt="">
           <p></p>
@@ -133,7 +135,7 @@
         <div class="screen__tint"></div>
         <p class="itext">Four scenes, four ways the Nile was turned into farmland. Read the labels and drag each one to its scene.</p>
         <div id="riverScenes" class="scene-row scene-row--4"></div>
-        <div id="riverTray" class="tray tray--4"></div>
+        <div id="riverTray" class="tray tray--4 flex-wrap"></div>
         <p id="riverNote" class="note-strip" role="status"></p>
         <button id="btnRiverDone" class="btn btn--yellow next-btn" type="button" hidden>Return to the Keeper's Hall</button>
       </section>
