@@ -145,15 +145,31 @@
       "author": "tce-nitinc"
     },
     "wg211-railgadi-banao": {
-      "updatedAt": "2026-10-15T16:16:28+05:30",
+      "updatedAt": "2026-10-15T18:17:09+05:30",
       "author": "tce-nitinc"
     },
     "wg212-sabdo-me-vayanjan-ki-khoj-gujrati": {
-      "updatedAt": "2026-10-15T11:35:21+05:30",
-      "author": "tce-ashishg"
+      "updatedAt": "2026-10-15T17:06:50+05:30",
+      "author": "tce-nitinc"
     }
   },
   "commits": [
+    {
+      "date": "2026-10-15T18:17:09+05:30",
+      "author": "tce-nitinc",
+      "message": "wg211 fixes",
+      "widgets": [
+        211
+      ]
+    },
+    {
+      "date": "2026-10-15T17:06:50+05:30",
+      "author": "tce-nitinc",
+      "message": "212 fixes",
+      "widgets": [
+        212
+      ]
+    },
     {
       "date": "2026-10-15T16:16:28+05:30",
       "author": "tce-nitinc",
@@ -390,24 +406,6 @@
       "message": "Rename Correct.mp3 to correct.mp3",
       "widgets": [
         198
-      ]
-    },
-    {
-      "date": "2026-10-05T16:00:00+05:30",
-      "author": "tce-ashishg",
-      "message": "wg181 issue resolved",
-      "widgets": [
-        181
-      ]
-    },
-    {
-      "date": "2026-10-05T15:27:18+05:30",
-      "author": "tce-ashishg",
-      "message": "wg198 199 200 issues resolved",
-      "widgets": [
-        198,
-        199,
-        200
       ]
     }
   ]
