@@ -129,7 +129,7 @@
       "author": "tce-ashishg"
     },
     "wg200-o-aur-au-kee-maatra-mein-antar-gujrati": {
-      "updatedAt": "2026-10-06T18:27:14+05:30",
+      "updatedAt": "2026-10-15T11:35:21+05:30",
       "author": "tce-ashishg"
     },
     "wg202-egyptian-museum": {
@@ -143,9 +143,22 @@
     "wg211-railgadi-banao": {
       "updatedAt": "2026-10-14T11:11:04+05:30",
       "author": "tce-nitinc"
+    },
+    "wg212-sabdo-me-vayanjan-ki-khoj-gujrati": {
+      "updatedAt": "2026-10-15T11:35:21+05:30",
+      "author": "tce-ashishg"
     }
   },
   "commits": [
+    {
+      "date": "2026-10-15T11:35:21+05:30",
+      "author": "tce-ashishg",
+      "message": "wg212 structuring done",
+      "widgets": [
+        200,
+        212
+      ]
+    },
     {
       "date": "2026-10-14T17:04:01+05:30",
       "author": "tce-nitinc",
@@ -390,17 +403,6 @@
       "message": "wg198, 199 200 completed",
       "widgets": [
         199
-      ]
-    },
-    {
-      "date": "2026-10-03T23:11:43+05:30",
-      "author": "tce-ashishg",
-      "message": "wg198, 199 200 completed",
-      "widgets": [
-        181,
-        198,
-        199,
-        200
       ]
     }
   ]
