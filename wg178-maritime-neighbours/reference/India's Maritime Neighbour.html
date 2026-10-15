@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nail the Neighbour!</title>
+<style>
+  :root{
+    --deep:#0B2036;
+    --navy:#12314D;
+    --sea:#1B4E6B;
+    --seaLight:#2E7091;
+    --gold:#D4A24C;
+    --goldLight:#F0C878;
+    --sand:#F3ECD9;
+    --ink:#0B2036;
+    --success:#3F9E6D;
+    --danger:#C7583F;
+    --paper:#FBF7ED;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'Georgia', 'Times New Roman', serif;
+    background:
+      radial-gradient(circle at 20% 10%, #1a3d59 0%, transparent 40%),
+      linear-gradient(160deg, var(--deep) 0%, var(--navy) 55%, var(--sea) 100%);
+    color:var(--sand);
+    min-height:100vh;
+    overflow-x:hidden;
+  }
+  .app{max-width:920px;margin:0 auto;padding:20px 16px 60px;position:relative;}
+
+  /* ---------- shared bits ---------- */
+  .screen{display:none;animation:fadeIn .5s ease;}
+  .screen.active{display:block;}
+  @keyframes fadeIn{from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);}}
+
+  h1.title{
+    font-family:'Palatino Linotype','Georgia',serif;
+    font-size:clamp(28px,5vw,42px);
+    letter-spacing:1px;
+    color:var(--goldLight);
+    text-align:center;
+    margin:10px 0 4px;
+    text-shadow:0 2px 12px rgba(0,0,0,.4);
+  }
+  .subtitle{
+    text-align:center;
+    color:#B9CBD8;
+    font-size:15px;
+    font-style:italic;
+    margin:0 0 28px;
+  }
+  .btn{
+    display:inline-block;
+    background:linear-gradient(180deg,var(--goldLight),var(--gold));
+    color:var(--ink);
+    border:none;
+    border-radius:30px;
+    padding:14px 34px;
+    font-size:16px;
+    font-weight:bold;
+    font-family:'Georgia',serif;
+    letter-spacing:.5px;
+    cursor:pointer;
+    box-shadow:0 4px 14px rgba(0,0,0,.35);
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .btn:hover{transform:translateY(-2px); box-shadow:0 6px 18px rgba(0,0,0,.45);}
+  .btn:active{transform:translateY(0px) scale(.97);}
+  .btn.secondary{
+    background:transparent;
+    border:1.5px solid var(--goldLight);
+    color:var(--goldLight);
+    box-shadow:none;
+  }
+  .center{text-align:center;}
+  .card{
+    background:rgba(251,247,237,.06);
+    border:1px solid rgba(212,162,76,.35);
+    border-radius:16px;
+    padding:20px;
+  }
+
+  /* ---------- welcome screen ---------- */
+  .globe-wrap{
+    display:flex;
+    justify-content:center;
+    margin:18px 0 8px;
+  }
+  .globe-ring{
+    width:180px;height:180px;border-radius:50%;
+    border:2px solid rgba(212,162,76,.5);
+    display:flex;align-items:center;justify-content:center;
+    background:radial-gradient(circle at 35% 30%, #2E7091, #0B2036 75%);
+    box-shadow:0 0 40px rgba(46,112,145,.5), inset 0 0 30px rgba(0,0,0,.5);
+    animation:pulseGlobe 4s ease-in-out infinite;
+  }
+  @keyframes pulseGlobe{0%,100%{box-shadow:0 0 40px rgba(46,112,145,.5), inset 0 0 30px rgba(0,0,0,.5);} 50%{box-shadow:0 0 60px rgba(46,112,145,.8), inset 0 0 30px rgba(0,0,0,.5);}}
+  .globe-ring svg{width:64%;height:64%;}
+  .neighbour-explain{
+    display:flex;gap:16px;flex-wrap:wrap;justify-content:center;
+    margin:26px 0;
+  }
+  .explain-card{
+    flex:1;min-width:220px;max-width:320px;
+    background:rgba(251,247,237,.05);
+    border:1px solid rgba(212,162,76,.25);
+    border-radius:14px;padding:16px 18px;
+  }
+  .explain-card .emoji{font-size:26px;margin-bottom:6px;display:block;}
+  .explain-card h3{margin:0 0 6px;font-size:16px;color:var(--goldLight);}
+  .explain-card p{margin:0;font-size:14px;color:#CFDDE6;line-height:1.5;}
+  .question-line{
+    text-align:center;font-size:17px;color:var(--sand);
+    margin:18px 0 30px;font-style:italic;
+  }
+
+  /* ---------- mission screen layout ---------- */
+  .hud{
+    display:flex;justify-content:space-between;align-items:center;
+    margin-bottom:14px;flex-wrap:wrap;gap:8px;
+  }
+  .hud .pill{
+    background:rgba(212,162,76,.15);
+    border:1px solid rgba(212,162,76,.4);
+    border-radius:20px;padding:6px 16px;font-size:13px;color:var(--goldLight);
+  }
+  .game-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:18px;
+  }
+  @media(min-width:720px){
+    .game-grid{grid-template-columns: 1.5fr 1fr;}
+  }
+
+  .map-panel{
+    background:linear-gradient(160deg, rgba(46,112,145,.25), rgba(11,32,54,.55));
+    border:1px solid rgba(212,162,76,.3);
+    border-radius:16px;
+    padding:10px;
+    position:relative;
+    overflow:hidden;
+  }
+  #mapSvg{width:100%;height:auto;display:block;touch-action:none;}
+  .drop-zone{fill:rgba(255,255,255,0.001); cursor:pointer;}
+  .drop-zone.correct-flash{animation:zoneFlash .6s ease;}
+  @keyframes zoneFlash{0%{fill:rgba(63,158,109,.55);} 100%{fill:rgba(255,255,255,0.001);}}
+  .zone-glow{opacity:0; transition:opacity .4s ease;}
+  .zone-glow.show{opacity:1;}
+  .route-line{stroke-dasharray:4 4; opacity:0; transition:opacity .6s ease;}
+  .route-line.show{opacity:1; animation:dashMove 1.4s linear infinite;}
+  @keyframes dashMove{to{stroke-dashoffset:-16;}}
+  .pin-label{font-size:11px; fill:var(--goldLight); opacity:0; transition:opacity .4s ease; font-family:Georgia,serif;}
+  .pin-label.show{opacity:1;}
+
+  .side-panel{display:flex; flex-direction:column; gap:14px;}
+
+  .flag-tray{
+    background:rgba(251,247,237,.05);
+    border:1px solid rgba(212,162,76,.25);
+    border-radius:16px;
+    padding:14px;
+  }
+  .flag-tray h3{margin:0 0 10px;font-size:14px;color:#B9CBD8;text-transform:uppercase;letter-spacing:1px;font-weight:normal;}
+  .flags-row{display:flex; flex-wrap:wrap; gap:10px;}
+  .flag-chip{
+    width:52px;height:52px;
+    border-radius:10px;
+    background:var(--paper);
+    display:flex;align-items:center;justify-content:center;
+    font-size:26px;
+    cursor:grab;
+    border:2px solid transparent;
+    transition:transform .15s ease, border-color .15s ease;
+    user-select:none;
+  }
+  .flag-chip:hover{transform:translateY(-3px);}
+  .flag-chip.selected{border-color:var(--goldLight); box-shadow:0 0 12px rgba(212,162,76,.6);}
+  .flag-chip.dragging{opacity:.4;}
+  .flag-chip.done{display:none;}
+
+  .clue-box{
+    background:rgba(251,247,237,.05);
+    border:1px solid rgba(212,162,76,.25);
+    border-radius:16px;
+    padding:16px;
+    min-height:120px;
+  }
+  .clue-box .prompt{font-size:13px;color:#94AAB8;margin:0 0 8px;text-transform:uppercase;letter-spacing:.5px;}
+  .clue-box .clue-text{font-size:17px;line-height:1.5;color:var(--sand);font-style:italic;min-height:48px;}
+  .clue-count{display:flex;gap:6px;margin-top:12px;}
+  .clue-dot{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.15);}
+  .clue-dot.used{background:var(--goldLight);}
+  .feedback-msg{margin-top:10px;font-size:14px;min-height:20px;}
+  .feedback-msg.wrong{color:#E38B71;}
+  .feedback-msg.hint{color:#9FD1B8;}
+  .placeholder-hint{
+    text-align:center;color:#7E93A2;font-size:14px;padding:24px 10px;font-style:italic;
+  }
+
+  /* dragged ghost element */
+  #dragGhost{
+    position:fixed; width:52px;height:52px;border-radius:10px;
+    background:var(--paper); display:flex;align-items:center;justify-content:center;
+    font-size:26px; pointer-events:none; z-index:999; display:none;
+    box-shadow:0 6px 18px rgba(0,0,0,.4);
+  }
+
+  /* ---------- success modal ---------- */
+  .overlay{
+    position:fixed;inset:0;background:rgba(6,17,28,.78);
+    display:none;align-items:center;justify-content:center;z-index:500;
+    padding:20px;
+  }
+  .overlay.active{display:flex; animation:fadeIn .3s ease;}
+  .success-card{
+    background:var(--paper); color:var(--ink);
+    border-radius:18px; max-width:380px; width:100%;
+    padding:26px 24px; text-align:center;
+    box-shadow:0 20px 50px rgba(0,0,0,.5);
+  }
+  .success-card .big-flag{font-size:56px; margin-bottom:6px;}
+  .success-card h2{margin:0 0 4px; font-size:22px;}
+  .success-card .badge-check{color:var(--success); font-size:14px; font-weight:bold; margin-bottom:14px;}
+  .fact-table{width:100%; text-align:left; font-size:14px; border-top:1px solid #ddd; padding-top:12px; margin-top:6px;}
+  .fact-table div{display:flex; justify-content:space-between; padding:5px 0; border-bottom:1px dashed #e2dcc9;}
+  .fact-table span.label{color:#8a8266;}
+  .fact-table span.val{font-weight:bold; text-align:right;}
+  .fact-note{margin-top:12px; font-size:13px; color:#6b6450; font-style:italic;}
+
+  /* ---------- mission complete ---------- */
+  .stats-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:14px; margin:26px 0;}
+  .stat-card{
+    background:rgba(251,247,237,.06); border:1px solid rgba(212,162,76,.3);
+    border-radius:14px; padding:16px; text-align:center;
+  }
+  .stat-card .num{font-size:26px; color:var(--goldLight); font-weight:bold;}
+  .stat-card .lbl{font-size:12px; color:#B9CBD8; text-transform:uppercase; letter-spacing:.5px; margin-top:4px;}
+  .badge-final{
+    text-align:center; margin:30px 0;
+  }
+  .badge-final .medal{
+    width:110px;height:110px;border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, var(--goldLight), var(--gold) 70%);
+    display:flex;align-items:center;justify-content:center;
+    font-size:48px; margin:0 auto 10px;
+    box-shadow:0 0 30px rgba(212,162,76,.6);
+  }
+  .badge-final h3{margin:0; color:var(--goldLight); font-size:18px;}
+
+  .sr-only{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0);}
+</style>
+</head>
+<body>
+<div class="app">
+  <h2 class="sr-only">An interactive geography game where players deduce and place the flags of India's six maritime neighbours on a map using progressive clues, then review a completion summary.</h2>
+
+  <!-- ============ SCREEN 1: WELCOME ============ -->
+  <section class="screen active" id="screenWelcome">
+    <h1 class="title">Nail the Neighbour!</h1>
+    <p class="subtitle">A maritime neighbour deduction challenge</p>
+
+    <div class="globe-wrap">
+      <div class="globe-ring">
+        <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="none" stroke="#D4A24C" stroke-width="1" opacity="0.5"/><path d="M20 40 Q35 20 55 32 Q70 40 82 30" fill="none" stroke="#F0C878" stroke-width="2" stroke-linecap="round"/><path d="M15 62 Q40 55 50 68 Q65 78 88 60" fill="none" stroke="#F0C878" stroke-width="2" stroke-linecap="round" opacity="0.7"/></svg>
+      </div>
+    </div>
+
+    <div class="neighbour-explain">
+      <div class="explain-card">
+        <span class="emoji">&#127956;</span>
+        <h3>Land neighbours</h3>
+        <p>Countries that share a land border with India, reached by crossing solid ground.</p>
+      </div>
+      <div class="explain-card">
+        <span class="emoji">&#127754;</span>
+        <h3>Maritime neighbours</h3>
+        <p>Countries connected to India through the sea rather than a shared border.</p>
+      </div>
+    </div>
+
+    <p class="question-line">Can you identify India's maritime neighbours using only clues?</p>
+
+    <div class="center">
+      <button class="btn" onclick="startMission()">Start mission</button>
+    </div>
+  </section>
+
+  <!-- ============ SCREEN 2: MISSION ============ -->
+  <section class="screen" id="screenMission">
+    <div class="hud">
+      <div class="pill" id="hudRemaining">Countries remaining: 6</div>
+      <div class="pill" id="hudIdentified">Identified: 0 / 6</div>
+    </div>
+
+    <div class="game-grid">
+      <div class="map-panel">
+        <svg id="mapSvg" viewBox="0 0 800 600" role="img" aria-label="Map centred on India with India's maritime neighbours as drop targets">
+          <defs>
+            <radialGradient id="oceanGrad" cx="50%" cy="40%" r="75%">
+              <stop offset="0%" stop-color="#1B4E6B"/>
+              <stop offset="100%" stop-color="#0B2036"/>
+            </radialGradient>
+          </defs>
+          <rect x="0" y="0" width="800" height="600" fill="url(#oceanGrad)"/>
+
+          <!-- India landmass (simplified) -->
+          <path d="M170 40 L260 30 L300 70 L290 110 L320 150 L300 210 L260 230 L245 200 L200 220 L180 190 L150 200 L140 150 L110 130 L120 90 Z"
+                fill="#2E7091" stroke="#F0C878" stroke-width="1.5" opacity="0.9"/>
+          <text x="205" y="130" fill="#F3ECD9" font-size="15" font-family="Georgia,serif" text-anchor="middle">India</text>
+
+          <!-- neighbouring landmasses, unlabeled silhouettes -->
+          <ellipse cx="255" cy="345" rx="20" ry="30" fill="#2E7091" opacity="0.55"/> <!-- Sri Lanka -->
+          <ellipse cx="128" cy="405" rx="14" ry="10" fill="#2E7091" opacity="0.4"/> <!-- Maldives -->
+          <path d="M540 210 L610 200 L640 260 L600 300 L560 290 Z" fill="#2E7091" opacity="0.55"/> <!-- Thailand -->
+          <path d="M560 350 L650 340 L680 400 L600 420 L570 390 Z" fill="#2E7091" opacity="0.55"/> <!-- Malaysia -->
+          <ellipse cx="624" cy="435" rx="8" ry="6" fill="#2E7091" opacity="0.55"/> <!-- Singapore -->
+          <path d="M560 460 L720 440 L760 520 L680 570 L590 550 Z" fill="#2E7091" opacity="0.55"/> <!-- Indonesia -->
+
+          <!-- sea route lines (from India to each, revealed on success) -->
+          <line class="route-line" data-route="srilanka" x1="205" y1="220" x2="255" y2="345" stroke="#F0C878" stroke-width="1.5"/>
+          <line class="route-line" data-route="maldives" x1="205" y1="220" x2="128" y2="405" stroke="#F0C878" stroke-width="1.5"/>
+          <line class="route-line" data-route="thailand" x1="290" y1="150" x2="576" y2="240" stroke="#F0C878" stroke-width="1.5"/>
+          <line class="route-line" data-route="malaysia" x1="290" y1="180" x2="592" y2="405" stroke="#F0C878" stroke-width="1.5"/>
+          <line class="route-line" data-route="singapore" x1="290" y1="190" x2="624" y2="435" stroke="#F0C878" stroke-width="1.5"/>
+          <line class="route-line" data-route="indonesia" x1="300" y1="210" x2="672" y2="500" stroke="#F0C878" stroke-width="1.5"/>
+
+          <!-- glow rings for correct answers -->
+          <circle class="zone-glow" data-glow="srilanka" cx="255" cy="345" r="30" fill="none" stroke="#3F9E6D" stroke-width="3"/>
+          <circle class="zone-glow" data-glow="maldives" cx="128" cy="405" r="24" fill="none" stroke="#3F9E6D" stroke-width="3"/>
+          <circle class="zone-glow" data-glow="thailand" cx="576" cy="240" r="34" fill="none" stroke="#3F9E6D" stroke-width="3"/>
+          <circle class="zone-glow" data-glow="malaysia" cx="592" cy="405" r="34" fill="none" stroke="#3F9E6D" stroke-width="3"/>
+          <circle class="zone-glow" data-glow="singapore" cx="624" cy="435" r="18" fill="none" stroke="#3F9E6D" stroke-width="3"/>
+          <circle class="zone-glow" data-glow="indonesia" cx="672" cy="500" r="40" fill="none" stroke="#3F9E6D" stroke-width="3"/>
+
+          <text class="pin-label" data-label="srilanka" x="255" y="390" text-anchor="middle">Sri Lanka</text>
+          <text class="pin-label" data-label="maldives" x="128" y="435" text-anchor="middle">Maldives</text>
+          <text class="pin-label" data-label="thailand" x="576" y="200" text-anchor="middle">Thailand</text>
+          <text class="pin-label" data-label="malaysia" x="592" y="445" text-anchor="middle">Malaysia</text>
+          <text class="pin-label" data-label="singapore" x="624" y="465" text-anchor="middle">Singapore</text>
+          <text class="pin-label" data-label="indonesia" x="672" y="540" text-anchor="middle">Indonesia</text>
+
+          <!-- drop zones (invisible hit targets, generous radius for touch) -->
+          <circle class="drop-zone" data-zone="srilanka" cx="255" cy="345" r="55"/>
+          <circle class="drop-zone" data-zone="maldives" cx="128" cy="405" r="55"/>
+          <circle class="drop-zone" data-zone="thailand" cx="576" cy="240" r="55"/>
+          <circle class="drop-zone" data-zone="malaysia" cx="592" cy="405" r="55"/>
+          <circle class="drop-zone" data-zone="singapore" cx="624" cy="435" r="55"/>
+          <circle class="drop-zone" data-zone="indonesia" cx="672" cy="500" r="55"/>
+        </svg>
+      </div>
+
+      <div class="side-panel">
+        <div class="flag-tray">
+          <h3>Choose a flag</h3>
+          <div class="flags-row" id="flagsRow"></div>
+        </div>
+
+        <div class="clue-box" id="clueBox">
+          <div class="placeholder-hint">Pick a flag above, then drag it onto the map to test your guess.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SCREEN 3: MISSION COMPLETE ============ -->
+  <section class="screen" id="screenComplete">
+    <h1 class="title">Mission complete!</h1>
+    <p class="subtitle">All six maritime neighbours identified</p>
+
+    <div class="stats-grid">
+      <div class="stat-card"><div class="num" id="statIdentified">6 / 6</div><div class="lbl">Countries identified</div></div>
+      <div class="stat-card"><div class="num" id="statAccuracy">100%</div><div class="lbl">Accuracy</div></div>
+      <div class="stat-card"><div class="num" id="statHints">0</div><div class="lbl">Hints used</div></div>
+      <div class="stat-card"><div class="num" id="statTime">0:00</div><div class="lbl">Time taken</div></div>
+    </div>
+
+    <div class="badge-final">
+      <div class="medal">&#127941;</div>
+      <h3>Maritime Master</h3>
+    </div>
+
+    <div class="center">
+      <button class="btn secondary" onclick="restartMission()">Play again</button>
+    </div>
+  </section>
+</div>
+
+<div id="dragGhost"></div>
+
+<div class="overlay" id="successOverlay">
+  <div class="success-card">
+    <div class="big-flag" id="successFlag"></div>
+    <h2 id="successName"></h2>
+    <div class="badge-check">&#10003; Correctly placed</div>
+    <div class="fact-table">
+      <div><span class="label">Capital</span><span class="val" id="successCapital"></span></div>
+      <div><span class="label">Connected to India by</span><span class="val" id="successRoute"></span></div>
+    </div>
+    <p class="fact-note" id="successFact"></p>
+    <button class="btn" style="margin-top:16px;" onclick="nextFlag()">Next flag</button>
+  </div>
+</div>
+
+<script>
+const COUNTRIES = {
+  srilanka:{
+    name:"Sri Lanka", flag:"&#127472;&#127472;", capital:"Colombo", route:"Palk Strait",
+    fact:"Known as the Pearl of the Indian Ocean.",
+    clues:[
+      "This island nation lies in the Indian Ocean.",
+      "It is separated from India by the Palk Strait.",
+      "Its capital city is Colombo.",
+      "This country lies just south of Tamil Nadu."
+    ]
+  },
+  maldives:{
+    name:"Maldives", flag:"&#127474;&#127483;", capital:"Male", route:"Indian Ocean sea lanes",
+    fact:"Famous for its beautiful beaches and luxury island resorts.",
+    clues:[
+      "This country is made up of hundreds of coral islands.",
+      "It lies southwest of India in the Indian Ocean.",
+      "Its capital city is Male.",
+      "It is famous for its beautiful beaches and luxury island resorts."
+    ]
+  },
+  indonesia:{
+    name:"Indonesia", flag:"&#127470;&#127465;", capital:"Jakarta", route:"Andaman Sea boundary",
+    fact:"It is the world's largest archipelago.",
+    clues:[
+      "This country is the world's largest archipelago.",
+      "It shares a maritime boundary with India near the Andaman and Nicobar Islands.",
+      "Its capital city is Jakarta.",
+      "It lies to the southeast of India across the sea."
+    ]
+  },
+  thailand:{
+    name:"Thailand", flag:"&#127481;&#127469;", capital:"Bangkok", route:"Andaman Sea",
+    fact:"Famous for its tropical beaches and floating markets.",
+    clues:[
+      "This Southeast Asian country borders the Andaman Sea.",
+      "Its capital city is Bangkok.",
+      "It is famous for its tropical beaches and floating markets.",
+      "It lies east of the Bay of Bengal."
+    ]
+  },
+  malaysia:{
+    name:"Malaysia", flag:"&#127474;&#127486;", capital:"Kuala Lumpur", route:"Andaman Sea",
+    fact:"Part of this country lies on the Malay Peninsula, the rest on Borneo.",
+    clues:[
+      "Part of this country lies on the Malay Peninsula, while another part is on the island of Borneo.",
+      "It shares maritime connections with India through the Andaman Sea.",
+      "Its capital city is Kuala Lumpur.",
+      "It lies south of Thailand in Southeast Asia."
+    ]
+  },
+  singapore:{
+    name:"Singapore", flag:"&#127480;&#127462;", capital:"Singapore", route:"Strait of Malacca",
+    fact:"One of the smallest countries in Asia, and one of the busiest port cities in the world.",
+    clues:[
+      "This country is both an island and a city-state.",
+      "It is located at the southern tip of the Malay Peninsula.",
+      "It is one of the world's busiest port cities.",
+      "It is one of the smallest countries in Asia."
+    ]
+  }
+};
+const ORDER = ["srilanka","maldives","indonesia","thailand","malaysia","singapore"];
+
+let remaining = [...ORDER];
+let identifiedCount = 0;
+let activeKey = null;
+let clueIndex = 0;
+let hintsUsed = 0;
+let attempts = 0;
+let correctAttempts = 0;
+let startTime = null;
+
+function $(id){ return document.getElementById(id); }
+
+function startMission(){
+  $('screenWelcome').classList.remove('active');
+  $('screenMission').classList.add('active');
+  startTime = Date.now();
+  buildFlagTray();
+  updateHud();
+}
+
+function buildFlagTray(){
+  const row = $('flagsRow');
+  row.innerHTML = '';
+  ORDER.forEach(key=>{
+    const c = COUNTRIES[key];
+    const chip = document.createElement('div');
+    chip.className = 'flag-chip';
+    chip.id = 'chip-' + key;
+    chip.innerHTML = c.flag;
+    chip.draggable = true;
+    chip.setAttribute('data-key', key);
+    chip.addEventListener('click', ()=>selectFlag(key));
+    chip.addEventListener('dragstart', (e)=>onDragStart(e,key));
+    chip.addEventListener('dragend', onDragEnd);
+    chip.addEventListener('touchstart', (e)=>onTouchStart(e,key), {passive:false});
+    row.appendChild(chip);
+  });
+}
+
+function updateHud(){
+  $('hudRemaining').textContent = 'Countries remaining: ' + remaining.length;
+  $('hudIdentified').textContent = 'Identified: ' + identifiedCount + ' / 6';
+}
+
+function selectFlag(key){
+  if(!remaining.includes(key)) return;
+  activeKey = key;
+  clueIndex = 0;
+  document.querySelectorAll('.flag-chip').forEach(c=>c.classList.remove('selected'));
+  $('chip-'+key).classList.add('selected');
+  renderClueBox();
+}
+
+function renderClueBox(){
+  const box = $('clueBox');
+  if(!activeKey){
+    box.innerHTML = '<div class="placeholder-hint">Pick a flag above, then drag it onto the map to test your guess.</div>';
+    return;
+  }
+  const c = COUNTRIES[activeKey];
+  const clueText = c.clues[clueIndex];
+  box.innerHTML = `
+    <div class="prompt">Can you prove this flag belongs here?</div>
+    <div class="clue-text">${clueText}</div>
+    <div class="clue-count">
+      ${[0,1,2,3].map(i=>`<div class="clue-dot ${i<=clueIndex?'used':''}"></div>`).join('')}
+    </div>
+    <div class="feedback-msg" id="feedbackMsg"></div>
+  `;
+}
+
+function onDragStart(e, key){
+  if(!remaining.includes(key)) { e.preventDefault(); return; }
+  if(activeKey !== key) selectFlag(key);
+  e.dataTransfer.setData('text/plain', key);
+  $('chip-'+key).classList.add('dragging');
+}
+function onDragEnd(){
+  document.querySelectorAll('.flag-chip').forEach(c=>c.classList.remove('dragging'));
+}
+
+document.addEventListener('DOMContentLoaded', ()=>{
+  const svg = $('mapSvg');
+  svg.addEventListener('dragover', e=>e.preventDefault());
+  svg.addEventListener('drop', e=>{
+    e.preventDefault();
+    const key = e.dataTransfer.getData('text/plain');
+    if(!key) return;
+    const zone = findZoneAtPoint(e.clientX, e.clientY);
+    handleAttempt(key, zone);
+  });
+  document.querySelectorAll('.drop-zone').forEach(z=>{
+    z.addEventListener('click', ()=>{
+      if(activeKey) handleAttempt(activeKey, z.getAttribute('data-zone'));
+    });
+  });
+});
+
+function findZoneAtPoint(clientX, clientY){
+  const el = document.elementFromPoint(clientX, clientY);
+  if(el && el.classList.contains('drop-zone')) return el.getAttribute('data-zone');
+  return null;
+}
+
+// touch fallback: tap flag to select (already handled by click), then tap a zone
+function onTouchStart(e, key){
+  // allow default click-based select; prevent scroll issues minimally
+}
+
+function handleAttempt(key, zone){
+  if(!zone) return;
+  attempts++;
+  if(zone === key){
+    correctAttempts++;
+    revealSuccess(key);
+  } else {
+    const fb = $('feedbackMsg');
+    if(clueIndex < 3){
+      clueIndex++;
+      hintsUsed++;
+      renderClueBox();
+      const fb2 = $('feedbackMsg');
+      if(fb2) fb2.innerHTML = '<span class="wrong">Not quite! Here\'s another clue.</span>';
+    } else {
+      if(fb) fb.innerHTML = '<span class="wrong">Not quite! Try dragging the flag onto a different spot on the map.</span>';
+    }
+  }
+}
+
+function revealSuccess(key){
+  const c = COUNTRIES[key];
+  document.querySelector(`.route-line[data-route="${key}"]`).classList.add('show');
+  document.querySelector(`.zone-glow[data-glow="${key}"]`).classList.add('show');
+  document.querySelector(`.pin-label[data-label="${key}"]`).classList.add('show');
+  const zoneEl = document.querySelector(`.drop-zone[data-zone="${key}"]`);
+  zoneEl.classList.add('correct-flash');
+  setTimeout(()=>zoneEl.classList.remove('correct-flash'), 650);
+
+  $('successFlag').innerHTML = c.flag;
+  $('successName').textContent = c.name;
+  $('successCapital').textContent = c.capital;
+  $('successRoute').textContent = c.route;
+  $('successFact').textContent = c.fact;
+  $('successOverlay').classList.add('active');
+
+  remaining = remaining.filter(k=>k!==key);
+  identifiedCount++;
+  $('chip-'+key).classList.add('done');
+  updateHud();
+}
+
+function nextFlag(){
+  $('successOverlay').classList.remove('active');
+  activeKey = null;
+  clueIndex = 0;
+  document.querySelectorAll('.flag-chip').forEach(c=>c.classList.remove('selected'));
+  renderClueBox();
+  if(remaining.length === 0){
+    showMissionComplete();
+  }
+}
+
+function showMissionComplete(){
+  $('screenMission').classList.remove('active');
+  $('screenComplete').classList.add('active');
+  const elapsed = Math.round((Date.now() - startTime)/1000);
+  const mins = Math.floor(elapsed/60);
+  const secs = elapsed % 60;
+  const accuracy = attempts > 0 ? Math.round(100 * correctAttempts / attempts) : 100;
+  $('statIdentified').textContent = identifiedCount + ' / 6';
+  $('statAccuracy').textContent = accuracy + '%';
+  $('statHints').textContent = hintsUsed;
+  $('statTime').textContent = mins + ':' + String(secs).padStart(2,'0');
+}
+
+function restartMission(){
+  remaining = [...ORDER];
+  identifiedCount = 0;
+  activeKey = null;
+  clueIndex = 0;
+  hintsUsed = 0;
+  attempts = 0;
+  correctAttempts = 0;
+  document.querySelectorAll('.route-line, .zone-glow, .pin-label').forEach(el=>el.classList.remove('show'));
+  $('screenComplete').classList.remove('active');
+  $('screenWelcome').classList.add('active');
+}
+</script>
+</body>
+</html>
