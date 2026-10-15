@@ -199,13 +199,13 @@ svg * {
   list-style-type: none;
   display: flex;
   flex-wrap: wrap;
-  gap: 50px;
+  gap: 0px;
   row-gap: 0px;
 }
 
 .card-wrapper li {
   height: 361px;
-  width: 337px;
+  width: 327px;
   position: relative;
   display: flex;
   align-items: flex-end;
