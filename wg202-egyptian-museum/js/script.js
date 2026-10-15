@@ -39,6 +39,12 @@
 
   // Reference course of the Nile in map-pixel coordinates (760 x 507 map image).
   const NILE_PATH = [[330, 507], [340, 440], [360, 370], [385, 300], [405, 235], [415, 175], [418, 120], [415, 70]];
+  const NILE_ANSWER_PATHS = [
+    NILE_PATH.slice(0, -1),
+    [[418, 120], [395, 95], [365, 65]],
+    [[418, 120], [415, 80], [415, 35]],
+    [[418, 120], [435, 90], [465, 60]]
+  ];
   const NILE_TOLERANCE = 60;
 
   const SEASONS = [
@@ -64,16 +70,16 @@
   const PUZZLES = [
     {
       heading: 'Portrait of a Queen', img: 'cleopatra.png', doneCaption: 'Restored! Cleopatra',
-      question: 'Cleopatra was trained from childhood to rule and became queen at eighteen. What does her position suggest about women in Egypt?',
-      options: ['Women held no rights of any kind', 'Only foreign women could hold power', 'Women could own property and run businesses', 'Women were barred from public life.'],
-      answer: 2,
-      explanation: 'Egyptian women could own property and run businesses, so a woman holding power was not the impossibility it was in many ancient societies.',
+      question: 'Cleopatra became queen at eighteen. What helped prepare her for leadership?',
+      options: [ 'Received a royal education', 'Chosen as queen by the Roman Senate', 'Won the throne by leading an army', 'Appointed by the priests of Egypt'],
+      answer: 0,
+      explanation: 'Cleopatra was trained from childhood to rule. That long preparation is what made her ready to take the throne at eighteen. Her authority came from an upbringing shaped for leadership, not from an army or an outside power.',
       next: 'Next: The Preserved Body'
     },
     {
       heading: 'The Preserved Body', img: 'mummy.png', doneCaption: 'Restored! The mummification scene',
       question: 'Why did the Egyptians go to such lengths to preserve the body after death?',
-      options: ['To display the body at yearly festivals', 'To keep the tomb free of damp', 'To prove the person had been wealthy.', 'To keep the body fit for the ka to return to'],
+      options: ['To display the body at yearly festivals', 'To keep the tomb free of damp', 'To prove the person had been wealthy', 'To keep the body fit for the ka to return to'],
       answer: 3,
       explanation: 'Egyptians believed each person had a ka, a spiritual double that lived on after death only if the body was preserved. That belief is why pyramids were built at all.',
       next: 'Return to the Keeper’s Hall'
@@ -107,7 +113,7 @@
   const stage = $('#stage');
   const liveRegion = $('#liveRegion');
 
-  const state = { progress: 0, current: null, portraitRound: 0 };
+  const state = { completedGalleries: new Set(), current: null, portraitRound: 0 };
   const enterHooks = {};
   const leaveHooks = {};
 
@@ -189,7 +195,7 @@
   }
 
   function unlockNext(galleryIndex) {
-    if (state.progress <= galleryIndex) state.progress = galleryIndex + 1;
+    state.completedGalleries.add(galleryIndex);
     Sound.play('key');
   }
 
@@ -577,16 +583,15 @@
     const list = $('#cardList');
     list.innerHTML = '';
     GALLERIES.forEach((gallery, index) => {
-      const status = index < state.progress ? 'done' : (index === state.progress ? 'next' : 'locked');
+      const status = state.completedGalleries.has(index) ? 'done' : 'open';
       const item = document.createElement('li');
       const card = document.createElement('button');
       card.type = 'button';
       card.className = `hall-card is-${status}`;
       card.style.left = `${150 + index * 412}px`;
-      const statusText = { done: 'Completed. Tap to revisit.', next: 'Unlocked. Tap to begin.', locked: 'Locked.' }[status];
+      const statusText = status === 'done' ? 'Completed. Tap to revisit.' : 'Unlocked. Tap to begin.';
       card.setAttribute('aria-label', `Gallery ${index + 1}: ${gallery.name}. ${statusText}`);
-      if (status === 'locked') card.setAttribute('aria-disabled', 'true');
-      const badge = { done: 'badge-done.svg', next: 'badge-key.svg', locked: 'badge-lock.svg' }[status];
+      const badge = status === 'done' ? 'badge-done.svg' : 'badge-key.svg';
       card.innerHTML = `
         <img class="hall-card__frame" src="assets/svg/card-frame.svg" alt="">
         <span class="hall-card__plate">Gallery ${index + 1}</span>
@@ -595,12 +600,6 @@
         <img class="hall-card__badge" src="assets/svg/${badge}" alt="">`;
       $('.hall-card__title', card).innerHTML = gallery.name.replace(' Gallery', '<br>Gallery');
       card.addEventListener('click', () => {
-        if (status === 'locked') {
-          restartAnimation(card, 'is-shaking');
-          Sound.play('wrong');
-          announce('This gallery is locked. Solve the previous gallery to unlock it.');
-          return;
-        }
         Sound.play('tap');
         goTo(gallery.start);
       });
@@ -810,12 +809,26 @@
     const feedback = $('#nileFeedback');
     let strokes = [];
     let current = null;
+    let attempts = 0;
+    let showGuide = false;
+    let answerShown = false;
 
-    function showFeedback(text, good) {
+    function showFeedback(text, good, hint = false) {
       feedback.hidden = false;
-      feedback.classList.toggle('is-bad', !good);
+      feedback.classList.toggle('is-bad', !good && !hint);
+      feedback.classList.toggle('is-hint', hint);
       setText($('p', feedback), text);
       announce(text);
+    }
+
+    function drawPath(path, colour, width, dashed) {
+      context.beginPath();
+      path.forEach((point, index) => (index ? context.lineTo(point[0], point[1]) : context.moveTo(point[0], point[1])));
+      context.strokeStyle = colour;
+      context.lineWidth = width;
+      context.setLineDash(dashed ? [2, 12] : []);
+      context.stroke();
+      context.setLineDash([]);
     }
 
     function redraw() {
@@ -832,6 +845,8 @@
           context.stroke();
         });
       });
+      if (showGuide) NILE_ANSWER_PATHS.forEach((path) => drawPath(path, '#168de2', 8, true));
+      if (answerShown) NILE_ANSWER_PATHS.forEach((path) => drawPath(path, '#2f8fe8', 10, false));
     }
 
     function pointFrom(event) {
@@ -852,15 +867,29 @@
     });
     ['pointerup', 'pointercancel'].forEach((name) => canvas.addEventListener(name, () => { current = null; }));
 
-    function reset() {
+    function clearDrawing() {
       strokes = [];
       current = null;
       redraw();
       feedback.hidden = true;
-      $('#btnNileNext').hidden = true;
     }
 
-    $('#btnNileClear').addEventListener('click', () => { Sound.play('tap'); reset(); });
+    function reset() {
+      attempts = 0;
+      showGuide = false;
+      answerShown = false;
+      $('#btnNileAnswer').textContent = 'Show Answer';
+      $('#btnNileNext').hidden = true;
+      clearDrawing();
+    }
+
+    $('#btnNileClear').addEventListener('click', () => { Sound.play('tap'); clearDrawing(); });
+    $('#btnNileHint').addEventListener('click', () => {
+      showGuide = true;
+      redraw();
+      showFeedback('Follow the dotted line from the Nile Delta south through Egypt.', false, true);
+      Sound.play('tap');
+    });
     $('#btnNileSubmit').addEventListener('click', () => {
       if (!strokes.length) {
         showFeedback('The river bed is still empty. Trace the Nile before you submit.', false);
@@ -870,9 +899,29 @@
         Sound.play('correct');
         $('#btnNileNext').hidden = false;
       } else {
-        showFeedback('Incorrect – Try again!', false);
+        attempts++;
+        if (attempts >= 2) {
+          showGuide = true;
+          redraw();
+          showFeedback('Incorrect – follow the dotted line and try again.', false);
+        } else {
+          showFeedback('Incorrect – Try again!', false);
+        }
         Sound.play('wrong');
       }
+    });
+    $('#btnNileAnswer').addEventListener('click', () => {
+      answerShown = !answerShown;
+      $('#btnNileAnswer').textContent = answerShown ? 'Hide Answer' : 'Show Answer';
+      redraw();
+      if (answerShown) {
+        showFeedback('The Nile flows north from its source in the south, through Egypt, into the Mediterranean Sea.', true);
+        $('#btnNileNext').hidden = false;
+      } else {
+        feedback.hidden = true;
+        $('#btnNileNext').hidden = true;
+      }
+      Sound.play('tap');
     });
     $('#btnNileNext').addEventListener('click', () => goTo('season'));
     enterHooks.nile = reset;
@@ -1103,6 +1152,7 @@
     setupMatchActivity({
       screen: 'river', scenesEl: '#riverScenes', trayEl: '#riverTray', noteEl: '#riverNote',
       items: RIVER,
+      extras: ['Water lifted from the river', 'Mud dug out to make bricks'],
       scene: { size: 300, lefts: [185, 601, 1018, 1434] },
       placard: { top: 313, width: 401, height: 65 },
       wrongMessage: 'Incorrect! Try again. Look closely at where the water actually is.',
@@ -1403,7 +1453,7 @@
 
   function initEnd() {
     $('#btnExploreAgain').addEventListener('click', () => {
-      state.progress = 0;
+      state.completedGalleries.clear();
       $('#screen-title').classList.remove('is-zooming');
       goTo('title');
     });
@@ -1415,8 +1465,7 @@
   function initGlobal() {
     enterHooks.hub = () => {
       renderHub();
-      const next = $('.hall-card.is-next');
-      announce(next ? 'Keeper’s Hall. The next gallery is unlocked. Tap the glowing key to begin.' : 'Keeper’s Hall. All galleries are open.');
+      announce('Keeper’s Hall. All galleries are open. Choose any gallery to begin.');
     };
 
     const toggle = $('#soundToggle');
@@ -1455,8 +1504,8 @@
   /* ---- Dev helper: run `dev.help()` in the browser console. Remove before shipping. ---- */
   window.dev = {
     screens: () => $$('.screen').map((s) => s.dataset.screen),
-    go(id) { state.progress = GALLERIES.length; goTo(id); },
-    unlockAll() { state.progress = GALLERIES.length; goTo('hub'); },
+    go(id) { goTo(id); },
+    unlockAll() { goTo('hub'); },
     next() {
       const ids = this.screens();
       this.go(ids[Math.min(ids.indexOf(state.current) + 1, ids.length - 1)]);

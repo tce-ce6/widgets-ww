@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mission Maritime Neighbours</title>
+
+  <link rel="stylesheet" href="./css/global_style.css">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body id="maritime-widget">
+  <div class="container">
+    <div class="mainContainerOuter">
+      <div id="viewport">
+        <!-- Fixed 1920x1080 design stage, scaled to fit the window by script.js -->
+        <div id="stage">
+
+          <!-- ============ INTRO SCREEN ============ -->
+          <section id="screen-intro" class="screen is-active" aria-label="Introduction">
+            <div class="intro-panel">
+              <p class="intro-panel__lead">India is connected to its neighbours through both land and sea.</p>
+              <div class="intro-row intro-row--land">
+                <img src="assets/images/icon-land.svg" alt="">
+                <p><b>Land Neighbours:</b><br>A country that shares a land border with another country.</p>
+              </div>
+              <div class="intro-row intro-row--sea">
+                <img src="assets/images/icon-sea.svg" alt="">
+                <p><b>Maritime Neighbours:</b><br>A country that is connected to another country through<br>the sea
+                  without sharing a land border.</p>
+              </div>
+            </div>
+            <p class="itext itext--intro">By analysing the clues, identify India's maritime neighbours.<br>Tap
+              <b>Start mission</b> to get started.</p>
+            <button class="pill-btn pill-btn--start" id="startBtn" type="button">Start Mission</button>
+          </section>
+
+          <!-- ============ MISSION SCREEN ============ -->
+          <section id="screen-game" class="screen" aria-label="Mission">
+            <p class="counter counter--remaining" id="remainingCounter"></p>
+            <p class="itext itext--game">Tap the flag, then based on the clues, tap the correct neighbour of India in the
+              map.</p>
+            <p class="counter counter--identified" id="identifiedCounter"></p>
+
+            <!-- map -->
+            <div class="map-panel">
+              <div class="map" id="map" role="group" aria-label="Map of Asia">
+                <div id="mapBase"></div>
+                <svg class="map-overlay" id="mapOverlay" viewBox="64 180 1307 726" xmlns="http://www.w3.org/2000/svg">
+                  <g id="countryLayer"></g>
+                  <g id="routeLayer"></g>
+                </svg>
+                <div class="map-pins" id="mapPins"></div>
+              </div>
+            </div>
+
+            <!-- flags + clues -->
+            <div class="flag-panel">
+              <h3 class="flag-panel__title">Choose a flag</h3>
+              <div class="flags" id="flags" role="group" aria-label="Flags"></div>
+
+              <div class="clue-area" id="clueArea">
+                <p class="clue-hint" id="clueHint">Tap a flag to see its first clue.</p>
+                <div class="clue-dots" id="clueDots" hidden>
+                  <span class="clue-dots__label">Clue:</span>
+                  <i></i><i></i><i></i><i></i>
+                </div>
+                <p class="clue-text" id="clueText" aria-live="polite" hidden></p>
+                <p class="clue-question" id="clueQuestion" hidden>Can you identify the country?</p>
+                <p class="clue-wrong" id="clueWrong" role="status" hidden>Not Really! Check more clues to get it right.</p>
+              </div>
+            </div>
+
+            <!-- end of mission -->
+            <div class="end-panel" id="endPanel" hidden>
+              <h3 class="end-panel__title">Mission complete!</h3>
+              <p class="end-panel__text" id="endText"></p>
+              <div class="end-panel__badge" id="badge"></div>
+              <button class="pill-btn pill-btn--home" id="homeBtn" type="button">Home</button>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <!-- Title bar and popups live in their own scaled layer above the body::before
+           backdrop, so the dark backdrop can cover the whole viewport. -->
+      <div id="modal-layer">
+        <div id="modal-stage">
+          <div class="wdgetTitle">
+            <h2>Mission Maritime Neighbours</h2>
+            <span id="versionId" class="versionText">b4_wg178_261014_01</span>
+          </div>
+
+          <div class="modal" id="resultModal" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden>
+            <div class="result-card" id="resultCard">
+              <h3 class="result-card__title" id="resultTitle"></h3>
+              <p class="result-card__intro" id="resultIntro"></p>
+              <img class="result-card__flag" id="resultFlag" src="" alt="">
+              <p class="result-card__name" id="resultName"></p>
+              <p class="result-card__capital"><b>Capital:</b> <span id="resultCapital"></span></p>
+              <ul class="result-card__clues" id="resultClues"></ul>
+              <p class="result-card__next" id="resultNextLine"></p>
+            </div>
+            <button class="pill-btn pill-btn--next" id="nextCountryBtn" type="button">Next Country</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./js/lottie.js"></script>
+  <script src="./js/anim-data.js"></script>
+  <script src="./js/map-base.js"></script>
+  <script src="./js/map-data.js"></script>
+  <script src="./js/content-data.js"></script>
+  <script src="./js/script.js"></script>
+</body>
+
+</html>
