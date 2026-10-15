@@ -164,6 +164,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const EXIT_MS = 1800;
   const FLY_MS = 550;
   const REVEAL_GAP_MS = 650;
+  const trainSound = new Audio('assets/audio/train-sound.mp3');
+  trainSound.loop = true;
 
   /* ==========================================================================
      DOM
@@ -254,6 +256,7 @@ document.addEventListener('DOMContentLoaded', () => {
     filled: 0,
     mistake: false, // a wrong coach was chosen or Show Answer was used
     complete: false,
+    answerShown: false,
     busy: false, // train moving: no interaction
     perfect: 0, // trains built without a single mistake
     token: 0, // bumps on every round change so stale timers bail out
@@ -406,16 +409,37 @@ document.addEventListener('DOMContentLoaded', () => {
     return animDone(anim, ms);
   };
 
+  const startTrainSound = () => {
+    trainSound.currentTime = 0;
+    trainSound.play().catch((err) => {
+      if (err.name !== 'AbortError') console.warn('Train sound failed to play:', err.name);
+    });
+  };
+
+  const stopTrainSound = () => {
+    trainSound.pause();
+    trainSound.currentTime = 0;
+  };
+
   const trainEnter = () => {
     const { scale, width, left } = trainGeom(state.level.rounds[state.index].ok.length);
     puffSmoke(true);
-    return moveTrain(-(left + width * scale + 40), 0, ENTER_MS, 'cubic-bezier(.2,.7,.35,1)').then(() => puffSmoke(false));
+    startTrainSound();
+    return moveTrain(-(left + width * scale + 40), 0, ENTER_MS, 'cubic-bezier(.2,.7,.35,1)')
+      .then(() => {
+        stopTrainSound();
+        puffSmoke(false);
+      });
   };
 
   const trainExit = () => {
     const { left } = trainGeom(state.level.rounds[state.index].ok.length);
     puffSmoke(true);
-    return moveTrain(0, STAGE_W - left + 40, EXIT_MS, 'cubic-bezier(.55,0,.8,.4)').then(() => puffSmoke(false));
+    return moveTrain(0, STAGE_W - left + 40, EXIT_MS, 'cubic-bezier(.55,0,.8,.4)')
+      .then(() => {
+        stopTrainSound();
+        puffSmoke(false);
+      });
   };
 
   // The empty slot nearest the engine (slots are ordered left -> right).
@@ -585,8 +609,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const trainComplete = (byUser) => {
     if (state.complete) return;
     state.complete = true;
-    answerBtn.disabled = true;
-    nextBtn.disabled = false; // Next unlocks only once every correct coach is attached
     if (byUser && !state.mistake) state.perfect++;
     fadeRemaining(false);
     later(() => {
@@ -595,11 +617,34 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 300);
   };
 
-  const showAnswer = () => {
-    if (!canPlay()) return;
+  const resetAnswer = () => {
+    clearTimers();
     const round = state.level.rounds[state.index];
+    platformEl.getAnimations().forEach((animation) => animation.cancel());
+    state.filled = 0;
+    state.complete = false;
+    state.answerShown = false;
+    state.busy = false;
     state.mistake = true;
-    answerBtn.disabled = true;
+    answerBtn.textContent = 'उत्तर देखें';
+    answerBtn.disabled = false;
+    buildTrain(round);
+    setTrainX(0);
+    buildPlatform(round);
+  };
+
+  const showAnswer = () => {
+    if (state.busy) return;
+    if (state.answerShown) {
+      resetAnswer();
+      return;
+    }
+    if (state.complete) return;
+
+    const round = state.level.rounds[state.index];
+    state.answerShown = true;
+    state.mistake = true;
+    answerBtn.textContent = 'उत्तर छिपाएँ';
     fadeRemaining(true);
     const rest = [...platformEl.querySelectorAll('.coach:not(.is-locked)')].filter((c) => c.dataset.ok === '1');
     rest.forEach((c, i) => {
@@ -617,7 +662,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const setButtons = (enabled) => {
     answerBtn.disabled = !enabled;
-    nextBtn.disabled = !enabled;
   };
 
   const loadRound = () => {
@@ -627,8 +671,10 @@ document.addEventListener('DOMContentLoaded', () => {
     state.filled = 0;
     state.mistake = false;
     state.complete = false;
+    state.answerShown = false;
     state.busy = true;
 
+    answerBtn.textContent = 'उत्तर देखें';
     nextBtn.textContent = state.index === total - 1 ? 'परिणाम देखें' : 'अगला उदाहरण';
     setButtons(false);
 
@@ -638,13 +684,13 @@ document.addEventListener('DOMContentLoaded', () => {
     trainEnter().then(() => {
       if (token !== state.token) return;
       state.busy = false;
-      answerBtn.disabled = false; // Next stays locked until the train is complete
+      answerBtn.disabled = false;
       playWord(round.w);
     });
   };
 
   const next = () => {
-    if (state.busy || !state.complete) return;
+    if (state.busy) return;
     state.busy = true;
     clearTimers();
     stopVoice();
@@ -691,6 +737,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const goToLevelScreen = () => {
     clearTimers();
     stopVoice();
+    stopTrainSound();
     trainEl.getAnimations().forEach((a) => a.cancel());
     puffSmoke(false);
     if (trophyAnim) {
@@ -721,6 +768,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     clearTimers();
     stopVoice();
+    stopTrainSound();
     trainEl.getAnimations().forEach((a) => a.cancel());
     puffSmoke(false);
 
