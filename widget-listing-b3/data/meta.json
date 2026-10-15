@@ -64,6 +64,10 @@
       "updatedAt": "2026-08-03T17:55:40+05:30",
       "author": "tce-nitinc"
     },
+    "wg178-maritime-neighbours": {
+      "updatedAt": "2026-10-15T12:06:59+05:30",
+      "author": "tce-nitinc"
+    },
     "wg179-decentralisation-explorer": {
       "updatedAt": "2026-07-30T17:25:22+05:30",
       "author": "tce-ashishg"
@@ -133,7 +137,7 @@
       "author": "tce-ashishg"
     },
     "wg202-egyptian-museum": {
-      "updatedAt": "2026-10-13T12:53:32+05:30",
+      "updatedAt": "2026-10-15T16:16:28+05:30",
       "author": "tce-nitinc"
     },
     "wg204-capitals-of-india": {
@@ -141,7 +145,7 @@
       "author": "tce-nitinc"
     },
     "wg211-railgadi-banao": {
-      "updatedAt": "2026-10-14T11:11:04+05:30",
+      "updatedAt": "2026-10-15T16:16:28+05:30",
       "author": "tce-nitinc"
     },
     "wg212-sabdo-me-vayanjan-ki-khoj-gujrati": {
@@ -150,6 +154,31 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-10-15T16:16:28+05:30",
+      "author": "tce-nitinc",
+      "message": "wg 202 fixes",
+      "widgets": [
+        202,
+        211
+      ]
+    },
+    {
+      "date": "2026-10-15T14:55:46+05:30",
+      "author": "tce-nitinc",
+      "message": "wg 202 fixes",
+      "widgets": [
+        202
+      ]
+    },
+    {
+      "date": "2026-10-15T12:06:59+05:30",
+      "author": "tce-nitinc",
+      "message": "wg178",
+      "widgets": [
+        178
+      ]
+    },
     {
       "date": "2026-10-15T11:35:21+05:30",
       "author": "tce-ashishg",
@@ -379,30 +408,6 @@
         198,
         199,
         200
-      ]
-    },
-    {
-      "date": "2026-10-03T23:34:56+05:30",
-      "author": "tce-ashishg",
-      "message": "Rename BG.png to bg.png",
-      "widgets": [
-        198
-      ]
-    },
-    {
-      "date": "2026-10-03T23:34:27+05:30",
-      "author": "tce-ashishg",
-      "message": "Rename BG.png to bg.png",
-      "widgets": [
-        199
-      ]
-    },
-    {
-      "date": "2026-10-03T23:13:40+05:30",
-      "author": "tce-ashishg",
-      "message": "wg198, 199 200 completed",
-      "widgets": [
-        199
       ]
     }
   ]
