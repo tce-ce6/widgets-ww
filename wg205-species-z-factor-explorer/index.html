@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>&ZeroWidthSpace;Species, Area, and the Z Factor Exploration&ZeroWidthSpace;</title>
+
+  <link rel="stylesheet" href="./css/global_style.css">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body id="species-z-widget">
+  <div class="container">
+    <div class="mainContainerOuter">
+      <div class="wdgetTitle">
+        <h2>&ZeroWidthSpace;Species, Area, and the Z Factor Exploration&ZeroWidthSpace;</h2>
+        <span id="versionId" class="versionText">b4_wg205_261016_01</span>
+      </div>
+      <div id="viewport">
+        <!-- Fixed 1920x1080 design stage, scaled to fit the window by script.js -->
+        <div id="stage">
+          <p class="itext" id="itext" aria-live="polite"></p>
+
+          <!-- ============ MODE SELECT ============ -->
+          <section id="screen-home" class="screen is-active" aria-label="Choose a mode">
+            <button class="mode-card mode-card--1" id="cardSpecies" type="button">
+              <span class="mode-tag mode-tag--1">Mode 1</span>
+              <span class="mode-card__title">Species&#8211;Area</span>
+              <span class="mode-card__desc">Observe how species richness varies in areas of different sizes.</span>
+              <img class="mode-card__illus" src="assets/img/card1-illus.svg" alt="">
+            </button>
+            <button class="mode-card mode-card--2" id="cardZ" type="button">
+              <span class="mode-tag mode-tag--2">Mode 2</span>
+              <span class="mode-card__title">Z value</span>
+              <span class="mode-card__desc">Pick a small or large region, type in your own Z value,<br>and see the graph it makes.</span>
+              <img class="mode-card__illus" src="assets/img/card2-illus.svg" alt="">
+            </button>
+          </section>
+
+          <!-- ============ EXPLORE (both modes) ============ -->
+          <section id="screen-explore" class="screen" aria-label="Species richness vs. area">
+
+            <!-- ---- left control panel ---- -->
+            <div class="ctrl-panel" id="ctrlPanel">
+
+              <!-- Mode 1: reveal list -->
+              <div class="mode1-ctrl" id="mode1Ctrl">
+                <div class="area-list" id="areaList"></div>
+                <div class="set-btns">
+                  <button class="pill-btn pill-btn--reset" id="resetBtn" type="button">Reset this set</button>
+                  <button class="pill-btn pill-btn--newset" id="newSetBtn" type="button">New set</button>
+                </div>
+              </div>
+
+              <!-- Mode 2: region + Z input -->
+              <div class="mode2-ctrl" id="mode2Ctrl">
+                <button class="region-btn region-btn--small" id="btnSmallRegion" type="button">
+                  <span class="region-btn__title">Small region</span>
+                  <span class="region-btn__range">Z is between 0.1 and 0.2</span>
+                </button>
+                <button class="region-btn region-btn--large" id="btnLargeRegion" type="button">
+                  <span class="region-btn__title">Large region</span>
+                  <span class="region-btn__range">Z is between 0.6 and 1.2</span>
+                </button>
+                <div class="ctrl-divider ctrl-divider--top"></div>
+                <div class="z-input">
+                  <input type="text" id="zInput" inputmode="decimal" autocomplete="off" aria-label="Z value" placeholder="Z">
+                  <div class="z-spin">
+                    <button type="button" class="z-spin__btn z-spin__btn--up" id="zUp" aria-label="Increase Z"></button>
+                    <button type="button" class="z-spin__btn z-spin__btn--down" id="zDown" aria-label="Decrease Z"></button>
+                  </div>
+                </div>
+                <button class="pill-btn pill-btn--plot" id="plotZBtn" type="button">Plot graph</button>
+                <button class="pill-btn pill-btn--another" id="newZBtn" type="button">Try another Z</button>
+                <div class="ctrl-divider ctrl-divider--bottom"></div>
+              </div>
+
+              <!-- shared: scale toggle -->
+              <div class="toggle-panel" id="togglePanel">
+                <p class="toggle-panel__hint">Toggle the button to change the scale</p>
+                <div class="toggle-bar">
+                  <span class="toggle-lbl">Linear scale</span>
+                  <button class="switch" id="scaleSwitch" type="button" role="switch" aria-checked="false"
+                    aria-label="Switch between linear and log–log scale"></button>
+                  <span class="toggle-lbl">Log&#8211;log scale</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- feedback under the control panel -->
+            <div class="feedback" id="feedback" hidden></div>
+
+            <!-- ---- graph panel ---- -->
+            <div class="graph-panel" id="graphPanel">
+              <span class="mode-tag" id="graphModeTag">Mode 1</span>
+              <span class="graph-scale" id="graphScale">Linear scale</span>
+
+              <div class="graph-head" id="graphHead">
+                <img class="graph-head__icon" id="graphIcon" src="" alt="">
+                <div class="graph-head__text">
+                  <span class="graph-head__title">Species richness vs. area</span>
+                  <span class="graph-head__sub" id="graphSub"></span>
+                </div>
+              </div>
+
+              <svg class="graph" id="graph" viewBox="738 170 1032 708" role="img"
+                aria-label="Graph of species richness against area">
+                <defs>
+                  <clipPath id="plotClip">
+                    <rect x="911" y="283" width="802" height="425"></rect>
+                  </clipPath>
+                  <marker id="arrowHead" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5"
+                    orient="auto-start-reverse">
+                    <path d="M0,0 L10,5 L0,10 z" fill="#4cc0a5"></path>
+                  </marker>
+                </defs>
+                <rect class="plot-bg" x="911" y="283" width="802" height="425"></rect>
+                <image class="plot-illus" id="plotIllus" clip-path="url(#plotClip)" preserveAspectRatio="none"></image>
+                <g id="gridlines"></g>
+                <line class="plot-axis" x1="911" y1="283" x2="911" y2="710.5"></line>
+                <line class="plot-axis" x1="908.5" y1="708" x2="1713" y2="708"></line>
+                <line class="axis-arrow" x1="826" y1="688" x2="826" y2="298" marker-end="url(#arrowHead)"></line>
+                <line class="axis-arrow" x1="916" y1="766" x2="1700" y2="766" marker-end="url(#arrowHead)"></line>
+                <text class="axis-caption" id="yCaption" transform="translate(791 490) rotate(-90)" text-anchor="middle">Species richness</text>
+                <text class="axis-caption" id="xCaption" x="1318" y="803" text-anchor="middle">Area (hectares)</text>
+                <g id="xticks"></g>
+                <g id="yticks"></g>
+                <g clip-path="url(#plotClip)">
+                  <path class="curve-path" id="curvePath" d=""></path>
+                </g>
+                <g id="axisRead"></g>
+                <g id="points"></g>
+                <rect id="xAxisHit" class="axis-hit" x="905" y="694" width="814" height="64"></rect>
+                <rect id="yAxisHit" class="axis-hit" x="836" y="277" width="88" height="437"></rect>
+              </svg>
+            </div>
+
+            <div class="axis-feedback" id="axisFeedback" hidden></div>
+
+            <button class="home-btn" id="homeBtn" type="button" aria-label="Back to mode selection">
+              <img src="assets/img/home-btn.svg" alt="">
+            </button>
+          </section>
+        </div>
+      </div>
+
+      <!-- Modals live in their own scaled layer above the body::before backdrop,
+           so the dark backdrop can cover the whole viewport, not just the stage. -->
+      <div id="modal-layer">
+        <div id="modal-stage">
+          <!-- ============ INSIGHTS ============ -->
+          <div class="insights-modal" id="insightsOverlay" hidden>
+            <div class="insights-panel" role="dialog" aria-modal="true" aria-label="Insights">
+              <ul class="insights-list">
+                <li><b>Species richness (S)</b> generally increases as the <b>area (A)</b> surveyed increases, but not without limit &mdash; the relationship curves and eventually flattens rather than rising forever.</li>
+                <li>This relationship is expressed as <b>S = C&middot;A<sup>Z</sup></b>, where C is a constant and <b>Z</b> is the <b>slope (the regression coefficient)</b> of the relationship on a logarithmic scale.</li>
+                <li>On a normal <b>(linear scale)</b>, the species-area relationship appears as a curve &mdash; specifically a <b>rectangular hyperbola</b>.</li>
+                <li>On a <b>log-log scale</b>, the same relationship becomes a <b>straight line</b>, described by log <b>S = log C + Z log A</b>, with Z as the line's slope and log C as its <b>y-intercept</b>.</li>
+                <li>Ecologists have found that <b>Z</b> usually lies <b>between 0.1 and 0.2</b>, regardless of the taxonomic group or the region studied.</li>
+                <li>When the species-area relationship is examined across <b>very large areas</b>, such as entire continents, the slope Z is much steeper, typically in the range of <b>0.6 to 1.2</b>.</li>
+                <li>A <b>steeper Z</b> means species richness increases much more sharply with area; a <b>shallower Z</b> means richness rises more gradually and flattens sooner.</li>
+              </ul>
+            </div>
+            <button class="close-btn" id="insightsClose" type="button" aria-label="Close insights">
+              <img src="assets/img/close-btn.svg" alt="">
+            </button>
+          </div>
+
+          <button class="insights-btn" id="insightsBtn" type="button" hidden>
+            <img src="assets/img/insights-btn.svg" alt="">
+            <span>Insights</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./js/script.js"></script>
+</body>
+
+</html>

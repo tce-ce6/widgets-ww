@@ -97,34 +97,34 @@ button:focus-visible,
   outline-offset: 3px;
 }
 
-/* ---------- header (as drawn in the layout) ---------- */
-#modal-stage .wdgetTitle {
-  position: absolute;
-  top: 0;
-  left: 0;
+/* ---------- title (outside the scaled stage, same as previous widgets) ---------- */
+/* z-index keeps it above #modal-layer, so it stays bright over the popup backdrop */
+#maritime-widget .wdgetTitle {
   width: 100%;
-  height: 0;
-}
-
-#modal-stage .wdgetTitle h2 {
-  left: 689.5px;
-  width: 541px;
-  height: 60px;
-  padding: 0;
   display: flex;
   align-items: center;
-  justify-content: center;
-  background: var(--teal-head);
-  border-radius: 0 0 25px 25px;
-  transform: none;
-  font-family: "Roboto", sans-serif;
-  font-size: 35px;
-  font-weight: 500;
-  line-height: 1;
+  gap: 20px;
+  left: 0;
+  top: 0;
+  z-index: 4;
 }
 
-#modal-stage .versionText {
-  line-height: 1;
+#maritime-widget .wdgetTitle h2 {
+  font-size: 25px;
+  font-weight: 600;
+  text-align: left;
+  background: var(--teal-head);
+  padding: 8px 40px;
+  color: #fff;
+  border-radius: 0 0px 20px 20px;
+  white-space: nowrap;
+}
+
+#maritime-widget .versionText {
+  position: absolute;
+  right: 20px;
+  top: 10px !important;
+  font-size: 12px;
   color: rgba(255, 255, 255, 0.25);
 }
 
@@ -162,11 +162,8 @@ button:focus-visible,
   top: 630px;
 }
 
-/* sits between the two counters */
 .itext.itext--game {
   top: 89px;
-  left: 300px;
-  width: 1110px;
 }
 
 /* ---------- buttons ---------- */
@@ -265,33 +262,6 @@ button:focus-visible,
   margin: 19px 51px 0 10px;
 }
 
-/* ---------- counters (spec: remaining top left, identified top right) ---------- */
-.counter {
-  position: absolute;
-  top: 92px;
-  margin: 0;
-  padding: 6px 18px;
-  border: 2px solid var(--teal);
-  border-radius: 22px;
-  background: var(--navy);
-  color: #fff;
-  font-size: 22px;
-  font-weight: 500;
-  line-height: 28px;
-}
-
-.counter b {
-  color: var(--clue);
-}
-
-.counter--remaining {
-  left: 34px;
-}
-
-.counter--identified {
-  right: 44px;
-}
-
 /* ---------- map ---------- */
 .map-panel {
   position: absolute;
@@ -369,6 +339,11 @@ button:focus-visible,
 .country.is-found .country__zone {
   fill: var(--country-color);
   fill-opacity: 0.18;
+}
+
+/* Singapore is too small to see on its own: give its ring a solid dark-yellow background */
+.country[data-country="singapore"].is-found .country__zone {
+  fill-opacity: 0.9;
 }
 
 .country.is-wrong {
@@ -574,8 +549,16 @@ button:focus-visible,
   text-align: center;
 }
 
+/* single flex item, so the sentence (with any <sup>/<sub>) wraps as normal text */
+.clue-text__inner {
+  display: block;
+  max-width: 100%;
+}
+
 .clue-text sup,
-.result-card__clues sup {
+.clue-text sub,
+.result-card__clues sup,
+.result-card__clues sub {
   font-size: 0.6em;
   line-height: 0;
 }
