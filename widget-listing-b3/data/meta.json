@@ -149,7 +149,7 @@
       "author": "Shyamsunder Hait"
     },
     "wg205-species-z-factor-explorer": {
-      "updatedAt": "2026-10-16T17:37:41+05:30",
+      "updatedAt": "2026-10-16T18:34:01+05:30",
       "author": "Shyamsunder Hait"
     },
     "wg211-railgadi-banao": {
@@ -157,11 +157,20 @@
       "author": "Shyamsunder Hait"
     },
     "wg212-sabdo-me-swar-ki-khoj-gujrati": {
-      "updatedAt": "2026-10-16T14:38:39+05:30",
-      "author": "tce-nitinc"
+      "updatedAt": "2026-10-16T18:34:01+05:30",
+      "author": "Shyamsunder Hait"
     }
   },
   "commits": [
+    {
+      "date": "2026-10-16T18:34:01+05:30",
+      "author": "Shyamsunder Hait",
+      "message": "removed unwanted files",
+      "widgets": [
+        205,
+        212
+      ]
+    },
     {
       "date": "2026-10-16T18:20:49+05:30",
       "author": "Shyamsunder Hait",
@@ -405,14 +414,6 @@
     },
     {
       "date": "2026-10-05T17:53:53+05:30",
-      "author": "tce-ashishg",
-      "message": "wg198 folder name updated",
-      "widgets": [
-        198
-      ]
-    },
-    {
-      "date": "2026-10-05T17:46:37+05:30",
       "author": "tce-ashishg",
       "message": "wg198 folder name updated",
       "widgets": [
