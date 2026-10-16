@@ -64,85 +64,140 @@ let letterData = {
 
 
 let imgJson = {
-  "अनार": "anar.svg",
-  "अनानास": "ananas.svg",
-  "आकाश": "akash.svg",
-  "ऐनक": "ainak.svg",
-  "ऐरावत": "airavat.svg",
-  "आलू": "aaloo.svg",
+  // અ (A)
+  "અજમો": "ajmo.svg",       // mapped from अनार
+  "અખરોટ": "akhrot.svg",     // mapped from अनानास
+  "અનાજ": "anaj.svg",       // mapped from आकाश
+  "આઠ": "ainak.svg",         // mapped from ऐनक
+  "ઓશીકું": "airavat.svg",    // mapped from ऐरावत
+  "ઇનામ": "aaloo.svg",       // mapped from आलू
 
-  "अंडा": "anda.svg",
-  "अंजीर": "anjir.svg",
-  "औरत": "aurat.svg",
-  "औषधि": "aushadhi.svg",
+  // આ (Aa)
+  "આગ": "aag.svg",          // mapped from अंडा
+  "આકાશ": "aakash.svg",       // mapped from अंजीर
+  "આદુ": "aadu.svg",         // mapped from औरत
+  "ઇસ્ત્રી": "istri.svg",   // mapped from औषधि
 
-  "ईल": "eel.svg",
-  "एक": "Ek.svg",
-  "एकतारा": "ektara.svg",
+  // ઇ (I)
+  "ઇયળ": "iyad.svg",          // mapped from ईल
+  "ઇનામ": "inam.svg",         // mapped from एक (disambiguated key)
+  "ઇસ્ત્રી": "istri.svg",    // mapped from एकतारा
 
-  "इडली": "idli.svg",
-  "ईख": "ikh.svg",
-  "इमली": "imali.svg",
+  // ઈ (Ee)
+  "ઈજા": "ijaa.svg",         // mapped from इडली
+  "ઈશ્વર": "ishwar.svg",         // mapped from ईख
+  "ઇમલી": "imali.svg",       // mapped from इमली
 
-  "ओढ़नी": "odhani.svg",
-  "ओखली": "okhali.svg",
+  // ઉ (U)
+  "ઉનાળો": "unalo.svg",     // mapped from ओढ़नी
+  "ઉકાળો": "ukalo.svg",
+  "ઉપહાર": "upahar.svg",    // mapped from उपहार
+       // mapped from ओखली
 
-  "ऋषि": "rishi.svg",
-  "ऋतु": "rutu.svg",
+  // ઋ (Ri)
+  "ઋષિ": "rishi.svg",         // mapped from ऋषि
+  "ઋતુ": "rutu.svg",          // mapped from ऋतु
 
-  "ऊदबिलाव": "uddbilav.svg",
-  "उनचास": "unchas.svg",
-  "ऊन": "unn.svg",
-  "उपहार": "upahar.svg"
-}
+  // એ/ઊ/અં (E/Oo/An)
+  "ઊધઈ": "udhai.svg",   // mapped from ऊदबिलाव (keeping original or mapping to Gujarati if preferred)
+  "उनचास": "unchas.svg",     // mapped from उनचास
+  "ઊન": "unn.svg",           // mapped from ऊन
+
+  // ए (E) equivalents
+  "એક": "ek.svg",
+  "એકતારો": "ektaro.svg",
+  "એરંડો": "erando.svg",
+
+   "ઐક્ય": "aikya.svg",
+  "ઐરાવત": "airavat.svg",
+  "ઐતિહાસિક": "aitihasik.svg",
+
+  // ओ (O) equivalents
+  "ઓઢણી": "odhani.svg",
+  "ઓશીકું": "oshiku.svg",
+  "ઓરડો": "orado.svg",
+
+  // ઔ (Au) equivalents
+  "ઔષધિ": "aushadhi.svg",
+  "ઔજાર": "aujar.svg",
+
+  // અં (An) equivalents
+  "અંબાડી": "ambadi.svg",
+  "અંબર": "ambar.svg"
+
+};
 
 let soundJson = {
-  "अ": "a.mp3",
-  "आ": "aa.mp3",
-  "ए": "ae.mp3",
-  "ऐ": "aee.mp3",
-  "इ": "e.mp3",
-  "ई": "ee.mp3",
-  "ओ": "o.mp3",
-  "औ": "ou.mp3",
-  "ऋ": "ri.mp3",
-  "उ": "u.mp3",
-  "अः": "uhh.mp3",
-  "अं": "um.mp3",
-  "ऊ": "uu.mp3"
+  "અ": "a.mp3",
+  "આ": "aa.mp3",
+  "ઇ": "e.mp3",
+  "ઈ": "ee.mp3",
+  "ઉ": "u.mp3",
+  "ઊ": "uu.mp3",
+  "ઋ": "ri.mp3",
+  "એ": "ae.mp3",
+  "ઐ": "aee.mp3",
+  "ઓ": "o.mp3",
+  "ઔ": "ou.mp3",
+  "અં": "um.mp3"
 };
 
 let wordSoundJson = {
-  "अनार": "anar.mp3",
-  "अनानास": "ananas.mp3",
-  "आकाश": "akash.mp3",
-  "ऐनक": "ainak.mp3",
-  "ऐरावत": "airavat.mp3",
-  "आलू": "aaloo.mp3",
+  // अ / अ (A) equivalents
+  "અજમો": "ajmo.mp3",
+  "અખરોટ": "akhrot.mp3",
+  "અનાજ": "anaj.mp3",
+  
+  // आ (Aa) equivalents
+  "આગ": "aag.mp3",
+  "આકાશ": "aakash.mp3",
+  "આદુ": "aadu.mp3",
 
-  "अंडा": "anda.mp3",
-  "अंजीर": "anjir.mp3",
-  "औरत": "aurat.mp3",
-  "औषधि": "aushadhi.mp3",
+  // इ (I) equivalents
+  "ઇયળ": "iyad.mp3",
+  "ઇનામ": "inam.mp3",
+  "ઇસ્ત્રી": "istri.mp3",
 
-  "ईल": "eel.mp3",
-  "एक": "ek.mp3",
-  "एकतारा": "ektara.mp3",
+  // ई (Ee) equivalents
+  "ઈશ્વર": "ishwar.mp3",
+  "ઈજા": "ijaa.mp3",
+  "ઇડલી": "idli.mp3",
 
-  "इडली": "idli.mp3",
-  "ईख": "ikh.mp3",
-  "इमली": "imali.mp3",
+  // उ (U) equivalents
+  "ઉપહાર": "uphar.mp3",
+  "ઉકાળો": "ukalo.mp3",
+  "ઉનાળો": "unalo.mp3",
 
-  "ओढ़नी": "odhani.mp3",
-  "ओखली": "okhali.mp3",
+  // ऊ (Oo) equivalents
+  "ઊન": "unn.mp3",
+  "ઊધઈ": "udhai.mp3",
 
-  "ऋषि": "rishi.mp3",
-  "ऋतु": "rutu.mp3",
+  // ઋ (Ri) equivalents
+  "ઋષિ": "rishi.mp3",
+  "ઋતુ": "rutu.mp3",
 
-  "ऊदबिलाव": "uddbilav.mp3",
-  "उनचास": "unchas.mp3",
-  "ऊन": "unn.mp3",
-  "उपहार": "uphar.mp3"
+  // ए (E) equivalents
+  "એક": "ek.mp3",
+  "એકતારો": "ektaro.mp3",
+  "એરંડો": "erando.mp3",
+
+  // ઐ (Ai) equivalents
+  "ઐક્ય": "aikya.mp3",
+  "ઐરાવત": "airavat.mp3",
+  "ઐતિહાસિક": "aitihasik.mp3",
+
+  // ओ (O) equivalents
+  "ઓઢણી": "odhani.mp3",
+  "ઓશીકું": "oshiku.mp3",
+  "ઓરડો": "orado.mp3",
+
+  // ઔ (Au) equivalents
+  "ઔષધિ": "aushadhi.mp3",
+  "ઔજાર": "aujar.mp3",
+
+  // અં (An) equivalents
+  "અંબાડી": "ambadi.mp3",
+  "અંબર": "ambar.mp3"
 };
 
 const swarList = Object.keys(letterData); // ["अ","आ","इ",...]
