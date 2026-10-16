@@ -1,0 +1,639 @@
+/* ==========================================================================
+   Parts of Speech (wg201)
+   Layout is authored on a fixed 1920x1080 stage (matching the XD artboards)
+   and scaled to the window by script.js, so the widget always fits one screen.
+   ========================================================================== */
+
+:root {
+  --title-bg: #0295fc;
+  --green: #4caf50;
+  --purple: #ab37c7;
+  --itext-sky: #a1f2ff;
+  --itext-red: #d20707;
+  --word-bg: #e6fead;
+  --word-ink: #181818;
+  --wrong: #ff0202;
+  --tick: #49ba62;
+}
+
+html,
+body {
+  overflow: hidden;
+}
+
+body {
+  background: #000;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mainContainerOuter {
+  background: transparent;
+}
+
+/* Layering, bottom to top: #viewport (the widget) -> body::before (modal
+   backdrop) -> #modal-layer (closing card) -> .wdgetTitle */
+#viewport,
+#modal-layer {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+}
+
+/* Full-window background, so the title never sits on a letterbox bar: the sky
+   is drawn exactly behind the scaled stage (contain + centre, same as fitStage)
+   and the bars are filled with the image's own sky/ground edge colours. */
+#viewport {
+  z-index: 1;
+  background:
+    url("../assets/svg/bg.svg") center / contain no-repeat;
+}
+
+/* Dark backdrop behind an open modal, covering the whole viewport. */
+body.has-modal::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  background: rgba(0, 0, 0, 0.8);
+}
+
+#modal-layer {
+  z-index: 3;
+  pointer-events: none;
+}
+
+body.has-modal #modal-layer {
+  pointer-events: auto;
+}
+
+/* #stage holds the widget, #modal-stage the modals; both are the same fixed
+   1920x1080 design stage, scaled together by script.js. */
+#stage,
+#modal-stage {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1920px;
+  height: 1080px;
+  transform-origin: 0 0;
+  overflow: hidden;
+  font-family: "Roboto", sans-serif;
+  line-height: 1.3;
+  color: #000;
+}
+
+#stage *,
+#modal-stage * {
+  box-sizing: border-box;
+}
+
+/* undo global_style.css margins; each text class sets its own colour */
+#stage p,
+#modal-stage p,
+#modal-stage h3 {
+  margin: 0;
+}
+
+button {
+  font-family: "Roboto", sans-serif;
+  padding: 0;
+  border-radius: 0;
+  background: none;
+  color: inherit;
+}
+
+button:focus-visible {
+  outline: 4px solid #ffff00;
+  outline-offset: 3px;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+/* launch + learn screens: the layout dims the sky with 60% navy */
+.sky-dim {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 1, 37, 0.6);
+  pointer-events: none;
+}
+
+/* ---------- title (outside the scaled stage, same as previous widgets) ---------- */
+#pos-widget .wdgetTitle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  left: 0;
+  top: 0;
+  z-index: 4;
+}
+
+#pos-widget .wdgetTitle h2 {
+  font-size: 25px;
+  font-weight: 600;
+  text-align: left;
+  background: var(--title-bg);
+  padding: 8px 40px;
+  color: #fff;
+  border-radius: 0 0px 20px 20px;
+  white-space: nowrap;
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.3);
+}
+
+#pos-widget .versionText {
+  position: absolute;
+  right: 20px;
+  top: 10px !important;
+  font-size: 12px;
+  color: rgb(0 0 0 / 20%);
+}
+
+/* ---------- screens ---------- */
+.screen {
+  position: absolute;
+  inset: 0;
+  display: none;
+}
+
+.screen.is-active {
+  display: block;
+}
+
+/* ---------- i-text ---------- */
+.itext {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  font-style: italic;
+}
+
+.itext--home,
+.itext--learn {
+  font-size: 28px;
+  line-height: 44px;
+  color: var(--itext-sky);
+}
+
+.itext--home {
+  top: 225px;
+}
+
+.itext--learn {
+  top: 119px;
+}
+
+.itext--practise {
+  top: 140px;
+  font-size: 35px;
+  line-height: 44px;
+  color: var(--itext-red);
+}
+
+.itext--practise b {
+  font-weight: bold;
+}
+
+/* ---------- section label tab (top left) ---------- */
+.section-tab {
+  position: absolute;
+  left: 43px;
+  top: 0;
+  height: 104px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0 0 25px 25px;
+  font-size: 35px;
+  font-weight: 500;
+  color: #fff;
+}
+
+.section-tab--learn {
+  width: 173px;
+  background: var(--green);
+}
+
+.section-tab--practise {
+  width: 206px;
+  background: var(--purple);
+}
+
+/* ---------- pill buttons ---------- */
+.pill-btn {
+  position: absolute;
+  width: 209px;
+  height: 93px;
+  border: none;
+  border-radius: 47px;
+  color: #fff;
+  font-size: 35px;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.pill-btn:active {
+  transform: translateY(3px);
+}
+
+.pill-btn--learn {
+  background: var(--green);
+}
+
+.pill-btn--practise {
+  background: var(--purple);
+}
+
+.pill-btn--home-learn {
+  left: 726px;
+  top: 317px;
+}
+
+.pill-btn--home-practise {
+  left: 996px;
+  top: 317px;
+}
+
+.pill-btn--learn-practise {
+  left: 1634px;
+  top: 447px;
+}
+
+.home-btn {
+  position: absolute;
+  left: 1829px;
+  top: 25px;
+  width: 69px;
+  height: 69px;
+  cursor: pointer;
+  z-index: 20;
+}
+
+.home-btn img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ==========================================================================
+   LEARN — flip cards
+   ========================================================================== */
+.card {
+  position: absolute;
+  width: 286px;
+  height: 322px;
+  perspective: 1400px;
+  cursor: pointer;
+}
+
+.card__inner {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.55s ease;
+}
+
+.card.is-open .card__inner {
+  transform: rotateY(180deg);
+}
+
+.card__face {
+  position: absolute;
+  inset: 0;
+  display: block;
+  border-radius: 17px;
+  background: var(--card-color);
+  box-shadow: -9px 9px 0 rgba(0, 0, 0, 0.4);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  color: #fff;
+}
+
+.card__face--back {
+  transform: rotateY(180deg);
+}
+
+.card__name {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 119px;
+  font-size: 35px;
+  font-weight: bold;
+  line-height: 56px;
+  text-align: center;
+}
+
+.card__tap {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 285px;
+  font-size: 22px;
+  line-height: 28px;
+  text-align: center;
+}
+
+.card__panel {
+  position: absolute;
+  left: 13px;
+  top: 15px;
+  width: 260px;
+  height: 262px;
+  border-radius: 17px;
+  background: #fff;
+}
+
+.card__what {
+  position: absolute;
+  left: 22px;
+  right: 22px;
+  top: 67px;
+  font-size: 22px;
+  line-height: 28px;
+  text-align: center;
+  color: #000;
+}
+
+.card__ex {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  top: 157px;
+  font-size: 22px;
+  font-weight: bold;
+  line-height: 28px;
+  text-align: center;
+  color: var(--card-color);
+}
+
+/* ==========================================================================
+   PRACTISE
+   ========================================================================== */
+.words {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* rows of up to six boxes, centred (box 187 wide, 41 gap = 228 pitch as in the layout) */
+.words__row {
+  position: absolute;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 41px;
+}
+
+.word {
+  position: relative;
+  min-width: 187px;
+  height: 81px;
+  padding: 0 18px;
+  border: none;
+  border-radius: 16px;
+  background: var(--word-bg);
+  box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.3);
+  color: var(--word-ink);
+  font-size: 35px;
+  font-weight: 900;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.word.is-found,
+.word.is-locked {
+  cursor: default;
+}
+
+/* wrong tap: red frame (7px stroke centred on the box edge, as in the layout) */
+.word.is-wrong::after {
+  content: "";
+  position: absolute;
+  inset: -3.5px;
+  border: 7px solid var(--wrong);
+  border-radius: 19px;
+  pointer-events: none;
+}
+
+.word.is-shake {
+  animation: word-shake 0.4s ease;
+}
+
+@keyframes word-shake {
+  25% {
+    transform: translateX(-8px);
+  }
+
+  75% {
+    transform: translateX(8px);
+  }
+}
+
+/* found: green tick at the top-right corner */
+.word__tick {
+  position: absolute;
+  right: -20px;
+  top: -21px;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--tick);
+  box-shadow: 0 6px 3px rgba(0, 0, 0, 0.3);
+  animation: tick-pop 0.35s ease-out;
+}
+
+.word__tick::after {
+  content: "";
+  position: absolute;
+  left: 18px;
+  top: 10px;
+  width: 13px;
+  height: 24px;
+  border: solid #fff;
+  border-width: 0 6px 6px 0;
+  border-radius: 2px;
+  transform: rotate(45deg);
+}
+
+@keyframes tick-pop {
+  0% {
+    transform: scale(0);
+  }
+
+  70% {
+    transform: scale(1.25);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* wrong-tap message */
+.say {
+  position: absolute;
+  left: 50%;
+  top: 449px;
+  min-width: 608px;
+  height: 76px;
+  padding: 0 34px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #000;
+  border-radius: 46px;
+  background: #fff;
+  font-size: 35px;
+  white-space: nowrap;
+  color: #000;
+}
+
+.say b {
+  margin-right: 0.3em;
+  font-weight: bold;
+  color: #ff0000;
+}
+
+/* ---------- butterflies (one per word to find) ---------- */
+.butterflies,
+.confetti {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.bfly {
+  position: absolute;
+  transition: opacity 0.3s ease;
+}
+
+.bfly img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transition: opacity 0.35s ease;
+}
+
+.bfly__color {
+  opacity: 0;
+}
+
+.bfly.is-on .bfly__color {
+  opacity: 1;
+}
+
+.bfly.is-on {
+  animation: bfly-lift 0.6s ease-out;
+}
+
+@keyframes bfly-lift {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0);
+  }
+
+  45% {
+    transform: translateY(-22px) rotate(-6deg);
+  }
+}
+
+.bfly.is-gone {
+  opacity: 0;
+}
+
+.bfly-fly {
+  position: absolute;
+}
+
+.spark {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  margin: -7px 0 0 -7px;
+  border-radius: 50%;
+  animation: spark 0.65s ease-out forwards;
+}
+
+@keyframes spark {
+  to {
+    transform: translate(var(--dx), var(--dy)) scale(0.25);
+    opacity: 0;
+  }
+}
+
+.confetti__anim {
+  position: absolute;
+  left: 260px;
+  top: -200px;
+  width: 1400px;
+  height: 1400px;
+}
+
+/* ==========================================================================
+   CLOSING CARD (modal)
+   ========================================================================== */
+.end-card {
+  position: absolute;
+  left: 510px;
+  top: 300px;
+  width: 900px;
+  height: 460px;
+  border: 6px solid var(--title-bg);
+  border-radius: 30px;
+  background: #fff;
+}
+
+.end-card__confetti {
+  position: absolute;
+  left: -250px;
+  top: -450px;
+  width: 1400px;
+  height: 1400px;
+  pointer-events: none;
+}
+
+.end-card__title {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 90px;
+  font-size: 64px;
+  font-weight: bold;
+  line-height: 1.2;
+  text-align: center;
+  color: var(--title-bg);
+}
+
+.end-card__btns {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 260px;
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+}
+
+.end-card__btns .pill-btn {
+  position: relative;
+}
+
+.pill-btn--wide {
+  width: 300px;
+}

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>&ZeroWidthSpace;Parts of Speech&ZeroWidthSpace;</title>
+
+  <link rel="stylesheet" href="./css/global_style.css">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body id="pos-widget">
+  <div class="container">
+    <div class="mainContainerOuter">
+      <div class="wdgetTitle">
+        <h2>&ZeroWidthSpace;Parts of Speech&ZeroWidthSpace;</h2>
+        <span id="versionId" class="versionText">b4_wg201_261016_01</span>
+      </div>
+      <div id="viewport">
+        <!-- launch + learn screens dim the sky (full window, as in the layout) -->
+        <div class="sky-dim" id="skyDim"></div>
+
+        <!-- Fixed 1920x1080 design stage, scaled to fit the window by script.js -->
+        <div id="stage">
+
+          <!-- ============ LAUNCH SCREEN ============ -->
+          <section id="screen-home" class="screen is-active" aria-label="Parts of Speech">
+            <p class="itext itext--home">Eight parts of speech. Can you spot them all?</p>
+            <button class="pill-btn pill-btn--learn pill-btn--home-learn" id="toLearnBtn" type="button">Learn</button>
+            <button class="pill-btn pill-btn--practise pill-btn--home-practise" id="toPractiseBtn" type="button">Practise</button>
+          </section>
+
+          <!-- ============ LEARN SCREEN ============ -->
+          <section id="screen-learn" class="screen" aria-label="Learn">
+            <p class="section-tab section-tab--learn">Learn</p>
+            <p class="itext itext--learn">There are eight parts of speech.</p>
+            <div class="cards" id="cards"></div>
+            <button class="pill-btn pill-btn--practise pill-btn--learn-practise" id="learnPractiseBtn" type="button">Practise</button>
+          </section>
+
+          <!-- ============ PRACTISE SCREEN ============ -->
+          <section id="screen-practise" class="screen" aria-label="Practise">
+            <p class="section-tab section-tab--practise">Practise</p>
+            <p class="itext itext--practise" id="practiseItext"></p>
+            <div class="words" id="words"></div>
+            <p class="say" id="say" role="status" aria-live="polite" hidden></p>
+            <div class="butterflies" id="butterflies" aria-hidden="true"></div>
+            <div class="confetti" id="confetti" aria-hidden="true"></div>
+          </section>
+
+          <button class="home-btn" id="homeBtn" type="button" aria-label="Home" hidden>
+            <img src="assets/svg/home-btn.svg" alt="">
+          </button>
+        </div>
+      </div>
+
+      <!-- Modals live in their own scaled layer above the body::before backdrop,
+           so the dark backdrop can cover the whole viewport, not just the stage. -->
+      <div id="modal-layer">
+        <div id="modal-stage">
+          <!-- ============ CLOSING SCREEN ============ -->
+          <div class="end-card" id="endCard" role="dialog" aria-modal="true" aria-labelledby="endTitle" hidden>
+            <div class="end-card__confetti" id="endConfetti" aria-hidden="true"></div>
+            <h3 class="end-card__title" id="endTitle">All twenty done!</h3>
+            <div class="end-card__btns">
+              <button class="pill-btn pill-btn--learn" id="endLearnBtn" type="button">Learn</button>
+              <button class="pill-btn pill-btn--practise pill-btn--wide" id="againBtn" type="button">Practise Again</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./js/lottie.js"></script>
+  <script src="./js/anim-data.js"></script>
+  <script src="./js/content-data.js"></script>
+  <script src="./js/script.js"></script>
+</body>
+
+</html>
