@@ -1,0 +1,1093 @@
+/* ==========================================================================
+   Species, Area, and the Z Factor Exploration (wg205)
+   Layout is authored on a fixed 1920x1080 stage (matching the XD artboard)
+   and scaled to the window by script.js, so the widget always fits one screen.
+   ========================================================================== */
+
+:root {
+  --title-bg: #02fca0;
+  --title-ink: #002b3b;
+  --itext: #ffff00;
+  --panel: #57978a;
+  --card-1: #ecffa1;
+  --card-2: #f8ffcb;
+  --graph-1: #ecffa1;
+  --graph-2: #fdf8bf;
+  --card-stroke: #0e5113;
+  --ink-green: #1c7c2c;
+  --point: #ce0707;
+  --point-stroke: #6c0a0a;
+  --read-line: #900000;
+  --orange: #f7901e;
+}
+
+html,
+body {
+  overflow: hidden;
+}
+
+body {
+  background: #0b5a3c;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mainContainerOuter {
+  background: #000;
+}
+
+/* Layering, bottom to top: #viewport (the widget) -> body::before (modal
+   backdrop) -> #modal-layer (insights popup + button) -> .wdgetTitle */
+#viewport,
+#modal-layer {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+}
+
+/* full-window forest background, so the title never sits on a letterbox bar */
+#viewport {
+  z-index: 1;
+  background: #0b5a3c url("../assets/img/bg.svg") center / cover no-repeat;
+}
+
+/* Dark backdrop behind an open modal, covering the whole viewport. */
+body.has-modal::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  background: rgba(0, 0, 0, 0.8);
+}
+
+#modal-layer {
+  z-index: 3;
+  pointer-events: none;
+}
+
+body.has-modal #modal-layer {
+  pointer-events: auto;
+}
+
+/* #stage holds the widget, #modal-stage the modals; both are the same fixed
+   1920x1080 design stage, scaled together by script.js. */
+#stage,
+#modal-stage {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1920px;
+  height: 1080px;
+  transform-origin: 0 0;
+  overflow: hidden;
+  font-family: "Roboto", sans-serif;
+  line-height: 1.3;
+  color: #000;
+}
+
+.stage-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+button {
+  font-family: "Roboto", sans-serif;
+  padding: 0;
+  border-radius: 0;
+  background: none;
+  color: inherit;
+}
+
+button:focus-visible,
+input:focus-visible {
+  outline: 4px solid #ffff00;
+  outline-offset: 3px;
+}
+
+button:disabled {
+  opacity: 0.5;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+/* ---------- title (outside the scaled stage, same as previous widgets) ---------- */
+#species-z-widget .wdgetTitle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  left: 0;
+  top: 0;
+  z-index: 30;
+}
+
+#species-z-widget .wdgetTitle h2 {
+  font-size: 25px;
+  font-weight: 600;
+  text-align: left;
+  background: var(--title-bg);
+  padding: 8px 40px;
+  color: var(--title-ink);
+  border-radius: 0 0px 20px 20px;
+  white-space: nowrap;
+}
+
+#species-z-widget .versionText {
+  position: absolute;
+  right: 20px;
+  top: 10px !important;
+  font-size: 12px;
+  color: rgb(255 255 255 / 20%);
+}
+
+/* ---------- i-text ---------- */
+.itext {
+  position: absolute;
+  left: 60px;
+  right: 60px;
+  top: 108px;
+  margin: 0;
+  text-align: center;
+  font-size: 28px;
+  font-style: italic;
+  line-height: 36px;
+  color: var(--itext);
+  z-index: 5;
+}
+
+.itext b {
+  font-weight: bold;
+}
+
+.itext .reveal-chip {
+  display: inline-block;
+  vertical-align: middle;
+  margin: -4px 10px 0;
+  padding: 2px 16px;
+  border: 2px solid #994e4e;
+  border-radius: 14px;
+  background: #ffb552;
+  color: #000;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: bold;
+  line-height: 20px;
+}
+
+/* ---------- screens ---------- */
+.screen {
+  position: absolute;
+  inset: 0;
+  display: none;
+}
+
+.screen.is-active {
+  display: block;
+}
+
+/* ---------- mode tag (shared pill) ---------- */
+.mode-tag {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 13px;
+  border: 1px solid transparent;
+  line-height: 1;
+}
+
+.mode-tag--1 {
+  background: #62d65a;
+  color: #005611;
+}
+
+.mode-tag--2 {
+  background: #f7de9a;
+  border-color: #dac06e;
+  color: #6e5920;
+}
+
+/* ==========================================================================
+   MODE SELECT
+   ========================================================================== */
+.mode-card {
+  position: absolute;
+  top: 343px;
+  width: 725px;
+  height: 404px;
+  border: 5px solid var(--card-stroke);
+  border-radius: 37px;
+  cursor: pointer;
+  text-align: left;
+  overflow: hidden;
+}
+
+.mode-card--1 {
+  left: 206px;
+  background: var(--card-1);
+}
+
+.mode-card--2 {
+  left: 994px;
+  background: var(--card-2);
+}
+
+.mode-card .mode-tag {
+  left: 48px;
+  top: 29px;
+  width: 124px;
+  height: 43px;
+  font-size: 28px;
+}
+
+.mode-card__title {
+  position: absolute;
+  left: 48px;
+  top: 118px;
+  font-size: 45px;
+  font-weight: bold;
+  line-height: 1.2;
+}
+
+.mode-card__desc {
+  position: absolute;
+  left: 48px;
+  top: 178px;
+  font-size: 22px;
+  line-height: 29px;
+}
+
+.mode-card--1 .mode-card__title {
+  color: #004f28;
+}
+
+.mode-card--1 .mode-card__desc {
+  color: #005a0c;
+}
+
+.mode-card--2 .mode-card__title {
+  color: #793f0d;
+}
+
+.mode-card--2 .mode-card__desc {
+  color: #3c2601;
+}
+
+.mode-card__illus {
+  position: absolute;
+  pointer-events: none;
+  opacity: 0.55;
+}
+
+/* positions = design coords minus card origin (card border 5px) */
+.mode-card--1 .mode-card__illus {
+  left: 35.2px;
+  top: 169px;
+  width: 633.8px;
+  height: 227.5px;
+}
+
+.mode-card--2 .mode-card__illus {
+  left: 39px;
+  top: 113.5px;
+  width: 632px;
+  height: 283.5px;
+}
+
+/* ==========================================================================
+   EXPLORE SCREEN — left control panel
+   ========================================================================== */
+.ctrl-panel {
+  position: absolute;
+  left: 149px;
+  top: 174px;
+  width: 556px;
+  height: 580px;
+  background: var(--panel);
+  border: 1px solid #707070;
+  border-radius: 31px;
+  box-sizing: border-box;
+}
+
+.is-mode2 .ctrl-panel {
+  top: 173px;
+  height: 614px;
+}
+
+/* children use stage coords offset by the panel origin (149,174) */
+.mode1-ctrl,
+.mode2-ctrl {
+  display: none;
+}
+
+.is-mode1 .mode1-ctrl,
+.is-mode2 .mode2-ctrl {
+  display: block;
+}
+
+/* ---- Mode 1: area rows ---- */
+.area-list {
+  position: absolute;
+  left: 52px;
+  top: 24px;
+  width: 450px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.area-row {
+  position: relative;
+  height: 53px;
+  border-radius: 27px;
+  background: #ebfea0;
+  border: 1px solid #eae66a;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  font-size: 25px;
+  font-weight: 500;
+}
+
+.area-row.is-done {
+  background: #fff;
+}
+
+.area-row__area {
+  position: absolute;
+  left: 29px;
+}
+
+.area-row__unit {
+  color: #009018;
+}
+
+.area-row__sp {
+  position: absolute;
+  left: 326px;
+}
+
+.area-row__sp i {
+  font-style: normal;
+  color: #a12d5c;
+}
+
+.reveal-btn {
+  position: absolute;
+  right: 5px;
+  top: 3px;
+  width: 138px;
+  height: 45px;
+  border: 2px solid #994e4e;
+  border-radius: 23px;
+  background: #ffb552;
+  color: #000;
+  font-size: 25px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.set-btns {
+  position: absolute;
+  left: 111px;
+  top: 341px;
+  width: 340px;
+  height: 37px;
+}
+
+.pill-btn {
+  position: absolute;
+  border: 2px solid #00605d;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.pill-btn--reset,
+.pill-btn--newset {
+  top: 0;
+  height: 37px;
+  font-size: 20px;
+  color: #000;
+  box-shadow: 0 0 0 5px #f7ff00;
+}
+
+.pill-btn--reset {
+  left: 0;
+  width: 166px;
+  background: #8cffff;
+}
+
+.pill-btn--newset {
+  left: 203px;
+  width: 134px;
+  background: #ffa5ae;
+  border-color: #994e4e;
+}
+
+/* ---- Mode 2: region + Z ---- */
+.region-btn {
+  position: absolute;
+  left: 53px;
+  width: 450px;
+  height: 100px;
+  background: #fdf8bf;
+  border: 1px solid #eae66a;
+  border-radius: 28px;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+
+.region-btn--small {
+  top: 22px;
+}
+
+.region-btn--large {
+  top: 137px;
+}
+
+.region-btn.is-active {
+  box-shadow: 0 0 0 9px #ff1d1d;
+}
+
+.region-btn:disabled {
+  opacity: 1;
+}
+
+.region-btn:disabled:not(.is-active) {
+  opacity: 0.6;
+}
+
+.region-btn__title {
+  font-size: 30px;
+  font-weight: 500;
+  color: #000;
+}
+
+.region-btn__range {
+  font-size: 22px;
+}
+
+.region-btn--small .region-btn__range {
+  color: #ae5e18;
+}
+
+.region-btn--large .region-btn__range {
+  color: #a01919;
+}
+
+.ctrl-divider {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: rgb(255 255 255 / 25%);
+}
+
+.ctrl-divider--top {
+  top: 266px;
+}
+
+.ctrl-divider--bottom {
+  top: 435px;
+}
+
+.z-input {
+  position: absolute;
+  left: 61px;
+  top: 294px;
+  width: 279px;
+  height: 55px;
+  background: #fff;
+  border: 1px solid #00605d;
+  border-radius: 18px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+#zInput {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 226px;
+  height: 100%;
+  border: 0;
+  padding: 0 0 0 28px;
+  box-sizing: border-box;
+  background: transparent;
+  font-family: "Roboto", sans-serif;
+  font-size: 30px;
+  font-weight: bold;
+  color: #000;
+  outline: none;
+}
+
+#zInput::placeholder {
+  color: #9aa;
+  font-weight: normal;
+}
+
+.z-input:focus-within {
+  box-shadow: 0 0 0 3px #ffff00;
+}
+
+.z-spin {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 52px;
+  height: 100%;
+  background: #fcffa7;
+  border-left: 1px solid #00605d;
+  display: flex;
+  flex-direction: column;
+}
+
+.z-spin__btn {
+  flex: 1;
+  cursor: pointer;
+  position: relative;
+}
+
+.z-spin__btn::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+}
+
+.z-spin__btn--up::after {
+  border-bottom: 13px solid #daac9e;
+}
+
+.z-spin__btn--down::after {
+  border-top: 13px solid #daac9e;
+}
+
+.z-input.is-disabled {
+  opacity: 0.55;
+}
+
+.pill-btn--plot {
+  left: 346px;
+  top: 294px;
+  width: 154px;
+  height: 55px;
+  background: #8cffff;
+  color: #12569a;
+  font-size: 25px;
+}
+
+.pill-btn--another {
+  left: 175px;
+  top: 368px;
+  width: 206px;
+  height: 44px;
+  background: #ffb06c;
+  color: #692c03;
+  font-size: 25px;
+}
+
+/* ---- shared toggle panel ---- */
+.toggle-panel {
+  position: absolute;
+  left: 20px;
+  top: 399px;
+  width: 517px;
+  height: 162px;
+  background: #59cfb7;
+  border-radius: 31px;
+}
+
+.is-mode2 .toggle-panel {
+  top: 456px;
+  height: 135px;
+}
+
+.toggle-panel__hint {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 32px;
+  margin: 0;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  line-height: 24px;
+  color: #000;
+}
+
+.is-mode2 .toggle-panel__hint {
+  top: 16px;
+}
+
+.toggle-bar {
+  position: absolute;
+  left: 33px;
+  top: 87px;
+  width: 450px;
+  height: 58px;
+  background: #00f89d;
+  border: 3px solid #14787f;
+  border-radius: 29px;
+  box-sizing: border-box;
+}
+
+.is-mode2 .toggle-bar {
+  top: 60px;
+}
+
+.toggle-lbl {
+  position: absolute;
+  top: 14px;
+  font-size: 20px;
+  font-weight: bold;
+  letter-spacing: 0.06em;
+  line-height: 24px;
+  color: #000;
+}
+
+.toggle-lbl:first-child {
+  left: 37px;
+}
+
+.toggle-lbl:last-child {
+  right: 22px;
+}
+
+.switch {
+  position: absolute;
+  left: 177px;
+  top: 8px;
+  width: 91px;
+  height: 36px;
+  border: 3px solid #50cb65;
+  border-radius: 18px;
+  background: #f5ffea;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.switch::after {
+  content: "";
+  position: absolute;
+  left: 3px;
+  top: 3px;
+  width: 24px;
+  height: 24px;
+  box-sizing: border-box;
+  border-radius: 50%;
+  background: #d4c500;
+  border: 3px solid #1fa54a;
+  transition: left 0.25s ease;
+}
+
+.switch.is-on::after {
+  left: 58px;
+}
+
+.switch:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ---------- feedback boxes ---------- */
+.feedback {
+  position: absolute;
+  left: 149px;
+  top: 760px;
+  width: 556px;
+  height: 201px;
+  box-sizing: border-box;
+  border: 3px dashed #0e6b2c;
+  border-radius: 4px;
+  padding: 10px 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 25px;
+  letter-spacing: 0.06em;
+  line-height: 33px;
+  color: #000;
+}
+
+.is-mode2 .feedback {
+  left: 152px;
+  top: 794px;
+  width: 553px;
+  height: 166px;
+  font-size: 24px;
+  line-height: 30px;
+}
+
+.feedback--hyperbola {
+  background: #00ff66;
+}
+
+.feedback--log {
+  background: #2efff8;
+}
+
+.feedback--error {
+  background: #ffd3d3;
+  border-color: #a01919;
+  color: #7a0000;
+}
+
+.feedback__eq {
+  margin-bottom: 14px;
+  white-space: nowrap;
+}
+
+.is-mode2 .feedback__eq {
+  margin-bottom: 8px;
+}
+
+.feedback b {
+  font-weight: bold;
+}
+
+.axis-feedback {
+  position: absolute;
+  left: 772px;
+  top: 839px;
+  width: 955px;
+  height: 83px;
+  box-sizing: border-box;
+  border: 3px dashed #0e6b2c;
+  border-radius: 4px;
+  background: #facb8b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 25px;
+  letter-spacing: 0.06em;
+  color: #000;
+  z-index: 2;
+}
+
+/* ==========================================================================
+   EXPLORE SCREEN — graph panel
+   ========================================================================== */
+.graph-panel {
+  position: absolute;
+  left: 738px;
+  top: 170px;
+  width: 1032px;
+  height: 708px;
+  background: var(--graph-1);
+  border: 1px solid #707070;
+  border-radius: 33px;
+  box-sizing: border-box;
+}
+
+.is-mode2 .graph-panel {
+  background: var(--graph-2);
+}
+
+/* children: stage coords minus (738,170) */
+.graph-panel .mode-tag {
+  left: 30px;
+  top: 17px;
+  width: 96px;
+  height: 33px;
+  font-size: 21px;
+}
+
+.graph-scale {
+  position: absolute;
+  left: 30px;
+  top: 58px;
+  font-size: 20px;
+  color: var(--ink-green);
+}
+
+.graph-head {
+  position: absolute;
+  top: 18px;
+  left: 290px;
+  width: 520px;
+  height: 92px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.graph-head__icon {
+  height: 74px;
+  width: auto;
+  flex: 0 0 auto;
+}
+
+.graph-head__icon:not([src]),
+.graph-head__icon[src=""] {
+  display: none;
+}
+
+.graph-head__text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.graph-head__title {
+  font-size: 30px;
+  font-weight: bold;
+  color: #007216;
+  white-space: nowrap;
+}
+
+.graph-head__sub {
+  font-size: 22px;
+  color: var(--ink-green);
+  white-space: nowrap;
+  min-height: 26px;
+}
+
+.graph {
+  position: absolute;
+  left: -1px;
+  top: -1px;
+  width: 1032px;
+  height: 708px;
+  overflow: visible;
+}
+
+.plot-bg {
+  fill: #f2ffd9;
+}
+
+.plot-illus {
+  opacity: 1;
+  pointer-events: none;
+}
+
+.grid-line {
+  stroke: #7ea586;
+  stroke-width: 1;
+}
+
+.plot-axis {
+  stroke: #258a8c;
+  stroke-width: 5;
+}
+
+.axis-arrow {
+  stroke: #4cc0a5;
+  stroke-width: 3;
+}
+
+.axis-caption,
+.tick-label,
+.pt-label {
+  font-family: "Roboto", sans-serif;
+  font-size: 25px;
+  fill: #000;
+}
+
+.pt-label-bg {
+  fill: #fff;
+  opacity: 0.6;
+}
+
+.curve-path {
+  fill: none;
+  stroke: #000;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.pt {
+  fill: var(--point);
+  stroke: var(--point-stroke);
+  stroke-width: 3;
+}
+
+.pt-new {
+  animation: pt-pop 0.35s ease-out;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+@keyframes pt-pop {
+  0% {
+    transform: scale(0);
+  }
+
+  70% {
+    transform: scale(1.5);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.read-line {
+  stroke: var(--read-line);
+  stroke-width: 3;
+  stroke-dasharray: 6;
+  fill: none;
+}
+
+.read-pt {
+  fill: #ffcf00;
+  stroke: var(--read-line);
+  stroke-width: 3;
+}
+
+.axis-hit {
+  fill: transparent;
+  pointer-events: none;
+}
+
+.axis-hit.is-active {
+  pointer-events: all;
+  cursor: crosshair;
+}
+
+.axis-hit.is-pulse {
+  animation: hit-pulse 1.4s ease-in-out 3;
+}
+
+@keyframes hit-pulse {
+
+  0%,
+  100% {
+    fill: transparent;
+  }
+
+  50% {
+    fill: rgb(255 207 0 / 35%);
+  }
+}
+
+/* ---------- home + insights buttons ---------- */
+.home-btn {
+  position: absolute;
+  left: 41.9px;
+  top: 983px;
+  width: 69.2px;
+  height: 69.2px;
+  cursor: pointer;
+  z-index: 25;
+}
+
+.home-btn img,
+.close-btn img,
+.insights-btn img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* lives in #modal-layer so it stays bright above the backdrop */
+.insights-btn {
+  position: absolute;
+  left: 155px;
+  top: 981px;
+  width: 255px;
+  height: 74px;
+  cursor: pointer;
+  z-index: 2;
+  pointer-events: auto;
+}
+
+.insights-btn span {
+  position: absolute;
+  left: 86px;
+  top: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  font-size: 35px;
+  font-weight: 500;
+  color: #fff;
+}
+
+/* ---------- insights popup (backdrop is body.has-modal::before) ---------- */
+.insights-modal {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.insights-panel {
+  position: absolute;
+  left: 158px;
+  top: 198px;
+  width: 1585px;
+  height: 821px;
+  box-sizing: border-box;
+  background: #fff;
+  border: 6px solid #e2a500;
+  border-radius: 16px;
+  padding: 72px 120px 60px 92px;
+  overflow: auto;
+}
+
+.insights-list {
+  margin: 0;
+  padding: 0 0 0 6px;
+  list-style: none;
+}
+
+.insights-list li {
+  position: relative;
+  padding-left: 25px;
+  font-size: 32px;
+  line-height: 45px;
+  color: #000;
+}
+
+.insights-list li::before {
+  content: "";
+  position: absolute;
+  left: -20px;
+  top: 16px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #e2a500;
+}
+
+.insights-list b {
+  font-size: 33px;
+  font-weight: bold;
+}
+
+.insights-list sup {
+  font-size: 0.6em;
+  line-height: 0;
+}
+
+.close-btn {
+  position: absolute;
+  left: 1684px;
+  top: 154px;
+  width: 92px;
+  height: 92px;
+  cursor: pointer;
+  border-radius: 50%;
+}
