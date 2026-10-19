@@ -296,7 +296,7 @@ button:focus-visible {
 .clue-box__text {
   margin: 0;
   color: var(--ink);
-  font-size: 25px;
+  font-size: 22px;
   line-height: 1.15;
 }
 
@@ -551,7 +551,7 @@ button:focus-visible {
 }
 
 .capital-btn.is-blinking {
-  animation: blink-btn 0.5s ease-in-out 4;
+  animation: blink-btn 0.5s ease-in-out 3;
 }
 
 .capital-popup.is-locked .capital-btn {
@@ -711,8 +711,9 @@ button:focus-visible {
   fill: var(--land-wrong);
 }
 
-.state-shape.is-blinking {
-  animation: blink-state 0.5s ease-in-out 4;
+.state-shape.is-blinking,
+.ut-dot.is-blinking {
+  animation: blink-state 0.5s ease-in-out 3;
 }
 
 @keyframes blink-state {
@@ -736,7 +737,7 @@ button:focus-visible {
 
 .trail {
   fill: none;
-  stroke: var(--itext);
+  stroke: #ff8c00;
   stroke-width: 4px;
   stroke-dasharray: 12 9;
   stroke-linecap: round;

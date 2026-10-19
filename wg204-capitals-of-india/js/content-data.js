@@ -99,7 +99,7 @@ window.CORRIDORS = [
     "capitalPoints": [
      "amaravati"
     ],
-    "clue": "River Krishna and River Godavari meets the sea in this state. Has a long coastline along the Bay of Bengal. The famous Tirupati temple is in the Tirumala hills.",
+    "clue": "River Krishna and River Godavari meets the sea in this state. The famous Tirupati temple is in the Tirumala hills.",
     "fact": "Tirupati Temple – one of India's best-known pilgrimage places. Kondapalli toys are traditional wooden toys made in Andhra Pradesh."
    },
    {
@@ -170,7 +170,7 @@ window.CORRIDORS = [
      "hyderabad"
     ],
     "clue": "Famous for the Charminar and Golconda Fort. Has rocky landscapes and historic forts. Known for dishes such as Hyderabadi biryani.",
-    "fact": "Charminar – a famous monument with four grand arches. Telangana became India's 29th state in 2014 and is now one of 28 states."
+    "fact": "🏛️ Charminar – a famous monument with four grand arches. 📅 Telangana became a separate state on 2 June 2014."
    }
   ]
  },
