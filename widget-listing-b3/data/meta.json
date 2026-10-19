@@ -149,7 +149,7 @@
       "author": "tce-nitinc"
     },
     "wg204-capitals-of-india": {
-      "updatedAt": "2026-10-19T12:40:56+05:30",
+      "updatedAt": "2026-10-19T15:27:31+05:30",
       "author": "tce-nitinc"
     },
     "wg205-species-z-factor-explorer": {
@@ -178,6 +178,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-10-19T15:27:31+05:30",
+      "author": "tce-nitinc",
+      "message": "wg204 fixes",
+      "widgets": [
+        204
+      ]
+    },
     {
       "date": "2026-10-19T15:12:00+05:30",
       "author": "tce-nitinc",
@@ -419,14 +427,6 @@
       "message": "asded new widget wg211",
       "widgets": [
         211
-      ]
-    },
-    {
-      "date": "2026-10-13T12:53:32+05:30",
-      "author": "tce-nitinc",
-      "message": "added wg-202",
-      "widgets": [
-        202
       ]
     }
   ]
