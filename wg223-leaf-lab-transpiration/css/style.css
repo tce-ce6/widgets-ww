@@ -1,0 +1,1045 @@
+/* ==========================================================================
+   Capitals of Indian States and Union Territories (wg204)
+   Layout is authored on a fixed 1920x1080 stage (matching
+   en_geo_04_wg204_layout.svg) and scaled to the window by script.js.
+   ========================================================================== */
+
+:root {
+  --ink: #181818;
+  --itext: #feed7b;
+  --teal-dark: #03352b;
+  --teal-line: #009173;
+  --teal-border: #217a72;
+  --pill-border: #00ae9b;
+  --cream: #f5f6d0;
+  --sky: #d7eff7;
+  --grey-line: #707071;
+  --navy: #252468;
+  --green: #4daf4e;
+  --orange: #f79120;
+  --blue: #478fcc;
+  --red-light: #ef4323;
+  --yellow-light: #ffcd05;
+  --green-light: #53b848;
+  --cap-default: #41c7f3;
+  --cap-default-line: #009fc7;
+  --cap-wrong: #fcdcdc;
+  --cap-right: #53b848;
+  --cap-right-line: #109a48;
+  --land: #fdfbdf;
+  --land-line: #898989;
+  --land-hit: #8fc95e;
+  --land-visited: #c6e4ab;
+  --land-wrong: #fac1c2;
+}
+
+html,
+body {
+  overflow: hidden;
+}
+
+/* The widget backdrop fills the whole viewport, including any space around
+   the scaled 1920x1080 stage. */
+body {
+  background: #12564a url("../assets/images/bg.svg") center / cover no-repeat;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mainContainerOuter {
+  background: transparent;
+}
+
+/* Layering, bottom to top: body backdrop -> #viewport (the widget) ->
+   body::before (modal backdrop) -> #modal-layer (the open modal card). */
+#viewport,
+#modal-layer {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+}
+
+#viewport {
+  z-index: 1;
+}
+
+/* Dark backdrop behind an open modal, covering the whole viewport. */
+body.has-modal::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  background: rgba(0, 0, 0, 0.8);
+}
+
+#modal-layer {
+  z-index: 3;
+  pointer-events: none;
+}
+
+body.has-modal #modal-layer {
+  pointer-events: auto;
+}
+
+/* #stage holds the widget, #modal-stage the modals; both are the same fixed
+   1920x1080 design stage, scaled together by script.js. */
+#stage,
+#modal-stage {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1920px;
+  height: 1080px;
+  transform-origin: 0 0;
+  overflow: hidden;
+  color: var(--ink);
+  font-family: "Roboto", sans-serif;
+  line-height: 1.2;
+}
+
+#stage *,
+#stage *::before,
+#stage *::after,
+#modal-stage *,
+#modal-stage *::before,
+#modal-stage *::after {
+  box-sizing: border-box;
+}
+
+button {
+  font-family: "Roboto", sans-serif;
+}
+
+button:focus-visible {
+  outline: 5px solid #ffffff;
+  outline-offset: 3px;
+}
+
+/* ---------- header (as drawn in the layout) ---------- */
+#modal-stage .wdgetTitle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 0;
+  z-index: 60;
+}
+
+#modal-stage .wdgetTitle h2 {
+  left: 560px;
+  width: 800px;
+  height: 60px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #468cca;
+  border-radius: 0 0 25px 25px;
+  transform: none;
+  font-family: "Roboto", sans-serif;
+  font-size: 35px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+#modal-stage .versionText {
+  line-height: 1;
+}
+
+/* ---------- screens ---------- */
+.screen {
+  position: absolute;
+  inset: 0;
+  display: none;
+}
+
+.screen.is-active {
+  display: block;
+}
+
+/* Every text class below sets its own margin/size/colour, which overrides
+   the generic p/h3 rules in global_style.css. */
+.itext {
+  position: absolute;
+  margin: 0;
+  color: var(--itext);
+  font-size: 28px;
+  font-style: italic;
+  line-height: 31px;
+  text-align: center;
+}
+
+.itext b {
+  font-weight: 500;
+}
+
+.itext.itext--intro {
+  top: 140px;
+  left: 0;
+  width: 100%;
+  font-size: 28px;
+}
+
+.itext.itext--game {
+  top: 84px;
+  left: 60px;
+  width: 726px;
+  font-size: 28px;
+  white-space: nowrap;
+}
+
+/* ---------- gateway cards ---------- */
+.gateway {
+  position: absolute;
+  top: 219px;
+  width: 384px;
+  height: 592px;
+}
+
+.gateway__card {
+  position: absolute;
+  left: 0;
+  top: 27px;
+  width: 384px;
+  height: 533px;
+  background: var(--cream);
+  border: 1px solid var(--grey-line);
+  border-radius: 30px;
+}
+
+.gateway__tab,
+.card__tab {
+  position: absolute;
+  width: 225px;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  border: 1px solid var(--pill-border);
+  border-radius: 29px;
+  color: #000;
+  font-size: 30px;
+  font-weight: 700;
+}
+
+.gateway__tab {
+  left: 80px;
+  top: 0;
+}
+
+.gateway__art {
+  position: absolute;
+  left: 41px;
+  top: 76px;
+  width: 301px;
+  height: 334px;
+}
+
+.gateway__name {
+  position: absolute;
+  margin: 0;
+  left: 0;
+  top: 427px;
+  width: 100%;
+  color: var(--navy);
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 37px;
+  text-align: center;
+}
+
+.gateway__start {
+  position: absolute;
+  left: 62px;
+  top: 527px;
+  width: 261px;
+  height: 65px;
+  padding: 0;
+  background: var(--green);
+  border: none;
+  border-radius: 33px;
+  color: #fff;
+  font-size: 32px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.gateway__start:active {
+  transform: translateY(3px);
+}
+
+/* ---------- clue + state list ---------- */
+.clue-box {
+  position: absolute;
+  left: 95px;
+  top: 136px;
+  width: 706px;
+  height: 108px;
+  padding: 6px 20px 6px 124px;
+  display: flex;
+  align-items: center;
+  background: var(--cream);
+  border: 1px solid var(--grey-line);
+  border-radius: 19px;
+}
+
+.clue-box__icon {
+  position: absolute;
+  left: 8px;
+  top: 6px;
+  width: 94px;
+  height: 94px;
+}
+
+.clue-box__text {
+  margin: 0;
+  color: var(--ink);
+  font-size: 25px;
+  line-height: 1.15;
+}
+
+.state-list {
+  position: absolute;
+  left: 95px;
+  top: 264px;
+  width: 706px;
+  height: 422px;
+  padding: 22px 30px 0 72px;
+  background: var(--sky);
+  border: 1px solid var(--grey-line);
+  border-radius: 20px;
+}
+
+.state-list__title {
+  margin: 0 0 22px;
+  font-size: 30px;
+  font-weight: 500;
+  line-height: 36px;
+}
+
+.state-list__title b {
+  margin: 0 8px;
+  font-weight: 700;
+}
+
+.state-list__items {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px 5px;
+  list-style: none;
+}
+
+.state-list__items li {
+  height: 60px;
+  min-width: 184px;
+  padding: 0 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  border-radius: 30px;
+  font-size: 28px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.state-list__items li.is-done {
+  background: #b3daa5;
+}
+
+/* longer lists (12 states, long UT names) use a tighter size */
+.state-list.is-compact .state-list__items {
+  gap: 14px 6px;
+}
+
+.state-list.is-compact .state-list__items li {
+  height: 50px;
+  min-width: 0;
+  padding: 0 24px;
+  font-size: 24px;
+}
+
+/* ---------- signal ---------- */
+.signal {
+  position: absolute;
+  left: 314px;
+  top: 710px;
+  width: 269px;
+  height: 96px;
+  padding: 11px 13px;
+  display: flex;
+  justify-content: space-between;
+  background: var(--teal-dark);
+  border: 1px solid var(--teal-line);
+  border-radius: 48px;
+}
+
+.signal__light {
+  width: 74px;
+  height: 74px;
+  border-radius: 50%;
+  opacity: 0.25;
+  transition: opacity 0.3s, box-shadow 0.3s;
+}
+
+.signal__light.is-on {
+  opacity: 1;
+}
+
+.signal__light--red {
+  background: var(--red-light);
+}
+
+.signal__light--red.is-on {
+  box-shadow: 0 0 22px 4px rgba(239, 67, 35, 0.75);
+}
+
+.signal__light--yellow {
+  background: var(--yellow-light);
+}
+
+.signal__light--yellow.is-on {
+  box-shadow: 0 0 22px 4px rgba(255, 205, 5, 0.75);
+}
+
+.signal__light--green {
+  background: var(--green-light);
+}
+
+.signal__light--green.is-on {
+  box-shadow: 0 0 22px 4px rgba(83, 184, 72, 0.75);
+}
+
+/* ---------- feedback bubbles (arrow points at the matching light) ---------- */
+.feedback {
+  position: absolute;
+}
+
+.feedback[hidden] {
+  display: none;
+}
+
+.feedback__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.feedback__text {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 24px;
+  bottom: 0;
+  margin: 0;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000;
+  font-size: 26px;
+  line-height: 37px;
+  text-align: center;
+}
+
+.feedback--wrong {
+  left: 318.4px;
+  top: 810.1px;
+  width: 268.9px;
+  height: 93.1px;
+}
+
+.feedback--wrong .feedback__text {
+  color: #ed2024;
+}
+
+.feedback--state {
+  left: 242.2px;
+  top: 810.5px;
+  width: 418.9px;
+  height: 92.1px;
+}
+
+.feedback--capital {
+  left: 238.2px;
+  top: 795.5px;
+  width: 418.9px;
+  height: 122.1px;
+}
+
+/* ---------- capital list popup ---------- */
+.capital-popup {
+  position: absolute;
+  left: 197px;
+  top: 146px;
+  width: 502px;
+  padding: 18px 0 44px;
+  background: var(--sky);
+  border: 1px solid var(--grey-line);
+  border-radius: 20px;
+  z-index: 5;
+}
+
+.capital-popup[hidden] {
+  display: none;
+}
+
+/* while the capital list is open it replaces the clue box and state list */
+.is-capital-open .clue-box,
+.is-capital-open .state-list {
+  display: none;
+}
+
+.capital-popup__title {
+  margin: 0 0 20px;
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 36px;
+  text-align: center;
+}
+
+.capital-popup__list {
+  display: grid;
+  grid-template-columns: repeat(2, 197px);
+  justify-content: center;
+  gap: 20px 16px;
+}
+
+/* E & NE has 12 capitals; UT capitals have long names */
+.capital-popup--wide {
+  left: 95px;
+  width: 706px;
+}
+
+.capital-popup--three .capital-popup__list {
+  grid-template-columns: repeat(3, 197px);
+}
+
+.capital-popup--long .capital-popup__list {
+  grid-template-columns: repeat(2, 300px);
+}
+
+.capital-btn {
+  min-height: 60px;
+  min-width: 0;
+  padding: 4px 8px;
+  overflow: hidden;
+  background: var(--cap-default);
+  border: 2px solid var(--cap-default-line);
+  border-radius: 10px;
+  color: #000;
+  font-size: 28px;
+  font-weight: 500;
+  line-height: 1.1;
+  cursor: pointer;
+}
+
+.capital-btn.is-wrong {
+  background: var(--cap-wrong);
+  border-color: var(--red-light);
+  animation: vibrate 0.4s linear;
+}
+
+.capital-btn.is-right {
+  background: var(--cap-right);
+  border-color: var(--cap-right-line);
+}
+
+.capital-btn.is-blinking {
+  animation: blink-btn 0.5s ease-in-out 4;
+}
+
+.capital-popup.is-locked .capital-btn {
+  pointer-events: none;
+}
+
+@keyframes vibrate {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-8px); }
+  40% { transform: translateX(7px); }
+  60% { transform: translateX(-5px); }
+  80% { transform: translateX(3px); }
+}
+
+@keyframes blink-btn {
+  0%, 100% { background: var(--cap-default); border-color: var(--cap-default-line); }
+  50% { background: var(--cap-right); border-color: var(--cap-right-line); }
+}
+
+/* ---------- bottom buttons ---------- */
+.home-btn {
+  position: absolute;
+  left: 95px;
+  top: 946.6px;
+  width: 65.2px;
+  height: 65.2px;
+  padding: 0;
+  background: none;
+  border-radius: 6px;
+}
+
+.home-btn img {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.pill-btn {
+  position: absolute;
+  top: 950px;
+  height: 58px;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: none;
+  border-radius: 29px;
+  color: #fff;
+  font-size: 28px;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.pill-btn:active {
+  transform: translateY(3px);
+}
+
+.pill-btn--insights {
+  left: 226px;
+  width: 208px;
+  padding: 0 18px 0 20px;
+  background: var(--orange);
+}
+
+.pill-btn--insights img {
+  width: 46px;
+  height: 46px;
+}
+
+.pill-btn--answer {
+  left: 453px;
+  width: 216px;
+  background: var(--green);
+}
+
+.pill-btn--proceed {
+  left: 690px;
+  width: 151px;
+  background: var(--blue);
+}
+
+/* ---------- map ---------- */
+.map-panel {
+  position: absolute;
+  left: 898px;
+  top: 83px;
+  width: 948px;
+  height: 923px;
+  overflow: hidden;
+  background: var(--teal-dark);
+  border: 1px solid #e2e667;
+  touch-action: none;
+}
+
+.map,
+.map-overlay {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 946px;
+  height: 921px;
+}
+
+.map {
+  cursor: grab;
+}
+
+.map.is-panning {
+  cursor: grabbing;
+}
+
+.map-overlay {
+  pointer-events: none;
+}
+
+.state-shape {
+  fill: var(--land);
+  stroke: var(--land-line);
+  stroke-width: 1px;
+  cursor: pointer;
+  transition: fill 0.25s;
+}
+
+/* keep borders 1px thin at every zoom level (vector-effect is not inherited) */
+.state-shape path {
+  vector-effect: non-scaling-stroke;
+}
+
+.state-shape:focus {
+  outline: none;
+}
+
+.state-shape:focus-visible {
+  stroke: #fff;
+  stroke-width: 3px;
+}
+
+/* scattered islands: a wide, almost invisible stroke makes them easier to tap */
+.state-shape--islands path {
+  stroke: rgba(0, 0, 0, 0.004);
+  stroke-width: 12px;
+}
+
+.state-shape.is-visited {
+  fill: var(--land-visited);
+}
+
+.state-shape.is-hit {
+  fill: var(--land-hit);
+  stroke: #231f20;
+}
+
+.state-shape.is-wrong {
+  fill: var(--land-wrong);
+}
+
+.state-shape.is-blinking {
+  animation: blink-state 0.5s ease-in-out 4;
+}
+
+@keyframes blink-state {
+  0%, 100% { fill: var(--land); }
+  50% { fill: var(--land-hit); }
+}
+
+/* tiny UTs with no outline on the map (UT corridor only) */
+.ut-dot {
+  fill: var(--land);
+  stroke: #231f20;
+  stroke-width: 1px;
+  vector-effect: non-scaling-stroke;
+  cursor: pointer;
+}
+
+.map.is-locked .state-shape,
+.map.is-locked .ut-dot {
+  cursor: default;
+}
+
+.trail {
+  fill: none;
+  stroke: var(--itext);
+  stroke-width: 4px;
+  stroke-dasharray: 12 9;
+  stroke-linecap: round;
+}
+
+.pin-outer {
+  fill: #ed2024;
+}
+
+.pin-mid {
+  fill: #fff;
+}
+
+.map-labels {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.map-label {
+  position: absolute;
+  height: 48px;
+  padding: 0 26px;
+  display: flex;
+  align-items: center;
+  border: 1px solid;
+  border-radius: 24px;
+  color: #000;
+  font-size: 22px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* tail drawn as two stacked triangles (border + fill) */
+.map-label::before,
+.map-label::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  border: solid transparent;
+}
+
+.map-label--state {
+  background: #fff;
+  border-color: #27aae1;
+}
+
+.map-label--capital {
+  background: #abdfec;
+  border-color: #262262;
+}
+
+.map-label.tail-right::before {
+  left: 100%;
+  margin-top: -9px;
+  border-width: 9px 0 9px 26px;
+  border-left-color: inherit;
+}
+
+.map-label.tail-right::after {
+  left: calc(100% - 2px);
+  margin-top: -7px;
+  border-width: 7px 0 7px 22px;
+}
+
+.map-label.tail-left::before {
+  right: 100%;
+  margin-top: -9px;
+  border-width: 9px 26px 9px 0;
+  border-right-color: inherit;
+}
+
+.map-label.tail-left::after {
+  right: calc(100% - 2px);
+  margin-top: -7px;
+  border-width: 7px 22px 7px 0;
+}
+
+.map-label--state.tail-right::after {
+  border-left-color: #fff;
+}
+
+.map-label--state.tail-left::after {
+  border-right-color: #fff;
+}
+
+.map-label--capital.tail-right::after {
+  border-left-color: #abdfec;
+}
+
+.map-label--capital.tail-left::after {
+  border-right-color: #abdfec;
+}
+
+.plane {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 90px;
+  height: 90px;
+  margin: -45px 0 0 -45px;
+  pointer-events: none;
+}
+
+.plane[hidden],
+.celebration[hidden] {
+  display: none;
+}
+
+.celebration {
+  position: absolute;
+  left: 124px;
+  top: 112px;
+  width: 700px;
+  height: 700px;
+  pointer-events: none;
+}
+
+.map-title {
+  position: absolute;
+  left: 593px;
+  top: 58px;
+  color: #fff;
+  font-size: 50px;
+  font-weight: 700;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.map-compass {
+  position: absolute;
+  left: 505px;
+  top: 64px;
+  width: 36px;
+  pointer-events: none;
+  text-align: center;
+}
+
+.map-compass__n {
+  display: block;
+  color: #000;
+  font-size: 40px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.map-compass img {
+  display: block;
+  width: 36px;
+  height: 41px;
+  margin-top: 4px;
+}
+
+.zoom-controls {
+  position: absolute;
+  right: 18px;
+  bottom: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.zoom-btn {
+  width: 52px;
+  height: 52px;
+  padding: 0;
+  background: #fff;
+  border: 2px solid var(--pill-border);
+  border-radius: 50%;
+  color: var(--teal-dark);
+  font-size: 34px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.zoom-btn--reset {
+  font-size: 30px;
+}
+
+/* ---------- modal cards (fact card, insights, complete) ---------- */
+/* the backdrop colour comes from body.has-modal::before */
+.modal {
+  position: absolute;
+  inset: 0;
+}
+
+.modal[hidden] {
+  display: none;
+}
+
+.card {
+  position: absolute;
+  background: #fffdee;
+  border: 4px solid var(--teal-border);
+  border-radius: 12px;
+  color: #000;
+  font-size: 28px;
+  line-height: 34px;
+}
+
+.card__tab {
+  left: 50%;
+  top: -31px;
+  margin-left: -112.5px;
+}
+
+.card__close {
+  position: absolute;
+  top: -26px;
+  right: -16px;
+  width: 62px;
+  height: 62px;
+  padding: 0;
+  background: var(--teal-border);
+  border: none;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 40px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.card--fact {
+  left: 537px;
+  top: 273px;
+  width: 846px;
+  min-height: 404px;
+  padding: 72px 90px 50px 48px;
+}
+
+.card p {
+  margin: 0;
+  color: #000;
+  font-size: 28px;
+  line-height: 34px;
+}
+
+.card p.fact__state,
+.card p.fact__capital {
+  margin-bottom: 34px;
+}
+
+.fact__state b {
+  font-weight: 800;
+}
+
+.fact__capital span {
+  font-weight: 500;
+}
+
+.card--insights {
+  left: 260px;
+  top: 135px;
+  width: 1400px;
+  height: 860px;
+  padding: 56px 40px 30px;
+}
+
+.insights__tables {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+}
+
+.insights__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 21px;
+  line-height: 1.2;
+}
+
+.insights__table th,
+.insights__table td {
+  padding: 5px 12px;
+  border: 1px solid #c9c7a8;
+  text-align: left;
+}
+
+.insights__table th {
+  background: var(--teal-border);
+  color: #fff;
+  font-weight: 700;
+}
+
+.insights__table tr:nth-child(even) td {
+  background: #f5f6d0;
+}
+
+.card--complete {
+  left: 537px;
+  top: 340px;
+  width: 846px;
+  height: 330px;
+  padding: 80px 60px 0;
+  text-align: center;
+}
+
+.pill-btn.pill-btn--home {
+  left: 50%;
+  top: auto;
+  bottom: 44px;
+  width: 180px;
+  margin-left: -90px;
+  background: var(--green);
+}
