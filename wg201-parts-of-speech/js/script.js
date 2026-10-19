@@ -35,10 +35,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Butterfly slots on the flowers. `fly` = which Lottie flies it away and where
   // that animation's butterfly sits (comp px) at FLY_FROM, so it takes off in place.
+  // `at` is measured so the Lottie's butterfly is centred on the still image's (re-measure if
+  // the animations or the butterfly SVGs change).
   const BFLY = {
-    blue01: { w: 240, h: 240, img: 'bfly-blue01', fly: 'bflyLeft', comp: [725, 600], at: [12, 375] },
-    orange: { w: 206, h: 213, img: 'bfly-orange', fly: 'bflyMiddle', comp: [725, 540], at: [519, 355] },
-    blue: { w: 232, h: 228, img: 'bfly-blue', fly: 'bflyRight', comp: [650, 560], at: [415, 359] },
+    blue01: { w: 240, h: 240, img: 'bfly-blue01', fly: 'bflyLeft', comp: [725, 600], at: [9, 350] },
+    orange: { w: 206, h: 213, img: 'bfly-orange', fly: 'bflyMiddle', comp: [725, 540], at: [518, 319] },
+    blue: { w: 232, h: 228, img: 'bfly-blue', fly: 'bflyRight', comp: [650, 560], at: [414, 330] },
   };
   const SLOTS = [
     { kind: 'blue01', x: 610, y: 676 },
