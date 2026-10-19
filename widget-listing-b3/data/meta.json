@@ -165,8 +165,8 @@
       "author": "tce-ashishg"
     },
     "wg211-railgadi-banao": {
-      "updatedAt": "2026-10-16T17:26:57+05:30",
-      "author": "Shyamsunder Hait"
+      "updatedAt": "2026-10-19T14:36:42+05:30",
+      "author": "tce-nitinc"
     },
     "wg212-sabdo-me-swar-ki-khoj-gujrati": {
       "updatedAt": "2026-10-19T14:20:16+05:30",
@@ -178,6 +178,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-10-19T14:36:42+05:30",
+      "author": "tce-nitinc",
+      "message": "wg 211 fixes",
+      "widgets": [
+        211
+      ]
+    },
     {
       "date": "2026-10-19T14:19:45+05:30",
       "author": "tce-ashishg",
@@ -420,15 +428,6 @@
       "widgets": [
         194,
         195
-      ]
-    },
-    {
-      "date": "2026-10-07T17:38:51+05:30",
-      "author": "tce-ashishg",
-      "message": "wg194 text issue resolved",
-      "widgets": [
-        181,
-        194
       ]
     }
   ]
