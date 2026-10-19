@@ -141,7 +141,7 @@
       "author": "tce-ashishg"
     },
     "wg201-parts-of-speech": {
-      "updatedAt": "2026-10-19T14:46:08+05:30",
+      "updatedAt": "2026-10-19T15:12:00+05:30",
       "author": "tce-nitinc"
     },
     "wg202-egyptian-museum": {
@@ -178,6 +178,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-10-19T15:12:00+05:30",
+      "author": "tce-nitinc",
+      "message": "wg201 fixes",
+      "widgets": [
+        201
+      ]
+    },
     {
       "date": "2026-10-19T14:52:41+05:30",
       "author": "tce-nitinc",
@@ -419,14 +427,6 @@
       "message": "added wg-202",
       "widgets": [
         202
-      ]
-    },
-    {
-      "date": "2026-10-09T17:03:30+05:30",
-      "author": "tce-ashishg",
-      "message": "img updated",
-      "widgets": [
-        195
       ]
     }
   ]
