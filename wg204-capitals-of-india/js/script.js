@@ -47,7 +47,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const MAX_ZOOM = 6;
   const FLIGHT_MS = 2200;
   const CAPITAL_POPUP_DELAY = 1300;
-  const BLINK_AFTER = 3; // wrong answers before the correct one blinks
+  const CELEBRATION_MS = 3100; // length of the celebration animation; the fact card waits for it
+  const BLINK_AFTER = 3; // wrong answers before the correct one starts blinking
 
   /* ==========================================================================
      DOM + STAGE SCALING
@@ -588,7 +589,7 @@ document.addEventListener('DOMContentLoaded', () => {
       void el.getBoundingClientRect();
       el.classList.add('is-blinking');
     });
-    later(() => els.forEach((el) => el.classList.remove('is-blinking')), 2100);
+    later(() => els.forEach((el) => el.classList.remove('is-blinking')), 1600); // 3 blinks x 0.5s
   };
 
   const tapState = (key) => {
@@ -597,6 +598,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (key === s.key) {
       state.step = 'capital';
       state.wrongCount = 0;
+      elsFor(key).forEach((el) => el.classList.remove('is-blinking'));
       elsFor(key).forEach((el) => el.classList.add('is-hit'));
       setLabels(false);
       setSignal('yellow');
@@ -616,7 +618,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const wrongEls = elsFor(key);
       wrongEls.forEach((el) => el.classList.add('is-wrong'));
       later(() => wrongEls.forEach((el) => el.classList.remove('is-wrong')), 700);
-      if (state.wrongCount % BLINK_AFTER === 0) blink(elsFor(s.key));
+      if (state.wrongCount >= BLINK_AFTER) blink(elsFor(s.key));
     }
   };
 
@@ -633,18 +635,20 @@ document.addEventListener('DOMContentLoaded', () => {
       state.step = 'done';
       state.busy = true;
       capitalList.querySelectorAll('.capital-btn').forEach((b) => b.classList.remove('is-wrong'));
+      btn.classList.remove('is-blinking');
       btn.classList.add('is-right');
       setSignal('green');
       showFeedback('capital');
       setAnswerBtn();
       celebrate();
+      const celebrationStart = performance.now();
       const capitalPoint = POINTS[s.capitalPoints[0]];
       const arrived = () => {
         s.capitalPoints.forEach((p) => overlay.pins.push(POINTS[p]));
         setLabels(true);
         state.busy = false;
         setAnswerBtn();
-        later(openFactCard, 600);
+        later(openFactCard, Math.max(600, CELEBRATION_MS - (performance.now() - celebrationStart)));
       };
       if (state.lastPoint) {
         flyTo(capitalPoint, arrived);
@@ -659,7 +663,7 @@ document.addEventListener('DOMContentLoaded', () => {
       void btn.offsetWidth;
       btn.classList.add('is-wrong');
       showFeedback('wrong');
-      if (state.wrongCount % BLINK_AFTER === 0) blink([capitalBtnFor(s.capital)]);
+      if (state.wrongCount >= BLINK_AFTER) blink([capitalBtnFor(s.capital)]);
     }
   };
 
@@ -667,21 +671,26 @@ document.addEventListener('DOMContentLoaded', () => {
      SHOW / HIDE ANSWER
      ========================================================================== */
 
-  answerBtn.addEventListener('click', () => {
+  const toggleAnswer = () => {
     if (state.step === 'done' || state.busy) return;
     const s = current();
     state.answerShown = !state.answerShown;
     showFeedback(null);
     if (state.step === 'state') {
-      elsFor(s.key).forEach((el) => el.classList.toggle('is-hit', state.answerShown));
+      elsFor(s.key).forEach((el) => {
+        el.classList.remove('is-blinking');
+        el.classList.toggle('is-hit', state.answerShown);
+      });
       if (state.answerShown) setLabels(false);
       else { overlay.labels = []; renderOverlay(); }
     } else {
-      capitalList.querySelectorAll('.capital-btn').forEach((b) => b.classList.remove('is-wrong'));
+      capitalList.querySelectorAll('.capital-btn').forEach((b) => b.classList.remove('is-wrong', 'is-blinking'));
       capitalBtnFor(s.capital).classList.toggle('is-right', state.answerShown);
     }
     setAnswerBtn();
-  });
+  };
+
+  answerBtn.addEventListener('click', toggleAnswer);
 
   /* ==========================================================================
      FACT CARD, PROCEED, COMPLETION
@@ -810,6 +819,52 @@ document.addEventListener('DOMContentLoaded', () => {
     proceedBtn.disabled = false;
     proceedBtn.click();
     console.log(`Result screen: ${c.name} corridor`);
+  };
+
+  /* ==========================================================================
+     TEST HELPER: STEP THROUGH
+     From the console:
+       nextStep()        do the next correct action (tap state -> tap capital ->
+                         close fact card -> Proceed); ignored while busy
+       autoPlay(ms)      keep calling nextStep every `ms` (default 400) until stopped
+       autoPlay(0)       stop
+       startCorridor(id) start a corridor: nw, sc, ene, ut
+     ========================================================================== */
+
+  let autoTimer = null;
+
+  window.nextStep = () => {
+    if (!$('screen-game').classList.contains('is-active')) {
+      console.warn('nextStep: no journey running. Use startCorridor("nw" | "sc" | "ene" | "ut").');
+      return null;
+    }
+    if (!$('complete').hidden) return 'complete';
+    if (state.busy) return 'busy';
+    if (!$('factCard').hidden) { $('factClose').click(); return 'fact closed'; }
+    if (state.answerShown) toggleAnswer();
+    const s = current();
+    if (state.step === 'state') { tapState(s.key); return `state: ${s.name}`; }
+    if (state.step === 'capital') { tapCapital(capitalBtnFor(s.capital)); return `capital: ${s.capital}`; }
+    if (!proceedBtn.disabled) { proceedBtn.click(); return 'proceed'; }
+    return 'waiting';
+  };
+
+  window.autoPlay = (ms = 400) => {
+    clearInterval(autoTimer);
+    autoTimer = null;
+    if (!ms) return;
+    autoTimer = setInterval(() => {
+      if (window.nextStep() === 'complete') { clearInterval(autoTimer); autoTimer = null; }
+    }, ms);
+  };
+
+  window.startCorridor = (id) => {
+    const c = CORRIDORS.find((x) => x.id === id);
+    if (!c) {
+      console.warn(`startCorridor: unknown corridor "${id}". Use ${CORRIDORS.map((x) => x.id).join(', ')}.`);
+      return;
+    }
+    startJourney(c);
   };
 
   buildGateways();
