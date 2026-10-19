@@ -721,13 +721,43 @@ button:focus-visible {
   50% { fill: var(--land-hit); }
 }
 
-/* tiny UTs with no outline on the map (UT corridor only) */
+.ut-dot.is-blinking {
+  animation-name: blink-dot;
+}
+
+@keyframes blink-dot {
+  0%, 100% { fill: #1e6fd9; }
+  50% { fill: #2e9e3e; }
+}
+
+/* every UT is a solid dot (UT corridor only) so it is easy to find and tap */
 .ut-dot {
-  fill: var(--land);
-  stroke: #231f20;
-  stroke-width: 1px;
+  fill: #1e6fd9;
+  stroke: #fff;
+  stroke-width: 2px;
   vector-effect: non-scaling-stroke;
   cursor: pointer;
+}
+
+.ut-dot.is-hit {
+  fill: #2e9e3e;
+}
+
+.ut-dot.is-wrong {
+  fill: #e5484d;
+}
+
+.ut-dot.is-visited {
+  fill: #9bc87a;
+}
+
+.ut-dot:focus {
+  outline: none;
+}
+
+.ut-dot:focus-visible {
+  stroke: #231f20;
+  stroke-width: 3px;
 }
 
 .map.is-locked .state-shape,

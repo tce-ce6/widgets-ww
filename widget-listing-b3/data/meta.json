@@ -141,28 +141,36 @@
       "author": "tce-ashishg"
     },
     "wg201-parts-of-speech": {
-      "updatedAt": "2026-10-16T18:20:49+05:30",
-      "author": "Shyamsunder Hait"
+      "updatedAt": "2026-10-19T15:12:00+05:30",
+      "author": "tce-nitinc"
     },
     "wg202-egyptian-museum": {
-      "updatedAt": "2026-10-19T11:55:13+05:30",
+      "updatedAt": "2026-10-19T14:52:41+05:30",
       "author": "tce-nitinc"
     },
     "wg204-capitals-of-india": {
-      "updatedAt": "2026-10-19T12:40:56+05:30",
+      "updatedAt": "2026-10-19T15:27:31+05:30",
       "author": "tce-nitinc"
     },
     "wg205-species-z-factor-explorer": {
       "updatedAt": "2026-10-16T18:34:01+05:30",
       "author": "Shyamsunder Hait"
     },
+    "wg207-i-aur-ee-kee-maatra-mein-antar-gujrati": {
+      "updatedAt": "2026-10-19T14:19:45+05:30",
+      "author": "tce-ashishg"
+    },
+    "wg208-u-aur-oo-kee-maatra-mein-antar-gujrati": {
+      "updatedAt": "2026-10-19T14:19:45+05:30",
+      "author": "tce-ashishg"
+    },
     "wg211-railgadi-banao": {
-      "updatedAt": "2026-10-16T17:26:57+05:30",
-      "author": "Shyamsunder Hait"
+      "updatedAt": "2026-10-19T14:36:42+05:30",
+      "author": "tce-nitinc"
     },
     "wg212-sabdo-me-swar-ki-khoj-gujrati": {
-      "updatedAt": "2026-10-16T18:34:01+05:30",
-      "author": "Shyamsunder Hait"
+      "updatedAt": "2026-10-19T14:20:16+05:30",
+      "author": "tce-ashishg"
     },
     "wg223-leaf-lab-transpiration": {
       "updatedAt": "2026-10-19T10:58:01+05:30",
@@ -170,6 +178,56 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-10-19T15:27:31+05:30",
+      "author": "tce-nitinc",
+      "message": "wg204 fixes",
+      "widgets": [
+        204
+      ]
+    },
+    {
+      "date": "2026-10-19T15:12:00+05:30",
+      "author": "tce-nitinc",
+      "message": "wg201 fixes",
+      "widgets": [
+        201
+      ]
+    },
+    {
+      "date": "2026-10-19T14:52:41+05:30",
+      "author": "tce-nitinc",
+      "message": "wg202",
+      "widgets": [
+        202
+      ]
+    },
+    {
+      "date": "2026-10-19T14:46:08+05:30",
+      "author": "tce-nitinc",
+      "message": "wg201 fixes",
+      "widgets": [
+        201
+      ]
+    },
+    {
+      "date": "2026-10-19T14:36:42+05:30",
+      "author": "tce-nitinc",
+      "message": "wg 211 fixes",
+      "widgets": [
+        211
+      ]
+    },
+    {
+      "date": "2026-10-19T14:19:45+05:30",
+      "author": "tce-ashishg",
+      "message": "wg207 & 208 structuring done",
+      "widgets": [
+        207,
+        208,
+        212
+      ]
+    },
     {
       "date": "2026-10-19T12:40:56+05:30",
       "author": "tce-nitinc",
@@ -369,56 +427,6 @@
       "message": "asded new widget wg211",
       "widgets": [
         211
-      ]
-    },
-    {
-      "date": "2026-10-13T12:53:32+05:30",
-      "author": "tce-nitinc",
-      "message": "added wg-202",
-      "widgets": [
-        202
-      ]
-    },
-    {
-      "date": "2026-10-09T17:03:30+05:30",
-      "author": "tce-ashishg",
-      "message": "img updated",
-      "widgets": [
-        195
-      ]
-    },
-    {
-      "date": "2026-10-09T16:34:07+05:30",
-      "author": "tce-ashishg",
-      "message": "img updated",
-      "widgets": [
-        195
-      ]
-    },
-    {
-      "date": "2026-10-08T19:01:39+05:30",
-      "author": "tce-ashishg",
-      "message": "wg195 issue resolved",
-      "widgets": [
-        194,
-        195
-      ]
-    },
-    {
-      "date": "2026-10-07T17:38:51+05:30",
-      "author": "tce-ashishg",
-      "message": "wg194 text issue resolved",
-      "widgets": [
-        181,
-        194
-      ]
-    },
-    {
-      "date": "2026-10-07T15:12:35+05:30",
-      "author": "tce-ashishg",
-      "message": "wg181 images updated",
-      "widgets": [
-        181
       ]
     }
   ]

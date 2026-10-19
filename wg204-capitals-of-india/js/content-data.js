@@ -170,7 +170,7 @@ window.CORRIDORS = [
      "hyderabad"
     ],
     "clue": "Famous for the Charminar and Golconda Fort. Has rocky landscapes and historic forts. Known for dishes such as Hyderabadi biryani.",
-    "fact": "🏛️ Charminar – a famous monument with four grand arches. 📅 Telangana became a separate state on 2 June 2014."
+    "fact": "Charminar – a famous monument with four grand arches. Telangana became a separate state on 2 June 2014."
    }
   ]
  },
