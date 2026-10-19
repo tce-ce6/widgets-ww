@@ -610,6 +610,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (state.complete) return;
     state.complete = true;
     if (byUser && !state.mistake) state.perfect++;
+    // Nothing left to reveal once the user has placed every coach; after "show
+    // answer" the button stays live so the answer can be hidden again.
+    if (!state.answerShown) answerBtn.disabled = true;
     fadeRemaining(false);
     later(() => {
       puffSmoke(true);
@@ -789,6 +792,41 @@ document.addEventListener('DOMContentLoaded', () => {
 
     finish();
     console.log(`Result screen: ${key}, ${state.perfect} / ${state.level.rounds.length}`);
+  };
+
+  /* ==========================================================================
+     TEST HELPER: SKIP QUESTION
+     From the console:
+       startLevelTest('choti')   start a level (choti | badi)
+       nextQuestion()            jump straight to the next question (or the
+                                 result screen after the last one), even mid-animation;
+                                 the skipped question does not count as perfect
+     ========================================================================== */
+
+  window.startLevelTest = (levelKey) => {
+    if (!LEVELS[levelKey]) {
+      console.warn(`startLevelTest: unknown level "${levelKey}". Use "choti" or "badi".`);
+      return;
+    }
+    startLevel(levelKey);
+  };
+
+  window.nextQuestion = () => {
+    if (!state.level || !screens.game.classList.contains('is-active') || screens.end.classList.contains('is-active')) {
+      console.warn('nextQuestion: no question in progress. Use startLevelTest("choti" | "badi").');
+      return;
+    }
+    clearTimers();
+    stopVoice();
+    stopTrainSound();
+    trainEl.getAnimations().forEach((a) => a.cancel());
+    platformEl.getAnimations().forEach((a) => a.cancel());
+    puffSmoke(false);
+    state.busy = false;
+    state.index++;
+    if (state.index < state.level.rounds.length) loadRound();
+    else finish();
+    console.log(`Question ${Math.min(state.index + 1, state.level.rounds.length)} / ${state.level.rounds.length}`);
   };
 
   /* ==========================================================================
