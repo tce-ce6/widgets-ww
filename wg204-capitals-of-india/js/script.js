@@ -28,12 +28,18 @@ document.addEventListener('DOMContentLoaded', () => {
     capital: { cls: 'feedback--capital', img: 'assets/images/feedback-capital.svg', text: 'Excellent! You got the state and its capital right.' },
   };
 
-  // UTs too small to have an outline on the map get a tappable dot instead
-  // (shown in the Union Territories corridor only).
+  // Every UT gets a solid, easy-to-hit dot in the Union Territories corridor
+  // (shown only there). Small UTs have no outline at all; bigger ones keep their
+  // outline too, so tapping either one works.
   const UT_DOTS = {
+    'andaman-nicobar': POINTS.srivijayapuram,
     chandigarh: POINTS.chandigarh,
-    puducherry: POINTS.puducherry,
     dnhdd: POINTS.daman,
+    delhi: POINTS['new-delhi'],
+    'jammu-kashmir': POINTS.srinagar,
+    ladakh: POINTS.leh,
+    lakshadweep: POINTS.kavaratti,
+    puducherry: POINTS.puducherry,
   };
 
   // Island UTs: drawn with a wide invisible tap area, labelled at the capital's island.
@@ -184,7 +190,7 @@ document.addEventListener('DOMContentLoaded', () => {
       c.setAttribute('class', 'ut-dot');
       c.setAttribute('cx', cx);
       c.setAttribute('cy', cy);
-      c.setAttribute('r', '5');
+      c.setAttribute('r', '9');
       c.dataset.state = key;
       c.setAttribute('tabindex', '0');
       c.setAttribute('role', 'button');
