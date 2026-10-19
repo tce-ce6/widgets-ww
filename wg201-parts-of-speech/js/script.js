@@ -49,7 +49,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // which slots are used for 1..4 words to find
   const SLOT_SETS = { 1: [1], 2: [0, 1], 3: [0, 1, 2], 4: [3, 0, 1, 2] };
   const FLY_FROM = 20; // Lottie frame where the butterfly is fully in view
-  const NEXT_DELAY = 3200; // ms: butterflies fly + confetti, then the next sentence
+  const SETTLE_MS = 650; // ms: the last butterfly's colour-in + lift finishes before it flies
+  const NEXT_DELAY = 3200 + SETTLE_MS; // ms: butterflies fly + confetti, then the next sentence
 
   /* ==========================================================================
      DOM
@@ -165,6 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
     moving: false, // true while butterflies fly away (taps are ignored)
   };
   let nextTimer = null;
+  let settleTimer = null;
   let flyAnims = [];
 
   const bare = (w) => w.replace(/[.,!?]+$/, '');
@@ -189,6 +191,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const stopPractise = () => {
     clearTimeout(nextTimer);
     nextTimer = null;
+    clearTimeout(settleTimer);
+    settleTimer = null;
     state.moving = false;
     destroyAnims();
   };
@@ -323,18 +327,30 @@ document.addEventListener('DOMContentLoaded', () => {
     state.moving = true;
     wordsBox.querySelectorAll('.word').forEach((w) => w.classList.add('is-locked'));
 
-    // every butterfly flies off in place (its Lottie takes over from the still image)
-    bflyBox.querySelectorAll('.bfly').forEach((el) => {
-      const b = BFLY[el.dataset.kind];
-      const box = document.createElement('div');
-      box.className = 'bfly-fly';
-      box.style.left = `${parseFloat(el.style.left) - b.at[0]}px`;
-      box.style.top = `${parseFloat(el.style.top) - b.at[1]}px`;
-      box.style.width = `${b.comp[0]}px`;
-      box.style.height = `${b.comp[1]}px`;
-      bflyBox.appendChild(box);
-      if (playAnim(box, ANIM[b.fly], { from: FLY_FROM })) el.classList.add('is-gone');
-    });
+    // every butterfly flies off in place (its Lottie takes over from the still image).
+    // The last one found is still lifting and fading to colour, so wait for it to settle,
+    // then swap still -> Lottie in a single frame so nothing visibly shifts.
+    settleTimer = setTimeout(() => {
+      settleTimer = null;
+      bflyBox.querySelectorAll('.bfly').forEach((el) => {
+        const b = BFLY[el.dataset.kind];
+        const box = document.createElement('div');
+        box.className = 'bfly-fly';
+        box.style.left = `${parseFloat(el.style.left) - b.at[0]}px`;
+        box.style.top = `${parseFloat(el.style.top) - b.at[1]}px`;
+        box.style.width = `${b.comp[0]}px`;
+        box.style.height = `${b.comp[1]}px`;
+        box.style.visibility = 'hidden';
+        bflyBox.appendChild(box);
+        const a = playAnim(box, ANIM[b.fly], { from: FLY_FROM });
+        if (!a) return;
+        a.addEventListener('DOMLoaded', () => {
+          // the Lottie has just rendered its first frame: show it and drop the still together
+          box.style.visibility = '';
+          el.classList.add('is-gone');
+        });
+      });
+    }, SETTLE_MS);
 
     const conf = document.createElement('div');
     conf.className = 'confetti__anim';
