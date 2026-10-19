@@ -855,6 +855,7 @@
     }
 
     canvas.addEventListener('pointerdown', (event) => {
+      if (answerShown) return; // answer on screen: drawing is locked
       canvas.setPointerCapture(event.pointerId);
       current = [pointFrom(event)];
       strokes.push(current);
@@ -871,6 +872,11 @@
       strokes = [];
       current = null;
       showGuide = false;
+      if (answerShown) {
+        answerShown = false;
+        $('#btnNileAnswer').textContent = 'Show Answer';
+        $('#btnNileNext').hidden = true;
+      }
       redraw();
       feedback.hidden = true;
     }

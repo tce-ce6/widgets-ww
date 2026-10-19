@@ -553,6 +553,7 @@ button:focus-visible {
 
 .bfly.is-gone {
   opacity: 0;
+  transition: none; /* swapped for the flying Lottie in the same frame */
 }
 
 .bfly-fly {
