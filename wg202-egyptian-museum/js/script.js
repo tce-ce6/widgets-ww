@@ -870,6 +870,7 @@
     function clearDrawing() {
       strokes = [];
       current = null;
+      showGuide = false;
       redraw();
       feedback.hidden = true;
     }
