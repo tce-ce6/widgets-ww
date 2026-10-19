@@ -149,8 +149,8 @@
       "author": "tce-nitinc"
     },
     "wg204-capitals-of-india": {
-      "updatedAt": "2026-10-16T17:26:57+05:30",
-      "author": "Shyamsunder Hait"
+      "updatedAt": "2026-10-19T12:40:56+05:30",
+      "author": "tce-nitinc"
     },
     "wg205-species-z-factor-explorer": {
       "updatedAt": "2026-10-16T18:34:01+05:30",
@@ -170,6 +170,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-10-19T12:40:56+05:30",
+      "author": "tce-nitinc",
+      "message": "fixed wg-204",
+      "widgets": [
+        204
+      ]
+    },
     {
       "date": "2026-10-19T11:55:13+05:30",
       "author": "tce-nitinc",
@@ -411,15 +419,6 @@
       "message": "wg181 images updated",
       "widgets": [
         181
-      ]
-    },
-    {
-      "date": "2026-10-07T11:35:51+05:30",
-      "author": "tce-ashishg",
-      "message": "wg194 correction done",
-      "widgets": [
-        194,
-        198
       ]
     }
   ]
