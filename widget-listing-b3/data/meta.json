@@ -141,11 +141,11 @@
       "author": "tce-ashishg"
     },
     "wg201-parts-of-speech": {
-      "updatedAt": "2026-10-16T18:20:49+05:30",
-      "author": "Shyamsunder Hait"
+      "updatedAt": "2026-10-19T14:46:08+05:30",
+      "author": "tce-nitinc"
     },
     "wg202-egyptian-museum": {
-      "updatedAt": "2026-10-19T11:55:13+05:30",
+      "updatedAt": "2026-10-19T14:52:41+05:30",
       "author": "tce-nitinc"
     },
     "wg204-capitals-of-india": {
@@ -178,6 +178,22 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-10-19T14:52:41+05:30",
+      "author": "tce-nitinc",
+      "message": "wg202",
+      "widgets": [
+        202
+      ]
+    },
+    {
+      "date": "2026-10-19T14:46:08+05:30",
+      "author": "tce-nitinc",
+      "message": "wg201 fixes",
+      "widgets": [
+        201
+      ]
+    },
     {
       "date": "2026-10-19T14:36:42+05:30",
       "author": "tce-nitinc",
@@ -410,23 +426,6 @@
       "author": "tce-ashishg",
       "message": "img updated",
       "widgets": [
-        195
-      ]
-    },
-    {
-      "date": "2026-10-09T16:34:07+05:30",
-      "author": "tce-ashishg",
-      "message": "img updated",
-      "widgets": [
-        195
-      ]
-    },
-    {
-      "date": "2026-10-08T19:01:39+05:30",
-      "author": "tce-ashishg",
-      "message": "wg195 issue resolved",
-      "widgets": [
-        194,
         195
       ]
     }
