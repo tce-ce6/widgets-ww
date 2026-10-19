@@ -151,14 +151,14 @@ button { font-family: inherit; }
   background: rgba(75, 17, 17, .6); border-radius: 17px;
   color: #fdec7b; font-size: 28px; font-style: italic;
 }
-.hint-pill--title { left: 607px; top: 67px; width: 707px; }
+.hint-pill--title { left: 607px; top: 87px; width: 717px; }
 .hint-pill--hub {
   left: 50%; top: 205px; transform: translateX(-50%);
   width: auto; max-width: 1500px; height: auto; line-height: 1.35; padding: 12px 34px; white-space: normal;
 }
 
 .arrow-btn {
-  position: absolute; left: 920px; top: 131px; width: 80px; height: 80px;
+  position: absolute; left: 926px;top: 155px;width: 70px;height: 70px;
   padding: 0; border: 0; border-radius: 50%; background: none; cursor: pointer;
   animation: bob 1.6s ease-in-out infinite;
 }

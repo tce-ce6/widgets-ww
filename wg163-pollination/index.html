@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>&ZeroWidthSpace;Self-pollination or Cross-pollination?&ZeroWidthSpace;</title>
+
+  <link rel="stylesheet" href="./css/global_style.css">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body id="pollination-widget">
+  <div class="container">
+    <div class="mainContainerOuter">
+      <div class="wdgetTitle">
+        <h2>&ZeroWidthSpace;Self-pollination or Cross-pollination?&ZeroWidthSpace;</h2>
+        <span id="versionId" class="versionText">b4_wg163_261019_01</span>
+      </div>
+      <div id="viewport">
+        <!-- Fixed 1920x1080 design stage, scaled to fit the window by script.js -->
+        <div id="stage">
+          <img class="stage-bg" src="assets/svg/bg.svg" alt="">
+
+          <p class="itext" id="itext" aria-live="polite"></p>
+
+          <div class="result" id="result" role="status" aria-live="polite" hidden></div>
+
+          <!-- flowers (tap areas + selection rings), bee path and index labels, in stage px -->
+          <svg class="scene" id="scene" viewBox="0 0 1920 1080" aria-label="Two flowering plants">
+            <defs>
+              <mask id="trailMask" maskUnits="userSpaceOnUse" x="0" y="0" width="1920" height="1080">
+                <path class="trail-reveal" id="trailReveal" d=""></path>
+              </mask>
+            </defs>
+            <g id="flowers"></g>
+            <path class="trail" id="trail" d="" mask="url(#trailMask)"></path>
+            <g id="pollenFx"></g>
+          </svg>
+
+          <span class="type-pill" id="typePill" hidden></span>
+
+          <div class="index-board" aria-label="Index: stigma is part of the pistil, anthers are part of the stamens">
+            <img src="assets/svg/index-board.svg" alt="">
+            <span class="index-board__title">Index</span>
+            <span class="index-board__lbl index-board__lbl--stigma">Stigma (Pistil)</span>
+            <span class="index-board__lbl index-board__lbl--anther">Anthers (Stamens)</span>
+          </div>
+
+          <div class="bee" id="bee" aria-hidden="true">
+            <div class="bee__flip" id="beeFlip">
+              <div class="bee__anim" id="beeAnim"></div>
+              <span class="bee__pollen"></span>
+            </div>
+          </div>
+
+          <button class="pill-btn pill-btn--start" id="startBtn" type="button" disabled>Start</button>
+          <button class="pill-btn pill-btn--reset" id="resetBtn" type="button">Reset</button>
+        </div>
+      </div>
+
+      <!-- Modals live in their own scaled layer above the body::before backdrop,
+           so the dark backdrop can cover the whole viewport, not just the stage. -->
+      <div id="modal-layer">
+        <div id="modal-stage">
+          <!-- ============ INSIGHTS ============ -->
+          <div class="insights-modal" id="insightsOverlay" hidden>
+            <div class="insights-panel" role="dialog" aria-modal="true" aria-label="Insights">
+              <p><b>Pollination</b> is the transfer of pollen grains from the <b>anther of the stamen</b> to the
+                <b>stigma of the pistil</b> of flower(s).</p>
+              <p><b>Self-pollination</b> occurs when pollen is transferred from the anther to the stigma of the same
+                flower or another flower on the same plant.</p>
+              <p><b>Cross-pollination</b> occurs when pollen is transferred from the anther of a flower on one plant to
+                the stigma of a flower on a different plant of the same species.</p>
+              <p>Bees are important <b>pollinating agents</b> that carry pollen grains from one flower to another while
+                collecting nectar.</p>
+              <p>Pollination is the first step in fertilisation and helps flowering plants produce seeds and fruits.</p>
+            </div>
+            <button class="close-btn" id="insightsClose" type="button" aria-label="Close insights">
+              <img src="assets/svg/close-btn.svg" alt="">
+            </button>
+          </div>
+
+          <button class="insights-btn" id="insightsBtn" type="button">
+            <img src="assets/svg/insights-btn.svg" alt="">
+            <span>Insights</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./js/lottie.js"></script>
+  <script src="./js/anim-data.js"></script>
+  <script src="./js/flower-data.js"></script>
+  <script src="./js/script.js"></script>
+</body>
+
+</html>
