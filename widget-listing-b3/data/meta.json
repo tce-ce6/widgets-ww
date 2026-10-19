@@ -156,13 +156,21 @@
       "updatedAt": "2026-10-16T18:34:01+05:30",
       "author": "Shyamsunder Hait"
     },
+    "wg207-i-aur-ee-kee-maatra-mein-antar-gujrati": {
+      "updatedAt": "2026-10-19T14:19:45+05:30",
+      "author": "tce-ashishg"
+    },
+    "wg208-u-aur-oo-kee-maatra-mein-antar-gujrati": {
+      "updatedAt": "2026-10-19T14:19:45+05:30",
+      "author": "tce-ashishg"
+    },
     "wg211-railgadi-banao": {
       "updatedAt": "2026-10-16T17:26:57+05:30",
       "author": "Shyamsunder Hait"
     },
     "wg212-sabdo-me-swar-ki-khoj-gujrati": {
-      "updatedAt": "2026-10-16T18:34:01+05:30",
-      "author": "Shyamsunder Hait"
+      "updatedAt": "2026-10-19T14:20:16+05:30",
+      "author": "tce-ashishg"
     },
     "wg223-leaf-lab-transpiration": {
       "updatedAt": "2026-10-19T10:58:01+05:30",
@@ -170,6 +178,16 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-10-19T14:19:45+05:30",
+      "author": "tce-ashishg",
+      "message": "wg207 & 208 structuring done",
+      "widgets": [
+        207,
+        208,
+        212
+      ]
+    },
     {
       "date": "2026-10-19T12:40:56+05:30",
       "author": "tce-nitinc",
@@ -411,14 +429,6 @@
       "widgets": [
         181,
         194
-      ]
-    },
-    {
-      "date": "2026-10-07T15:12:35+05:30",
-      "author": "tce-ashishg",
-      "message": "wg181 images updated",
-      "widgets": [
-        181
       ]
     }
   ]
