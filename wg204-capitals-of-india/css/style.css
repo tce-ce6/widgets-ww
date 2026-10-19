@@ -116,35 +116,35 @@ button:focus-visible {
   outline-offset: 3px;
 }
 
-/* ---------- header (as drawn in the layout) ---------- */
-#modal-stage .wdgetTitle {
-  position: absolute;
-  top: 0;
-  left: 0;
+/* ---------- title (outside the scaled stage, same as previous widgets) ---------- */
+/* z-index keeps it above #modal-layer, so it stays bright over the modal backdrop */
+#capitals-widget .wdgetTitle {
   width: 100%;
-  height: 0;
-  z-index: 60;
-}
-
-#modal-stage .wdgetTitle h2 {
-  left: 560px;
-  width: 800px;
-  height: 60px;
-  padding: 0;
   display: flex;
   align-items: center;
-  justify-content: center;
-  background: #468cca;
-  border-radius: 0 0 25px 25px;
-  transform: none;
-  font-family: "Roboto", sans-serif;
-  font-size: 35px;
-  font-weight: 500;
-  line-height: 1;
+  gap: 20px;
+  left: 0;
+  top: 0;
+  z-index: 4;
 }
 
-#modal-stage .versionText {
-  line-height: 1;
+#capitals-widget .wdgetTitle h2 {
+  font-size: 25px;
+  font-weight: 600;
+  text-align: left;
+  background: #468cca;
+  padding: 8px 40px;
+  color: #fff;
+  border-radius: 0 0px 20px 20px;
+  white-space: nowrap;
+}
+
+#capitals-widget .versionText {
+  position: absolute;
+  right: 20px;
+  top: 10px !important;
+  font-size: 12px;
+  color: rgb(0 0 0 / 20%);
 }
 
 /* ---------- screens ---------- */
@@ -296,7 +296,7 @@ button:focus-visible {
 .clue-box__text {
   margin: 0;
   color: var(--ink);
-  font-size: 25px;
+  font-size: 22px;
   line-height: 1.15;
 }
 
@@ -551,7 +551,7 @@ button:focus-visible {
 }
 
 .capital-btn.is-blinking {
-  animation: blink-btn 0.5s ease-in-out 4;
+  animation: blink-btn 0.5s ease-in-out 3;
 }
 
 .capital-popup.is-locked .capital-btn {
@@ -711,8 +711,9 @@ button:focus-visible {
   fill: var(--land-wrong);
 }
 
-.state-shape.is-blinking {
-  animation: blink-state 0.5s ease-in-out 4;
+.state-shape.is-blinking,
+.ut-dot.is-blinking {
+  animation: blink-state 0.5s ease-in-out 3;
 }
 
 @keyframes blink-state {
@@ -736,7 +737,7 @@ button:focus-visible {
 
 .trail {
   fill: none;
-  stroke: var(--itext);
+  stroke: #ff8c00;
   stroke-width: 4px;
   stroke-dasharray: 12 9;
   stroke-linecap: round;

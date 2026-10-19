@@ -28,10 +28,41 @@ body {
   background: #000;
 }
 
+/* Full-window background, so the title never sits on a black letterbox bar:
+   the image is drawn exactly behind the scaled stage (contain + centre, same as
+   fitStage) and the bars are filled with the image's own sky/ground edge colours. */
 #viewport {
   position: fixed;
   inset: 0;
   overflow: hidden;
+}
+
+/* ---------- title (outside the scaled stage, same as previous widgets) ---------- */
+#railgadi-widget .wdgetTitle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  left: 0;
+  top: 0;
+  z-index: 1;
+}
+
+#railgadi-widget .wdgetTitle h2 {
+  font-size: 25px;
+  font-weight: 600;
+  text-align: left;
+  padding: 8px 40px;
+  border-radius: 0 0px 20px 20px;
+  white-space: nowrap;
+}
+
+#railgadi-widget .versionText {
+  position: absolute;
+  right: 20px;
+  top: 10px !important;
+  font-size: 12px;
+  color: rgb(0 0 0 / 20%);
 }
 
 #stage {

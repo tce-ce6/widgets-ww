@@ -83,15 +83,27 @@ button { font-family: inherit; }
 .screen__tint--dark { background: rgba(26, 8, 2, .86); }
 
 /* ---------- Global header and sound toggle ---------- */
-.museum-banner {
-  position: absolute; left: 654px; top: 0; width: 612px; height: 60px;
-  background: var(--maroon);
-  border-radius: 0 0 22px 22px;
-  z-index: 50; display: flex; align-items: center; justify-content: center;
-  pointer-events: none;
+/* Title sits outside the scaled stage, same structure as the other widgets.
+   This widget's global_style.css has no .wdgetTitle rules, so they are all here. */
+#museum-widget .wdgetTitle {
+  position: absolute; left: 0; top: 0; width: 100%;
+  display: flex; align-items: center; gap: 20px;
+  z-index: 1;
 }
-.museum-banner h1 {
-  margin: 0; color: #fff; font-size: 35px; font-weight: 500; white-space: nowrap;
+#museum-widget .wdgetTitle h2 {
+  position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+  margin: 0;
+  font-family: var(--font); font-size: 25px; font-weight: 600; line-height: 1.2;
+  text-align: left; white-space: nowrap;
+  background: var(--maroon); color: #fff;
+  padding: 8px 40px;
+  border-radius: 0 0px 20px 20px;
+}
+#museum-widget .versionText {
+  position: absolute; right: 20px; top: 10px;
+  font-family: var(--font); font-size: 12px; line-height: 1;
+  color: rgb(255 255 255 / 25%);
+  pointer-events: none;
 }
 .sound-toggle {
   position: absolute; right: 24px; top: 10px; z-index: 60;
@@ -139,14 +151,14 @@ button { font-family: inherit; }
   background: rgba(75, 17, 17, .6); border-radius: 17px;
   color: #fdec7b; font-size: 28px; font-style: italic;
 }
-.hint-pill--title { left: 607px; top: 67px; width: 707px; }
+.hint-pill--title { left: 607px; top: 87px; width: 717px; }
 .hint-pill--hub {
   left: 50%; top: 205px; transform: translateX(-50%);
   width: auto; max-width: 1500px; height: auto; line-height: 1.35; padding: 12px 34px; white-space: normal;
 }
 
 .arrow-btn {
-  position: absolute; left: 920px; top: 131px; width: 80px; height: 80px;
+  position: absolute; left: 926px;top: 155px;width: 70px;height: 70px;
   padding: 0; border: 0; border-radius: 50%; background: none; cursor: pointer;
   animation: bob 1.6s ease-in-out infinite;
 }

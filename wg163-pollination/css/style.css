@@ -1,0 +1,605 @@
+/* ==========================================================================
+   Self-pollination or Cross-pollination? (wg163)
+   Layout is authored on a fixed 1920x1080 stage (matching the AI artboard)
+   and scaled to the window by script.js, so the widget always fits one screen.
+   ========================================================================== */
+
+:root {
+  --title-bg: #26b0a7;
+  --sky: #fffde3;
+  --bush: #8adba8;
+  --ground: #fff198;
+  --itext: #a00e0e;
+  --itext-go: #00691c;
+  --ring-l: #f50000;
+  --ring-r: #004bf9;
+  --ring-l-same: #900;
+  --ring-r-same: #002884;
+  --pollen: #ffd400;
+}
+
+html,
+body {
+  overflow: hidden;
+}
+
+body {
+  background: var(--sky);
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mainContainerOuter {
+  background: var(--sky);
+}
+
+/* Layering, bottom to top: #viewport (the widget) -> body::before (modal
+   backdrop) -> #modal-layer (insights popup + button) -> .wdgetTitle */
+#viewport,
+#modal-layer {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+}
+
+/* Full-window garden: the letterbox bars continue the sky / bushes / ground of
+   bg.svg (script.js sets --ground-y to where the stage's ground line lands). */
+#viewport {
+  z-index: 1;
+  background: linear-gradient(to bottom,
+      var(--sky) 0,
+      var(--sky) calc(var(--ground-y, 85%) - var(--bush-h, 60px)),
+      var(--bush) calc(var(--ground-y, 85%) - var(--bush-h, 60px)),
+      var(--bush) var(--ground-y, 85%),
+      var(--ground) var(--ground-y, 85%),
+      var(--ground) 100%);
+}
+
+/* Dark backdrop behind an open modal, covering the whole viewport. */
+body.has-modal::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  background: rgba(0, 0, 0, 0.8);
+}
+
+#modal-layer {
+  z-index: 3;
+  pointer-events: none;
+}
+
+body.has-modal #modal-layer {
+  pointer-events: auto;
+}
+
+/* #stage holds the widget, #modal-stage the modals; both are the same fixed
+   1920x1080 design stage, scaled together by script.js. */
+#stage,
+#modal-stage {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1920px;
+  height: 1080px;
+  transform-origin: 0 0;
+  overflow: hidden;
+  font-family: "Roboto", sans-serif;
+  line-height: 1.3;
+  color: #000;
+}
+
+.stage-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+button {
+  font-family: "Roboto", sans-serif;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  color: inherit;
+}
+
+button:focus-visible {
+  outline: 4px solid #26b0a7;
+  outline-offset: 3px;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+/* ---------- title (outside the scaled stage, same as previous widgets) ---------- */
+#pollination-widget .wdgetTitle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  left: 0;
+  top: 0;
+  z-index: 30;
+}
+
+#pollination-widget .wdgetTitle h2 {
+  font-size: 25px;
+  font-weight: 600;
+  text-align: left;
+  background: var(--title-bg);
+  padding: 8px 40px;
+  color: #fff;
+  border-radius: 0 0px 20px 20px;
+  white-space: nowrap;
+}
+
+#pollination-widget .versionText {
+  position: absolute;
+  right: 20px;
+  top: 10px !important;
+  font-size: 12px;
+  color: rgb(0 0 0 / 20%);
+}
+
+/* ---------- i-text ---------- */
+.itext {
+  position: absolute;
+  left: 60px;
+  right: 60px;
+  top: 120px;
+  margin: 0;
+  text-align: center;
+  font-size: 28px;
+  font-style: italic;
+  line-height: 40px;
+  color: var(--itext);
+  z-index: 5;
+}
+
+.itext.is-go {
+  color: var(--itext-go);
+}
+
+.itext b {
+  font-weight: bold;
+}
+
+/* ---------- result panel (replaces the i-text) ---------- */
+.result {
+  position: absolute;
+  left: 50%;
+  top: 175px;
+  transform: translateX(-50%);
+  box-sizing: border-box;
+  min-height: 98px;
+  padding: 14px 32px;
+  border: 3px dashed;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  white-space: nowrap;
+  font-size: 25px;
+  font-weight: 500;
+  line-height: 33px;
+  color: #000;
+  z-index: 6;
+  animation: pop-in 0.4s ease-out;
+}
+
+.result--self {
+  background: #ff9494;
+  border-color: #bd5f5f;
+}
+
+.result--cross {
+  background: #05dceb;
+  border-color: #2f6ab6;
+}
+
+/* ---------- self / cross label on the bee's path ---------- */
+.type-pill {
+  position: absolute;
+  left: 830px;
+  top: 620px;
+  height: 58px;
+  box-sizing: border-box;
+  padding: 0 24px;
+  border: 1px solid;
+  border-radius: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  white-space: nowrap;
+  color: #000;
+  z-index: 6;
+  transform: translateX(-50%);
+  animation: pop-in 0.4s ease-out;
+}
+
+.type-pill::after {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border: 1px dashed;
+  border-radius: 21px;
+}
+
+.type-pill--self {
+  background: #ff7b7b;
+  border-color: #a13838;
+}
+
+.type-pill--self::after {
+  border-color: #c03d29;
+}
+
+.type-pill--cross {
+  background: #1cfef8;
+  border-color: #3e93ad;
+}
+
+.type-pill--cross::after {
+  border-color: #3374a6;
+}
+
+@keyframes pop-in {
+  0% {
+    opacity: 0;
+    scale: 0.85;
+  }
+
+  100% {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+/* ---------- flowers, bee path ---------- */
+.scene {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  z-index: 2;
+}
+
+.flower {
+  cursor: pointer;
+  outline: none;
+}
+
+.flower__shape {
+  fill: transparent;
+  pointer-events: all;
+}
+
+.flower__ring {
+  pointer-events: all;
+  opacity: 0;
+}
+
+.flower[data-plant="L"] .flower__ring {
+  fill: var(--ring-l);
+}
+
+.flower[data-plant="R"] .flower__ring {
+  fill: var(--ring-r);
+}
+
+.flower.is-picked .flower__ring {
+  opacity: 1;
+  animation: ring-in 0.3s ease-out;
+}
+
+.flower.is-twice[data-plant="L"] .flower__ring {
+  fill: var(--ring-l-same);
+}
+
+.flower.is-twice[data-plant="R"] .flower__ring {
+  fill: var(--ring-r-same);
+}
+
+.flower:focus-visible .flower__ring {
+  opacity: 1;
+}
+
+.flower:focus-visible:not(.is-picked) .flower__ring {
+  opacity: 0.45;
+}
+
+.scene.is-locked .flower {
+  cursor: default;
+  pointer-events: none;
+}
+
+@keyframes ring-in {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.trail {
+  fill: none;
+  stroke: #000;
+  stroke-width: 2;
+  stroke-dasharray: 6;
+  pointer-events: none;
+}
+
+.trail-reveal {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 12;
+  stroke-linecap: round;
+}
+
+.pollen-grain {
+  fill: var(--pollen);
+  stroke: #c98a00;
+  stroke-width: 0.8;
+  animation: grain-out 0.9s ease-out forwards;
+}
+
+@keyframes grain-out {
+  0% {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate(var(--dx), var(--dy));
+    opacity: 0.9;
+  }
+}
+
+.stigma-glow {
+  fill: var(--pollen);
+  opacity: 0.55;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: glow 1.2s ease-in-out infinite;
+}
+
+@keyframes glow {
+
+  0%,
+  100% {
+    transform: scale(0.7);
+    opacity: 0.25;
+  }
+
+  50% {
+    transform: scale(1.3);
+    opacity: 0.6;
+  }
+}
+
+/* ---------- bee (positioned by script.js: its feet sit on the target point) ---------- */
+.bee {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 260px;
+  height: 260px;
+  pointer-events: none;
+  z-index: 7;
+  will-change: transform;
+}
+
+.bee__flip,
+.bee__anim {
+  position: absolute;
+  inset: 0;
+}
+
+/* origin = the bee's feet, so turning round keeps it on the flower */
+.bee__flip {
+  transform-origin: var(--feet-x) var(--feet-y);
+}
+
+.bee.is-right .bee__flip {
+  transform: scaleX(-1);
+}
+
+.bee.is-idle .bee__anim {
+  animation: bee-hover 1.6s ease-in-out infinite;
+}
+
+@keyframes bee-hover {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-14px);
+  }
+}
+
+/* pollen grains stuck to the bee's legs */
+.bee__pollen {
+  position: absolute;
+  left: calc(var(--feet-x) - 26px);
+  top: calc(var(--feet-y) - 42px);
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--pollen);
+  border: 1px solid #c98a00;
+  opacity: 0;
+  transition: opacity 0.4s;
+  box-shadow:
+    14px 8px 0 -1px var(--pollen),
+    5px 18px 0 0 var(--pollen),
+    24px 20px 0 -2px var(--pollen),
+    -6px 12px 0 -2px var(--pollen);
+}
+
+.bee.has-pollen .bee__pollen {
+  opacity: 1;
+}
+
+/* ---------- index board ---------- */
+.index-board {
+  position: absolute;
+  left: 1555px;
+  top: 600px;
+  width: 300px;
+  height: 440px;
+  pointer-events: none;
+}
+
+.index-board img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.index-board__title,
+.index-board__lbl {
+  position: absolute;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.index-board__title {
+  left: 54px;
+  top: 15px;
+  font-size: 30px;
+  font-weight: 500;
+}
+
+.index-board__lbl {
+  font-size: 18px;
+  color: #a6411b;
+}
+
+.index-board__lbl--stigma {
+  left: 122px;
+  top: 77px;
+}
+
+.index-board__lbl--anther {
+  left: 107px;
+  top: 289px;
+}
+
+/* ---------- Start / Reset ---------- */
+.pill-btn {
+  position: absolute;
+  top: 960px;
+  width: 209px;
+  height: 93px;
+  border-radius: 46.5px;
+  cursor: pointer;
+  font-size: 35px;
+  font-weight: 500;
+  color: #fff;
+  z-index: 8;
+}
+
+.pill-btn--start {
+  left: 686px;
+  background: #4caf50;
+}
+
+.pill-btn--reset {
+  left: 937px;
+  background: #ff2c68;
+}
+
+.pill-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* ---------- insights button (lives in #modal-layer so it stays bright above the backdrop) ---------- */
+.insights-btn {
+  position: absolute;
+  left: 55px;
+  top: 970px;
+  width: 255px;
+  height: 74px;
+  cursor: pointer;
+  z-index: 2;
+  pointer-events: auto;
+}
+
+.insights-btn img,
+.close-btn img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.insights-btn span {
+  position: absolute;
+  left: 86px;
+  top: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  font-size: 35px;
+  font-weight: 500;
+  color: #fff;
+}
+
+/* ---------- insights popup (backdrop is body.has-modal::before) ---------- */
+.insights-modal {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.insights-panel {
+  position: absolute;
+  left: 270px;
+  top: 166px;
+  width: 1380px;
+  height: 751px;
+  box-sizing: border-box;
+  background: #fff;
+  border: 6px solid #e2a500;
+  border-radius: 16px;
+  padding: 62px 90px 40px 79px;
+  overflow: auto;
+}
+
+.insights-panel p {
+  margin: 0 0 42px;
+  font-size: 32px;
+  line-height: 44px;
+  color: #000;
+}
+
+.insights-panel p:last-child {
+  margin-bottom: 0;
+}
+
+.insights-panel b {
+  font-weight: bold;
+}
+
+.close-btn {
+  position: absolute;
+  left: 1604px;
+  top: 130px;
+  width: 92px;
+  height: 92px;
+  cursor: pointer;
+  border-radius: 50%;
+}

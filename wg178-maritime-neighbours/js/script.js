@@ -79,6 +79,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const countryEls = {};
 
+  // Countries whose fitted shape (MAP_SHAPES via MAP_TRANSFORM) drifts off the
+  // drawn outline: highlight them with the base map's own land path instead.
+  const BASE_LAND = { srilanka: 'map-Path_3291' };
+  // base map sits at stage (64,180); undo the country group's transform for it
+  const BASE_LAND_TRANSFORM = `scale(${1 / T.k}) translate(${64 - T.tx} ${180 - T.ty})`;
+
   const buildMap = () => {
     $('mapBase').innerHTML = window.MAP_SVG;
 
@@ -102,11 +108,19 @@ document.addEventListener('DOMContentLoaded', () => {
         z.setAttribute('class', 'country__zone');
         el.appendChild(z);
       }
-      shapes.land.forEach((d) => {
+      const baseLand = BASE_LAND[c.key] && $('mapBase').querySelector(`#${BASE_LAND[c.key]} path[fill]`);
+      if (baseLand) {
         const p = document.createElementNS(SVG_NS, 'path');
-        p.setAttribute('d', d);
+        p.setAttribute('d', baseLand.getAttribute('d'));
+        p.setAttribute('transform', BASE_LAND_TRANSFORM);
         el.appendChild(p);
-      });
+      } else {
+        shapes.land.forEach((d) => {
+          const p = document.createElementNS(SVG_NS, 'path');
+          p.setAttribute('d', d);
+          el.appendChild(p);
+        });
+      }
       g.appendChild(el);
       countryEls[c.key] = el;
     });
@@ -210,11 +224,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
-  const renderCounters = () => {
-    $('remainingCounter').innerHTML = `Countries remaining: <b>${COUNTRIES.length - doneCount()}</b>`;
-    $('identifiedCounter').innerHTML = `Countries identified: <b>${foundCount()}</b>`;
-  };
-
   const renderClue = () => {
     const key = state.selected;
     $('clueHint').hidden = !!key;
@@ -228,7 +237,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const idx = state.clueIndex[key] || 0;
     $('clueDots').querySelectorAll('i').forEach((dot, i) => dot.classList.toggle('is-on', i <= idx));
     $('clueDots').setAttribute('aria-label', `Clue ${idx + 1} of ${CLUE_COUNT}`);
-    $('clueText').innerHTML = byKey(key).clues[idx];
+    // Wrapped in one span so <sup>/<sub> stay inline (bare text + tags would
+    // each become a separate item of the flex-centred .clue-text box).
+    $('clueText').innerHTML = `<span class="clue-text__inner">${byKey(key).clues[idx]}</span>`;
   };
 
   const selectFlag = (key) => {
@@ -317,7 +328,6 @@ document.addEventListener('DOMContentLoaded', () => {
     flag.disabled = true;
     $('map').classList.remove('is-armed');
     markOnMap(byKey(key));
-    renderCounters();
     renderClue();
     if (doneCount() === COUNTRIES.length) finishMission();
   });
@@ -334,6 +344,7 @@ document.addEventListener('DOMContentLoaded', () => {
       ? 'All six maritime neighbours identified'
       : `You identified ${found} of the ${COUNTRIES.length} maritime neighbours`;
     $('endPanel').hidden = false;
+    $('flagPanel').hidden = true;
     const badge = $('badge');
     badge.innerHTML = '';
     if (window.lottie && window.ANIM_DATA) {
@@ -362,6 +373,7 @@ document.addEventListener('DOMContentLoaded', () => {
       badgeAnim = null;
     }
     $('endPanel').hidden = true;
+    $('flagPanel').hidden = false;
     $('routeLayer').innerHTML = '';
     $('mapPins').innerHTML = '';
     Object.values(countryEls).forEach((el) => el.classList.remove('is-found', 'is-wrong'));
@@ -371,7 +383,6 @@ document.addEventListener('DOMContentLoaded', () => {
       f.removeAttribute('aria-pressed');
     });
     $('map').classList.remove('is-armed');
-    renderCounters();
     renderClue();
   };
 
@@ -406,6 +417,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
   buildMap();
   buildFlags();
-  renderCounters();
   renderClue();
 });

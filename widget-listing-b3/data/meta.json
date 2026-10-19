@@ -12,6 +12,10 @@
       "updatedAt": "2026-09-28T18:09:38+05:30",
       "author": "tce-ashishg"
     },
+    "wg163-pollination": {
+      "updatedAt": "2026-10-19T11:52:28+05:30",
+      "author": "Shyamsunder Hait"
+    },
     "wg164-don-akshari-shabad": {
       "updatedAt": "2026-07-21T19:03:25+05:30",
       "author": "tce-ashishg"
@@ -65,8 +69,8 @@
       "author": "tce-nitinc"
     },
     "wg178-maritime-neighbours": {
-      "updatedAt": "2026-10-15T12:06:59+05:30",
-      "author": "tce-nitinc"
+      "updatedAt": "2026-10-16T17:26:57+05:30",
+      "author": "Shyamsunder Hait"
     },
     "wg179-decentralisation-explorer": {
       "updatedAt": "2026-07-30T17:25:22+05:30",
@@ -93,8 +97,8 @@
       "author": "tce-ashishg"
     },
     "wg189-irrigation-system": {
-      "updatedAt": "2026-10-14T11:43:15+05:30",
-      "author": "tce-nitinc"
+      "updatedAt": "2026-10-16T17:26:57+05:30",
+      "author": "Shyamsunder Hait"
     },
     "wg190-my-healthy-plate": {
       "updatedAt": "2026-09-07T15:29:08+05:30",
@@ -136,24 +140,130 @@
       "updatedAt": "2026-10-15T11:35:21+05:30",
       "author": "tce-ashishg"
     },
+    "wg201-parts-of-speech": {
+      "updatedAt": "2026-10-16T18:20:49+05:30",
+      "author": "Shyamsunder Hait"
+    },
     "wg202-egyptian-museum": {
-      "updatedAt": "2026-10-15T16:16:28+05:30",
+      "updatedAt": "2026-10-19T11:55:13+05:30",
       "author": "tce-nitinc"
     },
     "wg204-capitals-of-india": {
-      "updatedAt": "2026-10-14T17:04:01+05:30",
+      "updatedAt": "2026-10-19T12:40:56+05:30",
       "author": "tce-nitinc"
+    },
+    "wg205-species-z-factor-explorer": {
+      "updatedAt": "2026-10-16T18:34:01+05:30",
+      "author": "Shyamsunder Hait"
     },
     "wg211-railgadi-banao": {
-      "updatedAt": "2026-10-15T18:17:09+05:30",
-      "author": "tce-nitinc"
+      "updatedAt": "2026-10-16T17:26:57+05:30",
+      "author": "Shyamsunder Hait"
     },
-    "wg212-sabdo-me-vayanjan-ki-khoj-gujrati": {
-      "updatedAt": "2026-10-15T17:06:50+05:30",
+    "wg212-sabdo-me-swar-ki-khoj-gujrati": {
+      "updatedAt": "2026-10-16T18:34:01+05:30",
+      "author": "Shyamsunder Hait"
+    },
+    "wg223-leaf-lab-transpiration": {
+      "updatedAt": "2026-10-19T10:58:01+05:30",
       "author": "tce-nitinc"
     }
   },
   "commits": [
+    {
+      "date": "2026-10-19T12:40:56+05:30",
+      "author": "tce-nitinc",
+      "message": "fixed wg-204",
+      "widgets": [
+        204
+      ]
+    },
+    {
+      "date": "2026-10-19T11:55:13+05:30",
+      "author": "tce-nitinc",
+      "message": "wg202 fixes",
+      "widgets": [
+        202
+      ]
+    },
+    {
+      "date": "2026-10-19T11:52:28+05:30",
+      "author": "Shyamsunder Hait",
+      "message": "wg163 fixes",
+      "widgets": [
+        163
+      ]
+    },
+    {
+      "date": "2026-10-19T10:58:01+05:30",
+      "author": "tce-nitinc",
+      "message": "wg 223 fixes",
+      "widgets": [
+        223
+      ]
+    },
+    {
+      "date": "2026-10-16T18:34:01+05:30",
+      "author": "Shyamsunder Hait",
+      "message": "removed unwanted files",
+      "widgets": [
+        205,
+        212
+      ]
+    },
+    {
+      "date": "2026-10-16T18:20:49+05:30",
+      "author": "Shyamsunder Hait",
+      "message": "wg201",
+      "widgets": [
+        201
+      ]
+    },
+    {
+      "date": "2026-10-16T17:37:41+05:30",
+      "author": "Shyamsunder Hait",
+      "message": "remove unwanted files",
+      "widgets": [
+        205
+      ]
+    },
+    {
+      "date": "2026-10-16T17:26:57+05:30",
+      "author": "Shyamsunder Hait",
+      "message": "ui fixes",
+      "widgets": [
+        178,
+        189,
+        202,
+        204,
+        205,
+        211
+      ]
+    },
+    {
+      "date": "2026-10-16T14:38:39+05:30",
+      "author": "tce-nitinc",
+      "message": "wg212 fixes",
+      "widgets": [
+        212
+      ]
+    },
+    {
+      "date": "2026-10-16T11:49:27+05:30",
+      "author": "tce-ashishg",
+      "message": "wg212 done",
+      "widgets": [
+        212
+      ]
+    },
+    {
+      "date": "2026-10-16T11:44:19+05:30",
+      "author": "tce-ashishg",
+      "message": "wg212 done",
+      "widgets": [
+        212
+      ]
+    },
     {
       "date": "2026-10-15T18:17:09+05:30",
       "author": "tce-nitinc",
@@ -309,103 +419,6 @@
       "message": "wg181 images updated",
       "widgets": [
         181
-      ]
-    },
-    {
-      "date": "2026-10-07T11:35:51+05:30",
-      "author": "tce-ashishg",
-      "message": "wg194 correction done",
-      "widgets": [
-        194,
-        198
-      ]
-    },
-    {
-      "date": "2026-10-06T18:27:14+05:30",
-      "author": "tce-ashishg",
-      "message": "wg198 & 200 btn issue resolved",
-      "widgets": [
-        90,
-        194,
-        198,
-        200
-      ]
-    },
-    {
-      "date": "2026-10-06T16:23:12+05:30",
-      "author": "tce-ashishg",
-      "message": "wg198 199 200 audio playback issue resoled",
-      "widgets": [
-        90,
-        198,
-        199,
-        200
-      ]
-    },
-    {
-      "date": "2026-10-05T17:53:53+05:30",
-      "author": "tce-ashishg",
-      "message": "wg198 folder name updated",
-      "widgets": [
-        198
-      ]
-    },
-    {
-      "date": "2026-10-05T17:46:37+05:30",
-      "author": "tce-ashishg",
-      "message": "wg198 folder name updated",
-      "widgets": [
-        198
-      ]
-    },
-    {
-      "date": "2026-10-05T17:45:06+05:30",
-      "author": "tce-ashishg",
-      "message": "wg198 199 200 issue resolved",
-      "widgets": [
-        198
-      ]
-    },
-    {
-      "date": "2026-10-05T17:32:25+05:30",
-      "author": "tce-ashishg",
-      "message": "wg198 199 200 issue resolved",
-      "widgets": [
-        198,
-        199,
-        200
-      ]
-    },
-    {
-      "date": "2026-10-05T17:06:08+05:30",
-      "author": "tce-ashishg",
-      "message": "Rename Correct.json to correct.json",
-      "widgets": [
-        198
-      ]
-    },
-    {
-      "date": "2026-10-05T17:05:51+05:30",
-      "author": "tce-ashishg",
-      "message": "Rename Incorrect.mp3 to incorrect.mp3",
-      "widgets": [
-        198
-      ]
-    },
-    {
-      "date": "2026-10-05T17:05:36+05:30",
-      "author": "tce-ashishg",
-      "message": "Rename Incorrect.json to incorrect.json",
-      "widgets": [
-        198
-      ]
-    },
-    {
-      "date": "2026-10-05T17:05:20+05:30",
-      "author": "tce-ashishg",
-      "message": "Rename Correct.mp3 to correct.mp3",
-      "widgets": [
-        198
       ]
     }
   ]

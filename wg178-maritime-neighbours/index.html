@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mission Maritime Neighbours</title>
+  <title>&ZeroWidthSpace;Mission Maritime Neighbours&ZeroWidthSpace;</title>
 
   <link rel="stylesheet" href="./css/global_style.css">
   <link rel="stylesheet" href="./css/style.css">
@@ -13,6 +13,10 @@
 <body id="maritime-widget">
   <div class="container">
     <div class="mainContainerOuter">
+      <div class="wdgetTitle">
+        <h2>&ZeroWidthSpace;Mission Maritime Neighbours&ZeroWidthSpace;</h2>
+        <span id="versionId" class="versionText">b4_wg178_261014_01</span>
+      </div>
       <div id="viewport">
         <!-- Fixed 1920x1080 design stage, scaled to fit the window by script.js -->
         <div id="stage">
@@ -38,10 +42,8 @@
 
           <!-- ============ MISSION SCREEN ============ -->
           <section id="screen-game" class="screen" aria-label="Mission">
-            <p class="counter counter--remaining" id="remainingCounter"></p>
             <p class="itext itext--game">Tap the flag, then based on the clues, tap the correct neighbour of India in the
               map.</p>
-            <p class="counter counter--identified" id="identifiedCounter"></p>
 
             <!-- map -->
             <div class="map-panel">
@@ -56,7 +58,7 @@
             </div>
 
             <!-- flags + clues -->
-            <div class="flag-panel">
+            <div class="flag-panel" id="flagPanel">
               <h3 class="flag-panel__title">Choose a flag</h3>
               <div class="flags" id="flags" role="group" aria-label="Flags"></div>
 
@@ -87,11 +89,6 @@
            backdrop, so the dark backdrop can cover the whole viewport. -->
       <div id="modal-layer">
         <div id="modal-stage">
-          <div class="wdgetTitle">
-            <h2>Mission Maritime Neighbours</h2>
-            <span id="versionId" class="versionText">b4_wg178_261014_01</span>
-          </div>
-
           <div class="modal" id="resultModal" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden>
             <div class="result-card" id="resultCard">
               <h3 class="result-card__title" id="resultTitle"></h3>
