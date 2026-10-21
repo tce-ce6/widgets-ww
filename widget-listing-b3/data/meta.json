@@ -97,8 +97,8 @@
       "author": "tce-ashishg"
     },
     "wg189-irrigation-system": {
-      "updatedAt": "2026-10-16T17:26:57+05:30",
-      "author": "Shyamsunder Hait"
+      "updatedAt": "2026-10-21T12:09:57+05:30",
+      "author": "tce-nitinc"
     },
     "wg190-my-healthy-plate": {
       "updatedAt": "2026-09-07T15:29:08+05:30",
@@ -186,6 +186,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-10-21T12:09:57+05:30",
+      "author": "tce-nitinc",
+      "message": "fixed 189 issues",
+      "widgets": [
+        189
+      ]
+    },
     {
       "date": "2026-10-21T10:34:00+05:30",
       "author": "tce-ashishg",
@@ -429,14 +437,6 @@
       "message": "wg204 fixes",
       "widgets": [
         204
-      ]
-    },
-    {
-      "date": "2026-10-14T11:43:15+05:30",
-      "author": "tce-nitinc",
-      "message": "wg189 fixes",
-      "widgets": [
-        189
       ]
     }
   ]
