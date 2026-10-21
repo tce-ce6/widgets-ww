@@ -49,8 +49,8 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   // Bee Lottie: 200x200 comp drawn in a 260px box; FEET = its legs in that box.
-  const BEE_BOX = 260;
-  const FEET = [120, 185];
+  const BEE_BOX = 160;
+  const FEET = [74, 114];
   const BEE_HOME = [1672, 290];
   const BEE_SPEED = 480; // stage px per second
   const SIT_MS = 2000; // the bee sits on the anther this long before flying on

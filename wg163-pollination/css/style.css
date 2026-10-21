@@ -331,12 +331,9 @@ button:focus-visible {
   }
 }
 
+/* the bee's path is only used to measure the flight; it is not drawn */
 .trail {
-  fill: none;
-  stroke: #000;
-  stroke-width: 2;
-  stroke-dasharray: 6;
-  pointer-events: none;
+  display: none;
 }
 
 .trail-reveal {
@@ -392,8 +389,8 @@ button:focus-visible {
   position: absolute;
   left: 0;
   top: 0;
-  width: 260px;
-  height: 260px;
+  width: 160px;
+  height: 160px;
   pointer-events: none;
   z-index: 7;
   will-change: transform;
