@@ -145,7 +145,7 @@
       "author": "tce-nitinc"
     },
     "wg202-egyptian-museum": {
-      "updatedAt": "2026-10-19T14:52:41+05:30",
+      "updatedAt": "2026-10-21T09:34:16+05:30",
       "author": "tce-nitinc"
     },
     "wg204-capitals-of-india": {
@@ -175,9 +175,27 @@
     "wg223-leaf-lab-transpiration": {
       "updatedAt": "2026-10-19T10:58:01+05:30",
       "author": "tce-nitinc"
+    },
+    "wg31-world-war": {
+      "updatedAt": "2026-10-21T09:34:16+05:30",
+      "author": "tce-nitinc"
+    },
+    "wg9-triangle-inequality": {
+      "updatedAt": "2026-10-21T09:34:16+05:30",
+      "author": "tce-nitinc"
     }
   },
   "commits": [
+    {
+      "date": "2026-10-21T09:34:16+05:30",
+      "author": "tce-nitinc",
+      "message": "added how to play into the last batch widgets also",
+      "widgets": [
+        9,
+        31,
+        202
+      ]
+    },
     {
       "date": "2026-10-21T08:40:27+05:30",
       "author": "tce-ashishg",
@@ -420,14 +438,6 @@
       "widgets": [
         189,
         211
-      ]
-    },
-    {
-      "date": "2026-10-14T09:54:22+05:30",
-      "author": "tce-ashishg",
-      "message": "wg191 completed",
-      "widgets": [
-        191
       ]
     }
   ]
