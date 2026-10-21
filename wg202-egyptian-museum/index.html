@@ -103,7 +103,7 @@
         <div class="nile-buttons">
           <button id="btnNileClear" class="btn btn--pink" type="button">Clear</button>
           <button id="btnNileSubmit" class="btn btn--green" type="button">Submit</button>
-          <button id="btnNileAnswer" class="btn btn--yellow" type="button">Show Answer</button>
+          <button id="btnNileAnswer" class="btn btn--yellow" type="button" hidden>Show Answer</button>
         </div>
         <button id="btnNileHint" class="btn btn--yellow nile-hint" type="button">Hint</button>
         <div id="nileFeedback" class="nile-feedback" role="status" hidden>
@@ -256,11 +256,31 @@
   </div>
   </div>
 
+  <!-- How-to-play tour (shown over the stage; positioned in viewport coordinates) -->
+  <div id="tour" class="tour" aria-hidden="true">
+    <div id="tourSpot" class="tour-spot"></div>
+    <div id="tourDemo" class="tour-demo"></div>
+    <div id="tourCard" class="tour-card" role="dialog" aria-modal="true" aria-labelledby="tourTitle">
+      <button id="tourSkip" class="tour-skip" type="button" aria-label="Close how to play"><span aria-hidden="true">&times;</span></button>
+      <div id="tourCount" class="tour-count"></div>
+      <h2 id="tourTitle"></h2>
+      <p id="tourText"></p>
+      <div class="tour-nav">
+        <div id="tourDots" class="tour-dots"></div>
+        <div class="tour-btns">
+          <button id="tourBack" class="tour-btn tour-btn--ghost" type="button">Back</button>
+          <button id="tourNext" class="tour-btn" type="button">Next</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div id="rotateHint" class="rotate-hint" hidden>
     <p>Please turn your device sideways for the best view of the museum.</p>
   </div>
 
   <script src="./js/lottie.min.js"></script>
   <script src="./js/script.js"></script>
+  <script src="./js/how-to-play.js"></script>
 </body>
 </html>
