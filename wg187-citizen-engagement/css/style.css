@@ -1,0 +1,818 @@
+/* ==========================================================================
+   What Would You Do? - Citizen Engagement Explorer (wg187)
+   Layout is authored on a fixed 1920x1080 stage (matching the XD design) and
+   scaled to the window by script.js, so the widget always fits one screen.
+   ========================================================================== */
+
+:root {
+  --ink: #000;
+  --itext: #fff468;
+  --header: #0395fc;
+  --pink: #ff2c68;
+  --yellow: #fff82c;
+  --lime: #b9ff5d;
+  --panel: #f9fed7;
+  --line: #707070;
+  --low: #bd0000;
+  --medium: #bf7f00;
+  --high: #128500;
+}
+
+html,
+body {
+  overflow: hidden;
+}
+
+/* The widget backdrop fills the whole viewport, including any space around
+   the scaled 1920x1080 stage. */
+body {
+  background: #1f5f45 url("../assets/images/bg.svg") center / cover no-repeat;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mainContainerOuter {
+  background: transparent;
+}
+
+/* Layering, bottom to top: body backdrop -> #viewport (the widget) ->
+   body::before (modal backdrop) -> #modal-layer (the open modal card). */
+#viewport,
+#modal-layer {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+}
+
+#viewport {
+  z-index: 1;
+}
+
+
+
+/* Dark backdrop behind an open modal, covering the whole viewport. */
+body.has-modal::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  background: rgba(0, 0, 0, 0.8);
+}
+
+#modal-layer {
+  z-index: 3;
+  pointer-events: none;
+}
+
+body.has-modal #modal-layer {
+  pointer-events: auto;
+}
+
+/* #stage holds the widget, #modal-stage the modals; both are the same fixed
+   1920x1080 design stage, scaled together by script.js. */
+#stage,
+#modal-stage {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1920px;
+  height: 1080px;
+  transform-origin: 0 0;
+  overflow: hidden;
+  color: var(--ink);
+  font-family: "Roboto", sans-serif;
+  line-height: 1.2;
+}
+
+#stage *,
+#stage *::before,
+#stage *::after,
+#modal-stage *,
+#modal-stage *::before,
+#modal-stage *::after {
+  box-sizing: border-box;
+}
+
+button {
+  font-family: "Roboto", sans-serif;
+}
+
+button:focus-visible {
+  outline: 5px solid #ffffff;
+  outline-offset: 3px;
+}
+
+/* ---------- title (outside the scaled stage, same as previous widgets) ---------- */
+/* z-index keeps it above #modal-layer, so it stays bright over the modal backdrop */
+#citizen-widget .wdgetTitle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  left: 0;
+  top: 0;
+  z-index: 4;
+}
+
+#citizen-widget .wdgetTitle h2 {
+  font-size: 25px;
+  font-weight: 600;
+  text-align: left;
+  padding: 8px 40px;
+  border-radius: 0 0px 20px 20px;
+  white-space: nowrap;
+}
+
+/* the summary screen has no title */
+#citizen-widget.is-summary .wdgetTitle h2 {
+  display: none;
+}
+
+#citizen-widget .versionText {
+  position: absolute;
+  right: 20px;
+  top: 10px !important;
+  font-size: 12px;
+  color: rgb(255 255 255 / 25%);
+}
+
+/* ---------- screens ---------- */
+.screen {
+  position: absolute;
+  inset: 0;
+  display: none;
+}
+
+.screen.is-active {
+  display: block;
+}
+
+/* Every text class below sets its own margin/size/colour, which overrides
+   the generic p/h3 rules in global_style.css. */
+.itext {
+  position: absolute;
+  left: 260px;
+  width: 1400px;
+  white-space: nowrap;
+  height: 44px;
+  margin: 0;
+  color: var(--itext);
+  font-size: 28px;
+  font-style: italic;
+  line-height: 44px;
+  text-align: center;
+}
+
+.itext--intro {
+  top: 156px;
+}
+
+.itext--problem {
+  top: 79px;
+}
+
+/* ---------- pill buttons ---------- */
+.pill-btn {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50px;
+  color: #000;
+  font-size: 35px;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.pill-btn:active {
+  transform: translateY(3px);
+}
+
+.pill-btn:disabled {
+  cursor: not-allowed;
+}
+
+.pill-btn[hidden] {
+  display: none;
+}
+
+/* ---------- intro ---------- */
+.tool-cards {
+  position: absolute;
+  inset: 0;
+}
+
+.tool-card {
+  position: absolute;
+  width: 500px;
+  height: 189px;
+  padding: 0 8px 0 118px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 32px;
+  box-shadow: -9px 8px 0 rgba(0, 0, 0, 0.5);
+  text-align: center;
+}
+
+.tool-card img {
+  position: absolute;
+  left: 22px;
+  top: 50%;
+  width: 100px;
+  height: auto;
+  transform: translateY(-50%);
+}
+
+.tool-card__name {
+  margin: 0 0 8px;
+  color: #000;
+  font-size: 35px;
+  font-weight: 700;
+  line-height: 40px;
+}
+
+.tool-card__desc {
+  margin: 0;
+  color: #000;
+  font-size: 25px;
+  line-height: 30px;
+}
+
+.pill-btn--start {
+  left: 847px;
+  top: 705px;
+  width: 226px;
+  height: 92px;
+  background: var(--pink);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  color: #fff;
+}
+
+/* ---------- problem screen ---------- */
+.counter {
+  position: absolute;
+  left: 1720px;
+  top: 31px;
+  width: 169px;
+  height: 68px;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--lime);
+  border: 1px solid var(--line);
+  border-radius: 34px;
+  color: #000;
+  font-size: 30px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.question {
+  position: absolute;
+  left: 149px;
+  top: 128px;
+  width: 1645px;
+  height: 127px;
+}
+
+.question__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.question__text {
+  position: absolute;
+  left: 126px;
+  right: 24px;
+  top: 11px;
+  height: 104px;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  color: #000;
+  font-size: 32px;
+  font-weight: 500;
+  line-height: 38px;
+}
+
+/* sorting boxes */
+.boxes {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.box {
+  position: absolute;
+  top: 272px;
+  width: 347px;
+  height: 454px;
+  padding-top: 24px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 21px;
+  text-align: center;
+  cursor: pointer;
+  pointer-events: auto;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.box.is-over {
+  transform: scale(1.02);
+  box-shadow: 0 0 0 5px #fff;
+}
+
+.box__title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 30px;
+}
+
+.box__sub {
+  margin: 4px 0 0;
+  font-size: 20px;
+  line-height: 24px;
+}
+
+.box--low .box__title,
+.box--low .box__sub {
+  color: var(--low);
+}
+
+.box--medium .box__title,
+.box--medium .box__sub {
+  color: var(--medium);
+}
+
+.box--high .box__title,
+.box--high .box__sub {
+  color: var(--high);
+}
+
+.slot {
+  position: absolute;
+  left: 36px;
+  width: 280px;
+  height: 75px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  box-shadow: -5px 5px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* a tool placed in a slot */
+.placed {
+  position: absolute;
+  inset: -1px;
+  padding: 0 14px 0 74px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  box-shadow: -5px 5px 0 rgba(0, 0, 0, 0.5);
+  color: #000;
+  font-size: 25px;
+  font-weight: 700;
+  line-height: 1.1;
+  text-align: center;
+  animation: drop-in 0.2s ease;
+}
+
+.placed img {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  width: 52px;
+  height: auto;
+  max-height: 60px;
+  transform: translateY(-50%);
+}
+
+@keyframes drop-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* feedback panel under the boxes; the yellow title bar and the text box share
+   the width of the text, centred under the three boxes */
+.feedback {
+  position: absolute;
+  left: 191px;
+  top: 771px;
+  width: 1107px;
+  display: grid;
+  justify-content: center;
+  align-content: start;
+  visibility: hidden;
+}
+
+.feedback.is-shown {
+  visibility: visible;
+}
+
+.feedback__title,
+.feedback__text {
+  margin: 0;
+  min-width: 520px;
+  max-width: 1107px;
+  border: 1px solid var(--line);
+  color: #000;
+  font-size: 25px;
+  line-height: 30px;
+}
+
+.feedback__title {
+  height: 50px;
+  padding: 10px 30px;
+  background: #fccb45;
+  font-weight: 700;
+  text-align: center;
+}
+
+.feedback__text {
+  min-height: 79px;
+  padding: 24px 28px;
+  background: #fffca8;
+  border-top: none;
+  font-weight: 400;
+  text-align: left;
+}
+
+/* tool column (right) */
+.tray {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.chip {
+  position: absolute;
+  left: 1357px;
+  width: 395px;
+  height: 90px;
+  padding: 0 8px 0 84px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  box-shadow: -7px 7px 0 rgba(0, 0, 0, 0.5);
+  color: #000;
+  text-align: center;
+  cursor: grab;
+  touch-action: none;
+  pointer-events: auto;
+}
+
+.chip img {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  width: 62px;
+  height: auto;
+  max-height: 72px;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.chip__name {
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 32px;
+}
+
+.chip__desc {
+  font-size: 20px;
+  line-height: 24px;
+}
+
+.chip.is-placed {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.chip.is-selected {
+  outline: 5px solid #fff;
+  outline-offset: 2px;
+}
+
+.chip.is-dragging {
+  opacity: 0.35;
+}
+
+.chip.is-shake {
+  animation: shake 0.35s ease;
+}
+
+@keyframes shake {
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(-10px);
+  }
+
+  75% {
+    transform: translateX(10px);
+  }
+}
+
+/* the card that follows the pointer while dragging */
+.chip-ghost {
+  z-index: 20;
+  pointer-events: none;
+  box-shadow: -7px 7px 0 rgba(0, 0, 0, 0.5), 0 10px 22px rgba(0, 0, 0, 0.45);
+  transform: scale(0.85);
+}
+
+/* bottom bar */
+.home-btn {
+  position: absolute;
+  left: 37px;
+  top: 985px;
+  width: 65px;
+  height: 65px;
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.home-btn img {
+  width: 100%;
+  height: 100%;
+}
+
+.pill-btn--back,
+.pill-btn--next,
+.pill-btn--sback,
+.pill-btn--snext {
+  top: 928px;
+  width: 129px;
+  height: 64px;
+  background: var(--yellow);
+}
+
+.pill-btn--back,
+.pill-btn--sback {
+  left: 1406px;
+}
+
+.pill-btn--next,
+.pill-btn--snext {
+  left: 1568px;
+}
+
+/* ---------- summary ---------- */
+.summary__title {
+  position: absolute;
+  left: 0;
+  top: 58px;
+  width: 100%;
+  margin: 0;
+  color: #fff;
+  font-size: 46px;
+  font-weight: 700;
+  line-height: 54px;
+  text-align: center;
+}
+
+.summary {
+  position: absolute;
+  left: 138px;
+  top: 150px;
+  width: 1644px;
+}
+
+.summary__row {
+  display: grid;
+  grid-template-columns: 520px 1fr 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.summary__row > div {
+  min-height: 128px;
+}
+
+.summary__head > div {
+  height: 56px;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  color: #fff;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.summary__head .h-problem {
+  background: var(--header);
+}
+
+.summary__head .h-low {
+  background: var(--low);
+}
+
+.summary__head .h-medium {
+  background: var(--medium);
+}
+
+.summary__head .h-high {
+  background: var(--high);
+}
+
+.summary__problem {
+  padding: 0 18px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  color: #000;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 34px;
+}
+
+.summary__problem img {
+  width: 68px;
+  height: 68px;
+  object-fit: contain;
+  flex: none;
+}
+
+.summary__cell {
+  padding: 12px 16px;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  gap: 6px 10px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  font-size: 26px;
+  font-weight: 500;
+  line-height: 32px;
+}
+
+.summary__cell.low {
+  color: var(--low);
+}
+
+.summary__cell.medium {
+  color: var(--medium);
+}
+
+.summary__cell.high {
+  color: var(--high);
+}
+
+.summary__cell.is-empty {
+  justify-content: center;
+  color: #8a8a7a;
+}
+
+.takeaway {
+  position: absolute;
+  left: 138px;
+  top: 806px;
+  width: 1644px;
+  height: 120px;
+  margin: 0;
+  padding: 0 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  color: #000;
+  font-size: 30px;
+  font-weight: 500;
+  line-height: 38px;
+  text-align: center;
+}
+
+.takeaway[hidden] {
+  display: none;
+}
+
+.pill-btn--restart {
+  left: 1556px;
+  top: 950px;
+  width: 226px;
+  height: 64px;
+  background: var(--pink);
+  color: #fff;
+}
+
+.pill-btn--sback,
+.pill-btn--snext {
+  top: 950px;
+}
+
+.pill-btn--sback {
+  left: 138px;
+}
+
+.pill-btn--snext {
+  left: 1653px;
+}
+
+/* ---------- modal cards ---------- */
+/* the backdrop colour comes from body.has-modal::before */
+.modal {
+  position: absolute;
+  inset: 0;
+}
+
+.modal[hidden] {
+  display: none;
+}
+
+.card {
+  position: absolute;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 21px;
+  color: #000;
+  font-size: 28px;
+  line-height: 34px;
+}
+
+.card__tab {
+  position: absolute;
+  left: 50%;
+  top: -31px;
+  width: 320px;
+  height: 62px;
+  margin-left: -160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--header);
+  border: 1px solid var(--line);
+  border-radius: 31px;
+  color: #fff;
+  font-size: 30px;
+  font-weight: 700;
+}
+
+.card--leave {
+  left: 560px;
+  top: 360px;
+  width: 800px;
+  height: 320px;
+  padding: 80px 50px 0;
+  text-align: center;
+}
+
+.card p {
+  margin: 0;
+  color: #000;
+  font-size: 30px;
+  line-height: 38px;
+}
+
+.leave__btns .pill-btn {
+  top: 200px;
+  width: 200px;
+  height: 64px;
+  background: var(--yellow);
+}
+
+.pill-btn--cancel {
+  left: 150px;
+}
+
+.pill-btn--confirm {
+  left: 450px;
+}

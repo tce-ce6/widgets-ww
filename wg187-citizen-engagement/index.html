@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>&ZeroWidthSpace;What Would You Do? — Citizen Engagement Explorer&ZeroWidthSpace;</title>
+
+  <link rel="stylesheet" href="./css/global_style.css">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body id="citizen-widget">
+  <div class="container">
+    <div class="mainContainerOuter">
+      <div class="wdgetTitle">
+        <h2>&ZeroWidthSpace;What Would You Do? — Citizen Engagement Explorer&ZeroWidthSpace;</h2>
+        <span id="versionId" class="versionText">b4_wg187_261020_01</span>
+      </div>
+      <div id="viewport">
+        <!-- Fixed 1920x1080 design stage, scaled to fit the window by script.js -->
+        <div id="stage">
+
+          <!-- ============ INTRO SCREEN ============ -->
+          <section id="screen-intro" class="screen is-active" aria-label="Introduction">
+            <p class="itext itext--intro">These are six tools every citizen has. For each problem, sort them from least to
+              most effective.</p>
+            <div class="tool-cards" id="toolCards"></div>
+            <button class="pill-btn pill-btn--start" id="startBtn" type="button">Start</button>
+          </section>
+
+          <!-- ============ PROBLEM SCREEN ============ -->
+          <section id="screen-problem" class="screen" aria-label="Sort the tools">
+            <p class="itext itext--problem">Sort the tools from least effective to most effective for this problem.</p>
+            <p class="counter" id="counter" aria-live="polite">00 of 12</p>
+
+            <div class="question" role="group" aria-label="Problem">
+              <img class="question__bg" src="assets/images/question-panel.svg" alt="">
+              <p class="question__text" id="problemText"></p>
+            </div>
+
+            <div class="boxes" id="boxes"></div>
+
+            <div class="feedback" id="feedback" role="status" aria-live="polite">
+              <h4 class="feedback__title">Feedback</h4>
+              <p class="feedback__text" id="feedbackText"></p>
+            </div>
+
+            <div class="tray" id="tray"></div>
+
+            <button class="home-btn" id="homeBtn" type="button" aria-label="Home">
+              <img src="assets/images/home-btn.svg" alt="">
+            </button>
+            <button class="pill-btn pill-btn--back" id="backBtn" type="button">Back</button>
+            <button class="pill-btn pill-btn--next" id="nextBtn" type="button" disabled>Next</button>
+          </section>
+
+          <!-- ============ SUMMARY SCREEN (3 pages) ============ -->
+          <section id="screen-summary" class="screen" aria-label="Summary">
+            <h3 class="summary__title">Here is what you discovered.</h3>
+            <div class="summary" id="summary"></div>
+            <p class="takeaway" id="takeaway" hidden>There is no single best tool. Every problem needs a different approach.
+              An informed citizen knows which tool works best &mdash; and when.</p>
+            <button class="pill-btn pill-btn--sback" id="summaryBack" type="button">Back</button>
+            <button class="pill-btn pill-btn--snext" id="summaryNext" type="button">Next</button>
+            <button class="pill-btn pill-btn--restart" id="restartBtn" type="button">Restart</button>
+          </section>
+        </div>
+      </div>
+
+      <!-- Modals live in their own scaled layer above the body::before backdrop,
+           so the dark backdrop can cover the whole viewport, not just the stage. -->
+      <div id="modal-layer">
+        <div id="modal-stage">
+          <!-- ============ LEAVE CONFIRMATION ============ -->
+          <div class="modal" id="leaveModal" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden>
+            <div class="card card--leave">
+              <span class="card__tab" id="leaveTitle">Go back home?</span>
+              <p class="leave__text">Your sorting for this round will be cleared.</p>
+              <div class="leave__btns">
+                <button class="pill-btn pill-btn--cancel" id="leaveCancel" type="button">Stay</button>
+                <button class="pill-btn pill-btn--confirm" id="leaveConfirm" type="button">Go home</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./js/content-data.js"></script>
+  <script src="./js/script.js"></script>
+</body>
+
+</html>
