@@ -336,17 +336,38 @@ function playAudio(type) {
 
   audioPlayer.play();
 }
-function playAnimationAudio(type, animationPath) {
-  let name = "";
-  if (animationPath === "CORRECT") {
-    name = selectedLottie[selectedWord.type];
-  } else {
-    name = selectedLottie[animationPath].replace("json", "mp3");
-  }
+function playAnimationAudio(animationPath) {
+  const feedbackFileName =
+    animationPath === "CORRECT"
+      ? `feedback-Correct-${selectedWord.type.replace("-", " ")}.mp3`
+      : "feedback-Incorrect.mp3";
+
   audioPlayer.pause();
   audioPlayer.currentTime = 0;
-  audioPlayer.src = `assets/JSON/${type}/${name}`;
-  audioPlayer.play();
+  audioPlayer.src = "assets/audio/final_audio/kids_train_bell_sound.mp3";
+
+  let feedbackStarted = false;
+  const playFeedbackAudio = () => {
+    if (feedbackStarted) return;
+    feedbackStarted = true;
+    audioPlayer.removeEventListener("ended", playFeedbackAudio);
+    audioPlayer.removeEventListener("error", onBellError);
+    audioPlayer.src = `assets/audio/final_audio/${feedbackFileName}`;
+    audioPlayer.play().catch((error) => {
+      console.error("Feedback audio playback failed:", error);
+    });
+  };
+  const onBellError = () => {
+    console.error("Train bell audio playback failed.");
+    playFeedbackAudio();
+  };
+
+  audioPlayer.addEventListener("ended", playFeedbackAudio);
+  audioPlayer.addEventListener("error", onBellError);
+  audioPlayer.play().catch((error) => {
+    console.error("Train bell audio playback failed:", error);
+    playFeedbackAudio();
+  });
 }
 
 function hideAndShowText1(state = "none") {
@@ -459,7 +480,7 @@ function playLottieAnimation(bandGroup) {
   parentEl.style.display = "block"; // allow renderer to init
   parentEl.style.visibility = "hidden"; // but keep hidden
   parentEl.style.opacity = "";
-  playAnimationAudio(type, bandGroup);
+  playAnimationAudio(bandGroup);
 
   try {
     lottieInstances = lottie.loadAnimation({
