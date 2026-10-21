@@ -1,162 +1,170 @@
 {
-  "FUL": {
-    "incorrect": "फुल",
-    "correct": "फूल",
-    "wrongAudio": "ful-wr.mp3",
-    "correctAudio": "ful-cr.mp3",
+  "PHOOL": {
+    "incorrect": "ફુલ",
+    "correct": "ફૂલ",
+    "wrongAudio": "phool-wr.mp3",
+    "correctAudio": "phool-cr.mp3",
     "type": "Badi-U",
     "margin": 0
   },
   "DUDH": {
-    "incorrect": "दुध",
-    "correct": "दूध",
+    "incorrect": "દુધ",
+    "correct": "દૂધ",
     "wrongAudio": "dudh-wr.mp3",
     "correctAudio": "dudh-cr.mp3",
     "type": "Badi-U",
     "margin": 0
   },
-  "PASHU": {
-    "incorrect": "पशू",
-    "correct": "पशु",
-    "wrongAudio": "pashu-wr.mp3",
-    "correctAudio": "pashu-cr.mp3",
+  "GHODIYU": {
+    "incorrect": "ઘોડિયૂં",
+    "correct": "ઘોડિયું",
+    "wrongAudio": "ghodiyu-wr.mp3",
+    "correctAudio": "ghodiyu-cr.mp3",
     "type": "Choti-U",
-    "margin": 70
-  },
-  "DHUP": {
-    "incorrect": "धुप",
-    "correct": "धूप",
-    "wrongAudio": "dhup-wr.mp3",
-    "correctAudio": "dhup-cr.mp3",
-    "type": "Badi-U",
     "margin": 0
   },
-  "SUI": {
-    "incorrect": "सूई",
-    "correct": "सुई",
-    "wrongAudio": "sui-wr.mp3",
-    "correctAudio": "sui-cr.mp3",
+  "ARUNA": {
+    "incorrect": "અરૂણા",
+    "correct": "અરુણા",
+    "wrongAudio": "aruna-wr.mp3",
+    "correctAudio": "aruna-cr.mp3",
     "type": "Choti-U",
     "margin": 0
   },
   "PURI": {
-    "incorrect": "पुरी",
-    "correct": "पूरी",
+    "incorrect": "પુરી",
+    "correct": "પૂરી",
     "wrongAudio": "puri-wr.mp3",
     "correctAudio": "puri-cr.mp3",
     "type": "Badi-U",
     "margin": 0
   },
-  "BHALU": {
-    "incorrect": "भालु",
-    "correct": "भालू",
-    "wrongAudio": "bhalu-wr.mp3",
-    "correctAudio": "bhalu-cr.mp3",
+  "CHURMU": {
+    "incorrect": "ચુરમું",
+    "correct": "ચૂરમું",
+    "wrongAudio": "churmu-wr.mp3",
+    "correctAudio": "churmu-cr.mp3",
     "type": "Badi-U",
-    "margin": 70
-  },
-  "KULI": {
-    "incorrect": "कूली",
-    "correct": "कुली",
-    "wrongAudio": "kuli-wr.mp3",
-    "correctAudio": "kuli-cr.mp3",
-    "type": "Choti-U",
     "margin": 0
   },
-  "CHAKU": {
-    "incorrect": "चाकु",
-    "correct": "चाकू",
-    "wrongAudio": "chaku-wr.mp3",
-    "correctAudio": "chaku-cr.mp3",
-    "type": "Badi-U",
-    "margin": 70
-  },
-  "DHANUSH": {
-    "incorrect": "धनूष",
-    "correct": "धनुष",
-    "wrongAudio": "dhanush-wr.mp3",
-    "correctAudio": "dhanush-cr.mp3",
-    "type": "Choti-U",
-    "margin": 70
-  },
   "SURAJ": {
-    "incorrect": "सुरज",
-    "correct": "सूरज",
+    "incorrect": "સુરજ",
+    "correct": "સૂરજ",
     "wrongAudio": "suraj-wr.mp3",
     "correctAudio": "suraj-cr.mp3",
     "type": "Badi-U",
     "margin": 0
   },
-  "MURLI": {
-    "incorrect": "मूरली",
-    "correct": "मुरली",
-    "wrongAudio": "murali-wr.mp3",
-    "correctAudio": "murali-cr.mp3",
+  "SURAT": {
+    "incorrect": "સૂરત",
+    "correct": "સુરત",
+    "wrongAudio": "surat-wr.mp3",
+    "correctAudio": "surat-cr.mp3",
     "type": "Choti-U",
     "margin": 0
   },
   "GULAB": {
-    "incorrect": "गूलाब",
-    "correct": "गुलाब",
+    "incorrect": "ગૂલાબ",
+    "correct": "ગુલાબ",
     "wrongAudio": "gulab-wr.mp3",
     "correctAudio": "gulab-cr.mp3",
     "type": "Choti-U",
     "margin": 0
   },
-  "SUAR": {
-    "incorrect": "सुअर",
-    "correct": "सूअर",
-    "wrongAudio": "suar-wr.mp3",
-    "correctAudio": "suar-cr.mp3",
+  "DUNGAR": {
+    "incorrect": "ડૂંગર",
+    "correct": "ડુંગર",
+    "wrongAudio": "dungar-wr.mp3",
+    "correctAudio": "dungar-cr.mp3",
+    "type": "Choti-U",
+    "margin": 0
+  },
+  "KABUTAR": {
+    "incorrect": "કબુતર",
+    "correct": "કબૂતર",
+    "wrongAudio": "kabutar-wr.mp3",
+    "correctAudio": "kabutar-cr.mp3",
     "type": "Badi-U",
     "margin": 0
   },
-  "KACHUA": {
-    "incorrect": "कछूआ",
-    "correct": "कछुआ",
-    "wrongAudio": "kachua-wr.mp3",
-    "correctAudio": "kachua-cr.mp3",
+  "JAMBU": {
+    "incorrect": "જાંબૂ",
+    "correct": "જાંબુ",
+    "wrongAudio": "jambu-wr.mp3",
+    "correctAudio": "jambu-cr.mp3",
     "type": "Choti-U",
-    "margin": 70
-  },
-  "JAMUN": {
-    "incorrect": "जामून",
-    "correct": "जामुन",
-    "wrongAudio": "jamun-wr.mp3",
-    "correctAudio": "jamun-cr.mp3",
-    "type": "Choti-U",
-    "margin": 70
+    "margin": 0
   },
   "KAJU": {
-    "incorrect": "काजु",
-    "correct": "काजू",
+    "incorrect": "કાજૂ",
+    "correct": "કાજુ",
     "wrongAudio": "kaju-wr.mp3",
     "correctAudio": "kaju-cr.mp3",
-    "type": "Badi-U",
-    "margin": 70
-  },
-  "BAGULA": {
-    "incorrect": "बगूला",
-    "correct": "बगुला",
-    "wrongAudio": "bagula-wr.mp3",
-    "correctAudio": "bagula-cr.mp3",
     "type": "Choti-U",
-    "margin": 70
+    "margin": 0
+  },
+  "HOOK": {
+    "incorrect": "હુક",
+    "correct": "હૂક",
+    "wrongAudio": "hook-wr.mp3",
+    "correctAudio": "hook-cr.mp3",
+    "type": "Badi-U",
+    "margin": 0
   },
   "DUKAN": {
-    "incorrect": "दूकान",
-    "correct": "दुकान",
+    "incorrect": "દૂકાન",
+    "correct": "દુકાન",
     "wrongAudio": "dukan-wr.mp3",
     "correctAudio": "dukan-cr.mp3",
     "type": "Choti-U",
     "margin": 0
   },
   "KHAJUR": {
-    "incorrect": "खजुर",
-    "correct": "खजूर",
+    "incorrect": "ખજુર",
+    "correct": "ખજૂર",
     "wrongAudio": "khajur-wr.mp3",
     "correctAudio": "khajur-cr.mp3",
     "type": "Badi-U",
-    "margin": 70
+    "margin": 0
+  },
+  "KUMAR": {
+    "incorrect": "કૂમાર",
+    "correct": "કુમાર",
+    "wrongAudio": "kumar-wr.mp3",
+    "correctAudio": "kumar-cr.mp3",
+    "type": "Choti-U",
+    "margin": 0
+  },
+  "PUJA": {
+    "incorrect": "પુજા",
+    "correct": "પૂજા",
+    "wrongAudio": "puja-wr.mp3",
+    "correctAudio": "puja-cr.mp3",
+    "type": "Badi-U",
+    "margin": 0
+  },
+  "HUKAM": {
+    "incorrect": "હૂકમ",
+    "correct": "હુકમ",
+    "wrongAudio": "hukam-wr.mp3",
+    "correctAudio": "hukam-cr.mp3",
+    "type": "Choti-U",
+    "margin": 0
+  },
+  "TALU": {
+    "incorrect": "તાળૂં",
+    "correct": "તાળું",
+    "wrongAudio": "talu-wr.mp3",
+    "correctAudio": "talu-cr.mp3",
+    "type": "Choti-U",
+    "margin": 0
+  },
+  "AJUBAJU": {
+    "incorrect": "આજુબાજૂ",
+    "correct": "આજુબાજુ",
+    "wrongAudio": "ajubaju-wr.mp3",
+    "correctAudio": "ajubaju-cr.mp3",
+    "type": "Choti-U",
+    "margin": 0
   }
 }
