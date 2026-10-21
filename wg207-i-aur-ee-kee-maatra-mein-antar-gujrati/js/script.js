@@ -127,9 +127,20 @@ function resetFeedbackVisuals() {
 
   lottiAnimation("none");
 }
+
+function stopCurrentAudio() {
+  audioPlayer.pause();
+  audioPlayer.currentTime = 0;
+  if (lottieInstances && lottieInstances.audioController) {
+    lottieInstances.audioController.pause();
+  }
+  setButtonsDisabled(false);
+}
+
 function nextStep() {
   let nextButton = document.getElementById("age_badhe_button");
   nextButton.addEventListener("click", () => {
+    stopCurrentAudio();
     // Logic to go to the next step
     nextButton.style.display = "none";
     let i_text = document.getElementById("i_text_1");
@@ -251,6 +262,43 @@ function setButtonsDisabled(disabled) {
   });
 }
 
+function createLottieAudio(src) {
+  const audio = new Audio(src);
+  audio.preload = "auto";
+  let pendingSeek = 0;
+
+  audio.addEventListener("loadedmetadata", () => {
+    audio.currentTime = pendingSeek;
+  });
+
+  return {
+    play() {
+      audio.play().catch((error) => {
+        console.error("Unable to play Lottie audio:", error);
+      });
+    },
+    pause() {
+      audio.pause();
+    },
+    seek(time) {
+      if (time === undefined) return audio.currentTime;
+
+      pendingSeek = Math.max(0, time);
+      if (audio.readyState >= 1) audio.currentTime = pendingSeek;
+      return pendingSeek;
+    },
+    playing() {
+      return !audio.paused;
+    },
+    rate(rate) {
+      audio.playbackRate = rate;
+    },
+    volume(volume) {
+      audio.volume = Math.max(0, Math.min(1, volume));
+    },
+  };
+}
+
 function playAudio(type) {
   audioPlayer.pause();
   audioPlayer.currentTime = 0;
@@ -265,15 +313,6 @@ function playAudio(type) {
   audioPlayer.onended = () => setButtonsDisabled(false);
   audioPlayer.onerror = () => setButtonsDisabled(false);
 }
-function playAnimationAudio(bandGroup) {
-  let name = "";
-  name = LottieAnimations[selectedWord.type][bandGroup].replace("json", "mp3");
-  audioPlayer.pause();
-  audioPlayer.currentTime = 0;
-  audioPlayer.src = `assets/JSON/${name}`;
-  audioPlayer.play();
-}
-
 function hideAndShowText1(state = "none") {
   document.getElementById("i_text_2").style.display = state;
 }
@@ -336,6 +375,7 @@ function naya_shabd() {
   naya_shabd_button = document.getElementById("naya_shabd_button");
   naya_shabd_button.addEventListener("click", () => {
     console.log("Naya shabd button clicked");
+    stopCurrentAudio();
     document.getElementById("audio_button_1").style.display = "block";
     document.getElementById("audio_button_2").style.display = "block";
     audio_button_1 = false;
@@ -361,10 +401,9 @@ function naya_shabd() {
     });
     nextbutton();
     getRandomAnimation();
-    audioPlayer.pause();
     let i_text = document.getElementById("i_text_1");
     const tspans = i_text.querySelector("p");
-    tspans.innerHTML = "दोनों शब्दों को सुनें और मात्रा का उच्चारण समझें। ";
+    tspans.innerHTML = "બંને શબ્દો સાંભળો અને  માત્રા નો ઉચ્ચાર સમજો.";
   });
 }
 
@@ -401,10 +440,10 @@ function playLottieAnimation(bandGroup) {
       loop: false,
       autoplay: false,
       path: `assets/JSON/${animationPath}`,
+      audioFactory: createLottieAudio,
     });
 
     lottieInstances.addEventListener("DOMLoaded", () => {
-      playAnimationAudio(bandGroup);
       setTimeout(() => {
         lottieInstances.play();
       }, 10);
@@ -435,11 +474,6 @@ function playLottieAnimation(bandGroup) {
       // parentEl.style.display = 'none';
     });
 
-    // Safety override
-    if (lottieInstances.audioController) {
-      lottieInstances.audioController.pause = () =>
-        console.warn("[patched] Audio pause skipped");
-    }
   } catch (err) {
     console.error("Lottie load crashed:", err);
     parentEl.classList.remove("visible");
@@ -469,7 +503,7 @@ function playLottieAnimationStart(bandGroup) {
       renderer: "canvas",
       loop: false,
       autoplay: false,
-      path: `assets/Animation/shining stars.json`,
+      path: `assets/animation/shining-stars.json`,
     });
 
     lottieInstances_star.addEventListener("DOMLoaded", () => {
@@ -493,11 +527,11 @@ function playLottieAnimationStart(bandGroup) {
       // parentEl.style.display = 'none';
     });
 
-    // Safety override
     if (lottieInstances_star.audioController) {
       lottieInstances_star.audioController.pause = () =>
         console.warn("[patched] Audio pause skipped");
     }
+
   } catch (err) {
     console.error("Lottie load crashed:", err);
     containerEl.classList.remove("visible");
