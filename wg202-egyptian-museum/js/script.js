@@ -46,6 +46,7 @@
     [[418, 120], [435, 90], [465, 60]]
   ];
   const NILE_TOLERANCE = 60;
+  window.museumHowTo = { nilePath: NILE_PATH }; // read by how-to-play.js
 
   const SEASONS = [
     { label: 'Inundation – Autumn', img: '01-autumn.png', alt: 'Autumn: the Nile floods the fields around a mud-brick house.', note: 'The Egyptian calendar had three seasons of four months each. Inundation came in autumn, when the Nile flooded and covered the fields.' },
@@ -883,6 +884,7 @@
 
     function reset() {
       attempts = 0;
+      $('#btnNileAnswer').hidden = true;
       showGuide = false;
       answerShown = false;
       $('#btnNileAnswer').textContent = 'Show Answer';
@@ -907,13 +909,8 @@
         $('#btnNileNext').hidden = false;
       } else {
         attempts++;
-        if (attempts >= 2) {
-          showGuide = true;
-          redraw();
-          showFeedback('Incorrect – follow the dotted line and try again.', false);
-        } else {
-          showFeedback('Incorrect – Try again!', false);
-        }
+        if (attempts >= 2) $('#btnNileAnswer').hidden = false; // answer unlocks after two wrong tries
+        showFeedback('Incorrect – Try again!', false);
         Sound.play('wrong');
       }
     });

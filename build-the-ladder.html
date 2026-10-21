@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Build the Ladder</title>
+<style>
+  :root{
+    --bg: #1E2A2E;
+    --bg-soft: #27373C;
+    --well: #2F4248;
+    --well-hot: #3B545C;
+    --chalk: #EDE7DA;
+    --chalk-dim: #9FB0B2;
+    --line: #5C7A80;
+    --accent: #E0B54A;
+    --good: #7FBE7A;
+    --good-bg: #2C4433;
+    --bad: #D97C6A;
+    --bad-bg: #4A2E2C;
+  }
+  *{box-sizing:border-box;}
+  html,body{
+    margin:0;padding:0;height:100%;
+    background: var(--bg);
+    color: var(--chalk);
+    font-family: -apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+    overflow:hidden;
+    user-select:none;-webkit-user-select:none;
+    touch-action:none;
+  }
+  .app{height:100vh;display:flex;flex-direction:column;padding:clamp(12px,1.8vw,28px);gap:clamp(8px,1.2vh,16px);}
+
+  header{
+    display:flex;align-items:baseline;justify-content:space-between;
+    flex-wrap:wrap;gap:10px;
+    border-bottom:1px solid var(--line);padding-bottom:10px;
+  }
+  h1{
+    font-family:Georgia,"Iowan Old Style",serif;
+    margin:0;font-size:clamp(21px,2.5vw,32px);letter-spacing:0.5px;
+  }
+  header p{margin:2px 0 0;color:var(--chalk-dim);font-size:clamp(11px,1vw,14px);}
+  .rounds{display:flex;gap:8px;flex-wrap:wrap;}
+  .round-btn{
+    font:inherit;font-size:clamp(11px,0.95vw,14px);font-weight:600;
+    padding:7px 15px;border-radius:4px;cursor:pointer;
+    background:transparent;color:var(--chalk-dim);
+    border:1px solid var(--line);
+  }
+  .round-btn.active{background:var(--accent);color:var(--bg);border-color:var(--accent);}
+
+  /* tree */
+  .tree{flex:1 1 auto;display:flex;gap:clamp(8px,1.2vw,18px);min-height:0;}
+  .branch{
+    flex:1;display:flex;flex-direction:column;align-items:center;min-width:0;
+  }
+  .node{
+    font-family:Georgia,serif;font-weight:700;
+    font-size:clamp(16px,1.9vw,26px);
+    letter-spacing:1.5px;text-transform:uppercase;
+    padding:10px 8px;width:100%;text-align:center;
+    background:var(--bg-soft);
+    border:1.5px solid var(--accent);
+    border-radius:5px 5px 0 0;
+    color:var(--accent);
+  }
+  .stem{width:2px;height:16px;background:var(--line);}
+  .well{
+    flex:1;width:100%;
+    background:var(--well);
+    border:1.5px dashed var(--line);
+    border-radius:0 0 5px 5px;
+    padding:10px;
+    display:flex;flex-direction:column;gap:8px;align-items:center;
+    overflow-y:auto;
+    min-height:0;
+  }
+  .well.hot{background:var(--well-hot);border-color:var(--accent);border-style:solid;}
+  .well .placeholder{
+    color:var(--chalk-dim);font-size:clamp(11px,0.95vw,13px);
+    font-style:italic;opacity:0.6;margin:auto;text-align:center;
+  }
+  .well.filled .placeholder{display:none;}
+
+  /* tiles */
+  .tile{
+    font-family:Georgia,"Iowan Old Style",serif;
+    font-size:clamp(13px,1.25vw,18px);font-weight:600;
+    padding:9px 16px;width:100%;text-align:center;
+    background:var(--bg-soft);
+    border:1.5px solid var(--line);
+    border-radius:4px;
+    cursor:grab;
+    color:var(--chalk);
+    flex:0 0 auto;
+    transition:background .15s,border-color .15s;
+  }
+  .tile.correct{background:var(--good-bg);border-color:var(--good);}
+  .tile.wrong{background:var(--bad-bg);border-color:var(--bad);}
+  .tile .mark{margin-left:6px;font-weight:700;display:none;}
+  .tile.checked .mark{display:inline;}
+  .tile.correct .mark{color:var(--good);}
+  .tile.wrong .mark{color:var(--bad);}
+
+  .tray{
+    display:flex;flex-wrap:wrap;gap:10px;justify-content:center;
+    padding:12px 8px;min-height:56px;
+    border-top:1px solid var(--line);
+  }
+  .tray .tile{width:auto;}
+
+  .feedback{
+    min-height:34px;text-align:center;
+    font-size:clamp(12px,1.05vw,15px);color:var(--chalk-dim);padding:4px 16px;
+  }
+  .feedback b{color:var(--accent);}
+
+  footer{display:flex;justify-content:center;gap:12px;}
+  .btn{
+    font:inherit;font-weight:700;font-size:clamp(13px,1.15vw,17px);
+    padding:11px 28px;border-radius:5px;border:none;cursor:pointer;
+  }
+  .btn-primary{background:var(--accent);color:var(--bg);}
+  .btn-secondary{background:transparent;color:var(--chalk);border:1.5px solid var(--line);}
+  .btn:active{transform:translateY(1px);}
+
+  .drag-ghost{
+    position:fixed;pointer-events:none;z-index:200;
+    font-family:Georgia,serif;font-weight:600;
+    font-size:clamp(13px,1.25vw,18px);
+    padding:9px 16px;background:var(--bg-soft);
+    border:1.5px solid var(--accent);border-radius:4px;
+    color:var(--chalk);
+    box-shadow:0 10px 24px rgba(0,0,0,.45);
+    transform:translate(-50%,-50%) rotate(-2deg) scale(1.05);
+  }
+
+  /* ---------- how-to tour ---------- */
+  .header-right{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+  .help-btn{
+    font:inherit;font-size:clamp(11px,0.95vw,14px);font-weight:600;
+    padding:6px 14px 6px 8px;border-radius:4px;cursor:pointer;
+    background:transparent;color:var(--accent);border:1px solid var(--accent);
+    display:inline-flex;align-items:center;gap:7px;
+  }
+  .help-btn span{
+    width:19px;height:19px;border-radius:50%;background:var(--accent);color:var(--bg);
+    display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;
+  }
+  .help-btn:focus-visible,.tbtn:focus-visible,.tour-skip:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+
+  .tour{position:fixed;inset:0;z-index:300;display:none;}
+  .tour.open{display:block;animation:tourIn .3s ease both;}
+  @keyframes tourIn{from{opacity:0}to{opacity:1}}
+  .spot{
+    position:fixed;border-radius:8px;pointer-events:none;
+    box-shadow:0 0 0 200vmax rgba(12,18,20,.76);
+    outline:2px solid var(--accent);outline-offset:3px;
+    transition:left .45s cubic-bezier(.4,0,.2,1),top .45s cubic-bezier(.4,0,.2,1),
+               width .45s cubic-bezier(.4,0,.2,1),height .45s cubic-bezier(.4,0,.2,1);
+  }
+  .tour.noanim .spot,.tour.noanim .tour-card{transition:none;}
+  .demo-layer{position:fixed;inset:0;pointer-events:none;z-index:2;}
+  .tour-card{
+    position:fixed;z-index:3;width:min(360px,calc(100vw - 24px));
+    background:var(--chalk);color:var(--bg);border-radius:6px;
+    padding:16px 18px 14px;box-shadow:0 18px 40px rgba(0,0,0,.5);
+    transition:left .45s cubic-bezier(.4,0,.2,1),top .45s cubic-bezier(.4,0,.2,1);
+  }
+  .step-count{font-size:12px;font-weight:700;color:#5C7A80;}
+  .tour-card h2{font-family:Georgia,"Iowan Old Style",serif;font-size:21px;margin:4px 0 6px;}
+  .tour-card p{margin:0;font-size:14.5px;line-height:1.5;}
+  .tour-card p b{color:#8A6A14;}
+  .tour-card.enter .step-count,.tour-card.enter h2,.tour-card.enter p,.tour-card.enter .extra{animation:rise .45s ease both;}
+  .tour-card.enter h2{animation-delay:.07s}
+  .tour-card.enter p{animation-delay:.15s}
+  .tour-card.enter .extra{animation-delay:.25s}
+  @keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .tour-skip{
+    position:absolute;top:10px;right:10px;border:none;background:transparent;
+    font:inherit;font-size:13px;font-weight:600;color:#5C7A80;cursor:pointer;padding:4px 6px;
+  }
+  .tour-nav{display:flex;align-items:center;justify-content:space-between;margin-top:14px;gap:10px;}
+  .dots{display:flex;gap:5px;}
+  .dots i{width:7px;height:7px;border-radius:50%;background:#C9C3B4;transition:background .2s,width .2s;}
+  .dots i.on{background:var(--bg);width:18px;border-radius:4px;}
+  .tour-btns{display:flex;gap:8px;}
+  .tbtn{font:inherit;font-weight:700;font-size:14px;padding:8px 16px;border-radius:4px;cursor:pointer;
+        background:var(--bg);color:var(--chalk);border:1.5px solid var(--bg);}
+  .tbtn.ghost{background:transparent;color:var(--bg);}
+  .tbtn[hidden]{display:none;}
+
+  /* mini results illustration inside the card */
+  .extra:empty{display:none;}
+  .mini{margin-top:12px;background:var(--bg);border-radius:5px;padding:10px;display:flex;flex-direction:column;align-items:center;gap:6px;}
+  .mini-node{font-family:Georgia,serif;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:1.5px;font-size:14px;}
+  .mini-tile{font-family:Georgia,serif;font-weight:600;font-size:14px;color:var(--chalk);
+             padding:6px 12px;border-radius:4px;width:70%;text-align:center;position:relative;opacity:0;}
+  .mini-tile.ok{background:var(--good-bg);border:1.5px solid var(--good);}
+  .mini-tile.ok b{color:var(--good);margin-left:6px;}
+  .mini-tile.no{background:var(--bad-bg);border:1.5px solid var(--bad);}
+  .mini-tile.no b{color:var(--bad);margin-left:6px;}
+  .mini-hint{font-size:12.5px;line-height:1.45;color:var(--chalk-dim);text-align:center;opacity:0;}
+  .mini-hint b{color:var(--accent);}
+  .enter .mini-tile.ok{animation:rise .4s .5s both}
+  .enter .mini-tile.no{animation:rise .4s .8s both, tapGlow .7s 1.5s}
+  .enter .mini-hint{animation:rise .45s 1.9s both}
+  @keyframes tapGlow{50%{box-shadow:0 0 0 4px rgba(224,181,74,.55)}}
+
+  /* demo pieces */
+  .demo-tile{
+    position:fixed;font-family:Georgia,serif;font-weight:600;font-size:clamp(13px,1.25vw,18px);
+    padding:9px 16px;background:var(--bg-soft);border:1.5px solid var(--accent);border-radius:4px;
+    color:var(--chalk);box-shadow:0 10px 24px rgba(0,0,0,.45);white-space:nowrap;
+    transform:translate(-50%,-50%) rotate(-2deg) scale(1.05);
+  }
+  .demo-tile.settle{animation:settle .6s ease forwards;}
+  @keyframes settle{to{transform:translate(-50%,-50%) scale(.96);opacity:0}}
+  .hand{position:fixed;width:30px;height:30px;margin:-3px 0 0 -6px;transition:transform .12s;
+        filter:drop-shadow(0 3px 4px rgba(0,0,0,.5));z-index:3;}
+  .hand.press{transform:scale(.86);}
+  .ripple{position:fixed;width:16px;height:16px;border-radius:50%;border:2px solid var(--accent);
+          transform:translate(-50%,-50%);animation:ripple .65s ease-out forwards;}
+  @keyframes ripple{from{opacity:1}to{opacity:0;width:56px;height:56px}}
+  .tile.lifted{opacity:.25;}
+  .node.pop{animation:pop .55s ease;}
+  @keyframes pop{45%{background:var(--accent);color:var(--bg);transform:scale(1.04)}}
+  .tile.pop-soft{animation:popSoft .5s ease;}
+  @keyframes popSoft{45%{border-color:var(--accent);transform:translateY(-3px)}}
+
+  @media (prefers-reduced-motion: reduce){
+    .spot,.tour-card{transition:none}
+    .tour-card.enter *{animation-duration:.01s!important;animation-delay:0s!important}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div>
+      <h1>Build the Ladder</h1>
+      <p>Every word below is a way of doing one of these actions. Drag it under the action it belongs to.</p>
+    </div>
+    <div class="header-right">
+      <div class="rounds" id="rounds"></div>
+      <button class="help-btn" id="helpBtn"><span>?</span>How to play</button>
+    </div>
+  </header>
+
+  <div class="tree" id="tree"></div>
+  <div class="tray" id="tray"></div>
+  <div class="feedback" id="feedback">Sort all the words, then tap <b>Check the ladder</b>.</div>
+
+  <footer>
+    <button class="btn btn-secondary" id="resetBtn">Reset</button>
+    <button class="btn btn-primary" id="checkBtn">Check the ladder</button>
+  </footer>
+</div>
+
+<div class="tour" id="tour" aria-hidden="true">
+  <div class="spot" id="spot"></div>
+  <div class="demo-layer" id="demoLayer"></div>
+  <div class="tour-card" id="tourCard" role="dialog" aria-modal="true" aria-labelledby="stepTitle">
+    <button class="tour-skip" id="tourSkip">Skip</button>
+    <div class="step-count" id="stepCount"></div>
+    <h2 id="stepTitle"></h2>
+    <p id="stepText"></p>
+    <div class="extra" id="stepExtra"></div>
+    <div class="tour-nav">
+      <div class="dots" id="dots"></div>
+      <div class="tour-btns">
+        <button class="tbtn ghost" id="tourBack">Back</button>
+        <button class="tbtn" id="tourNext">Next</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const ROUNDS = [
+  {
+    label:"Set 1",
+    nodes:["walk","run","speak","laugh"],
+    words:[
+      {w:"trudge", p:"walk",  h:"To walk slowly with heavy steps, usually when tired."},
+      {w:"saunter",p:"walk",  h:"To walk in a relaxed, unhurried way."},
+      {w:"shuffle",p:"walk",  h:"To walk without lifting the feet properly off the ground."},
+      {w:"sprint", p:"run",   h:"To run at full speed over a short distance."},
+      {w:"bolt",   p:"run",   h:"To run away suddenly, usually from fear or surprise."},
+      {w:"scamper",p:"run",   h:"To run with quick, light steps, the way a small animal does."},
+      {w:"mumble", p:"speak", h:"To speak unclearly, with the words running together."},
+      {w:"whisper",p:"speak", h:"To speak very softly, using breath rather than voice."},
+      {w:"drawl",  p:"speak", h:"To speak slowly, drawing out the vowel sounds."},
+      {w:"giggle", p:"laugh", h:"To laugh in a light, quick, high-pitched way."},
+      {w:"guffaw", p:"laugh", h:"To laugh loudly and heartily."},
+      {w:"snicker",p:"laugh", h:"To laugh quietly and slyly, often unkindly."}
+    ]
+  },
+  {
+    label:"Set 2",
+    nodes:["look","eat","cut","hit"],
+    words:[
+      {w:"peer",   p:"look", h:"To look hard at something that is difficult to see."},
+      {w:"glance", p:"look", h:"To look quickly, for only a moment."},
+      {w:"gaze",   p:"look", h:"To look steadily at something for a long time."},
+      {w:"nibble", p:"eat",  h:"To eat in small, careful bites."},
+      {w:"devour", p:"eat",  h:"To eat quickly and completely, usually when very hungry."},
+      {w:"munch",  p:"eat",  h:"To eat steadily, chewing in a casual, unhurried way."},
+      {w:"slice",  p:"cut",  h:"To cut into thin, flat pieces."},
+      {w:"chop",   p:"cut",  h:"To cut with short, heavy strokes."},
+      {w:"snip",   p:"cut",  h:"To cut with a single quick action, usually with scissors."},
+      {w:"slap",   p:"hit",  h:"To hit with the open palm of the hand."},
+      {w:"punch",  p:"hit",  h:"To hit with a closed fist."},
+      {w:"swat",   p:"hit",  h:"To hit with a quick, flat blow, as at an insect."}
+    ]
+  },
+  {
+    label:"Set 3",
+    nodes:["cry","hold","throw","sleep"],
+    words:[
+      {w:"sob",     p:"cry",   h:"To cry with short, gasping breaths."},
+      {w:"wail",    p:"cry",   h:"To cry with a long, loud, mournful sound."},
+      {w:"whimper", p:"cry",   h:"To cry with small, weak sounds, usually from fear or pain."},
+      {w:"clutch",  p:"hold",  h:"To hold something tightly, often in panic or fear of losing it."},
+      {w:"grasp",   p:"hold",  h:"To hold something firmly with the hand."},
+      {w:"cradle",  p:"hold",  h:"To hold something gently and protectively, as you would a baby."},
+      {w:"hurl",    p:"throw", h:"To throw with great force."},
+      {w:"toss",    p:"throw", h:"To throw lightly and casually."},
+      {w:"fling",   p:"throw", h:"To throw carelessly, often in anger."},
+      {w:"doze",    p:"sleep", h:"To sleep lightly, drifting in and out."},
+      {w:"nap",     p:"sleep", h:"To sleep for a short time during the day."},
+      {w:"slumber", p:"sleep", h:"To sleep deeply and peacefully."}
+    ]
+  }
+];
+
+let roundIdx = 0;
+let checked = false;
+
+const treeEl = document.getElementById("tree");
+const trayEl = document.getElementById("tray");
+const feedbackEl = document.getElementById("feedback");
+const roundsEl = document.getElementById("rounds");
+
+function buildRounds(){
+  roundsEl.innerHTML = "";
+  ROUNDS.forEach((r,i)=>{
+    const b = document.createElement("button");
+    b.className = "round-btn" + (i===roundIdx ? " active":"");
+    b.textContent = r.label;
+    b.onclick = ()=> loadRound(i);
+    roundsEl.appendChild(b);
+  });
+}
+
+function shuffle(a){
+  const arr = a.slice();
+  for(let i=arr.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]] = [arr[j],arr[i]];
+  }
+  return arr;
+}
+
+function loadRound(i){
+  roundIdx = i;
+  checked = false;
+  const r = ROUNDS[i];
+  buildRounds();
+  feedbackEl.innerHTML = "Sort all the words, then tap <b>Check the ladder</b>.";
+
+  treeEl.innerHTML = "";
+  r.nodes.forEach(n=>{
+    const branch = document.createElement("div");
+    branch.className = "branch";
+    branch.innerHTML = `
+      <div class="node">${n}</div>
+      <div class="stem"></div>
+      <div class="well" data-node="${n}">
+        <div class="placeholder">ways of ${n}ing</div>
+      </div>`;
+    treeEl.appendChild(branch);
+  });
+
+  trayEl.innerHTML = "";
+  shuffle(r.words).forEach(item=>{
+    const tile = document.createElement("div");
+    tile.className = "tile";
+    tile.dataset.word = item.w;
+    tile.dataset.parent = item.p;
+    tile.dataset.hint = item.h;
+    tile.innerHTML = `${item.w}<span class="mark"></span>`;
+    attachDrag(tile);
+    trayEl.appendChild(tile);
+  });
+  refreshWells();
+}
+
+function refreshWells(){
+  treeEl.querySelectorAll(".well").forEach(w=>{
+    w.classList.toggle("filled", w.querySelectorAll(".tile").length > 0);
+  });
+}
+
+let ghost=null, dragTile=null;
+
+function attachDrag(tile){
+  tile.addEventListener("pointerdown",(e)=>{
+    if(checked) return;
+    e.preventDefault();
+    dragTile = tile;
+    tile.style.visibility = "hidden";
+
+    ghost = document.createElement("div");
+    ghost.className = "drag-ghost";
+    ghost.textContent = tile.dataset.word;
+    document.body.appendChild(ghost);
+    moveGhost(e.clientX,e.clientY);
+
+    const onMove = ev=>{ moveGhost(ev.clientX,ev.clientY); highlight(ev.clientX,ev.clientY); };
+    const onUp = ev=>{
+      document.removeEventListener("pointermove",onMove);
+      document.removeEventListener("pointerup",onUp);
+      drop(ev.clientX,ev.clientY);
+    };
+    document.addEventListener("pointermove",onMove);
+    document.addEventListener("pointerup",onUp);
+  });
+}
+
+function moveGhost(x,y){ if(ghost){ghost.style.left=x+"px";ghost.style.top=y+"px";} }
+
+function wellAt(x,y){
+  let found = null;
+  treeEl.querySelectorAll(".well").forEach(w=>{
+    const r = w.getBoundingClientRect();
+    if(x>=r.left && x<=r.right && y>=r.top && y<=r.bottom) found = w;
+  });
+  return found;
+}
+
+function highlight(x,y){
+  const w = wellAt(x,y);
+  treeEl.querySelectorAll(".well").forEach(el=>el.classList.toggle("hot", el===w));
+}
+
+function drop(x,y){
+  const tile = dragTile;
+  tile.style.visibility = "visible";
+  const w = wellAt(x,y);
+  treeEl.querySelectorAll(".well").forEach(el=>el.classList.remove("hot"));
+
+  if(w){ w.appendChild(tile); }
+  else { trayEl.appendChild(tile); }
+
+  if(ghost){ghost.remove();ghost=null;}
+  dragTile=null;
+  refreshWells();
+}
+
+function check(){
+  const tiles = Array.from(document.querySelectorAll(".tile"));
+  const unsorted = tiles.filter(t=>t.parentElement === trayEl);
+  if(unsorted.length){
+    feedbackEl.textContent = `${unsorted.length} word${unsorted.length>1?"s":""} still to sort.`;
+    return;
+  }
+
+  let right = 0;
+  tiles.forEach(t=>{
+    const placedUnder = t.parentElement.dataset.node;
+    const ok = placedUnder === t.dataset.parent;
+    if(ok) right++;
+    t.classList.remove("correct","wrong");
+    t.classList.add(ok ? "correct":"wrong","checked");
+    t.querySelector(".mark").textContent = ok ? "✓" : "✕";
+    t.onclick = ()=>{
+      feedbackEl.innerHTML = ok
+        ? `<b>${t.dataset.word}</b> — ${t.dataset.hint}`
+        : `<b>${t.dataset.word}</b> — ${t.dataset.hint} It belongs under <b>${t.dataset.parent}</b>.`;
+    };
+  });
+
+  checked = true;
+  feedbackEl.innerHTML = `${right} of ${tiles.length} in the right place. Tap any word to see what it means.`;
+}
+
+document.getElementById("checkBtn").addEventListener("click",check);
+document.getElementById("resetBtn").addEventListener("click",()=>loadRound(roundIdx));
+
+
+/* ================= HOW-TO TOUR ================= */
+const tourEl=document.getElementById("tour"), spotEl=document.getElementById("spot"),
+      demoLayer=document.getElementById("demoLayer"), cardEl=document.getElementById("tourCard");
+let tourI=0, tourTok=0;
+const checkBtn=document.getElementById("checkBtn"), resetBtn=document.getElementById("resetBtn");
+const HAND_SVG='<svg viewBox="0 0 24 24" width="30" height="30"><path d="M5 2L5 19L9.5 15L12.5 21.5L15.2 20.3L12.3 13.9L18.5 13.6Z" fill="#EDE7DA" stroke="#1E2A2E" stroke-width="1.4" stroke-linejoin="round"/></svg>';
+
+const wait=(ms,tok)=>new Promise((res,rej)=>setTimeout(()=>tok===tourTok?res():rej("cancel"),ms));
+function unionRect(els){
+  let l=1e9,t=1e9,r=-1e9,b=-1e9;
+  els.forEach(e=>{const x=e.getBoundingClientRect();l=Math.min(l,x.left);t=Math.min(t,x.top);r=Math.max(r,x.right);b=Math.max(b,x.bottom);});
+  return {left:l,top:t,right:r,bottom:b,width:r-l,height:b-t};
+}
+const centre=el=>{const r=el.getBoundingClientRect();return {x:r.left+r.width/2,y:r.top+r.height/2};};
+const listJoin=a=>a.length>1?a.slice(0,-1).join(", ")+" and "+a[a.length-1]:a[0];
+const wellFor=p=>treeEl.querySelector(`.well[data-node="${p}"]`);
+const wellLanding=p=>{const r=wellFor(p).getBoundingClientRect();return {x:r.left+r.width/2,y:r.top+32};};
+const trayPoint=()=>{const r=trayEl.getBoundingClientRect();return {x:r.left+r.width/2,y:r.top+r.height/2};};
+
+function demoItem(){
+  const r=ROUNDS[roundIdx];
+  const tile=trayEl.querySelector(".tile")||document.querySelector(".tile");
+  return {round:r,item:r.words.find(w=>w.w===tile.dataset.word),tile};
+}
+function mk(cls,pt,html){
+  const el=document.createElement("div");el.className=cls;el.innerHTML=html||"";
+  el.style.left=pt.x+"px";el.style.top=pt.y+"px";demoLayer.appendChild(el);return el;
+}
+const ripple=pt=>{const r=mk("ripple",pt);setTimeout(()=>r.remove(),700);};
+const slide=(el,a,b,dur)=>el.animate([{left:a.x+"px",top:a.y+"px"},{left:b.x+"px",top:b.y+"px"}],
+                                     {duration:dur,easing:"cubic-bezier(.45,0,.25,1)",fill:"forwards"});
+function clearDemo(){
+  demoLayer.innerHTML="";
+  document.querySelectorAll(".lifted,.pop,.pop-soft").forEach(e=>e.classList.remove("lifted","pop","pop-soft"));
+}
+
+async function dragLoop(tok,getFrom,getTo,word,liftEl){
+  try{ while(true){
+    const f=getFrom(),t=getTo();
+    const hand=mk("hand",{x:f.x+50,y:f.y+40},HAND_SVG);
+    slide(hand,{x:f.x+50,y:f.y+40},f,500); await wait(560,tok);
+    hand.classList.add("press"); ripple(f);
+    if(liftEl) liftEl.classList.add("lifted");
+    const g=mk("demo-tile",f); g.textContent=word;
+    await wait(250,tok);
+    slide(g,f,t,1300); slide(hand,f,t,1300); await wait(1380,tok);
+    hand.classList.remove("press"); ripple(t); g.classList.add("settle");
+    await wait(800,tok); demoLayer.innerHTML=""; if(liftEl) liftEl.classList.remove("lifted");
+    await wait(600,tok);
+  }}catch(e){}
+}
+async function tapLoop(tok,getPt){
+  try{ while(true){
+    const p=getPt(), s={x:p.x+60,y:p.y+50};
+    const hand=mk("hand",s,HAND_SVG); slide(hand,s,p,650); await wait(700,tok);
+    hand.classList.add("press"); ripple(p); await wait(180,tok); hand.classList.remove("press");
+    await wait(900,tok); demoLayer.innerHTML=""; await wait(500,tok);
+  }}catch(e){}
+}
+async function popLoop(tok,els,cls){
+  try{ while(true){
+    for(const el of els){el.classList.remove(cls);void el.offsetWidth;el.classList.add(cls);await wait(240,tok);}
+    await wait(1400,tok); els.forEach(el=>el.classList.remove(cls));
+  }}catch(e){}
+}
+
+const STEPS=[
+  { title:"Choose a set",
+    text:d=>`There are ${ROUNDS.length} sets of words. Tap a set to switch to it. Each set starts fresh.`,
+    target:()=>unionRect([roundsEl]),
+    anim:(tok)=>tapLoop(tok,()=>centre(roundsEl.children[1]||roundsEl)) },
+  { title:"Meet the actions",
+    text:d=>`Each column is headed by a plain action: <b>${listJoin(d.round.nodes)}</b>. These are the top of the ladder.`,
+    target:()=>unionRect([...treeEl.querySelectorAll(".node")]),
+    anim:(tok)=>popLoop(tok,[...treeEl.querySelectorAll(".node")],"pop") },
+  { title:"Read the words",
+    text:()=>`Every word here is a more exact way of doing one of those actions. They are shuffled each time a set loads.`,
+    target:()=>unionRect([trayEl]),
+    anim:(tok)=>popLoop(tok,[...trayEl.querySelectorAll(".tile")].slice(0,12),"pop-soft") },
+  { title:"Drag a word into its column",
+    text:d=>`Press and hold a word, drag it under the action it belongs to, and let go. For example, <b>${d.item.w}</b> goes under <b>${d.item.p}</b>.`,
+    target:()=>unionRect([treeEl,trayEl]),
+    avoid:d=>[wellLanding(d.item.p),centre(d.tile)],
+    anim:(tok,d)=>dragLoop(tok,()=>centre(d.tile),()=>wellLanding(d.item.p),d.item.w,d.tile) },
+  { title:"Change your mind",
+    text:()=>`Placed words can still move. Drag one into another column, or drop it anywhere outside the columns to send it back to the tray.`,
+    target:()=>unionRect([treeEl,trayEl]),
+    avoid:d=>[wellLanding(d.item.p),trayPoint()],
+    anim:(tok,d)=>dragLoop(tok,()=>wellLanding(d.item.p),trayPoint,d.item.w,null) },
+  { title:"Check the ladder",
+    text:()=>`When every word is placed, tap <b>Check the ladder</b>. If any are still in the tray, you'll see how many are left.`,
+    target:()=>unionRect([checkBtn]),
+    anim:(tok)=>tapLoop(tok,()=>centre(checkBtn)) },
+  { title:"See how you did",
+    text:()=>`Words in the right column turn green, the rest turn red. Tap any word to read its meaning and where it really belongs.`,
+    target:()=>unionRect([treeEl]),
+    extra:d=>{
+      const ok=d.round.words[0], no=d.round.words.find(w=>w.p!==ok.p);
+      return `<div class="mini"><div class="mini-node">${ok.p}</div>
+        <div class="mini-tile ok">${ok.w}<b>✓</b></div>
+        <div class="mini-tile no">${no.w}<b>✕</b></div>
+        <div class="mini-hint"><b>${no.w}</b>: ${no.h} It belongs under <b>${no.p}</b>.</div></div>`;
+    } },
+  { title:"Play again",
+    text:()=>`After checking, words lock in place. Tap <b>Reset</b> to put them back in the tray and try again. Tap <b>How to play</b> any time to see this tour.`,
+    target:()=>unionRect([resetBtn]),
+    anim:(tok)=>tapLoop(tok,()=>centre(resetBtn)) }
+];
+
+function placeCard(rect,avoid){
+  const m=12,gap=18,W=innerWidth,H=innerHeight,cw=cardEl.offsetWidth,ch=cardEl.offsetHeight;
+  let top,left=rect.left+rect.width/2-cw/2;
+  if(rect.bottom+gap+ch<=H-m) top=rect.bottom+gap;
+  else if(rect.top-gap-ch>=m) top=rect.top-gap-ch;
+  else if(W<700){
+    left=(W-cw)/2;
+    const hits=y0=>(avoid||[]).filter(p=>p.y>=y0&&p.y<=y0+ch).length;
+    top = hits(m)<=hits(H-ch-m) ? m : H-ch-m;
+  } else {
+    const ax=avoid&&avoid.length?avoid[0].x:rect.left;
+    left = ax<W/2 ? W-cw-m-16 : m+16;
+    top = Math.min(H-ch-m, rect.top+50);
+  }
+  cardEl.style.left=Math.max(m,Math.min(W-cw-m,left))+"px";
+  cardEl.style.top=Math.max(m,Math.min(H-ch-m,top))+"px";
+}
+
+function go(i){
+  tourI=i; const tok=++tourTok; clearDemo();
+  const s=STEPS[i], d=demoItem(), rect=s.target(), pad=8;
+  Object.assign(spotEl.style,{left:rect.left-pad+"px",top:rect.top-pad+"px",
+                              width:rect.width+pad*2+"px",height:rect.height+pad*2+"px"});
+  document.getElementById("stepCount").textContent=`Step ${i+1} of ${STEPS.length}`;
+  document.getElementById("stepTitle").textContent=s.title;
+  document.getElementById("stepText").innerHTML=s.text(d);
+  document.getElementById("stepExtra").innerHTML=s.extra?s.extra(d):"";
+  document.getElementById("tourBack").hidden = i===0;
+  document.getElementById("tourNext").textContent = i===STEPS.length-1 ? "Start playing" : "Next";
+  document.getElementById("dots").innerHTML=STEPS.map((_,k)=>`<i class="${k===i?"on":""}"></i>`).join("");
+  cardEl.classList.remove("enter"); void cardEl.offsetWidth; cardEl.classList.add("enter");
+  placeCard(rect,s.avoid?s.avoid(d):null);
+  if(s.anim) s.anim(tok,d);
+}
+function openTour(){
+  tourEl.classList.add("open","noanim"); tourEl.setAttribute("aria-hidden","false");
+  go(0);
+  requestAnimationFrame(()=>requestAnimationFrame(()=>tourEl.classList.remove("noanim")));
+  document.getElementById("tourNext").focus();
+}
+function closeTour(){
+  tourTok++; clearDemo();
+  tourEl.classList.remove("open"); tourEl.setAttribute("aria-hidden","true");
+}
+document.getElementById("helpBtn").addEventListener("click",openTour);
+document.getElementById("tourSkip").addEventListener("click",closeTour);
+document.getElementById("tourBack").addEventListener("click",()=>tourI>0&&go(tourI-1));
+document.getElementById("tourNext").addEventListener("click",()=>tourI<STEPS.length-1?go(tourI+1):closeTour());
+document.addEventListener("keydown",e=>{
+  if(!tourEl.classList.contains("open")) return;
+  if(e.key==="Escape") closeTour();
+  if(e.key==="ArrowRight") document.getElementById("tourNext").click();
+  if(e.key==="ArrowLeft") document.getElementById("tourBack").click();
+});
+let rz; window.addEventListener("resize",()=>{
+  if(!tourEl.classList.contains("open")) return;
+  clearTimeout(rz); rz=setTimeout(()=>go(tourI),150);
+});
+
+loadRound(0);
+</script>
+</body>
+</html>
