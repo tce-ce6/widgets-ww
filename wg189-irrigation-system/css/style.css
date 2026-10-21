@@ -43,9 +43,7 @@ body {
   position: fixed;
   inset: 0;
   overflow: hidden;
-  background:
-    url("../assets/images/bg.svg") center / contain no-repeat,
-    linear-gradient(#72a3bd 50%, #b9eb39 50%);
+  background: url("../assets/images/bg.svg") center / contain no-repeat;
 }
 
 /* ---------- title (outside the scaled stage, same as previous widgets) ---------- */
@@ -289,9 +287,9 @@ button:focus-visible {
 
 .terrain-panel__img {
   position: absolute;
-  left: 4px;
+  left: 0;
   bottom: 0;
-  width: 205px;
+  width: 192px;
   height: 115px;
   object-fit: contain;
   object-position: 50% 100%;
@@ -305,8 +303,8 @@ button:focus-visible {
 }
 
 .terrain-panel__desc {
-  font-size: 26px;
-  line-height: 32px;
+  font-size: 22px;
+  line-height: 27px;
 }
 
 /* column headings above the crop and irrigation cards */
@@ -555,9 +553,9 @@ button:focus-visible {
 }
 
 .feedback-panel__text {
-  padding-top: 32px;
-  font-size: 30px;
-  line-height: 37px;
+  padding-top: 24px;
+  font-size: 28px;
+  line-height: 34px;
 }
 
 /* ---------- insights popup ---------- */
