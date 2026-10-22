@@ -43,7 +43,7 @@ window.COUNTRIES = [
       'Today, about 9% of this country\'s population is of Indian origin, reflecting its long-standing ties with India.',
     ],
     pin: [838, 690],
-    label: [866, 690],
+    label: [780, 695],
     color: '#e83ee8',
   },
   {
@@ -72,7 +72,7 @@ window.COUNTRIES = [
     ],
     pin: [721, 720.6],
     label: [579, 704],
-    color: '#d4a000',
+    color: 'red',
   },
   {
     key: 'thailand',
