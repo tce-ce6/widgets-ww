@@ -69,8 +69,8 @@
       "author": "tce-nitinc"
     },
     "wg178-maritime-neighbours": {
-      "updatedAt": "2026-10-16T17:26:57+05:30",
-      "author": "Shyamsunder Hait"
+      "updatedAt": "2026-10-22T15:20:08+05:30",
+      "author": "tce-nitinc"
     },
     "wg179-decentralisation-explorer": {
       "updatedAt": "2026-07-30T17:25:22+05:30",
@@ -93,7 +93,7 @@
       "author": "tce-ashishg"
     },
     "wg187-citizen-engagement": {
-      "updatedAt": "2026-10-21T13:17:43+05:30",
+      "updatedAt": "2026-10-22T15:20:08+05:30",
       "author": "tce-nitinc"
     },
     "wg188-feed-the-animals": {
@@ -101,7 +101,7 @@
       "author": "tce-ashishg"
     },
     "wg189-irrigation-system": {
-      "updatedAt": "2026-10-21T12:09:57+05:30",
+      "updatedAt": "2026-10-22T15:20:08+05:30",
       "author": "tce-nitinc"
     },
     "wg190-my-healthy-plate": {
@@ -153,7 +153,7 @@
       "author": "tce-nitinc"
     },
     "wg204-capitals-of-india": {
-      "updatedAt": "2026-10-19T15:27:31+05:30",
+      "updatedAt": "2026-10-22T15:20:08+05:30",
       "author": "tce-nitinc"
     },
     "wg205-species-z-factor-explorer": {
@@ -190,6 +190,25 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-10-22T15:20:08+05:30",
+      "author": "tce-nitinc",
+      "message": "fixes",
+      "widgets": [
+        178,
+        187,
+        189,
+        204
+      ]
+    },
+    {
+      "date": "2026-10-22T11:55:46+05:30",
+      "author": "tce-nitinc",
+      "message": "wg 189 fixes",
+      "widgets": [
+        189
+      ]
+    },
     {
       "date": "2026-10-22T11:45:58+05:30",
       "author": "tce-nitinc",
@@ -426,22 +445,6 @@
       "date": "2026-10-16T11:44:19+05:30",
       "author": "tce-ashishg",
       "message": "wg212 done",
-      "widgets": [
-        212
-      ]
-    },
-    {
-      "date": "2026-10-15T18:17:09+05:30",
-      "author": "tce-nitinc",
-      "message": "wg211 fixes",
-      "widgets": [
-        211
-      ]
-    },
-    {
-      "date": "2026-10-15T17:06:50+05:30",
-      "author": "tce-nitinc",
-      "message": "212 fixes",
       "widgets": [
         212
       ]
