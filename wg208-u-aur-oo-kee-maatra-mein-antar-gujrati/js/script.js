@@ -8,6 +8,7 @@ let selectedLottie = null;
 let audio_button_1 = false;
 let audio_button_2 = false;
 let age_badhe_button = false;
+const interactionLocks = new Set();
 let animationTimeout = null;
 let correctPlacementSequence = [];
 let placementIndex = 0;
@@ -284,7 +285,7 @@ function audioListener() {
   });
 }
 
-function setButtonsDisabled(disabled) {
+function updateInteractionState() {
   const ids = [
     "audio_button_1",
     "audio_button_2",
@@ -293,7 +294,12 @@ function setButtonsDisabled(disabled) {
     "naya_shabd_button",
     "gyankosh_button",
     "arrow_audio",
+    "cloud_text_01",
+    "cloud_text_02",
+    "text_cloud_01",
+    "text_cloud_02",
   ];
+  const disabled = interactionLocks.size > 0;
   ids.forEach((id) => {
     const el = document.getElementById(id);
     if (el) {
@@ -315,6 +321,15 @@ function setButtonsDisabled(disabled) {
   });
 }
 
+function setInteractionLock(reason, locked) {
+  if (locked) {
+    interactionLocks.add(reason);
+  } else {
+    interactionLocks.delete(reason);
+  }
+  updateInteractionState();
+}
+
 function playAudio(type) {
   audioPlayer.pause();
   audioPlayer.currentTime = 0;
@@ -324,17 +339,20 @@ function playAudio(type) {
 
   audioPlayer.src = `assets/audio/final_audio/${fileName}`;
 
-  setButtonsDisabled(true);
+  setInteractionLock("audio", true);
 
   const onFinish = () => {
-    setButtonsDisabled(false);
+    setInteractionLock("audio", false);
     audioPlayer.removeEventListener("ended", onFinish);
     audioPlayer.removeEventListener("error", onFinish);
   };
   audioPlayer.addEventListener("ended", onFinish);
   audioPlayer.addEventListener("error", onFinish);
 
-  audioPlayer.play();
+  audioPlayer.play().catch((error) => {
+    console.error("Audio playback failed:", error);
+    onFinish();
+  });
 }
 function playAnimationAudio(animationPath) {
   const feedbackFileName =
@@ -346,15 +364,26 @@ function playAnimationAudio(animationPath) {
   audioPlayer.currentTime = 0;
   audioPlayer.src = "assets/audio/final_audio/kids_train_bell_sound.mp3";
 
+  setInteractionLock("animation-audio", true);
   let feedbackStarted = false;
+  const finishAudio = () => {
+    audioPlayer.removeEventListener("ended", playFeedbackAudio);
+    audioPlayer.removeEventListener("error", onBellError);
+    audioPlayer.removeEventListener("ended", finishAudio);
+    audioPlayer.removeEventListener("error", finishAudio);
+    setInteractionLock("animation-audio", false);
+  };
   const playFeedbackAudio = () => {
     if (feedbackStarted) return;
     feedbackStarted = true;
     audioPlayer.removeEventListener("ended", playFeedbackAudio);
     audioPlayer.removeEventListener("error", onBellError);
+    audioPlayer.addEventListener("ended", finishAudio);
+    audioPlayer.addEventListener("error", finishAudio);
     audioPlayer.src = `assets/audio/final_audio/${feedbackFileName}`;
     audioPlayer.play().catch((error) => {
       console.error("Feedback audio playback failed:", error);
+      finishAudio();
     });
   };
   const onBellError = () => {
@@ -433,7 +462,8 @@ function naya_shabd() {
   naya_shabd_button.addEventListener("click", () => {
     console.log("Naya shabd button clicked");
     resetAllAnimations();
-    setButtonsDisabled(false);
+    interactionLocks.clear();
+    updateInteractionState();
     document.getElementById("audio_button_1").style.display = "block";
     document.getElementById("audio_button_2").style.display = "block";
     audio_button_1 = false;
@@ -480,6 +510,7 @@ function playLottieAnimation(bandGroup) {
   parentEl.style.display = "block"; // allow renderer to init
   parentEl.style.visibility = "hidden"; // but keep hidden
   parentEl.style.opacity = "";
+  setInteractionLock("feedback-lottie", true);
   playAnimationAudio(bandGroup);
 
   try {
@@ -507,6 +538,7 @@ function playLottieAnimation(bandGroup) {
     });
 
     lottieInstances.addEventListener("complete", () => {
+      setInteractionLock("feedback-lottie", false);
       animationTimeout = setTimeout(() => {
         parentEl.classList.remove("visible");
         resetFeedbackVisuals();
@@ -522,6 +554,7 @@ function playLottieAnimation(bandGroup) {
     lottieInstances.addEventListener("error", (e) => {
       // console.error('Lottie render error:', e);
       // parentEl.style.display = 'none';
+      setInteractionLock("feedback-lottie", false);
     });
 
     // Safety override
@@ -532,6 +565,7 @@ function playLottieAnimation(bandGroup) {
   } catch (err) {
     console.error("Lottie load crashed:", err);
     parentEl.classList.remove("visible");
+    setInteractionLock("feedback-lottie", false);
   }
 }
 
@@ -551,6 +585,7 @@ function playLottieAnimationStart(bandGroup) {
   }
   containerEl.innerHTML = "";
   containerEl.classList.remove("visible");
+  setInteractionLock("star-lottie", true);
 
   try {
     lottieInstances_star = lottie.loadAnimation({
@@ -567,6 +602,7 @@ function playLottieAnimationStart(bandGroup) {
     });
 
     lottieInstances_star.addEventListener("complete", () => {
+      setInteractionLock("star-lottie", false);
       starAnimationTimeout = setTimeout(() => {
         containerEl.classList.remove("visible");
         if (lottieInstances_star) {
@@ -580,6 +616,7 @@ function playLottieAnimationStart(bandGroup) {
     lottieInstances_star.addEventListener("error", (e) => {
       // console.error('Lottie render error:', e);
       // parentEl.style.display = 'none';
+      setInteractionLock("star-lottie", false);
     });
 
     // Safety override
@@ -590,6 +627,7 @@ function playLottieAnimationStart(bandGroup) {
   } catch (err) {
     console.error("Lottie load crashed:", err);
     containerEl.classList.remove("visible");
+    setInteractionLock("star-lottie", false);
   }
 }
 

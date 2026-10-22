@@ -8,6 +8,7 @@ let selectedLottie = null;
 let audio_button_1 = false;
 let audio_button_2 = false;
 let age_badhe_button = false;
+const interactionLocks = new Set();
 let animationTimeout = null;
 let starAnimationTimeout = null;
 let correctPlacementSequence = [];
@@ -134,7 +135,8 @@ function stopCurrentAudio() {
   if (lottieInstances && lottieInstances.audioController) {
     lottieInstances.audioController.pause();
   }
-  setButtonsDisabled(false);
+  interactionLocks.clear();
+  updateInteractionState();
 }
 
 function nextStep() {
@@ -243,7 +245,7 @@ function audioListener() {
   });
 }
 
-function setButtonsDisabled(disabled) {
+function updateInteractionState() {
   const ids = [
     "audio_button_1",
     "audio_button_2",
@@ -252,14 +254,40 @@ function setButtonsDisabled(disabled) {
     "naya_shabd_button",
     "gyankosh_button",
     "arrow_audio",
+    "cloud_text_01",
+    "cloud_text_02",
+    "text_cloud_01",
+    "text_cloud_02",
   ];
+  const disabled = interactionLocks.size > 0;
   ids.forEach((id) => {
     const el = document.getElementById(id);
     if (el) {
-      el.style.pointerEvents = disabled ? "none" : "";
-      el.style.opacity = disabled ? "0.5" : "";
+      if (disabled) {
+        el.setAttribute("data-audio-disabled", "true");
+        el.style.pointerEvents = "none";
+        el.style.opacity =
+          el.style.opacity === ""
+            ? "0.6"
+            : el.style.opacity === "1"
+              ? "0.6"
+              : el.style.opacity;
+      } else {
+        el.removeAttribute("data-audio-disabled");
+        el.style.pointerEvents = "";
+        el.style.opacity = "";
+      }
     }
   });
+}
+
+function setInteractionLock(reason, locked) {
+  if (locked) {
+    interactionLocks.add(reason);
+  } else {
+    interactionLocks.delete(reason);
+  }
+  updateInteractionState();
 }
 
 function createLottieAudio(src) {
@@ -307,11 +335,20 @@ function playAudio(type) {
     type === "wrong" ? selectedWord.wrongAudio : selectedWord.correctAudio;
 
   audioPlayer.src = `assets/audio/final_audio/${fileName}`;
-  setButtonsDisabled(true);
-  audioPlayer.play();
 
-  audioPlayer.onended = () => setButtonsDisabled(false);
-  audioPlayer.onerror = () => setButtonsDisabled(false);
+  setInteractionLock("audio", true);
+
+  const onFinish = () => {
+    setInteractionLock("audio", false);
+    audioPlayer.removeEventListener("ended", onFinish);
+    audioPlayer.removeEventListener("error", onFinish);
+  };
+  audioPlayer.addEventListener("ended", onFinish);
+  audioPlayer.addEventListener("error", onFinish);
+  audioPlayer.play().catch((error) => {
+    console.error("Audio playback failed:", error);
+    onFinish();
+  });
 }
 function hideAndShowText1(state = "none") {
   document.getElementById("i_text_2").style.display = state;
@@ -433,6 +470,7 @@ function playLottieAnimation(bandGroup) {
   parentEl.classList.remove("visible");
   parentEl.style.visibility = "hidden"; // keep hidden while loading
   parentEl.style.opacity = "";
+  setInteractionLock("feedback-lottie", true);
   try {
     lottieInstances = lottie.loadAnimation({
       container: containerEl,
@@ -458,6 +496,7 @@ function playLottieAnimation(bandGroup) {
       }
     });
     lottieInstances.addEventListener("complete", () => {
+      setInteractionLock("feedback-lottie", false);
       animationTimeout = setTimeout(() => {
         parentEl.classList.remove("visible");
         resetFeedbackVisuals();
@@ -472,11 +511,13 @@ function playLottieAnimation(bandGroup) {
     lottieInstances.addEventListener("error", (e) => {
       // console.error('Lottie render error:', e);
       // parentEl.style.display = 'none';
+      setInteractionLock("feedback-lottie", false);
     });
 
   } catch (err) {
     console.error("Lottie load crashed:", err);
     parentEl.classList.remove("visible");
+    setInteractionLock("feedback-lottie", false);
   }
 }
 
@@ -496,6 +537,7 @@ function playLottieAnimationStart(bandGroup) {
   }
   containerEl.innerHTML = "";
   containerEl.classList.remove("visible");
+  setInteractionLock("star-lottie", true);
 
   try {
     lottieInstances_star = lottie.loadAnimation({
@@ -512,6 +554,7 @@ function playLottieAnimationStart(bandGroup) {
     });
 
     lottieInstances_star.addEventListener("complete", () => {
+      setInteractionLock("star-lottie", false);
       starAnimationTimeout = setTimeout(() => {
         containerEl.classList.remove("visible");
         if (lottieInstances_star) {
@@ -525,6 +568,7 @@ function playLottieAnimationStart(bandGroup) {
     lottieInstances_star.addEventListener("error", (e) => {
       // console.error('Lottie render error:', e);
       // parentEl.style.display = 'none';
+      setInteractionLock("star-lottie", false);
     });
 
     if (lottieInstances_star.audioController) {
@@ -535,6 +579,7 @@ function playLottieAnimationStart(bandGroup) {
   } catch (err) {
     console.error("Lottie load crashed:", err);
     containerEl.classList.remove("visible");
+    setInteractionLock("star-lottie", false);
   }
 }
 
