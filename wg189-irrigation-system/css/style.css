@@ -612,7 +612,7 @@ button:focus-visible {
 
 .insights__item h4 {
   margin: 0 0 10px;
-  color: var(--indigo);
+  color: var(--orange);
   font-size: 30px;
   font-weight: 700;
 }
