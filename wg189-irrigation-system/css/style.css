@@ -275,11 +275,11 @@ button:focus-visible {
 
 .terrain-panel {
   position: absolute;
-  left: 392px;
+  left: 220px;
   top: 192px;
-  width: 1146px;
+  width: 1480px;
   height: 151px;
-  padding: 16px 40px 0 213px;
+  padding: 16px 10px 0 213px;
   background: #fdfdfd;
   border-radius: 20px;
   overflow: hidden;
@@ -303,8 +303,8 @@ button:focus-visible {
 }
 
 .terrain-panel__desc {
-  font-size: 22px;
-  line-height: 27px;
+  font-size: 26px;
+  line-height: 30px;
 }
 
 /* column headings above the crop and irrigation cards */

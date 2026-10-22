@@ -224,6 +224,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
+  let lastActiveClue = null; // flag + clue number last shown, so the blink only runs on a change
+
   const renderClue = () => {
     const key = state.selected;
     $('clueHint').hidden = !!key;
@@ -235,7 +237,19 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
     const idx = state.clueIndex[key] || 0;
-    $('clueDots').querySelectorAll('i').forEach((dot, i) => dot.classList.toggle('is-on', i <= idx));
+    const activeKey = `${key}:${idx}`;
+    const changed = activeKey !== lastActiveClue;
+    lastActiveClue = activeKey;
+    $('clueDots').querySelectorAll('i').forEach((dot, i) => {
+      dot.classList.toggle('is-on', i <= idx);
+      // the current clue gets a ring, and blinks 3 times when it becomes the current one
+      dot.classList.toggle('is-active', i === idx);
+      dot.classList.remove('is-blink');
+      if (i === idx && changed) {
+        void dot.offsetWidth;
+        dot.classList.add('is-blink');
+      }
+    });
     $('clueDots').setAttribute('aria-label', `Clue ${idx + 1} of ${CLUE_COUNT}`);
     // Wrapped in one span so <sup>/<sub> stay inline (bare text + tags would
     // each become a separate item of the flex-centred .clue-text box).
