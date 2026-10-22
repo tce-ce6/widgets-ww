@@ -161,11 +161,11 @@
       "author": "Shyamsunder Hait"
     },
     "wg207-i-aur-ee-kee-maatra-mein-antar-gujrati": {
-      "updatedAt": "2026-10-21T08:40:27+05:30",
+      "updatedAt": "2026-10-22T11:03:32+05:30",
       "author": "tce-ashishg"
     },
     "wg208-u-aur-oo-kee-maatra-mein-antar-gujrati": {
-      "updatedAt": "2026-10-21T10:34:00+05:30",
+      "updatedAt": "2026-10-22T11:03:32+05:30",
       "author": "tce-ashishg"
     },
     "wg211-railgadi-banao": {
@@ -190,6 +190,15 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-10-22T11:03:32+05:30",
+      "author": "tce-ashishg",
+      "message": "wg208 error resolved",
+      "widgets": [
+        207,
+        208
+      ]
+    },
     {
       "date": "2026-10-21T14:31:18+05:30",
       "author": "tce-nitinc",
@@ -432,14 +441,6 @@
       "message": "wg 202 fixes",
       "widgets": [
         202
-      ]
-    },
-    {
-      "date": "2026-10-15T12:06:59+05:30",
-      "author": "tce-nitinc",
-      "message": "wg178",
-      "widgets": [
-        178
       ]
     }
   ]
