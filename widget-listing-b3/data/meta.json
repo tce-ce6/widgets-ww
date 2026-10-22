@@ -113,8 +113,8 @@
       "author": "tce-ashishg"
     },
     "wg193-swar-ki-pahchan-gujrati": {
-      "updatedAt": "2026-08-21T16:16:03+05:30",
-      "author": "tce-ashishg"
+      "updatedAt": "2026-10-22T10:51:43+05:30",
+      "author": "tce-nitinc"
     },
     "wg194-ginti-mela": {
       "updatedAt": "2026-10-08T19:01:39+05:30",
@@ -133,23 +133,23 @@
       "author": "tce-ashishg"
     },
     "wg198-aa-kee-maatra-kee-pahachaan-gujrati": {
-      "updatedAt": "2026-10-07T11:35:51+05:30",
-      "author": "tce-ashishg"
+      "updatedAt": "2026-10-22T10:51:43+05:30",
+      "author": "tce-nitinc"
     },
     "wg199-e-aur-ai-kee-maatra-mein-antar-gujrati": {
-      "updatedAt": "2026-10-06T16:23:12+05:30",
-      "author": "tce-ashishg"
+      "updatedAt": "2026-10-22T10:51:43+05:30",
+      "author": "tce-nitinc"
     },
     "wg200-o-aur-au-kee-maatra-mein-antar-gujrati": {
-      "updatedAt": "2026-10-15T11:35:21+05:30",
-      "author": "tce-ashishg"
+      "updatedAt": "2026-10-22T10:51:43+05:30",
+      "author": "tce-nitinc"
     },
     "wg201-parts-of-speech": {
       "updatedAt": "2026-10-19T15:12:00+05:30",
       "author": "tce-nitinc"
     },
     "wg202-egyptian-museum": {
-      "updatedAt": "2026-10-21T09:34:16+05:30",
+      "updatedAt": "2026-10-22T10:51:43+05:30",
       "author": "tce-nitinc"
     },
     "wg204-capitals-of-india": {
@@ -165,8 +165,8 @@
       "author": "tce-ashishg"
     },
     "wg208-u-aur-oo-kee-maatra-mein-antar-gujrati": {
-      "updatedAt": "2026-10-22T11:03:32+05:30",
-      "author": "tce-ashishg"
+      "updatedAt": "2026-10-22T11:46:43+05:30",
+      "author": "tce-nitinc"
     },
     "wg211-railgadi-banao": {
       "updatedAt": "2026-10-19T14:36:42+05:30",
@@ -191,12 +191,32 @@
   },
   "commits": [
     {
+      "date": "2026-10-22T11:45:58+05:30",
+      "author": "tce-nitinc",
+      "message": "wg208 fixes",
+      "widgets": [
+        208
+      ]
+    },
+    {
       "date": "2026-10-22T11:03:32+05:30",
       "author": "tce-ashishg",
       "message": "wg208 error resolved",
       "widgets": [
         207,
         208
+      ]
+    },
+    {
+      "date": "2026-10-22T10:51:43+05:30",
+      "author": "tce-nitinc",
+      "message": "wg193 fixes",
+      "widgets": [
+        193,
+        198,
+        199,
+        200,
+        202
       ]
     },
     {
@@ -424,23 +444,6 @@
       "message": "212 fixes",
       "widgets": [
         212
-      ]
-    },
-    {
-      "date": "2026-10-15T16:16:28+05:30",
-      "author": "tce-nitinc",
-      "message": "wg 202 fixes",
-      "widgets": [
-        202,
-        211
-      ]
-    },
-    {
-      "date": "2026-10-15T14:55:46+05:30",
-      "author": "tce-nitinc",
-      "message": "wg 202 fixes",
-      "widgets": [
-        202
       ]
     }
   ]
