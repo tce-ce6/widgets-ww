@@ -164,6 +164,7 @@
     $$('.screen.is-active').forEach((screen) => screen.classList.remove('is-active'));
     next.classList.add('is-active');
     state.current = id;
+    renderTracker();
     if (enterHooks[id]) enterHooks[id]();
     const heading = $('.ribbon, h2', next);
     if (heading) {
@@ -185,6 +186,11 @@
       ribbon.textContent = section.dataset.title;
       $('.screen__tint', section).after(panel);
 
+      const tracker = document.createElement('ol');
+      tracker.className = 'tracker';
+      tracker.setAttribute('aria-label', 'Gallery progress');
+      panel.after(tracker);
+
       const hall = document.createElement('button');
       hall.type = 'button';
       hall.className = 'btn-hall';
@@ -197,6 +203,7 @@
 
   function unlockNext(galleryIndex) {
     state.completedGalleries.add(galleryIndex);
+    renderTracker();
     Sound.play('key');
   }
 
@@ -579,6 +586,22 @@
   }
 
   /* ---- Screens 3, 6, 10, 14: the Keeper's Hall ---- */
+
+  /** Four round icons, one per gallery: green once that gallery is completed. */
+  function renderTracker() {
+    $$('.tracker').forEach((tracker) => {
+      tracker.innerHTML = '';
+      GALLERIES.forEach((gallery, index) => {
+        const done = state.completedGalleries.has(index);
+        const item = document.createElement('li');
+        item.className = `tracker__step${done ? ' is-done' : ''}`;
+        item.setAttribute('aria-label', `${gallery.name}: ${done ? 'completed' : 'not completed yet'}`);
+        const icon = done ? `tracker-done-${index + 1}.svg` : gallery.icon;
+        item.innerHTML = `<img src="assets/svg/${icon}" alt="">`;
+        tracker.appendChild(item);
+      });
+    });
+  }
 
   function renderHub() {
     const list = $('#cardList');

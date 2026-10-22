@@ -146,10 +146,10 @@ svg * {
 }
 
 #swar-wrapper .wdgetTitle h2 {
-  font-size: 28px;
+  font-size: 33px;
   font-weight: 600;
   text-align: left;
-  padding: 5px 40px;
+  padding: 12px 40px 7px 40px;
   color: #fff;
   border-radius: 0 0px 20px 20px;
   background: #2967E3;
@@ -218,14 +218,6 @@ svg * {
 .option-flower.incorrect .text-wrap {
   border: 7px solid #F44336;
   pointer-events: none;
-}
-
-.option-flower.incorrect::before {
-  filter: brightness(0.5);
-}
-
-.option-flower.incorrect::after {
-  filter: brightness(0.5);
 }
 
 .flower-list li {
@@ -324,6 +316,5 @@ svg * {
 }
 
 .show-ans.disabled {
-  opacity: 0.5;
   pointer-events: none;
 }
