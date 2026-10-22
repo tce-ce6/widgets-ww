@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // A point inside southern India that the route lines start from.
   const INDIA_POINT = [340, 540];
   // Singapore is a few pixels across: give it a generous round tap target.
-  const SINGAPORE_ZONE = { cx: 716, cy: 716, r: 14 };
+  const SINGAPORE_ZONE = { cx: 724, cy: 726, r: 14 };
 
   /* ==========================================================================
      DOM + STAGE SCALING
