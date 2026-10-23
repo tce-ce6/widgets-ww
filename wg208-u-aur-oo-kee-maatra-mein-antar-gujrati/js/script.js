@@ -292,7 +292,6 @@ function updateInteractionState() {
     "audio_button_3",
     "age_badhe_button",
     "naya_shabd_button",
-    "gyankosh_button",
     "arrow_audio",
     "cloud_text_01",
     "cloud_text_02",
@@ -306,16 +305,9 @@ function updateInteractionState() {
       if (disabled) {
         el.setAttribute("data-audio-disabled", "true");
         el.style.pointerEvents = "none";
-        el.style.opacity =
-          el.style.opacity === ""
-            ? "0.6"
-            : el.style.opacity === "1"
-              ? "0.6"
-              : el.style.opacity;
       } else {
         el.removeAttribute("data-audio-disabled");
         el.style.pointerEvents = "";
-        el.style.opacity = "";
       }
     }
   });
@@ -327,6 +319,11 @@ function setInteractionLock(reason, locked) {
   } else {
     interactionLocks.delete(reason);
   }
+  updateInteractionState();
+}
+
+function enableAllInteractions() {
+  interactionLocks.clear();
   updateInteractionState();
 }
 
@@ -462,8 +459,7 @@ function naya_shabd() {
   naya_shabd_button.addEventListener("click", () => {
     console.log("Naya shabd button clicked");
     resetAllAnimations();
-    interactionLocks.clear();
-    updateInteractionState();
+    enableAllInteractions();
     document.getElementById("audio_button_1").style.display = "block";
     document.getElementById("audio_button_2").style.display = "block";
     audio_button_1 = false;
