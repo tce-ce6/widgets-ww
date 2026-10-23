@@ -53,6 +53,7 @@
         <img class="screen__bg" src="assets/images/wall.png" alt="">
         <div class="screen__tint"></div>
         <h2 id="hubTitle" class="sr-only">The Keeper's Hall</h2>
+        <ol id="tracker" class="tracker" aria-label="Gallery progress"></ol>
         <p class="hint-pill hint-pill--hub">Four galleries, four keys. Choose any gallery to begin.</p>
         <ul id="cardList" class="card-list"></ul>
       </section>
@@ -70,6 +71,7 @@
         <!-- Overlay: What can you claim? -->
         <div id="claimOverlay" class="overlay claim" hidden role="dialog" aria-modal="true" aria-labelledby="claimTitle">
           <div class="panel"><div class="panel__bar"><h2 id="claimTitle" class="ribbon">What Can You Claim?</h2></div></div>
+          <ol class="tracker" aria-label="Gallery progress"></ol>
           <button id="btnClaimClose" class="icon-btn claim__close" type="button" aria-label="Close and choose other objects"><img src="assets/svg/icon-close.svg" alt=""></button>
           <p id="claimPairName" class="claim__pair"></p>
           <div id="claimObjects" class="claim__objects"></div>

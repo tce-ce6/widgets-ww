@@ -409,12 +409,6 @@ function setButtonsDisabled(disabled) {
       if (disabled) {
         el.setAttribute("data-audio-disabled", "true");
         el.style.pointerEvents = "none";
-        el.style.opacity =
-          el.style.opacity === ""
-            ? "0.6"
-            : el.style.opacity === "1"
-              ? "0.6"
-              : el.style.opacity;
       } else {
         el.removeAttribute("data-audio-disabled");
         el.style.pointerEvents = "";

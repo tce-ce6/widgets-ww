@@ -147,7 +147,7 @@ button:focus-visible,
   width: 100%;
   margin: 0;
   color: var(--cyan);
-  font-size: 28px;
+  font-size: 30px;
   font-weight: 300;
   font-style: italic;
   line-height: 50px;
@@ -268,7 +268,7 @@ button:focus-visible,
   left: 34px;
   top: 151px;
   width: 1366px;
-  height: 783px;
+  height: 833px;
   background: var(--navy);
   border: 2px dashed var(--teal);
   border-radius: 28px;
@@ -279,7 +279,7 @@ button:focus-visible,
   left: 28px;
   top: 27px;
   width: 1307px;
-  height: 726px;
+  height: 775px;
   overflow: hidden;
   border-radius: 23px;
   background: #93cfe5;
@@ -415,7 +415,7 @@ button:focus-visible,
   left: 1426px;
   top: 151px;
   width: 450px;
-  height: 783px;
+  height: 830px;
   background: var(--navy);
   border: 2px dashed var(--teal);
   border-radius: 28px;
@@ -507,16 +507,16 @@ button:focus-visible,
 .clue-dots {
   position: absolute;
   left: 89px;
-  top: 13px;
+  top: 5px;
   display: flex;
   align-items: center;
   gap: 25px;
 }
 
 .clue-dots__label {
-  margin-right: -16px;
+  margin-right: -8px; /* leaves room for the ring round the first dot */
   color: var(--dot);
-  font-size: 24px;
+  font-size: 28px;
   font-weight: 700;
 }
 
@@ -531,11 +531,32 @@ button:focus-visible,
 .clue-dots i.is-on {
   opacity: 1;
 }
+/* the current clue: a rounded ring around its dot, blinking 3 times when it changes */
+.clue-dots i.is-active {
+  outline: 3px solid var(--dot);
+  outline-offset: 4px;
+}
+
+.clue-dots i.is-blink {
+  animation: clue-blink 0.4s ease-in-out 3;
+}
+
+@keyframes clue-blink {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.1;
+  }
+}
 
 .clue-text {
   position: absolute;
   left: 0;
-  top: 58px;
+  top: 70px;
   width: 100%;
   height: 112px;
   margin: 0;
@@ -543,9 +564,9 @@ button:focus-visible,
   align-items: center;
   justify-content: center;
   color: var(--clue);
-  font-size: 22px;
+  font-size: 26px;
   font-weight: 300;
-  line-height: 27px;
+  line-height: 1.2;
   text-align: center;
 }
 
@@ -566,32 +587,35 @@ button:focus-visible,
 .clue-question {
   position: absolute;
   left: 0;
-  top: 186px;
+  top: 213px;
   width: 100%;
   margin: 0;
   color: #fff;
-  font-size: 24px;
+  font-size: 28px;
   font-weight: 500;
   line-height: 28px;
   text-align: center;
 }
 
 .clue-wrong {
-  position: absolute;
-  left: 1px;
-  top: 233px;
-  width: 408px;
-  height: 65px;
-  margin: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #ffdcdc;
-  border: 1px dashed #f00;
-  border-radius: 12px;
-  color: #f00;
-  font-size: 20px;
-  line-height: 24px;
+    position: absolute;
+    left: 1px;
+    top: 265px;
+    width: 408px;
+    height: 72px;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffdcdc;
+    border: 1px dashed #f00;
+    border-radius: 12px;
+    color: #f00;
+    font-size: 25px;
+    line-height: 24px;
+    text-align: center;
+    line-height: 1.1;
+    padding: 3px 10px;
 }
 
 /* ---------- end panel (over the lower part of the flag panel) ---------- */

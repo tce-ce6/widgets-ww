@@ -140,10 +140,10 @@ svg * {
 }
 
 #gujrati-wrapper .wdgetTitle h2 {
-  font-size: 28px;
+  font-size: 33px;
   font-weight: 600;
   text-align: left;
-  padding: 8px 40px;
+  padding: 12px 40px 7px 40px;
   color: #fff;
   border-radius: 0 0px 20px 20px;
   background: #E63967;

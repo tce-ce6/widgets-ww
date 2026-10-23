@@ -42,8 +42,8 @@ window.COUNTRIES = [
       'During the 19<sup>th</sup> and 20<sup>th</sup> centuries, many workers from South India migrated here to work on rubber plantations.',
       'Today, about 9% of this country\'s population is of Indian origin, reflecting its long-standing ties with India.',
     ],
-    pin: [838, 690],
-    label: [866, 690],
+    pin: [695, 653],
+    label: [710, 635],
     color: '#e83ee8',
   },
   {
@@ -70,9 +70,9 @@ window.COUNTRIES = [
       'This island nation is home to the famous neighbourhood called "Little India."',
       'The name of this country comes from the Sanskrit word which means "Lion City."',
     ],
-    pin: [721, 720.6],
+    pin: [721, 730],
     label: [579, 704],
-    color: '#d4a000',
+    color: 'red',
   },
   {
     key: 'thailand',

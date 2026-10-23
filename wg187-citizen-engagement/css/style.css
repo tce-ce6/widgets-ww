@@ -317,7 +317,7 @@ button:focus-visible {
   top: 272px;
   width: 347px;
   height: 454px;
-  padding-top: 24px;
+  padding-top: 17px;
   background: var(--panel);
   border: 1px solid var(--line);
   border-radius: 21px;
@@ -337,10 +337,10 @@ button:focus-visible {
   font-size: 24px;
   font-weight: 700;
   line-height: 30px;
+  margin-bottom: 3px;
 }
 
 .box__sub {
-  margin: 4px 0 0;
   font-size: 20px;
   line-height: 24px;
 }
