@@ -183,10 +183,11 @@ button:focus-visible {
 
 .itext.itext--game {
   top: 84px;
-  left: 60px;
-  width: 726px;
+  left: 38px;
+  width: 836px;
   font-size: 28px;
   white-space: nowrap;
+  text-align: center;
 }
 
 /* ---------- gateway cards ---------- */
@@ -1009,6 +1010,22 @@ button:focus-visible {
 .card p.fact__state,
 .card p.fact__capital {
   margin-bottom: 34px;
+}
+
+.fact__list {
+  margin: 0;
+  padding: 0 0 0 30px;
+  color: #000;
+  font-size: 28px;
+  line-height: 34px;
+}
+
+.fact__list li {
+  margin-bottom: 14px;
+}
+
+.fact__list li:last-child {
+  margin-bottom: 0;
 }
 
 .fact__state b {
