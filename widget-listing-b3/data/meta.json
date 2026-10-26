@@ -172,6 +172,10 @@
       "updatedAt": "2026-10-26T12:32:30+05:30",
       "author": "Shyamsunder Hait"
     },
+    "wg210-fool-khilao": {
+      "updatedAt": "2026-10-26T16:27:50+05:30",
+      "author": "Shyamsunder Hait"
+    },
     "wg211-railgadi-banao": {
       "updatedAt": "2026-10-19T14:36:42+05:30",
       "author": "tce-nitinc"
@@ -179,6 +183,14 @@
     "wg212-sabdo-me-swar-ki-khoj-gujrati": {
       "updatedAt": "2026-10-19T16:13:28+05:30",
       "author": "tce-ashishg"
+    },
+    "wg213-cross-bridge": {
+      "updatedAt": "2026-10-26T16:30:15+05:30",
+      "author": "Shyamsunder Hait"
+    },
+    "wg214-jasus-pehchano": {
+      "updatedAt": "2026-10-26T16:30:15+05:30",
+      "author": "Shyamsunder Hait"
     },
     "wg218-ancient-china": {
       "updatedAt": "2026-10-26T13:03:25+05:30",
@@ -198,6 +210,35 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-10-26T16:30:15+05:30",
+      "author": "Shyamsunder Hait",
+      "message": "Added black background",
+      "widgets": [
+        213,
+        214
+      ]
+    },
+    {
+      "date": "2026-10-26T16:27:50+05:30",
+      "author": "Shyamsunder Hait",
+      "message": "removed unwanted files",
+      "widgets": [
+        210,
+        213,
+        214
+      ]
+    },
+    {
+      "date": "2026-10-26T16:26:05+05:30",
+      "author": "Shyamsunder Hait",
+      "message": "added new wgts",
+      "widgets": [
+        210,
+        213,
+        214
+      ]
+    },
     {
       "date": "2026-10-26T15:34:10+05:30",
       "author": "tce-nitinc",
@@ -427,30 +468,6 @@
         207,
         208,
         212
-      ]
-    },
-    {
-      "date": "2026-10-19T12:40:56+05:30",
-      "author": "tce-nitinc",
-      "message": "fixed wg-204",
-      "widgets": [
-        204
-      ]
-    },
-    {
-      "date": "2026-10-19T11:55:13+05:30",
-      "author": "tce-nitinc",
-      "message": "wg202 fixes",
-      "widgets": [
-        202
-      ]
-    },
-    {
-      "date": "2026-10-19T11:52:28+05:30",
-      "author": "Shyamsunder Hait",
-      "message": "wg163 fixes",
-      "widgets": [
-        163
       ]
     }
   ]
