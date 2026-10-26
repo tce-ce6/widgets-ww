@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>फूल खिलाओ – पर्यायवाची शब्द (कक्षा 1)</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--sky:#DDF1FF;--grass:#BFE6A8;--ink:#23344D;--petal:#FF8FB1;--petal2:#FF6F9C;--sun:#FFCF3F;--good:#2E9E5B;--bad:#D64545;--rose:#C2185B}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;overflow:hidden}
+body{font-family:'Baloo 2','Noto Sans Devanagari','Mangal',sans-serif;color:var(--ink);
+  background:linear-gradient(var(--sky) 0 60%,var(--grass) 60% 100%);user-select:none}
+/* पूरा widget एक ही स्क्रीन में — कोई scroll नहीं */
+.app{height:100vh;height:100dvh;max-width:980px;margin:0 auto;display:flex;flex-direction:column;padding:1.2vh 2vw}
+header{flex:0 0 auto;display:flex;align-items:center;justify-content:space-between}
+h1{margin:0;font-size:clamp(20px,4.2vh,34px);font-weight:800;color:var(--rose);line-height:1.1}
+.dots{display:flex;gap:6px}
+.dots span{width:clamp(9px,1.6vh,14px);height:clamp(9px,1.6vh,14px);border-radius:50%;background:#fff;border:2px solid var(--rose)}
+.dots span.done{background:var(--rose)}.dots span.now{background:var(--sun)}
+.top{flex:0 0 auto;display:flex;align-items:center;gap:2vw;margin-top:.8vh}
+.word-card{display:flex;align-items:center;gap:10px;background:#fff;border-radius:20px;padding:.8vh 14px;box-shadow:0 4px 0 #9fc7e6;flex:0 0 auto}
+/* चित्र होल्डर */
+.img-holder{width:clamp(48px,9vh,84px);height:clamp(48px,9vh,84px);border:2px dashed #9fb6cc;border-radius:12px;display:flex;align-items:center;justify-content:center;
+  font-size:11px;line-height:1.2;text-align:center;color:#7a8ea3;overflow:hidden;background:#f6fbff}
+.img-holder img{width:100%;height:100%;object-fit:contain}
+.img-holder.has-img{border:none;background:none}
+.word-card .w{font-size:clamp(26px,6vh,44px);font-weight:800;line-height:1}
+.say{border:none;background:var(--sun);border-radius:50%;width:clamp(34px,5.5vh,46px);height:clamp(34px,5.5vh,46px);font-size:clamp(16px,2.6vh,22px);cursor:pointer;flex:0 0 auto}
+.itext{flex:1;display:flex;align-items:center;gap:10px;background:#ffffffcc;border-radius:16px;padding:.8vh 12px}
+.itext p{margin:0;font-size:clamp(15px,2.8vh,22px);line-height:1.3}
+.count{display:inline-flex;gap:4px;vertical-align:middle;margin-left:6px}
+.count i{width:clamp(16px,2.6vh,22px);height:clamp(16px,2.6vh,22px);border-radius:50%;border:2px solid var(--rose);background:#fff;display:inline-block;font-style:normal;font-size:12px;text-align:center;line-height:1.4}
+.count i.got{background:var(--rose);color:#fff}
+.say:focus-visible,.bfly:focus-visible,button:focus-visible{outline:4px solid #1565C0;outline-offset:3px}
+/* खेल का मैदान — बची हुई पूरी ऊँचाई लेता है */
+.field{position:relative;flex:1 1 auto;min-height:0;margin-top:.6vh}
+.flower{position:absolute;left:50%;bottom:0;height:78%;transform:translateX(-50%);aspect-ratio:220/260}
+.flower svg{width:100%;height:100%}
+.flower.target-hot svg{filter:drop-shadow(0 0 14px #fff)}
+.petal{transform-box:fill-box;transform-origin:50% 100%;transform:scale(0);transition:transform .55s cubic-bezier(.3,1.6,.5,1)}
+.petal.open{transform:scale(1)}
+.bud{transition:opacity .4s}
+.bfly{position:absolute;touch-action:none;cursor:grab;text-align:center;z-index:2}
+.bfly.dragging{z-index:10;cursor:grabbing}
+.bfly .float{display:flex;flex-direction:column;align-items:center;animation:flutter 3s ease-in-out infinite}
+.bfly:nth-child(2n) .float{animation-duration:3.6s}
+.bfly .wing{font-size:clamp(34px,8vh,58px);line-height:1}
+.bfly .lbl{background:#fff;border-radius:14px;padding:0 14px;font-size:clamp(20px,4.4vh,32px);font-weight:700;box-shadow:0 3px 0 #0002;margin-top:-4px}
+.bfly.shake .lbl{animation:shake .45s;background:#FFE1E1}
+.bfly.faded{opacity:.35;pointer-events:none}
+@keyframes flutter{0%,100%{transform:translate(0,0) rotate(-3deg)}50%{transform:translate(6px,-12px) rotate(3deg)}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.bottom{flex:0 0 auto;display:flex;align-items:center;gap:12px;margin-top:.8vh}
+.msg{flex:1;min-height:5vh;font-size:clamp(15px,2.8vh,22px);font-weight:700;text-align:center;line-height:1.25}
+.msg.good{color:var(--good)}.msg.bad{color:var(--bad)}.msg.info{color:#1F5FA8}
+.btn{border:none;border-radius:30px;font:800 clamp(15px,2.8vh,22px) 'Baloo 2',sans-serif;padding:.6vh 22px;cursor:pointer;white-space:nowrap}
+.btn.ans{background:#fff;color:var(--rose);box-shadow:0 4px 0 #e2a4bd;border:3px solid var(--rose)}
+.btn.next{background:var(--rose);color:#fff;box-shadow:0 4px 0 #880E4F}
+.btn:disabled{opacity:.4;cursor:default}
+.end{display:none;flex:1;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.end h2{font-size:clamp(26px,6vh,44px);margin:0;color:var(--rose)}
+.garden{font-size:clamp(34px,8vh,58px);letter-spacing:6px;margin:1.5vh 0}
+.end p{font-size:clamp(17px,3.2vh,24px);margin:0 0 2vh}
+@media (max-width:560px){.top{flex-wrap:wrap}.itext{flex-basis:100%}.btn{padding:.6vh 14px}}
+@media (prefers-reduced-motion:reduce){.bfly .float{animation:none}.petal{transition:none}}
+</style>
+</head>
+<body>
+<div class="app">
+<header><h1>🌷 फूल खिलाओ</h1><div class="dots" id="dots"></div></header>
+
+<div class="top" id="topRow">
+  <div class="word-card">
+    <div class="img-holder" id="imgHolder"></div>
+    <span class="w" id="word"></span>
+    <button class="say" id="sayWord" aria-label="शब्द सुनो">🔊</button>
+  </div>
+  <div class="itext">
+    <button class="say" id="sayItext" aria-label="निर्देश सुनो">🔊</button>
+    <p id="itext"></p>
+  </div>
+</div>
+
+<div class="field" id="field">
+  <div class="flower" id="flower">
+    <svg viewBox="0 0 220 260" aria-hidden="true">
+      <rect x="105" y="120" width="10" height="140" rx="5" fill="#3E9B4F"/>
+      <path d="M110 200 C70 180 55 200 50 215 C75 222 95 214 110 200Z" fill="#4CAF50"/>
+      <path d="M110 180 C150 160 165 180 170 195 C145 202 125 194 110 180Z" fill="#4CAF50"/>
+      <g id="petals"></g>
+      <ellipse class="bud" id="bud" cx="110" cy="100" rx="26" ry="36" fill="#7CC36E"/>
+      <circle id="core" cx="110" cy="100" r="0" fill="#FFCF3F"/>
+    </svg>
+  </div>
+</div>
+
+<div class="bottom" id="bottomRow">
+  <button class="btn ans" id="ansBtn">उत्तर देखें</button>
+  <div class="msg" id="msg" role="status" aria-live="polite"></div>
+  <button class="btn next" id="nextBtn">अगला उदाहरण ➜</button>
+</div>
+
+<section class="end" id="end">
+  <h2>सारे फूल खिल गए!</h2>
+  <div class="garden" id="garden"></div>
+  <p id="score"></p>
+  <button class="btn next" onclick="location.reload()">फिर से खेलो</button>
+</section>
+</div>
+
+<script>
+/* =========================================================
+   ASSET HOLDERS — चित्र और ऑडियो की फ़ाइलें यहाँ जोड़ें
+   img  : शब्द का चित्र (खाली छोड़ने पर डैश वाला होल्डर दिखेगा)
+   aud  : मुख्य शब्द का ऑडियो
+   optAud: तितलियों पर लिखे शब्दों के ऑडियो (शब्द: फ़ाइल)
+   कोई ऑडियो खाली हो तो browser की हिंदी आवाज़ (यदि उपलब्ध हो) चलेगी।
+   ========================================================= */
+const AUDIO={
+  itext:'',          // i-text का ऑडियो (सभी राउंड के लिए एक ही)
+  correct:'',        // सही उत्तर की ध्वनि
+  wrong:'',          // गलत उत्तर की ध्वनि
+  bloom:'',          // फूल खिलने की ध्वनि
+  end:''             // अंतिम स्क्रीन की ध्वनि
+};
+const ROUNDS=[
+ {w:'पानी', img:'', aud:'', ok:['जल','नीर'],    no:['दूध','फल'],    optAud:{}},
+ {w:'घर',   img:'', aud:'', ok:['मकान','गृह'],  no:['नदी','पेड़'],   optAud:{}},
+ {w:'माँ',   img:'', aud:'', ok:['माता','जननी'], no:['बहन','दादा'],   optAud:{}},
+ {w:'आँख',  img:'', aud:'', ok:['नयन','नेत्र'],  no:['नाक','कान'],    optAud:{}},
+ {w:'फूल',  img:'', aud:'', ok:['पुष्प','सुमन'], no:['पत्ता','काँटा'], optAud:{}},
+ {w:'सूरज', img:'', aud:'', ok:['सूर्य','रवि'],  no:['चाँद','तारा'],  optAud:{}}
+];
+const NUM={1:'एक',2:'दो',3:'तीन',4:'चार'};
+const SLOTS=[{l:2,t:2},{l:72,t:0},{l:1,t:50},{l:74,t:48}];
+
+let r=0,found=0,firstTry=0,missedThis=false,revealed=false;
+const $=id=>document.getElementById(id);
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---- audio: file हो तो file, नहीं तो बनी हुई ध्वनि / बोली ---- */
+let AC;function ac(){return AC||(AC=new (window.AudioContext||window.webkitAudioContext)())}
+function tone(f,d,type='sine',v=.18,delay=0){try{const c=ac(),o=c.createOscillator(),g=c.createGain();o.type=type;o.frequency.value=f;g.gain.setValueAtTime(v,c.currentTime+delay);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+delay+d);o.connect(g).connect(c.destination);o.start(c.currentTime+delay);o.stop(c.currentTime+delay+d)}catch(e){}}
+let player=new Audio();
+function playFile(src){if(!src)return false;try{player.pause();player=new Audio(src);player.play().catch(()=>{});return true}catch(e){return false}}
+function speak(t){try{if(!('speechSynthesis'in window))return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='hi-IN';u.rate=.8;speechSynthesis.speak(u)}catch(e){}}
+function voice(src,text){if(!playFile(src))speak(text)}
+const sGood=()=>{if(!playFile(AUDIO.correct)){tone(660,.15);tone(880,.25,'sine',.18,.12)}};
+const sBad=()=>{if(!playFile(AUDIO.wrong))tone(220,.25,'triangle',.15)};
+const sBloom=()=>{if(!playFile(AUDIO.bloom))[523,659,784,1047].forEach((f,i)=>tone(f,.3,'sine',.15,i*.12))};
+
+/* ---- petals ---- */
+const NS='http://www.w3.org/2000/svg';
+for(let i=0;i<8;i++){const g=document.createElementNS(NS,'g');g.setAttribute('transform',`rotate(${i*45} 110 100)`);
+ const p=document.createElementNS(NS,'ellipse');p.setAttribute('cx',110);p.setAttribute('cy',62);p.setAttribute('rx',20);p.setAttribute('ry',38);
+ p.setAttribute('fill',i%2?'#FF8FB1':'#FF6F9C');p.classList.add('petal');g.appendChild(p);$('petals').appendChild(g)}
+function setBloom(frac){const ps=[...document.querySelectorAll('.petal')];const n=Math.round(ps.length*frac);
+ ps.forEach((p,i)=>p.classList.toggle('open',i<n));$('bud').style.opacity=frac>0?0:1;$('core').setAttribute('r',frac>0?22:0)}
+
+/* ---- drag + tap ---- */
+function hit(t,x,y){const b=t.getBoundingClientRect();return x>=b.left&&x<=b.right&&y>=b.top&&y<=b.bottom}
+function dragify(el){
+ el.tabIndex=0;el.setAttribute('role','button');
+ el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();attempt(el)}});
+ el.addEventListener('pointerdown',e=>{if(el.dataset.locked||revealed)return;e.preventDefault();ac();
+  const sx=e.clientX,sy=e.clientY;let moved=false;el.setPointerCapture(e.pointerId);el.classList.add('dragging');
+  const mv=ev=>{const dx=ev.clientX-sx,dy=ev.clientY-sy;if(Math.hypot(dx,dy)>6)moved=true;
+   if(moved){el.style.transform=`translate(${dx}px,${dy}px) scale(1.08)`;$('flower').classList.toggle('target-hot',hit($('flower'),ev.clientX,ev.clientY))}};
+  const up=ev=>{['pointermove','pointerup','pointercancel'].forEach((n,i)=>el.removeEventListener(n,i?up:mv));
+   el.classList.remove('dragging');$('flower').classList.remove('target-hot');el.style.transform='';
+   if(!moved||hit($('flower'),ev.clientX,ev.clientY))attempt(el)};
+  el.addEventListener('pointermove',mv);el.addEventListener('pointerup',up);el.addEventListener('pointercancel',up)});
+}
+
+/* ---- game ---- */
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function itextFor(R){const n=NUM[R.ok.length]||R.ok.length;
+ return `<b>${n} समान अर्थ वाले शब्द</b> ढूँढो। तितलियों को फूल तक ले जाओ।`}
+function itextPlain(R){const n=NUM[R.ok.length];return `${n} समान अर्थ वाले शब्द ढूँढो। तितलियों को फूल तक ले जाओ।`}
+function renderCount(){const R=ROUNDS[r];$('itext').querySelector('.count').innerHTML=R.ok.map((_,i)=>`<i class="${i<found?'got':''}">${i<found?'✓':''}</i>`).join('')}
+function load(){
+ const R=ROUNDS[r];found=0;missedThis=false;revealed=false;
+ $('dots').innerHTML=ROUNDS.map((_,i)=>`<span class="${i<r?'done':i===r?'now':''}"></span>`).join('');
+ const ih=$('imgHolder');
+ if(R.img){ih.className='img-holder has-img';ih.innerHTML=`<img src="${R.img}" alt="${R.w}">`}
+ else{ih.className='img-holder';ih.textContent=`चित्र: ${R.w}`}
+ $('word').textContent=R.w;
+ $('itext').innerHTML=itextFor(R)+'<span class="count" aria-hidden="true"></span>';renderCount();
+ say('','');$('ansBtn').disabled=false;
+ $('nextBtn').textContent=r<ROUNDS.length-1?'अगला उदाहरण ➜':'परिणाम देखें ➜';
+ setBloom(0);
+ document.querySelectorAll('.bfly').forEach(b=>b.remove());
+ shuffle([...R.ok.map(w=>({w,ok:1})),...R.no.map(w=>({w,ok:0}))]).forEach((o,i)=>{
+  const b=document.createElement('div');b.className='bfly';b.dataset.ok=o.ok;b.dataset.w=o.w;
+  b.style.left=SLOTS[i].l+'%';b.style.top=SLOTS[i].t+'%';b.setAttribute('aria-label','तितली: '+o.w);
+  b.innerHTML=`<div class="float"><span class="wing">🦋</span><span class="lbl">${o.w}</span></div>`;
+  dragify(b);$('field').appendChild(b)});
+ setTimeout(()=>voice(R.aud,R.w),300);
+}
+function flyToFlower(b,cb){
+ const fr=$('flower').getBoundingClientRect(),br=b.getBoundingClientRect();
+ const dx=fr.left+fr.width/2-(br.left+br.width/2),dy=fr.top+fr.height*.35-(br.top+br.height/2);
+ const a=b.animate([{transform:'translate(0,0) scale(1)',opacity:1},{transform:`translate(${dx}px,${dy}px) scale(.3)`,opacity:0}],{duration:reduce?1:650,easing:'ease-in',fill:'forwards'});
+ a.onfinish=()=>{b.remove();cb&&cb()};
+}
+function attempt(b){
+ if(revealed||b.dataset.locked)return;
+ const R=ROUNDS[r];
+ if(b.dataset.ok==='1'){
+  b.dataset.locked=1;sGood();voice(R.optAud[b.dataset.w],b.dataset.w);
+  flyToFlower(b,()=>{found++;renderCount();setBloom(found/R.ok.length);
+   if(found===R.ok.length){sBloom();if(!missedThis)firstTry++;revealed=true;$('ansBtn').disabled=true;
+    document.querySelectorAll('.bfly').forEach(x=>x.classList.add('faded'));
+    say('','')}
+   else say(`हाँ! ‘${b.dataset.w}’ और ‘${R.w}’ का अर्थ एक ही है। अभी ${NUM[R.ok.length-found]} और ढूँढो।`,'good')});
+ }else{
+  sBad();missedThis=true;b.classList.add('shake');setTimeout(()=>b.classList.remove('shake'),460);
+  say('','');
+ }
+}
+function showAnswer(){
+ const R=ROUNDS[r];if(revealed)return;revealed=true;missedThis=true;$('ansBtn').disabled=true;
+ const rest=[...document.querySelectorAll('.bfly')].filter(b=>b.dataset.ok==='1'&&!b.dataset.locked);
+ document.querySelectorAll('.bfly').forEach(b=>{if(b.dataset.ok!=='1')b.classList.add('faded')});
+ rest.forEach((b,i)=>{b.dataset.locked=1;setTimeout(()=>flyToFlower(b,()=>{found++;renderCount();setBloom(found/R.ok.length);if(found===R.ok.length)sBloom()}),i*450)});
+ say(`सही उत्तर: ‘${R.w}’ के समान अर्थ वाले शब्द हैं — ${R.ok.map(w=>'‘'+w+'’').join(' और ')}।`,'info');
+ speak(`${R.w} के समान अर्थ वाले शब्द हैं ${R.ok.join(' और ')}`);
+}
+function say(t,c){$('msg').textContent=t;$('msg').className='msg '+c}
+$('sayWord').onclick=()=>voice(ROUNDS[r].aud,ROUNDS[r].w);
+$('sayItext').onclick=()=>{const R=ROUNDS[r];voice(AUDIO.itext,itextPlain(R))};
+$('ansBtn').onclick=showAnswer;
+$('nextBtn').onclick=()=>{try{speechSynthesis.cancel()}catch(e){}r++;if(r<ROUNDS.length)load();else finish()};
+function finish(){['topRow','field','bottomRow'].forEach(id=>$(id).style.display='none');$('end').style.display='flex';$('dots').innerHTML='';
+ $('garden').textContent='🌸'.repeat(ROUNDS.length);
+ $('score').textContent=`${ROUNDS.length} में से ${firstTry} फूल तुमने खुद, पहली बार में खिलाए!`;
+ if(!playFile(AUDIO.end))sBloom()}
+load();
+</script>
+</body>
+</html>

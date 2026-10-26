@@ -1,0 +1,789 @@
+/* ==========================================================================
+   जासूस पहचानो! (wg214)
+   Layout is authored on a fixed 1920x1080 stage (matching the AI layout)
+   and scaled to the window by script.js, so the widget always fits one screen.
+   ========================================================================== */
+
+:root {
+  --title-bg: #e70000;
+  --sky: #a8fbf2;
+  --grass: #22b33f;
+  --board: #fcff9f;
+  --board-line: #d85a41;
+  --board-shadow: #ec7760;
+  --itext-bg: #00e8a9;
+  --spy: #400057;
+  --spy-line: #ffdf00;
+  --hindi: "Nirmala UI", "Noto Sans Devanagari", "Mangal", "Roboto", sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  overflow: hidden;
+}
+
+body {
+  background: var(--sky);
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mainContainerOuter {
+  background: var(--sky);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Layering, bottom to top: #viewport (the widget) -> body::before (modal
+   backdrop) -> #modal-layer (end screen) -> .wdgetTitle */
+#viewport,
+#modal-layer {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+}
+
+/* Full-window backdrop: sky above, grass below, so the letterbox bars
+   continue the picture (script.js sets --grass-y to the stage's grass line). */
+#viewport {
+  z-index: 1;
+  background: linear-gradient(to bottom, var(--sky) 0, var(--sky) var(--grass-y, 85%), var(--grass) var(--grass-y, 85%), var(--grass) 100%);
+}
+
+/* Dark backdrop behind an open modal, covering the whole viewport. */
+body.has-modal::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  background: rgba(0, 0, 0, 0.8);
+}
+
+#modal-layer {
+  z-index: 3;
+  pointer-events: none;
+}
+
+body.has-modal #modal-layer {
+  pointer-events: auto;
+}
+
+/* #stage holds the widget, #modal-stage the modals; both are the same fixed
+   1920x1080 design stage, scaled together by script.js. */
+#stage,
+#modal-stage {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1920px;
+  height: 1080px;
+  transform-origin: 0 0;
+  overflow: hidden;
+  font-family: var(--hindi);
+  line-height: 1.3;
+  color: #000;
+}
+
+.stage-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+button {
+  font-family: var(--hindi);
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+button:focus-visible,
+[tabindex]:focus-visible {
+  outline: 4px solid #1a73e8;
+  outline-offset: 3px;
+}
+
+button:disabled {
+  opacity: .5;
+  cursor: default;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+/* ---------- title (outside the scaled stage, same as previous widgets) ---------- */
+#jasus-widget .wdgetTitle {
+  position: absolute;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  left: 0;
+  top: 0;
+  z-index: 30;
+}
+
+#jasus-widget .wdgetTitle h2 {
+  margin: 0;
+  font-family: var(--hindi);
+  font-size: 25px;
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: left;
+  background: var(--title-bg);
+  padding: 8px 40px;
+  color: #fff;
+  border-radius: 0 0px 20px 20px;
+  white-space: nowrap;
+}
+
+#jasus-widget .versionText {
+  position: absolute;
+  right: 20px;
+  top: 10px !important;
+  font-size: 12px;
+  line-height: 1;
+  color: rgb(0 0 0 / 25%);
+}
+
+/* ---------- emblem, counter, i-text ---------- */
+.emblem {
+  position: absolute;
+  left: 1722.7px;
+  top: 0;
+  width: 156.7px;
+  height: 184.5px;
+  pointer-events: none;
+}
+
+.counter {
+  position: absolute;
+  right: 220px;
+  top: 64px;
+  margin: 0;
+  padding: 6px 24px;
+  border-radius: 24px;
+  background: #004141;
+  font-size: 28px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.itext {
+  position: absolute;
+  left: 258px;
+  top: 146px;
+  width: 1418px;
+  height: 52px;
+  border-radius: 10px;
+  background: var(--itext-bg);
+}
+
+.itext p {
+  position: absolute;
+  left: 26px;
+  top: 0;
+  bottom: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  font-size: 30px;
+  white-space: nowrap;
+}
+
+.audio-btn {
+  position: absolute;
+  left: 1356px;
+  top: -6.5px;
+  width: 68.8px;
+  height: 68.8px;
+  border-radius: 50%;
+}
+
+.audio-btn img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.audio-btn.is-playing img {
+  animation: pulse .7s ease-in-out infinite alternate;
+}
+
+@keyframes pulse {
+  to {
+    transform: scale(1.1);
+  }
+}
+
+/* ---------- forts (children are placed in fort-local px) ---------- */
+.fort {
+  position: absolute;
+  top: 200px;
+  height: 620px;
+  border-radius: 30px;
+  cursor: pointer;
+}
+
+.fort--a {
+  left: 50px;
+  width: 700px;
+}
+
+.fort--b {
+  left: 1235px;
+  width: 650px;
+}
+
+.fort.is-over {
+  background: rgb(255 40 40 / 14%);
+  box-shadow: 0 0 0 5px #ff2b2b;
+}
+
+.board {
+  position: absolute;
+  top: 224px;
+  width: 205px;
+  height: 86px;
+  padding-bottom: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 5px solid var(--board-line);
+  border-radius: 21px;
+  background: var(--board);
+  box-shadow: 0 9px 0 var(--board-shadow);
+  font-size: 50px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.fort--a .board {
+  left: 252px;
+}
+
+.fort--b .board {
+  left: 213px;
+}
+
+.members {
+  position: absolute;
+  top: 349px;
+  left: 0;
+  right: 0;
+}
+
+.member {
+  position: absolute;
+  top: 0;
+  width: 172px;
+  height: 64px;
+  padding-bottom: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 4px dashed #707070;
+  border-radius: 20px;
+  background: rgb(255 255 255 / 45%);
+  font-size: 35px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.member.is-filled {
+  background: #fff;
+  animation: pop .4s ease-out;
+}
+
+.fort--a .member:nth-child(1) { left: 89px; }
+.fort--a .member:nth-child(2) { left: 269px; }
+.fort--a .member:nth-child(3) { left: 449px; }
+.fort--b .member:nth-child(1) { left: 50px; }
+.fort--b .member:nth-child(2) { left: 230px; }
+.fort--b .member:nth-child(3) { left: 410px; }
+
+@keyframes pop {
+  0% {
+    transform: scale(.4);
+  }
+
+  70% {
+    transform: scale(1.1);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* a spy that slipped into a fort */
+.spies-in {
+  position: absolute;
+  top: 424px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.spy-chip {
+  height: 54px;
+  padding: 0 16px 4px 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 4px dashed var(--spy-line);
+  border-radius: 18px;
+  background: var(--spy);
+  font-size: 30px;
+  font-weight: 700;
+  color: #fff;
+  white-space: nowrap;
+  animation: pop .4s ease-out;
+}
+
+.spy-chip img {
+  width: 44px;
+  height: 33px;
+}
+
+/* three bricks on the battlements; a spy knocks one down */
+.bricks {
+  position: absolute;
+  display: flex;
+  gap: 14px;
+}
+
+.fort--a .bricks {
+  left: 236px;
+  top: 22px;
+}
+
+.fort--b .bricks {
+  left: 226px;
+  top: 98px;
+}
+
+.bricks i {
+  width: 62px;
+  height: 26px;
+  border-radius: 3px;
+  background: #e2704a;
+  box-shadow: inset 0 -6px 0 rgb(0 0 0 / 22%), inset 0 0 0 2px rgb(0 0 0 / 15%);
+}
+
+.fort--b .bricks i {
+  background: #8a6a40;
+}
+
+.bricks i.is-fallen {
+  animation: brick-fall .9s ease-in forwards;
+}
+
+@keyframes brick-fall {
+  20% {
+    transform: rotate(-14deg) translateY(-6px);
+  }
+
+  100% {
+    transform: translate(-40px, 520px) rotate(-160deg);
+    opacity: 0;
+  }
+}
+
+/* gate doors rest swung open at the sides; they shut behind a soldier who enters */
+.gate {
+  position: absolute;
+  width: 160px;
+  height: 140px;
+  display: flex;
+  border-radius: 80px 80px 0 0 / 60px 60px 0 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.fort--a .gate {
+  left: 275px;
+  top: 475px;
+}
+
+.fort--b .gate {
+  left: 252px;
+  top: 476px;
+  width: 143px;
+}
+
+.gate i {
+  flex: 1;
+  background: repeating-linear-gradient(90deg, #8b4a1f 0 18px, #74391a 18px 21px);
+  transform: scaleX(0);
+  transition: transform .35s ease;
+}
+
+.gate i:first-child {
+  transform-origin: 0 50%;
+}
+
+.gate i:last-child {
+  transform-origin: 100% 50%;
+}
+
+.fort.is-shut .gate i {
+  transform: scaleX(1);
+}
+
+/* ---------- queue + checkpoint ---------- */
+.queue img {
+  position: absolute;
+  pointer-events: none;
+  transition: opacity .3s;
+}
+
+.queue img:nth-child(1) {
+  left: 747.8px;
+  top: 561.1px;
+  width: 143.2px;
+  height: 255.1px;
+}
+
+.queue img:nth-child(2) {
+  left: 983.4px;
+  top: 540px;
+  width: 133.6px;
+  height: 238.1px;
+  opacity: .8;
+}
+
+.queue-count {
+  position: absolute;
+  left: 750px;
+  top: 470px;
+  margin: 0;
+  padding: 2px 16px;
+  border-radius: 16px;
+  background: rgb(0 65 65 / 85%);
+  font-size: 24px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.soldier {
+  position: absolute;
+  left: 838px;
+  top: 465px;
+  width: 201px;
+  height: 354px;
+  cursor: grab;
+  touch-action: none;
+  z-index: 6;
+  animation: march-in .6s ease-out;
+}
+
+@keyframes march-in {
+  from {
+    transform: translateX(-140px);
+    opacity: 0;
+  }
+
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+.soldier.is-dragging {
+  z-index: 20;
+  cursor: grabbing;
+}
+
+.soldier__body {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  transition: filter .3s;
+}
+
+.soldier__disguise {
+  position: absolute;
+  left: 44px;
+  top: -18px;
+  width: 120px;
+  height: 90px;
+  opacity: 0;
+  transform: translateY(-30px) scale(.6);
+  transition: opacity .3s, transform .3s cubic-bezier(.3, 1.6, .5, 1);
+  pointer-events: none;
+}
+
+.soldier.is-spy .soldier__body {
+  filter: brightness(.35) saturate(.4);
+}
+
+.soldier.is-spy .soldier__disguise {
+  opacity: 1;
+  transform: none;
+}
+
+/* word board on the soldier's chest (design: white board, red frame) */
+.soldier__word {
+  position: absolute;
+  left: 75px;
+  top: 77px;
+  min-width: 173px;
+  height: 85px;
+  padding: 0 18px 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 5px solid var(--board-line);
+  border-radius: 21px;
+  background: #fff;
+  box-shadow: 0 8px 0 var(--board-shadow);
+  font-size: 40px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.soldier.is-shake {
+  animation: shake .45s ease;
+}
+
+@keyframes shake {
+
+  20%,
+  60% {
+    translate: -12px 0;
+  }
+
+  40%,
+  80% {
+    translate: 12px 0;
+  }
+}
+
+.soldier.is-saluting {
+  animation: salute .7s ease;
+}
+
+@keyframes salute {
+  0% {
+    translate: 0 0;
+  }
+
+  30% {
+    translate: 0 -60px;
+  }
+
+  55% {
+    translate: 0 0;
+    rotate: -6deg;
+  }
+
+  80% {
+    rotate: 6deg;
+  }
+
+  100% {
+    rotate: 0deg;
+  }
+}
+
+/* ---------- lens zone ---------- */
+.lens {
+  position: absolute;
+  left: 710px;
+  top: 629px;
+  width: 537px;
+  height: 250px;
+  cursor: pointer;
+  z-index: 7;
+}
+
+.lens__art {
+  position: absolute;
+  left: -2px;
+  top: -33px;
+  width: 541px;
+  height: 285px;
+  pointer-events: none;
+}
+
+.lens.is-over .lens__art {
+  filter: drop-shadow(0 0 12px #ff2b2b) drop-shadow(0 0 4px #ff2b2b);
+}
+
+.lens__label {
+  position: absolute;
+  left: 142px;
+  top: 70px;
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.lens__spies {
+  position: absolute;
+  left: 53px;
+  top: 128px;
+  width: 363px;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.lens__spies span {
+  width: 168px;
+  height: 62px;
+  padding-bottom: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 4px dashed var(--spy-line);
+  border-radius: 20px;
+  background: var(--spy);
+  font-size: 33px;
+  font-weight: 700;
+  color: #fff;
+  white-space: nowrap;
+  animation: pop .4s ease-out;
+}
+
+/* ---------- timer ---------- */
+.timer {
+  position: absolute;
+  left: 840px;
+  top: 900px;
+  width: 280px;
+  height: 18px;
+  border-radius: 9px;
+  background: rgb(0 0 0 / 35%);
+  border: 2px solid #fff;
+  overflow: hidden;
+  z-index: 7;
+}
+
+.timer__bar {
+  width: 100%;
+  height: 100%;
+  background: #ffdf00;
+}
+
+.timer__bar.is-low {
+  background: #ff3b3b;
+}
+
+/* ---------- buttons ---------- */
+.btn {
+  position: absolute;
+  height: 75px;
+  border: 1px solid #707070;
+  border-radius: 37.5px;
+  font-size: 35px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.btn--answer {
+  left: 121px;
+  top: 979px;
+  width: 228px;
+  background: #fff715;
+  color: #000;
+}
+
+.btn--next {
+  left: 1506px;
+  top: 979px;
+  width: 340px;
+  padding: 0 0 0 35px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  background: #004141;
+  color: #fff;
+}
+
+.btn--next img {
+  width: 31.5px;
+  height: 31.4px;
+}
+
+/* ---------- end screen (modal) ---------- */
+.end {
+  position: absolute;
+  left: 410px;
+  top: 220px;
+  width: 1100px;
+  padding: 40px 60px 60px;
+  border-radius: 40px;
+  background: #fffbe0;
+  border: 6px solid var(--title-bg);
+  text-align: center;
+  animation: end-in .5s cubic-bezier(.3, 1.4, .5, 1);
+}
+
+@keyframes end-in {
+  from {
+    transform: scale(.7);
+    opacity: 0;
+  }
+
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+.end__emblem {
+  height: 150px;
+}
+
+.end__title {
+  margin: 20px 0 0;
+  font-size: 64px;
+  font-weight: 700;
+  color: var(--title-bg);
+}
+
+.end__score {
+  margin: 26px 0 0;
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 50px;
+}
+
+.btn--again {
+  position: static;
+  margin-top: 40px;
+  width: 300px;
+  background: #004141;
+  color: #fff;
+}
