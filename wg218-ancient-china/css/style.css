@@ -81,9 +81,8 @@ body {
   content: "";
   position: absolute;
   inset: -40px;
-  background: inherit;
+  background: #000;
   background-size: cover;
-  filter: blur(18px);
 }
 
 #viewport[data-bg="intro"] {
