@@ -1,0 +1,686 @@
+/* ==========================================================================
+   फूल खिलाओ (wg210)
+   Layout is authored on a fixed 1920x1080 stage (matching the AI layout)
+   and scaled to the window by script.js, so the widget always fits one screen.
+   ========================================================================== */
+
+:root {
+  --title-bg: #a20067;
+  --sky: #fee9d4;
+  --hill: #fbbf3b;
+  --ink: #700707;
+  --tag-fill: #fcff9f;
+  --tag-line: #d85a41;
+  --tag-shadow: #ec7760;
+  --mint: #cfffe9;
+  --blue-ink: #2e50ae;
+  --green: #358400;
+  --blue: #2d25ea;
+  --hindi: "Nirmala UI", "Noto Sans Devanagari", "Mangal", "Roboto", sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  overflow: hidden;
+}
+
+body {
+  background: var(--sky);
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mainContainerOuter {
+  background: var(--sky);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Layering, bottom to top: #viewport (the widget) -> body::before (modal
+   backdrop) -> #modal-layer (end screen) -> .wdgetTitle */
+#viewport,
+#modal-layer {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+}
+
+/* Full-window backdrop: sky above, the yellow hill below, so the letterbox
+   bars continue the picture (script.js sets --hill-y to the stage's hill line). */
+#viewport {
+  z-index: 1;
+  background: linear-gradient(to bottom, var(--sky) 0, var(--sky) var(--hill-y, 90%), var(--hill) var(--hill-y, 90%), var(--hill) 100%);
+}
+
+/* Dark backdrop behind an open modal, covering the whole viewport. */
+body.has-modal::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  background: rgba(0, 0, 0, 0.8);
+}
+
+#modal-layer {
+  z-index: 3;
+  pointer-events: none;
+}
+
+body.has-modal #modal-layer {
+  pointer-events: auto;
+}
+
+/* #stage holds the widget, #modal-stage the modals; both are the same fixed
+   1920x1080 design stage, scaled together by script.js. */
+#stage,
+#modal-stage {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1920px;
+  height: 1080px;
+  transform-origin: 0 0;
+  overflow: hidden;
+  font-family: var(--hindi);
+  line-height: 1.3;
+  color: #000;
+}
+
+.stage-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+button {
+  font-family: var(--hindi);
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+button:focus-visible,
+[tabindex]:focus-visible {
+  outline: 4px solid #1a73e8;
+  outline-offset: 3px;
+}
+
+button:disabled {
+  opacity: .5;
+  cursor: default;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+/* ---------- title (outside the scaled stage, same as previous widgets) ---------- */
+#phool-widget .wdgetTitle {
+  position: absolute;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  left: 0;
+  top: 0;
+  z-index: 30;
+}
+
+#phool-widget .wdgetTitle h2 {
+  margin: 0;
+  font-family: var(--hindi);
+  font-size: 25px;
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: left;
+  background: var(--title-bg);
+  padding: 8px 40px;
+  color: #fff;
+  border-radius: 0 0px 20px 20px;
+  white-space: nowrap;
+}
+
+#phool-widget .versionText {
+  position: absolute;
+  right: 20px;
+  top: 10px !important;
+  font-size: 12px;
+  line-height: 1;
+  color: rgb(0 0 0 / 25%);
+}
+
+/* ---------- i-text ---------- */
+.itext {
+  position: absolute;
+  left: 536px;
+  top: 126.4px;
+  width: 832px;
+  height: 69px;
+  border-radius: 23px;
+  background: #ffdfb3;
+  border: 1px solid #e7b774;
+}
+
+.itext p {
+  position: absolute;
+  left: 34px;
+  right: 60px;
+  top: 0;
+  bottom: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  font-size: 30px;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.audio-btn {
+  position: absolute;
+  border-radius: 50%;
+}
+
+.audio-btn img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.audio-btn--itext {
+  left: 778px;
+  top: -2px;
+  width: 70px;
+  height: 70px;
+}
+
+.audio-btn.is-playing img {
+  animation: pulse .7s ease-in-out infinite alternate;
+}
+
+@keyframes pulse {
+  from {
+    transform: scale(1);
+  }
+
+  to {
+    transform: scale(1.1);
+  }
+}
+
+/* ---------- word card ---------- */
+.card {
+  position: absolute;
+  left: 100px;
+  top: 190px;
+  width: 445px;
+  height: 710px;
+}
+
+.card__frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.card__pic {
+  position: absolute;
+  left: 52px;
+  top: 33px;
+  width: 352px;
+  height: 243px;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 39px;
+  overflow: hidden;
+}
+
+.card__pic img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.card__word {
+  position: absolute;
+  left: 48.5px;
+  top: 282.9px;
+  width: 358.5px;
+  height: 167px;
+  border-radius: 41px;
+  background: rgb(207 255 233 / 44%);
+}
+
+.card__word span {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 8px;
+  text-align: center;
+  font-size: 80px;
+  font-weight: 700;
+  line-height: 100px;
+  color: #000;
+}
+
+.audio-btn--word {
+  left: 182px;
+  top: 405px;
+  width: 86px;
+  height: 86px;
+}
+
+/* the two meanings found so far (design: list under the word) */
+.found {
+  position: absolute;
+  left: 48.5px;
+  top: 502.9px;
+  width: 358.5px;
+  height: 166px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-radius: 41px;
+  background: var(--mint);
+}
+
+.found::after {
+  content: "";
+  position: absolute;
+  left: 1px;
+  right: 0;
+  top: 81px;
+  border-top: 4px dashed #00c4da;
+}
+
+.found li {
+  position: absolute;
+  left: 59px;
+  right: 44px;
+  height: 66px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 40px;
+  font-weight: 700;
+  color: var(--blue-ink);
+}
+
+.found li:nth-child(1) {
+  top: 9px;
+}
+
+.found li:nth-child(2) {
+  top: 92px;
+}
+
+.found li img {
+  width: 53px;
+  height: 29px;
+  opacity: .3;
+  filter: grayscale(1);
+  transition: opacity .3s, filter .3s;
+}
+
+.found li span {
+  min-height: 1em;
+}
+
+.found li.is-found img {
+  opacity: 1;
+  filter: none;
+  animation: pop .45s ease-out;
+}
+
+.found li.is-found span {
+  animation: pop .45s ease-out;
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(.2);
+  }
+
+  70% {
+    transform: scale(1.18);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* ---------- flower ---------- */
+.flower {
+  position: absolute;
+  left: 1080px;
+  top: 440px;
+  width: 280px;
+  height: 540px;
+}
+
+.flower img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.flower__petals {
+  transform-origin: 53.4% 30.7%;
+  transform: scale(0) rotate(-40deg);
+  opacity: 0;
+  transition: transform .7s cubic-bezier(.3, 1.6, .5, 1), opacity .4s ease;
+}
+
+.flower.is-half .flower__petals--half,
+.flower.is-full .flower__petals {
+  transform: none;
+  opacity: 1;
+}
+
+.flower.is-full .flower__petals--full {
+  transition-delay: .1s;
+}
+
+.flower.is-full {
+  animation: bloom-glow 1.2s ease-out;
+}
+
+@keyframes bloom-glow {
+  0% {
+    filter: drop-shadow(0 0 0 rgb(255 230 80 / 0));
+  }
+
+  40% {
+    filter: drop-shadow(0 0 40px rgb(255 230 80 / 1));
+  }
+
+  100% {
+    filter: drop-shadow(0 0 0 rgb(255 230 80 / 0));
+  }
+}
+
+.flower.is-over {
+  filter: drop-shadow(0 0 22px rgb(255 60 60 / .9));
+}
+
+/* ---------- butterflies ---------- */
+.fly {
+  position: absolute;
+  width: 211px;
+  height: 235px;
+  touch-action: none;
+  cursor: grab;
+  z-index: 4;
+}
+
+.fly.is-dragging {
+  z-index: 10;
+  cursor: grabbing;
+}
+
+.fly__float {
+  position: absolute;
+  inset: 0;
+  animation: hover 2.6s ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+}
+
+.fly.is-dragging .fly__float,
+.fly.is-flying .fly__float {
+  animation: none;
+}
+
+@keyframes hover {
+
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+
+  50% {
+    transform: translate(6px, -12px);
+  }
+}
+
+.fly__wings {
+  position: absolute;
+  left: 44px;
+  top: 0;
+  width: 123px;
+  height: 116px;
+  animation: flap .5s ease-in-out infinite alternate;
+  animation-delay: var(--delay, 0s);
+}
+
+@keyframes flap {
+  from {
+    transform: scaleX(1);
+  }
+
+  to {
+    transform: scaleX(.72);
+  }
+}
+
+.fly__tag {
+  position: absolute;
+  left: 50%;
+  top: 121px;
+  min-width: 211px;
+  height: 104px;
+  padding: 0 20px 6px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 5px solid var(--tag-line);
+  border-radius: 21px;
+  background: var(--tag-fill);
+  box-shadow: 0 9px 0 var(--tag-shadow);
+  font-size: 60px;
+  font-weight: 700;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.fly.is-shake .fly__float {
+  animation: shake .45s ease;
+}
+
+.fly.is-shake .fly__tag {
+  border-color: #e11;
+}
+
+@keyframes shake {
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  20%,
+  60% {
+    transform: translateX(-12px);
+  }
+
+  40%,
+  80% {
+    transform: translateX(12px);
+  }
+}
+
+.fly.is-faded {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .6s ease;
+}
+
+/* ---------- feedback ---------- */
+.feedback {
+  position: absolute;
+  left: 50%;
+  top: 868px;
+  max-width: 1040px;
+  margin: 0;
+  padding: 12px 34px;
+  transform: translateX(-50%);
+  border-radius: 23px;
+  background: #fff;
+  border: 3px solid #e7b774;
+  box-shadow: 0 4px 0 rgb(0 0 0 / 12%);
+  text-align: center;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 44px;
+  white-space: nowrap;
+  color: var(--ink);
+  z-index: 6;
+  animation: rise .35s ease-out;
+}
+
+.feedback.is-good {
+  border-color: #47a11b;
+  color: #1f6b00;
+}
+
+.feedback.is-answer {
+  border-color: #2d25ea;
+  color: #1b178f;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+/* ---------- buttons ---------- */
+.btn {
+  position: absolute;
+  height: 75px;
+  border: 1px solid #707070;
+  border-radius: 37.5px;
+  font-size: 35px;
+  font-weight: 700;
+  color: #fff;
+  white-space: nowrap;
+}
+
+.btn--answer {
+  left: 841px;
+  top: 979px;
+  width: 228px;
+  background: var(--green);
+}
+
+.btn--next {
+  left: 1276px;
+  top: 979px;
+  width: 340px;
+  padding: 0 0 0 34px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  background: var(--blue);
+}
+
+.btn--next img {
+  width: 32px;
+  height: 31px;
+}
+
+/* ---------- end screen (modal) ---------- */
+.end {
+  position: absolute;
+  left: 360px;
+  top: 200px;
+  width: 1200px;
+  padding-bottom: 60px;
+  border-radius: 40px;
+  background: #fff8ec;
+  border: 6px solid #e7b774;
+  text-align: center;
+  animation: end-in .5s cubic-bezier(.3, 1.4, .5, 1);
+}
+
+@keyframes end-in {
+  from {
+    transform: scale(.7);
+    opacity: 0;
+  }
+
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+.end__title {
+  margin: 56px 0 0;
+  font-size: 64px;
+  font-weight: 700;
+  color: var(--title-bg);
+}
+
+.end__garden {
+  margin: 34px auto 0;
+  width: 1040px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 18px 14px;
+}
+
+.end__garden img {
+  width: 72px;
+  height: 40px;
+  animation: pop .5s ease-out both;
+}
+
+.end__score {
+  margin: 44px 60px 0;
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 50px;
+  color: var(--ink);
+}
+
+.btn--again {
+  position: static;
+  margin-top: 46px;
+  width: 300px;
+  background: var(--green);
+}
