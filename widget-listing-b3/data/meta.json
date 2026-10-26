@@ -153,7 +153,7 @@
       "author": "tce-nitinc"
     },
     "wg204-capitals-of-india": {
-      "updatedAt": "2026-10-26T15:12:30+05:30",
+      "updatedAt": "2026-10-26T15:34:10+05:30",
       "author": "tce-nitinc"
     },
     "wg205-species-z-factor-explorer": {
@@ -198,6 +198,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-10-26T15:34:10+05:30",
+      "author": "tce-nitinc",
+      "message": "added blink effect on proceed button",
+      "widgets": [
+        204
+      ]
+    },
     {
       "date": "2026-10-26T15:12:30+05:30",
       "author": "tce-nitinc",
@@ -443,14 +451,6 @@
       "message": "wg163 fixes",
       "widgets": [
         163
-      ]
-    },
-    {
-      "date": "2026-10-19T10:58:01+05:30",
-      "author": "tce-nitinc",
-      "message": "wg 223 fixes",
-      "widgets": [
-        223
       ]
     }
   ]
