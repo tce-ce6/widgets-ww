@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>&ZeroWidthSpace;Wonders of Ancient China&ZeroWidthSpace;</title>
+
+  <link rel="stylesheet" href="./css/global_style.css">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body id="china-widget">
+  <!-- Polite live region so screen readers hear feedback messages -->
+  <div id="liveRegion" class="sr-only" aria-live="polite"></div>
+
+  <div class="container">
+    <div class="mainContainerOuter">
+      <div class="wdgetTitle">
+        <h2>&ZeroWidthSpace;Wonders of Ancient China&ZeroWidthSpace;</h2>
+        <span id="versionId" class="versionText">b4_wg218_261026_01</span>
+      </div>
+      <div id="viewport" data-bg="intro">
+        <!-- Fixed 1920x1080 design stage, scaled to fit the window by script.js -->
+        <div id="stage">
+          <img class="stage-bg stage-bg--intro" src="assets/images/intro-bg.jpg" alt="">
+          <img class="stage-bg stage-bg--market" src="assets/images/market-bg.jpg" alt="">
+          <div class="stage-tint"></div>
+
+          <!-- ============ SCREEN 1: TITLE ============ -->
+          <section id="screen-intro" class="screen" aria-label="An ancient Chinese town">
+            <p class="itext itext--intro">Tap the red arrow to step into the market street.</p>
+            <button class="intro-arrow" id="introArrow" type="button" aria-label="Step into the market street">
+              <img src="assets/svg/intro-arrow.svg" alt="">
+            </button>
+          </section>
+
+          <!-- ============ SCREEN 2: THE MARKET STREET ============ -->
+          <section id="screen-market" class="screen" aria-label="The market street">
+            <p class="market-itext" id="marketItext"></p>
+            <div class="shops" id="shops"></div>
+            <button class="btn btn--summary market-summary" id="marketSummaryBtn" type="button" hidden>See the Summary <span aria-hidden="true">&rarr;</span></button>
+          </section>
+
+          <!-- ============ SCREEN 3: THE TIMEKEEPER'S STALL ============ -->
+          <section id="screen-timeline" class="screen act" aria-labelledby="title-timeline">
+            <div class="panel"></div>
+            <h3 class="ribbon" id="title-timeline" style="--w: 428px">The Timekeeper's Stall</h3>
+            <p class="itext act-itext act-itext--timeline">Four dynasties, eighteen hundred years. Drag each dynasty card onto its place on the timeline, then tap <span class="i-inline" aria-hidden="true">i</span> to read the fact.</p>
+            <div class="tl" id="tl">
+              <img class="tl__rail" src="assets/svg/timeline.svg" alt="">
+              <div class="tl__cols" id="tlCols"></div>
+              <div class="tl__tray" id="tlTray"></div>
+            </div>
+            <div class="tl-fact" id="tlFact" role="status" hidden></div>
+            <p class="act-note act-note--timeline" id="tlNote" role="status"></p>
+            <div class="act-btns">
+              <button class="btn btn--reset" id="tlReset" type="button">Reset</button>
+              <button class="btn btn--back" type="button" data-back>Back to the market</button>
+            </div>
+          </section>
+
+          <!-- ============ SCREEN 6: THE CITY BUILDER'S YARD ============ -->
+          <section id="screen-city" class="screen act act--tall" aria-labelledby="title-city">
+            <div class="panel"></div>
+            <p class="itext act-itext act-itext--city">Drag each of the ten parts of the city onto the zone where it belongs.</p>
+            <div class="city" id="city">
+              <div class="city__tray" id="cityTray"></div>
+              <div class="city__map" id="cityMap">
+                <img class="city__img" src="assets/images/city-map.png" alt="A riverside landscape: the Huang He along the bottom, an enclosed settlement in the middle and raised ground to the upper right.">
+                <img class="city__built" id="cityBuilt" src="assets/images/city-built.jpg" alt="The finished Shang city: fields and channels by the river, houses, workshops and a market in the centre, a palace and temple on the high ground, and a wall all round." hidden>
+                <svg class="city__zones" id="cityZones" viewBox="118 311 1683 672" aria-hidden="true">
+                  <polygon class="zone" data-zone="river" points="118,580 262,598 380,650 500,694 750,745 940,786 1170,816 1370,794 1640,712 1801,672 1801,983 118,983"></polygon>
+                  <polygon class="zone" data-zone="centre" points="372,600 470,548 830,452 1000,430 1185,470 1300,560 1620,688 1605,728 1350,795 950,786 700,738 500,690 382,642"></polygon>
+                  <polygon class="zone" data-zone="high" points="1192,520 1250,452 1356,428 1570,486 1628,520 1515,604 1325,560"></polygon>
+                  <path class="zone zone--edge" data-zone="edge" d="M262,590 L345,527 L590,446 L700,404 L1020,362 L1300,378 L1690,486 L1722,612 L1640,708 L1370,792 L1170,814 L940,784 L750,742 L500,692 Z"></path>
+                </svg>
+                <span class="zone-lbl zone-lbl--edge">City edge</span>
+                <span class="zone-lbl zone-lbl--river">Riverbank</span>
+                <span class="zone-lbl zone-lbl--centre">Settlement<br>centre</span>
+                <span class="zone-lbl zone-lbl--high">High ground</span>
+                <div class="city__placed" id="cityPlaced"></div>
+              </div>
+              <h3 class="ribbon ribbon--city" id="title-city" style="--w: 428px">The City Builder's Yard</h3>
+            </div>
+            <p class="note-box" id="cityNote" role="status" hidden></p>
+            <div class="act-btns act-btns--city">
+              <button class="btn btn--reset" id="cityReset" type="button">Rebuild</button>
+              <button class="btn btn--back" type="button" data-back>Back to the market</button>
+              <button class="btn btn--next" id="cityBuiltBtn" type="button" hidden>See the Built City</button>
+            </div>
+          </section>
+
+          <!-- ============ SCREEN 8: THE BRONZE CASTER'S WORKSHOP ============ -->
+          <section id="screen-bronze" class="screen act" aria-labelledby="title-bronze">
+            <div class="panel"></div>
+            <h3 class="ribbon" id="title-bronze" style="--w: 526px">The Bronze Caster's Workshop</h3>
+            <p class="itext act-itext act-itext--two" id="bronzeItext">Your city had a bronze workshop — step inside. Drag the six casting stages into slots 1 to 6 in order,<br>and watch the process unfold at every step.</p>
+            <div class="bronze" id="bronze">
+              <figure class="bronze__card" id="bronzeCard">
+                <img class="bronze__frame" src="assets/svg/frame.svg" alt="">
+                <span class="bronze__empty">empty workbench</span>
+                <img class="bronze__stage" id="bronzeStageImg" alt="" hidden>
+              </figure>
+              <p class="bronze__caption" id="bronzeCaption" role="status">Drag the first step into slot 1 to begin.</p>
+              <div class="bronze__tray" id="bronzeTray"></div>
+              <div class="bronze__slots" id="bronzeSlots"></div>
+              <p class="act-note act-note--bronze" id="bronzeNote" role="status"></p>
+            </div>
+            <div class="ding" id="ding" hidden>
+              <h4 class="ding__title">Inspect the vessel</h4>
+              <div class="ding__card"><img src="assets/images/ding.png" alt="A bronze ding: a deep bowl with a flared rim, two upright handles and three legs."></div>
+              <p class="ding__caption">A ding — bronze poured into a clay mould, holding food for the ancestors.</p>
+            </div>
+            <div class="act-btns">
+              <button class="btn btn--reset" id="bronzeReset" type="button">Reset</button>
+              <button class="btn btn--back" type="button" data-back>Back to the market</button>
+            </div>
+          </section>
+
+          <!-- ============ SCREEN 9-10: THE HISTORIAN'S CURIO SHOP ============ -->
+          <section id="screen-oracle" class="screen act act--dark" aria-labelledby="title-oracle">
+            <div class="panel"></div>
+            <h3 class="ribbon" id="title-oracle" style="--w: 474px">The Historian's Curio Shop</h3>
+            <p class="itext act-itext act-itext--two act-itext--gold" id="oracleItext"></p>
+            <svg class="oracle" id="oracle" viewBox="0 0 1920 1080" aria-label="Five oracle bones around a fire pit">
+              <defs>
+                <filter id="boneGlow" x="-30%" y="-30%" width="160%" height="160%">
+                  <feDropShadow dx="0" dy="0" stdDeviation="10" flood-color="#ffca35" flood-opacity=".9"></feDropShadow>
+                </filter>
+                <filter id="boneRead" x="-30%" y="-30%" width="160%" height="160%">
+                  <feDropShadow dx="0" dy="0" stdDeviation="9" flood-color="#4daf4e" flood-opacity="1"></feDropShadow>
+                </filter>
+              </defs>
+              <g class="bone" data-bone="farmer" transform="translate(709.46 297.88) rotate(27.97) scale(.25)"><image href="assets/images/bone-3.png" width="430" height="839"></image></g>
+              <g class="bone" data-bone="king" transform="translate(824.81 383.15) rotate(-47) scale(.24)"><image href="assets/images/bone-4.png" width="661" height="903"></image></g>
+              <g class="bone" data-bone="mother" transform="translate(1136.3261 318.8896) rotate(-30.9989) scale(.2577)"><image href="assets/images/bone-1.png" width="191" height="939"></image></g>
+              <g class="bone" data-bone="potter" transform="translate(531.69 570.74) rotate(-12.19) scale(.28)"><image href="assets/images/bone-2.png" width="641" height="762"></image></g>
+              <g class="bone" data-bone="elder" transform="translate(1203.2822 550.8282) rotate(14.0979) scale(.3039)"><image href="assets/images/bone-5.png" width="402" height="634"></image></g>
+              <g class="cracks" aria-hidden="true">
+                <path data-crack="farmer" d="M654.81,399.67l15.62,42.02,11.22-26.1,13.18,26.1,27.33-26.1,8.3,36.29,18.54-15.28"></path>
+                <path data-crack="king" d="M1009,319.67v53.29l-66.86,15.37,15.35,17.42h-47.13l18.63,34.85-53.71,11.27"></path>
+                <path data-crack="mother" d="M1178.48,410.56c1.5,0,21.04,5.4,21.04,5.4l2.1-5.4,2.71,1.19,5.11-2.81,11.12,4.85,3.61-2.7,5.71.65,5.71-7.88"></path>
+                <path data-crack="potter" d="M535.87,670.12l94.34,17.07,9.28-28.29h18.56v-13.17l36.35,18.53v-34.14l47.94,12.68"></path>
+                <path data-crack="elder" d="M1191.52,630.13h25.07l-3.73,26.67h14.93l5.87,14.4,18.13-7.47,7.47,19.73,32-12.27"></path>
+              </g>
+              <g class="ticks" aria-hidden="true">
+                <image data-tick="farmer" href="assets/svg/tick.svg" x="685" y="281" width="62" height="62"></image>
+                <image data-tick="king" href="assets/svg/tick.svg" x="881" y="281" width="62" height="62"></image>
+                <image data-tick="mother" href="assets/svg/tick.svg" x="1137" y="281" width="62" height="62"></image>
+                <image data-tick="potter" href="assets/svg/tick.svg" x="547" y="549" width="62" height="62"></image>
+                <image data-tick="elder" href="assets/svg/tick.svg" x="1246" y="539" width="62" height="62"></image>
+              </g>
+            </svg>
+            <div class="fire" aria-hidden="true">
+              <img class="fire__flame" id="fireFlame" src="assets/svg/flame.svg" alt="">
+              <img class="fire__logs" src="assets/svg/logs.svg" alt="">
+            </div>
+            <div class="ember" id="ember" role="slider" tabindex="0" aria-label="Heat of the fire" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+              <div class="ember__fill" id="emberFill"></div>
+              <img class="ember__knob" id="emberKnob" src="assets/svg/ember-knob.svg" alt="">
+            </div>
+            <p class="ember-note" id="emberNote" role="status"></p>
+            <div class="act-btns">
+              <button class="btn btn--reset" id="oracleReset" type="button">Reset</button>
+              <button class="btn btn--back" type="button" data-back>Back to the market</button>
+            </div>
+          </section>
+
+          <!-- ============ SCREEN 11: JOURNEY OF THE SILK ============ -->
+          <section id="screen-silk" class="screen act" aria-labelledby="title-silk">
+            <div class="panel"></div>
+            <h3 class="ribbon" id="title-silk" style="--w: 450px">The Silk Merchant's Stall</h3>
+            <p class="tag-ribbon" style="--w: 343px">JOURNEY OF THE SILK</p>
+            <p class="itext act-itext act-itext--silk">Pull the thread and watch it travel. Tap the glowing cocoon, then tap each plaque in turn, from cocoon to loaded cart.</p>
+            <div class="chain" id="chain">
+              <svg class="chain__threads" id="chainThreads" viewBox="0 0 1920 1080" aria-hidden="true">
+                <defs>
+                  <marker id="threadHead" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+                    <path d="M0,0 L10,5 L0,10 z" fill="#f04b47"></path>
+                  </marker>
+                </defs>
+              </svg>
+            </div>
+            <p class="act-note act-note--silk" id="silkNote" role="status"></p>
+            <div class="act-btns">
+              <button class="btn btn--reset" id="silkReset" type="button">Reset</button>
+              <button class="btn btn--back" type="button" data-back>Back to the market</button>
+              <button class="btn btn--next" id="deskBtn" type="button" hidden>Enter the Trade Desk <span aria-hidden="true">&rarr;</span></button>
+            </div>
+          </section>
+
+          <!-- ============ SCREEN 12: THE TRADE DESK ============ -->
+          <section id="screen-desk" class="screen act" aria-labelledby="title-desk">
+            <div class="panel"></div>
+            <h3 class="ribbon" id="title-desk" style="--w: 450px">The Silk Merchant's Stall</h3>
+            <p class="tag-ribbon" style="--w: 284px">THE TRADE DESK</p>
+            <p class="itext act-itext act-itext--silk">Fourteen objects, three directions. Drag each one into its chamber — goes west, traded within China, or arrives from outside.</p>
+            <div class="desk" id="desk">
+              <div class="desk__table">
+                <div class="desk__items" id="deskItems"></div>
+                <div class="desk__clear" id="deskClear" hidden><b>Desk clear</b><span>All fourteen routed</span></div>
+              </div>
+              <div class="chamber" data-chamber="west"><b>Goes West</b><span>onto the caravans</span><div class="chamber__tags"></div></div>
+              <div class="chamber" data-chamber="within"><b>Traded within China</b><span>never leaves</span><div class="chamber__tags"></div></div>
+              <div class="chamber" data-chamber="outside"><b>Arrives from Outside</b><span>comes in</span><div class="chamber__tags"></div></div>
+            </div>
+            <p class="act-note act-note--silk" id="deskNote" role="status"></p>
+            <div class="act-btns">
+              <button class="btn btn--reset" id="deskReset" type="button">Reset</button>
+              <button class="btn btn--back" type="button" data-back>Back to the market</button>
+              <button class="btn btn--next" id="deskSummaryBtn" type="button" hidden>See the Summary <span aria-hidden="true">&rarr;</span></button>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <!-- Modals live in their own scaled layer above the body::before backdrop,
+           so the dark backdrop can cover the whole viewport, not just the stage. -->
+      <div id="modal-layer">
+        <div id="modal-stage">
+          <!-- ============ ORACLE BONE PANEL ============ -->
+          <div class="bone-modal" id="boneModal" role="dialog" aria-modal="true" aria-labelledby="boneScene" hidden>
+            <div class="bone-modal__card" id="boneCard">
+              <p class="asker" id="boneAsker"></p>
+              <h4 class="bone-modal__scene" id="boneScene"></h4>
+              <p class="bone-modal__q" id="boneQ1"></p>
+              <div class="bone-modal__opts" id="boneOpts1"></div>
+              <div class="bone-modal__stage2" id="boneStage2" hidden>
+                <p class="bone-modal__q">What does this reveal?</p>
+                <div class="bone-modal__opts" id="boneOpts2"></div>
+              </div>
+              <p class="bone-modal__fb" id="boneFb" role="status"></p>
+            </div>
+            <button class="close-btn" id="boneClose" type="button" aria-label="Close">
+              <img src="assets/svg/close-btn.svg" alt="">
+            </button>
+          </div>
+
+          <!-- ============ SCREEN 13: SUMMARY ============ -->
+          <div class="summary" id="summary" role="dialog" aria-modal="true" aria-labelledby="summaryTitle" hidden>
+            <div class="summary__panel">
+              <ul class="summary__points">
+                <li>Two rivers — the Huang He and Yangtze fed villages that became cities by 1600 BCE.</li>
+                <li>Our earliest record of China is oracle bones: cracked shells carrying everyone’s<br>worries, not just the king’s.</li>
+                <li>Four dynasties — Shang, Zhou, Qin, Han mastered bronze, jade and marble.</li>
+                <li>Silk became China’s great export, and the road it travelled took its name.</li>
+              </ul>
+              <h4 class="summary__think">Think it through</h4>
+              <ol class="summary__qs">
+                <li>Which of these would you call China’s greatest achievement and why?</li>
+                <li>What would someone three thousand years from now learn about us from the things we leave behind?</li>
+              </ol>
+              <div class="summary__btns">
+                <button class="btn btn--back" type="button" id="summaryBack">Back to the market</button>
+                <button class="btn btn--restart" type="button" id="summaryRestart">Start Over</button>
+              </div>
+            </div>
+            <h3 class="ribbon ribbon--summary" id="summaryTitle" style="--w: 450px">Summary and Reflection</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./js/script.js"></script>
+</body>
+
+</html>
