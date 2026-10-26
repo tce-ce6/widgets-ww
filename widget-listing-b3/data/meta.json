@@ -149,11 +149,11 @@
       "author": "tce-nitinc"
     },
     "wg202-egyptian-museum": {
-      "updatedAt": "2026-10-22T10:51:43+05:30",
+      "updatedAt": "2026-10-26T15:01:49+05:30",
       "author": "tce-nitinc"
     },
     "wg204-capitals-of-india": {
-      "updatedAt": "2026-10-22T15:20:08+05:30",
+      "updatedAt": "2026-10-26T15:12:30+05:30",
       "author": "tce-nitinc"
     },
     "wg205-species-z-factor-explorer": {
@@ -168,6 +168,10 @@
       "updatedAt": "2026-10-23T09:39:54+05:30",
       "author": "tce-ashishg"
     },
+    "wg209-poppulation-density-simulator": {
+      "updatedAt": "2026-10-26T12:32:30+05:30",
+      "author": "Shyamsunder Hait"
+    },
     "wg211-railgadi-banao": {
       "updatedAt": "2026-10-19T14:36:42+05:30",
       "author": "tce-nitinc"
@@ -175,6 +179,10 @@
     "wg212-sabdo-me-swar-ki-khoj-gujrati": {
       "updatedAt": "2026-10-19T16:13:28+05:30",
       "author": "tce-ashishg"
+    },
+    "wg218-ancient-china": {
+      "updatedAt": "2026-10-26T13:03:25+05:30",
+      "author": "tce-nitinc"
     },
     "wg223-leaf-lab-transpiration": {
       "updatedAt": "2026-10-19T10:58:01+05:30",
@@ -190,6 +198,47 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-10-26T15:12:30+05:30",
+      "author": "tce-nitinc",
+      "message": "added blink effect on 204",
+      "widgets": [
+        204
+      ]
+    },
+    {
+      "date": "2026-10-26T15:01:49+05:30",
+      "author": "tce-nitinc",
+      "message": "fixed 202 changes",
+      "widgets": [
+        202
+      ]
+    },
+    {
+      "date": "2026-10-26T13:03:25+05:30",
+      "author": "tce-nitinc",
+      "message": "wg208 removed unwanted files",
+      "widgets": [
+        218
+      ]
+    },
+    {
+      "date": "2026-10-26T12:32:30+05:30",
+      "author": "Shyamsunder Hait",
+      "message": "wg209 added",
+      "widgets": [
+        209,
+        218
+      ]
+    },
+    {
+      "date": "2026-10-26T12:22:30+05:30",
+      "author": "tce-nitinc",
+      "message": "resolved comments of wg 204",
+      "widgets": [
+        204
+      ]
+    },
     {
       "date": "2026-10-23T09:39:40+05:30",
       "author": "tce-ashishg",
@@ -402,52 +451,6 @@
       "message": "wg 223 fixes",
       "widgets": [
         223
-      ]
-    },
-    {
-      "date": "2026-10-16T18:34:01+05:30",
-      "author": "Shyamsunder Hait",
-      "message": "removed unwanted files",
-      "widgets": [
-        205,
-        212
-      ]
-    },
-    {
-      "date": "2026-10-16T18:20:49+05:30",
-      "author": "Shyamsunder Hait",
-      "message": "wg201",
-      "widgets": [
-        201
-      ]
-    },
-    {
-      "date": "2026-10-16T17:37:41+05:30",
-      "author": "Shyamsunder Hait",
-      "message": "remove unwanted files",
-      "widgets": [
-        205
-      ]
-    },
-    {
-      "date": "2026-10-16T17:26:57+05:30",
-      "author": "Shyamsunder Hait",
-      "message": "ui fixes",
-      "widgets": [
-        178,
-        189,
-        202,
-        204,
-        205,
-        211
-      ]
-    },
-    {
-      "date": "2026-10-16T14:38:39+05:30",
-      "author": "tce-nitinc",
-      "message": "wg212 fixes",
-      "widgets": [
-        212
       ]
     }
   ]
