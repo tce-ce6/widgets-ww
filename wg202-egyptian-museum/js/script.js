@@ -219,9 +219,7 @@
   const Sound = (function () {
     let ctx = null;
     let master = null;
-    let bus = null;
     let muted = false;
-    let live = [];
     let noise = null;
 
     function ensure() {
@@ -276,125 +274,55 @@
       }
     }
 
-    function noiseBurst(when, duration, gainValue, filterType, frequency, q) {
-      const src = ctx.createBufferSource();
-      const filter = ctx.createBiquadFilter();
-      const gain = ctx.createGain();
-      src.buffer = noise;
-      filter.type = filterType;
-      filter.frequency.value = frequency;
-      filter.Q.value = q || 1;
-      gain.gain.setValueAtTime(0.0001, when);
-      gain.gain.linearRampToValueAtTime(gainValue, when + 0.006);
-      gain.gain.exponentialRampToValueAtTime(0.0001, when + duration);
-      src.connect(filter).connect(gain).connect(bus);
-      src.start(when, Math.random() * 1.5, duration + 0.05);
-      live.push(src);
-    }
-
-    function drumHit(when, startFreq, endFreq, gainValue) {
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(startFreq, when);
-      osc.frequency.exponentialRampToValueAtTime(endFreq, when + 0.22);
-      gain.gain.setValueAtTime(gainValue, when);
-      gain.gain.exponentialRampToValueAtTime(0.0001, when + 0.38);
-      osc.connect(gain).connect(bus);
-      osc.start(when);
-      osc.stop(when + 0.42);
-      live.push(osc);
-    }
-
-    /** Crowd voices: a few detuned saw waves shaped by "ah" vowel formants. */
-    function voices(from, until) {
-      const fade = ctx.createGain();
-      fade.gain.setValueAtTime(0.0001, from);
-      fade.gain.linearRampToValueAtTime(0.22, from + 3.5);
-      fade.gain.setValueAtTime(0.22, until - 3);
-      fade.gain.linearRampToValueAtTime(0.0001, until);
-      fade.connect(bus);
-      [800, 1150, 2900].forEach((formant, index) => {
-        const band = ctx.createBiquadFilter();
-        band.type = 'bandpass';
-        band.frequency.value = formant;
-        band.Q.value = 7;
-        const level = ctx.createGain();
-        level.gain.value = [1, 0.6, 0.25][index];
-        band.connect(level).connect(fade);
-        [165, 196, 220, 247, 294].forEach((base, voice) => {
-          const osc = ctx.createOscillator();
-          const vibrato = ctx.createOscillator();
-          const vibratoDepth = ctx.createGain();
-          osc.type = 'sawtooth';
-          osc.frequency.value = base;
-          osc.detune.value = (voice - 2) * 7;
-          vibrato.frequency.value = 4.5 + voice * 0.3;
-          vibratoDepth.gain.value = 6;
-          vibrato.connect(vibratoDepth).connect(osc.detune);
-          osc.connect(band);
-          osc.start(from);
-          vibrato.start(from);
-          osc.stop(until + 0.1);
-          vibrato.stop(until + 0.1);
-          live.push(osc, vibrato);
-        });
-      });
-      const murmur = ctx.createBufferSource();
-      const murmurFilter = ctx.createBiquadFilter();
-      const murmurGain = ctx.createGain();
-      murmur.buffer = noise;
-      murmur.loop = true;
-      murmurFilter.type = 'bandpass';
-      murmurFilter.frequency.value = 900;
-      murmurFilter.Q.value = 0.9;
-      murmurGain.gain.setValueAtTime(0.0001, from);
-      murmurGain.gain.linearRampToValueAtTime(0.16, from + 3.5);
-      murmurGain.gain.setValueAtTime(0.16, until - 3);
-      murmurGain.gain.linearRampToValueAtTime(0.0001, until);
-      murmur.connect(murmurFilter).connect(murmurGain).connect(bus);
-      murmur.start(from);
-      murmur.stop(until + 0.1);
-      live.push(murmur);
-    }
-
-    /** Sistrum rattle first, then drums, then the crowd's voices. */
-    function startProcession(seconds) {
-      stopProcession();
-      if (!ensure()) return;
-      bus = ctx.createGain();
-      bus.gain.value = 1;
-      bus.connect(master);
-      const t0 = ctx.currentTime + 0.1;
-
-      for (let t = 0; t < seconds - 1; t += 0.16 + Math.random() * 0.05) {
-        noiseBurst(t0 + t, 0.1, t < 7 ? 0.5 : 0.2, 'highpass', 6500, 0.7);
-      }
-      const beat = 60 / 84;
-      let step = 0;
-      for (let t = 5.5; t < seconds - 0.5; t += beat / 2, step++) {
-        const swell = Math.min(1, (t - 5.5) / 5);
-        if (step % 2 === 0) drumHit(t0 + t, 130, 55, 0.7 * swell);
-        else drumHit(t0 + t, 210, 120, 0.3 * swell);
-      }
-      voices(t0 + 10.5, t0 + seconds);
-    }
-
-    function stopProcession() {
-      live.forEach((node) => { try { node.stop(); } catch (e) { /* already stopped */ } });
-      live = [];
-      if (bus) {
-        try { bus.gain.value = 0; bus.disconnect(); } catch (e) { /* ignore */ }
-        bus = null;
-      }
-    }
-
     function setMuted(value) {
       muted = value;
       if (master) master.gain.value = muted ? 0 : 0.8;
     }
 
-    return { play, startProcession, stopProcession, setMuted, unlock: ensure };
+    return { play, setMuted, unlock: ensure };
+  }());
+
+  /**
+   * The sound inside dance.json. lottie-web hands each audio layer to this player and
+   * tells it when to play, seek and pause. The layer's own level in that file is 0, which
+   * lottie would turn into silence, so the level is ignored and only the sound toggle
+   * decides whether it is heard.
+   */
+  const DanceAudio = (function () {
+    const players = [];
+    let muted = false;
+
+    function create(src) {
+      const el = new Audio(src);
+      el.preload = 'auto';
+      el.volume = muted ? 0 : 1;
+      const player = {
+        el,
+        play() { el.play().catch(() => {}); },
+        pause() { el.pause(); },
+        seek(time) {
+          if (time === undefined) return el.currentTime;
+          try { el.currentTime = time; } catch (e) { /* not loaded yet */ }
+          return time;
+        },
+        playing() { return !el.paused && !el.ended; },
+        rate(value) { el.playbackRate = value; },
+        volume() { el.volume = muted ? 0 : 1; }
+      };
+      players.push(player);
+      return player;
+    }
+
+    function setMuted(value) {
+      muted = value;
+      players.forEach((player) => { player.el.volume = muted ? 0 : 1; });
+    }
+
+    function stop() {
+      players.forEach((player) => player.el.pause());
+    }
+
+    return { create, setMuted, stop };
   }());
 
   /* ------------------------------------------------------------------------
@@ -1427,49 +1355,50 @@
 
   function initEchoes() {
     const view = $('#processionView');
-    const chips = $$('#soundChips li');
     const begin = $('#btnBegin');
     const finish = $('#btnFinish');
     const closing = $('#closingLine');
-    const cues = { sistrum: 0, drums: 6, voices: 11, statue: 15 };
-    const DURATION = 24;
-    let timers = [];
+    let playing = false;
     const dance = window.lottie ? window.lottie.loadAnimation({
       container: $('#processionLottie'), renderer: 'svg', loop: false, autoplay: false,
       path: 'assets/json/dance.json',
+      audioFactory: DanceAudio.create,
       rendererSettings: { preserveAspectRatio: 'xMidYMid slice' }
     }) : null;
 
     function reset() {
+      playing = false;
       if (dance) dance.goToAndStop(0, true);
-      timers.forEach((id) => window.clearTimeout(id));
-      timers = [];
-      Sound.stopProcession();
+      DanceAudio.stop();
       view.classList.remove('is-playing');
-      chips.forEach((chip) => chip.classList.remove('is-on'));
       closing.hidden = true;
       finish.hidden = true;
       begin.hidden = false;
       begin.disabled = false;
     }
 
+    function finished() {
+      if (!playing) return;
+      playing = false;
+      closing.hidden = false;
+      finish.hidden = false;
+      unlockNext(3);
+      announce('The statue was carried out to the people, not kept inside the temple. Why?');
+    }
+
+    if (dance) dance.addEventListener('complete', finished);
+
     begin.addEventListener('click', () => {
       begin.hidden = true;
-      Sound.unlock();
       view.classList.add('is-playing');
-      if (dance) dance.goToAndPlay(0, true);
-      Sound.startProcession(DURATION);
-      chips.forEach((chip) => {
-        timers.push(window.setTimeout(() => chip.classList.add('is-on'), cues[chip.dataset.chip] * 1000));
-      });
-      announce('The procession begins. First the sistrum, then drums, then the voices of the crowd.');
-      timers.push(window.setTimeout(() => {
-        if (dance) dance.pause();
-        closing.hidden = false;
-        finish.hidden = false;
-        unlockNext(3);
-        announce('The statue was carried out to the people, not kept inside the temple. Why?');
-      }, DURATION * 1000));
+      announce('The procession begins.');
+      if (dance) {
+        playing = true;
+        dance.goToAndPlay(0, true);
+      } else {
+        playing = true;
+        finished();
+      }
     });
     finish.addEventListener('click', () => leaveGallery(3));
     enterHooks.echoes = reset;
@@ -1501,6 +1430,7 @@
       toggle.setAttribute('aria-pressed', String(!nowMuted));
       toggle.setAttribute('aria-label', nowMuted ? 'Sound off. Tap to unmute.' : 'Sound on. Tap to mute.');
       Sound.setMuted(nowMuted);
+      DanceAudio.setMuted(nowMuted);
     });
 
     document.addEventListener('keydown', (event) => {
