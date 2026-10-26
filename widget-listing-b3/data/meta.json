@@ -153,7 +153,7 @@
       "author": "tce-nitinc"
     },
     "wg204-capitals-of-india": {
-      "updatedAt": "2026-10-26T12:22:30+05:30",
+      "updatedAt": "2026-10-26T15:12:30+05:30",
       "author": "tce-nitinc"
     },
     "wg205-species-z-factor-explorer": {
@@ -198,6 +198,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-10-26T15:12:30+05:30",
+      "author": "tce-nitinc",
+      "message": "added blink effect on 204",
+      "widgets": [
+        204
+      ]
+    },
     {
       "date": "2026-10-26T15:01:49+05:30",
       "author": "tce-nitinc",
@@ -443,15 +451,6 @@
       "message": "wg 223 fixes",
       "widgets": [
         223
-      ]
-    },
-    {
-      "date": "2026-10-16T18:34:01+05:30",
-      "author": "Shyamsunder Hait",
-      "message": "removed unwanted files",
-      "widgets": [
-        205,
-        212
       ]
     }
   ]
