@@ -64,7 +64,7 @@ body {
    continue the picture (script.js sets --water-y to the stage's water line). */
 #viewport {
   z-index: 1;
-  background: linear-gradient(to bottom, var(--sky) 0, var(--sky) var(--water-y, 40%), var(--river) var(--water-y, 40%), var(--river) 100%);
+  background: #000;
 }
 
 /* Dark backdrop behind an open modal, covering the whole viewport. */

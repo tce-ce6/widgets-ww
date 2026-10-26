@@ -64,7 +64,7 @@ body {
    continue the picture (script.js sets --grass-y to the stage's grass line). */
 #viewport {
   z-index: 1;
-  background: linear-gradient(to bottom, var(--sky) 0, var(--sky) var(--grass-y, 85%), var(--grass) var(--grass-y, 85%), var(--grass) 100%);
+  background: #000;
 }
 
 /* Dark backdrop behind an open modal, covering the whole viewport. */
