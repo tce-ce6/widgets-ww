@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Population Density Simulator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #F7F4EC;
+    --paper-2: #EFEADC;
+    --ink: #262420;
+    --ink-soft: #55524A;
+    --forest: #1F3D2B;
+    --forest-2: #2E5A3E;
+    --moss: #6E8A63;
+    --amber: #A5641E;
+    --amber-tint: #F5E9DA;
+    --rule: rgba(38,36,32,0.16);
+    --card: #FFFDF7;
+    --plus: #2E5A3E;
+    --minus: #A5401E;
+  }
+  *{ box-sizing: border-box; }
+  html,body{ margin:0; padding:0; background:var(--paper); color:var(--ink); font-family:'IBM Plex Sans',sans-serif; -webkit-font-smoothing:antialiased; }
+  body{ padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px); }
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#171A16; --paper-2:#1F2319; --ink:#EDEAE1; --ink-soft:#B7B2A5;
+      --card:#1D2118; --rule:rgba(237,234,225,0.18); --forest:#6E8A63; --forest-2:#8AAD7C;
+      --plus:#8AAD7C; --minus:#D98A6B;
+    }
+  }
+
+  .wrap{ max-width:1180px; margin:0 auto; padding:36px 24px 60px; }
+
+  header{ margin-bottom:22px; border-bottom:1px solid var(--rule); padding-bottom:20px; }
+  .kicker{ font-family:'IBM Plex Mono',monospace; font-size:12.5px; color:var(--forest); font-weight:600; }
+  h1{ font-family:'Source Serif 4',serif; font-weight:600; font-size:clamp(24px,3.4vw,34px); margin:6px 0 6px; }
+  .dek{ font-size:14.5px; color:var(--ink-soft); max-width:70ch; line-height:1.5; margin:0; }
+
+  .coach{
+    background:var(--amber-tint); border:1px solid var(--rule); border-radius:6px;
+    padding:12px 18px; margin-bottom:20px; font-size:14px; line-height:1.5;
+    display:flex; align-items:center; gap:10px;
+  }
+  .coach .step-num{
+    font-family:'IBM Plex Mono',monospace; font-weight:700; font-size:12px;
+    color:var(--amber); background:var(--card); border:1px solid var(--rule);
+    border-radius:50%; width:22px; height:22px; min-width:22px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .coach p{ margin:0; color:var(--ink); }
+  .coach.done{ background:var(--paper-2); }
+
+  .stage{ display:grid; grid-template-columns: 1.5fr 1fr; gap:24px; align-items:start; }
+  @media (max-width:900px){ .stage{ grid-template-columns:1fr; } }
+
+  .panel{ background:var(--card); border:1px solid var(--rule); border-radius:6px; }
+
+  .diagram-panel{ padding:20px 20px 8px; position:relative; }
+  svg{ width:100%; height:auto; display:block; overflow:visible; }
+
+  .shape-rect, .shape-ellipse{ fill:var(--card); stroke:var(--ink); stroke-width:1.6; }
+  .shape-n{ fill:var(--paper-2); stroke:var(--forest); stroke-width:2; }
+  .lbl{ font-family:'Source Serif 4', serif; font-weight:600; font-size:20px; fill:var(--ink); text-anchor:middle; }
+  .lbl-sym{ font-family:'IBM Plex Mono', monospace; font-weight:600; font-size:16px; }
+  .lbl-species{ font-family:'Source Serif 4', serif; font-weight:700; fill:var(--forest); text-anchor:middle; }
+  .arrow-line{ stroke:var(--ink); stroke-width:3; fill:none; }
+  .arrow-head{ fill:var(--ink); }
+  .sign{ font-family:'IBM Plex Mono', monospace; font-weight:700; font-size:22px; }
+  .sign.plus{ fill:var(--plus); }
+  .sign.minus{ fill:var(--minus); }
+  .pulse{ opacity:0; }
+  .pulse.go{ animation: travel 900ms ease-in-out; }
+  @keyframes travel{
+    0%{ opacity:1; }
+    95%{ opacity:1; }
+    100%{ opacity:0; }
+  }
+
+  .n-value{ font-family:'IBM Plex Mono', monospace; font-weight:700; font-size:34px; fill:var(--forest); text-anchor:middle; transform-box: fill-box; transform-origin: center; }
+  .n-value.bump{ animation: bump 500ms ease; }
+  @keyframes bump{ 0%{ transform:scale(1); } 40%{ transform:scale(1.18); } 100%{ transform:scale(1); } }
+
+  foreignObject .numbox{
+    display:flex; align-items:center; justify-content:center;
+  }
+  .numbox input{
+    width:100%; text-align:center;
+    font-family:'IBM Plex Mono', monospace; font-weight:600; font-size:16px;
+    padding:4px 6px; border-radius:5px; border:1px solid var(--rule);
+    background:var(--card); color:var(--ink);
+  }
+  .numbox input:focus{ outline:2px solid var(--forest); outline-offset:1px; border-color:var(--forest); }
+  .numbox input::-webkit-inner-spin-button{ opacity:1; }
+
+  .equation-row{
+    margin-top:14px; padding:14px 16px; background:var(--paper-2); border:1px solid var(--rule); border-radius:5px;
+    font-family:'IBM Plex Mono', monospace; font-size:15px; color:var(--ink);
+    display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:5px;
+  }
+  .equation-row .result{ color:var(--forest); font-weight:700; }
+  .equation-row sub{ font-size:11px; }
+  .eqn-group{ display:inline-flex; align-items:center; gap:4px; }
+  .eqn-box{
+    display:inline-flex; align-items:center; justify-content:center;
+    background:transparent; border:1px solid var(--rule); border-radius:4px;
+    padding:3px 9px; font-weight:700; color:var(--forest); min-width:1.6em; text-align:center;
+  }
+  .eqn-label{ font-size:12px; font-weight:700; color:var(--ink); }
+  .eqn-cur{ display:inline-flex; align-items:baseline; gap:3px; font-weight:700; color:var(--forest); }
+  .eqn-cur .eqn-tag{ font-size:15px; font-weight:700; color:var(--ink); }
+
+  .calc-feedback{
+    margin-top:10px; padding:10px 14px; border-radius:5px; font-size:13px; font-weight:600;
+    text-align:center; display:none; background:rgba(165,64,30,0.1); border:1px solid var(--minus); color:var(--minus);
+  }
+  .calc-feedback.show{ display:block; }
+
+  .btn-row{ display:flex; gap:10px; justify-content:center; margin:14px 0 6px; flex-wrap:wrap; }
+  .btn{
+    font-family:'IBM Plex Sans', sans-serif; font-size:14px; font-weight:600;
+    padding:10px 18px; border-radius:5px; border:1px solid var(--rule);
+    background:var(--paper-2); color:var(--ink); cursor:pointer;
+  }
+  .btn.primary{ background:var(--forest); border-color:var(--forest); color:#fff; }
+  .btn.primary:hover{ background:var(--forest-2); }
+  .btn:hover{ border-color:var(--forest); }
+  .btn:disabled{ opacity:0.4; cursor:not-allowed; }
+
+  .control-panel{ padding:20px; display:flex; flex-direction:column; gap:16px; }
+  .section-title{ font-size:13.5px; font-weight:600; color:var(--ink-soft); text-transform:none; }
+
+  .chart-block{ padding-top:0; }
+  .chart-title{
+    text-align:center; font-family:'Source Serif 4', serif; font-weight:600;
+    font-size:16px; color:var(--ink); margin:0 0 4px;
+  }
+  .pop-chart{ width:100%; height:auto; display:block; }
+  .chart-axis{ stroke:var(--rule); stroke-width:1; }
+  .chart-line{ fill:none; stroke:var(--forest); stroke-width:2.25; }
+  .chart-dot{ fill:var(--card); stroke:var(--forest); stroke-width:2; }
+  .chart-label{ font-family:'IBM Plex Mono', monospace; font-size:8px; fill:var(--ink-soft); }
+  .chart-axis-title{ font-family:'IBM Plex Sans', sans-serif; font-size:9.5px; font-weight:600; fill:var(--ink-soft); }
+  .chart-empty{ font-size:12.5px; color:var(--ink-soft); font-style:italic; margin:6px 0 0; }
+
+  .history{ padding-top:0; }
+  .history-list{ max-height:150px; overflow-y:auto; font-family:'IBM Plex Mono', monospace; font-size:12.5px; color:var(--ink-soft); line-height:1.7; }
+  .history-list div:last-child{ color:var(--ink); font-weight:600; }
+
+  ::selection{ background:var(--moss); color:#fff; }
+
+  .insights-row{ display:flex; justify-content:center; margin-top:24px; }
+  .insights-btn{
+    display:inline-flex; align-items:center; gap:9px;
+    background:var(--forest); border-color:var(--forest); color:#fff;
+    font-weight:600; padding:11px 24px; border-radius:24px;
+  }
+  .insights-btn:hover{ background:var(--forest-2); border-color:var(--forest-2); }
+
+  .modal-overlay{
+    position:fixed; inset:0; background:rgba(20,18,14,0.55);
+    display:flex; align-items:center; justify-content:center; padding:24px; z-index:100;
+  }
+  .modal-overlay[hidden]{ display:none; }
+  .modal-panel{
+    background:var(--card); border:1px solid var(--rule); border-radius:10px;
+    max-width:640px; width:100%; max-height:85vh; overflow-y:auto;
+    padding:42px 32px 32px; position:relative; box-shadow:0 20px 60px rgba(0,0,0,0.28);
+  }
+  .modal-close{
+    position:absolute; top:14px; right:14px; width:32px; height:32px; border-radius:50%;
+    border:1px solid var(--rule); background:var(--paper-2); color:var(--ink);
+    font-size:19px; line-height:1; cursor:pointer; display:flex; align-items:center; justify-content:center;
+  }
+  .modal-close:hover{ border-color:var(--forest); color:var(--forest); }
+  .insight-list{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:14px; }
+  .insight-list li{ position:relative; padding-left:20px; font-size:14.5px; line-height:1.55; color:var(--ink); }
+  .insight-list li::before{
+    content:''; position:absolute; left:2px; top:7px; width:7px; height:7px; background:var(--moss);
+  }
+  .insight-list strong{ color:var(--forest); }
+  .insight-list sub{ font-size:11px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>Population Density Simulator</h1>
+    <p class="dek" id="dekText">Set how many animals are born, arrive, die, and leave in one year. Then calculate the new population density and watch where it comes from.</p>
+  </header>
+
+  <div class="coach" id="coachBar">
+    <span class="step-num" id="coachStepNum">1</span>
+    <p id="coachText">Type a number in each of the four boxes: how many are born, arrive, die, or leave this year.</p>
+  </div>
+
+  <div class="stage">
+
+    <section class="panel diagram-panel">
+      <svg viewBox="0 0 900 580" role="img" aria-label="Diagram showing Natality and Immigration adding to Population Density, and Mortality and Emigration subtracting from it">
+
+        <!-- Immigration (top) -->
+        <rect class="shape-rect" x="335" y="30" width="230" height="80" rx="4"></rect>
+        <text class="lbl" x="450" y="65">Immigration</text>
+        <text class="lbl lbl-sym" x="450" y="90" text-anchor="middle">(I)</text>
+        <foreignObject x="385" y="0" width="130" height="34">
+          <div xmlns="http://www.w3.org/1999/xhtml" class="numbox">
+            <input type="number" min="0" value="" placeholder="0" id="valI" data-ctrl="I" aria-label="Immigration this year">
+          </div>
+        </foreignObject>
+
+        <!-- Emigration (bottom) -->
+        <rect class="shape-rect" x="335" y="470" width="230" height="80" rx="4"></rect>
+        <text class="lbl" x="450" y="505">Emigration</text>
+        <text class="lbl lbl-sym" x="450" y="530" text-anchor="middle">(E)</text>
+        <foreignObject x="385" y="552" width="130" height="34">
+          <div xmlns="http://www.w3.org/1999/xhtml" class="numbox">
+            <input type="number" min="0" value="" placeholder="0" id="valE" data-ctrl="E" aria-label="Emigration this year">
+          </div>
+        </foreignObject>
+
+        <!-- Natality (left) -->
+        <ellipse class="shape-ellipse" cx="120" cy="290" rx="105" ry="70"></ellipse>
+        <text class="lbl" x="120" y="282">Natality</text>
+        <text class="lbl lbl-sym" x="120" y="307" text-anchor="middle">(B)</text>
+        <foreignObject x="55" y="318" width="130" height="34">
+          <div xmlns="http://www.w3.org/1999/xhtml" class="numbox">
+            <input type="number" min="0" value="" placeholder="0" id="valB" data-ctrl="B" aria-label="Births this year">
+          </div>
+        </foreignObject>
+
+        <!-- Mortality (right) -->
+        <ellipse class="shape-ellipse" cx="780" cy="290" rx="105" ry="70"></ellipse>
+        <text class="lbl" x="780" y="282">Mortality</text>
+        <text class="lbl lbl-sym" x="780" y="307" text-anchor="middle">(D)</text>
+        <foreignObject x="715" y="318" width="130" height="34">
+          <div xmlns="http://www.w3.org/1999/xhtml" class="numbox">
+            <input type="number" min="0" value="" placeholder="0" id="valD" data-ctrl="D" aria-label="Deaths this year">
+          </div>
+        </foreignObject>
+
+        <!-- Population Density (centre) -->
+        <rect class="shape-rect shape-n" x="345" y="230" width="210" height="120" rx="4"></rect>
+        <text class="lbl" x="450" y="250" font-size="15">Population density of</text>
+        <text class="lbl-species" id="nLabelSpecies" x="450" y="269" font-size="15">species</text>
+        <text class="lbl lbl-sym" x="450" y="288" text-anchor="middle">(N)</text>
+        <text class="n-value" id="nValue" x="450" y="330">100</text>
+
+        <!-- Arrows -->
+        <!-- I down to N -->
+        <line class="arrow-line" x1="450" y1="110" x2="450" y2="222"></line>
+        <polygon class="arrow-head" points="450,230 442,214 458,214"></polygon>
+        <text class="sign plus" x="475" y="180">+</text>
+        <circle class="pulse" id="pulseI" r="7" fill="var(--plus)"><animateMotion id="animI" dur="0.9s" path="M450,115 L450,225" begin="indefinite"/></circle>
+
+        <!-- B right to N -->
+        <line class="arrow-line" x1="222" y1="290" x2="338" y2="290"></line>
+        <polygon class="arrow-head" points="345,290 329,282 329,298"></polygon>
+        <text class="sign plus" x="270" y="275">+</text>
+        <circle class="pulse" id="pulseB" r="7" fill="var(--plus)"><animateMotion id="animB" dur="0.9s" path="M225,290 L340,290" begin="indefinite"/></circle>
+
+        <!-- N right to D -->
+        <line class="arrow-line" x1="562" y1="290" x2="668" y2="290"></line>
+        <polygon class="arrow-head" points="675,290 659,282 659,298"></polygon>
+        <text class="sign minus" x="605" y="275">&minus;</text>
+        <circle class="pulse" id="pulseD" r="7" fill="var(--minus)"><animateMotion id="animD" dur="0.9s" path="M565,290 L672,290" begin="indefinite"/></circle>
+
+        <!-- N down to E -->
+        <line class="arrow-line" x1="450" y1="352" x2="450" y2="462"></line>
+        <polygon class="arrow-head" points="450,470 442,454 458,454"></polygon>
+        <text class="sign minus" x="475" y="420">&minus;</text>
+        <circle class="pulse" id="pulseE" r="7" fill="var(--minus)"><animateMotion id="animE" dur="0.9s" path="M450,355 L450,465" begin="indefinite"/></circle>
+
+      </svg>
+
+      <div class="equation-row" id="equationRow">N = 100 &nbsp;+&nbsp; (0 + 0) &nbsp;&minus;&nbsp; (0 + 0) &nbsp;=&nbsp; <span class="result">100</span></div>
+      <div class="calc-feedback" id="calcFeedback"></div>
+
+      <div class="btn-row">
+        <button class="btn primary" id="calcBtn">Calculate N<sub id="calcBtnYear">Y1</sub></button>
+        <button class="btn" id="resetBtn">Reset for a different species</button>
+      </div>
+    </section>
+
+    <aside class="panel control-panel">
+      <div class="chart-block">
+        <p class="chart-title">Population change over time</p>
+        <svg id="popChart" class="pop-chart" viewBox="0 0 280 165" role="img" aria-label="Line chart of population density by year"></svg>
+      </div>
+
+      <div class="history">
+        <div class="section-title">Year-by-year history</div>
+        <div class="history-list" id="historyList">
+          <div>Year 0 &middot; N = 100</div>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <div class="insights-row">
+    <button class="btn insights-btn" id="insightsBtn" type="button" aria-haspopup="dialog" aria-controls="insightsPanel">
+      Insights
+    </button>
+  </div>
+
+</div>
+
+<div class="modal-overlay" id="insightsOverlay" hidden>
+  <div class="modal-panel" role="dialog" aria-modal="true" aria-label="Insights" id="insightsPanel">
+    <button class="modal-close" id="insightsClose" type="button" aria-label="Close Insights">&times;</button>
+    <ul class="insight-list">
+      <li><strong>Population density (N)</strong> is the size of a population &mdash; the number of individuals of a species living in a given area at a given time.</li>
+      <li><strong>Natality (B)</strong> is the number of births added to the population during a given period.</li>
+      <li><strong>Immigration (I)</strong> is the number of individuals of the same species that enter the habitat from elsewhere during that period.</li>
+      <li><strong>Mortality (D)</strong> is the number of deaths in the population during that period.</li>
+      <li><strong>Emigration (E)</strong> is the number of individuals that leave the habitat for elsewhere during that period.</li>
+      <li>The population balance equation: <strong>N<sub>(t+1)</sub> = N<sub>(t)</sub> + [(B + I) &minus; (D + E)]</strong>.</li>
+      <li><strong>Growth:</strong> if (B + I) is greater than (D + E), the population grows.</li>
+      <li><strong>Shrinkage or stability:</strong> if (B + I) is less than (D + E), the population shrinks; if they are equal, it stays stable.</li>
+    </ul>
+  </div>
+</div>
+
+<script>
+(function(){
+  var species = [
+    { name: 'humans', place: 'a small town', N: 1000 },
+    { name: 'Bengal tigers', place: 'a reserve', N: 40 },
+    { name: 'Asian elephants', place: 'a sanctuary', N: 25 },
+    { name: 'spotted deer (chital)', place: 'a forest range', N: 150 },
+    { name: 'Indian gaur', place: 'a forest range', N: 60 },
+    { name: 'blackbuck', place: 'a grassland', N: 200 },
+    { name: 'nilgai', place: 'a grassland', N: 120 },
+    { name: 'house sparrows', place: 'a neighbourhood', N: 300 },
+    { name: 'Indian peafowl', place: 'a district', N: 90 },
+    { name: 'sarus cranes', place: 'a wetland', N: 35 },
+    { name: 'greater flamingos', place: 'a wetland', N: 500 },
+    { name: 'rohu fish', place: 'a pond', N: 200 },
+    { name: 'catla fish', place: 'a lake', N: 250 },
+    { name: 'olive ridley turtles', place: 'a nesting beach', prep: 'on', N: 70 },
+    { name: 'gharials', place: 'a river stretch', N: 45 },
+    { name: 'Indian rock pythons', place: 'a forest range', N: 30 },
+    { name: 'monarch butterflies', place: 'a meadow', N: 400 },
+    { name: 'honeybee colonies', place: 'an apiary', N: 80 },
+    { name: 'fruit flies (Drosophila)', place: 'a lab culture', N: 500 },
+    { name: 'Indian bullfrogs', place: 'a pond', N: 150 },
+    { name: 'rhesus macaques', place: 'a forest patch', N: 100 },
+    { name: 'Indian flying foxes', place: 'a roost', N: 350 }
+  ];
+  var speciesIndex = Math.floor(Math.random() * species.length);
+
+  function pickNewSpecies(){
+    if (species.length > 1){
+      var next;
+      do { next = Math.floor(Math.random() * species.length); } while (next === speciesIndex);
+      speciesIndex = next;
+    }
+    return species[speciesIndex];
+  }
+
+  function startState(sp){
+    return { N: sp.N, B: 0, I: 0, D: 0, E: 0, round: 0, step: 1, history: [{ round: 0, N: sp.N }] };
+  }
+
+  var state = startState(species[speciesIndex]);
+
+  var coachMessages = {
+    1: 'Type a number in each of the four boxes: how many are born, arrive, die, or leave this year.',
+    2: function(){ return 'Tap “Calculate N<sub>Y' + (state.round + 1) + '</sub>” to see the new population density, and watch the arrows show where each number goes.'; },
+    3: 'Change the numbers and repeat, for as many years as you like — watch the graph to see whether the population is growing, shrinking, or staying stable.'
+  };
+
+  function coachMessageFor(step){
+    var m = coachMessages[step];
+    return typeof m === 'function' ? m() : m;
+  }
+
+  var els = {
+    valB: document.getElementById('valB'),
+    valI: document.getElementById('valI'),
+    valD: document.getElementById('valD'),
+    valE: document.getElementById('valE'),
+    nValue: document.getElementById('nValue'),
+    equationRow: document.getElementById('equationRow'),
+    calcFeedback: document.getElementById('calcFeedback'),
+    historyList: document.getElementById('historyList'),
+    coachStepNum: document.getElementById('coachStepNum'),
+    coachText: document.getElementById('coachText'),
+    popChart: document.getElementById('popChart'),
+    dekText: document.getElementById('dekText'),
+    calcBtn: document.getElementById('calcBtn'),
+    calcBtnYear: document.getElementById('calcBtnYear'),
+    nLabelSpecies: document.getElementById('nLabelSpecies')
+  };
+
+  var filled = { B: false, I: false, D: false, E: false };
+
+  function updateCalcBtnState(){
+    els.calcBtn.disabled = !(filled.B && filled.I && filled.D && filled.E);
+  }
+
+  function renderDek(sp){
+    var prep = sp.prep || 'in';
+    els.dekText.innerHTML = 'Set how many <strong>' + sp.name + '</strong> ' + prep + ' ' + sp.place + ' are born, arrive, die, and leave in one year. Then calculate the new population density and watch where it comes from.';
+  }
+
+  function renderNLabel(sp){
+    els.nLabelSpecies.textContent = sp.name;
+    var fontSize = sp.name.length > 24 ? 11 : (sp.name.length > 16 ? 13 : 15);
+    els.nLabelSpecies.setAttribute('font-size', fontSize);
+  }
+
+  function setStep(step){
+    if (state.step === step) return;
+    state.step = step;
+    els.coachStepNum.textContent = step;
+    els.coachText.innerHTML = coachMessageFor(step);
+  }
+
+  function renderChart(){
+    var svgNS = 'http://www.w3.org/2000/svg';
+    var w = 280, h = 165, padL = 36, padR = 12, padT = 12, padB = 34;
+    var data = state.history;
+    els.popChart.innerHTML = '';
+
+    var nVals = data.map(function(d){ return d.N; });
+    var minN = 0;
+    var maxN = Math.max.apply(null, nVals);
+    if (maxN <= 0) maxN = 1;
+    maxN = maxN * 1.15;
+
+    function xAt(i){
+      if (data.length === 1) return padL;
+      return padL + (i * (w - padL - padR)) / (data.length - 1);
+    }
+    function yAt(n){
+      return padT + (h - padT - padB) * (1 - (n - minN) / (maxN - minN));
+    }
+
+    var axisX = document.createElementNS(svgNS, 'line');
+    axisX.setAttribute('class', 'chart-axis');
+    axisX.setAttribute('x1', padL); axisX.setAttribute('x2', w - padR);
+    axisX.setAttribute('y1', h - padB); axisX.setAttribute('y2', h - padB);
+    els.popChart.appendChild(axisX);
+
+    var axisY = document.createElementNS(svgNS, 'line');
+    axisY.setAttribute('class', 'chart-axis');
+    axisY.setAttribute('x1', padL); axisY.setAttribute('x2', padL);
+    axisY.setAttribute('y1', padT); axisY.setAttribute('y2', h - padB);
+    els.popChart.appendChild(axisY);
+
+    var pts = data.map(function(d, i){ return xAt(i) + ',' + yAt(d.N); }).join(' ');
+    var poly = document.createElementNS(svgNS, 'polyline');
+    poly.setAttribute('class', 'chart-line');
+    poly.setAttribute('points', pts);
+    els.popChart.appendChild(poly);
+
+    data.forEach(function(d, i){
+      var cx = xAt(i), cy = yAt(d.N);
+      var dot = document.createElementNS(svgNS, 'circle');
+      dot.setAttribute('class', 'chart-dot');
+      dot.setAttribute('cx', cx); dot.setAttribute('cy', cy); dot.setAttribute('r', 3.2);
+      var title = document.createElementNS(svgNS, 'title');
+      title.textContent = 'Year ' + d.round + ': N = ' + d.N;
+      dot.appendChild(title);
+      els.popChart.appendChild(dot);
+
+      if (i === 0 || i === data.length - 1 || data.length <= 6){
+        var lbl = document.createElementNS(svgNS, 'text');
+        lbl.setAttribute('class', 'chart-label');
+        lbl.setAttribute('x', cx);
+        lbl.setAttribute('y', h - padB + 11);
+        lbl.setAttribute('text-anchor', i === 0 ? 'start' : (i === data.length - 1 ? 'end' : 'middle'));
+        lbl.textContent = 'Y' + d.round;
+        els.popChart.appendChild(lbl);
+      }
+    });
+
+    var yTop = document.createElementNS(svgNS, 'text');
+    yTop.setAttribute('class', 'chart-label');
+    yTop.setAttribute('x', padL - 4); yTop.setAttribute('y', padT + 4);
+    yTop.setAttribute('text-anchor', 'end');
+    yTop.textContent = Math.round(maxN);
+    els.popChart.appendChild(yTop);
+
+    var yBot = document.createElementNS(svgNS, 'text');
+    yBot.setAttribute('class', 'chart-label');
+    yBot.setAttribute('x', padL - 4); yBot.setAttribute('y', h - padB);
+    yBot.setAttribute('text-anchor', 'end');
+    yBot.textContent = '0';
+    els.popChart.appendChild(yBot);
+
+    var xTitle = document.createElementNS(svgNS, 'text');
+    xTitle.setAttribute('class', 'chart-axis-title');
+    xTitle.setAttribute('x', padL + (w - padL - padR) / 2);
+    xTitle.setAttribute('y', h - 4);
+    xTitle.setAttribute('text-anchor', 'middle');
+    xTitle.textContent = 'Year';
+    els.popChart.appendChild(xTitle);
+
+    var yTitle = document.createElementNS(svgNS, 'text');
+    yTitle.setAttribute('class', 'chart-axis-title');
+    yTitle.setAttribute('x', 0); yTitle.setAttribute('y', 0);
+    yTitle.setAttribute('text-anchor', 'middle');
+    yTitle.setAttribute('transform', 'translate(10,' + (padT + (h - padT - padB) / 2) + ') rotate(-90)');
+    yTitle.textContent = 'Population Density (N)';
+    els.popChart.appendChild(yTitle);
+  }
+
+  function renderInputs(){
+    els.valB.value = '';
+    els.valI.value = '';
+    els.valD.value = '';
+    els.valE.value = '';
+  }
+
+  function eqnGroup(value, label){
+    return '<span class="eqn-group"><span class="eqn-box">' + value + '</span><span class="eqn-label">(' + label + ')</span></span>';
+  }
+
+  function buildEquationHTML(resultHTML){
+    var curYear = state.round, nextYear = state.round + 1;
+    return '<span class="eqn-n">N<sub>Y' + nextYear + '</sub></span> = ' +
+      '<span class="eqn-cur">' + state.N + '<span class="eqn-tag">(N<sub>Y' + curYear + '</sub>)</span></span> + (' +
+      eqnGroup(state.B, 'B') + ' + ' + eqnGroup(state.I, 'I') + ') \u2212 (' +
+      eqnGroup(state.D, 'D') + ' + ' + eqnGroup(state.E, 'E') + ') = ' +
+      '<span class="result">' + resultHTML + '</span>';
+  }
+
+  function updateCalcBtnYear(){
+    els.calcBtnYear.textContent = 'Y' + (state.round + 1);
+  }
+
+  function renderEquationPreview(){
+    els.equationRow.innerHTML = buildEquationHTML('?');
+  }
+
+  document.querySelectorAll('.numbox input').forEach(function(inp){
+    inp.addEventListener('input', function(){
+      var ctrl = inp.getAttribute('data-ctrl');
+      filled[ctrl] = inp.value !== '';
+      var v = parseInt(inp.value, 10);
+      if (isNaN(v) || v < 0) v = 0;
+      state[ctrl] = v;
+      renderEquationPreview();
+      hideCalcFeedback();
+      updateCalcBtnState();
+      var allFilled = filled.B && filled.I && filled.D && filled.E;
+      setStep(allFilled ? 2 : 1);
+    });
+  });
+
+  function hideCalcFeedback(){
+    els.calcFeedback.classList.remove('show');
+    els.calcFeedback.textContent = '';
+  }
+
+  function pulseArrow(id){
+    var anim = document.getElementById('anim' + id);
+    var circle = document.getElementById('pulse' + id);
+    if (!anim || !circle) return;
+    circle.classList.remove('go');
+    void circle.offsetWidth; // restart animation
+    circle.classList.add('go');
+    try { anim.beginElement(); } catch(e){}
+  }
+
+  document.getElementById('calcBtn').addEventListener('click', function(){
+    var plusTotal = state.B + state.I;
+    var minusTotal = state.D + state.E;
+
+    if (minusTotal > state.N){
+      els.calcFeedback.textContent = 'Mortality and Emigration can\u2019t remove more animals than the population has. Lower D and/or E.';
+      els.calcFeedback.classList.add('show');
+      return;
+    }
+    hideCalcFeedback();
+
+    var newN = state.N + (plusTotal - minusTotal);
+    if (newN < 0) newN = 0;
+
+    if (state.B > 0) pulseArrow('B');
+    if (state.I > 0) pulseArrow('I');
+    if (state.D > 0) pulseArrow('D');
+    if (state.E > 0) pulseArrow('E');
+
+    els.equationRow.innerHTML = buildEquationHTML(newN);
+
+    setTimeout(function(){
+      state.round += 1;
+      state.N = newN;
+      els.nValue.textContent = state.N;
+      els.nValue.classList.remove('bump');
+      void els.nValue.offsetWidth;
+      els.nValue.classList.add('bump');
+
+      var entry = document.createElement('div');
+      entry.textContent = 'Year ' + state.round + ' \u00B7 N = ' + state.N + '  (B=' + state.B + ', I=' + state.I + ', D=' + state.D + ', E=' + state.E + ')';
+      els.historyList.appendChild(entry);
+      els.historyList.scrollTop = els.historyList.scrollHeight;
+
+      state.history.push({ round: state.round, N: state.N });
+      renderChart();
+
+      state.B = 0; state.I = 0; state.D = 0; state.E = 0;
+      filled.B = false; filled.I = false; filled.D = false; filled.E = false;
+      renderInputs();
+      renderEquationPreview();
+      updateCalcBtnState();
+      updateCalcBtnYear();
+
+      if (state.step === 2) setStep(3);
+    }, 500);
+  });
+
+  document.getElementById('resetBtn').addEventListener('click', function(){
+    var sp = pickNewSpecies();
+    state = startState(sp);
+    filled.B = false; filled.I = false; filled.D = false; filled.E = false;
+    renderDek(sp);
+    renderNLabel(sp);
+    hideCalcFeedback();
+    renderInputs();
+    renderEquationPreview();
+    updateCalcBtnState();
+    updateCalcBtnYear();
+    els.nValue.textContent = state.N;
+    els.historyList.innerHTML = '<div>Year 0 \u00B7 N = ' + state.N + '</div>';
+    els.coachStepNum.textContent = 1;
+    els.coachText.innerHTML = coachMessageFor(1);
+    renderChart();
+  });
+
+  var insightsBtn = document.getElementById('insightsBtn');
+  var insightsOverlay = document.getElementById('insightsOverlay');
+  var insightsClose = document.getElementById('insightsClose');
+
+  function openInsights(){
+    insightsOverlay.hidden = false;
+    document.body.style.overflow = 'hidden';
+  }
+  function closeInsights(){
+    insightsOverlay.hidden = true;
+    document.body.style.overflow = '';
+  }
+  insightsBtn.addEventListener('click', openInsights);
+  insightsClose.addEventListener('click', closeInsights);
+  insightsOverlay.addEventListener('click', function(e){
+    if (e.target === insightsOverlay) closeInsights();
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && !insightsOverlay.hidden) closeInsights();
+  });
+
+  renderDek(species[speciesIndex]);
+  renderNLabel(species[speciesIndex]);
+  updateCalcBtnYear();
+  renderInputs();
+  renderEquationPreview();
+  updateCalcBtnState();
+  els.nValue.textContent = state.N;
+  els.historyList.innerHTML = '<div>Year 0 · N = ' + state.N + '</div>';
+  renderChart();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1823 @@
+/* ==========================================================================
+   Wonders of Ancient China (wg218)
+   Layout is authored on a fixed 1920x1080 stage (matching the AI layout)
+   and scaled to the window by script.js, so the widget always fits one screen.
+   ========================================================================== */
+
+:root {
+  --red: #ae2924;
+  --red-deep: #7c1616;
+  --ink: #1e0c0c;
+  --itext: #631954;
+  --pink-panel: #fde2e4;
+  --peach: #fbb47b;
+  --sand: #ffd793;
+  --slot: #fac3c4;
+  --ok-fill: #b8ddb7;
+  --ok-line: #136533;
+  --ok-text: #156232;
+  --err: #c82027;
+  --err-fill: #fcdcdc;
+  --err-line: #ee2624;
+  --yellow: #f9bc15;
+  --green: #49bb87;
+  --orange: #f3742a;
+  --gold: #ffca35;
+  --overlay: rgb(29 57 106 / 72%);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  overflow: hidden;
+}
+
+body {
+  background: #1d396a;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mainContainerOuter {
+  background: #1d396a;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Layering, bottom to top: #viewport (the widget) -> body::before (modal
+   backdrop) -> #modal-layer (popups) -> .wdgetTitle */
+#viewport,
+#modal-layer {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+}
+
+/* Full-window backdrop: the same picture as the stage, blurred, so the
+   letterbox bars never show black. */
+#viewport {
+  z-index: 1;
+  background: #1d396a center / cover no-repeat;
+  transform-origin: 50% 60%;
+}
+
+#viewport::before {
+  content: "";
+  position: absolute;
+  inset: -40px;
+  background: #000;
+  background-size: cover;
+}
+
+#viewport[data-bg="intro"] {
+  background-image: url("../assets/images/intro-bg.jpg");
+}
+
+#viewport[data-bg="market"],
+#viewport[data-bg="act"] {
+  background-image: url("../assets/images/market-bg.jpg");
+}
+
+#viewport[data-bg="act"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--overlay);
+}
+
+#viewport.is-zooming {
+  transition: transform 1.4s cubic-bezier(.55, 0, .75, .4), opacity .45s ease 1s;
+  transform: scale(3.2);
+  opacity: 0;
+}
+
+/* Dark backdrop behind an open modal, covering the whole viewport. */
+body.has-modal::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  background: rgba(0, 0, 0, 0.8);
+}
+
+#modal-layer {
+  z-index: 3;
+  pointer-events: none;
+}
+
+body.has-modal #modal-layer {
+  pointer-events: auto;
+}
+
+/* #stage holds the widget, #modal-stage the modals; both are the same fixed
+   1920x1080 design stage, scaled together by script.js. */
+#stage,
+#modal-stage {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1920px;
+  height: 1080px;
+  transform-origin: 0 0;
+  overflow: hidden;
+  font-family: "Roboto", sans-serif;
+  line-height: 1.3;
+  color: #000;
+}
+
+#stage {
+  z-index: 1;
+}
+
+.stage-bg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1923px;
+  height: 1082px;
+  pointer-events: none;
+  display: none;
+}
+
+.stage-tint {
+  position: absolute;
+  inset: 0;
+  background: var(--overlay);
+  pointer-events: none;
+  display: none;
+}
+
+#viewport[data-bg="intro"] .stage-bg--intro,
+#viewport[data-bg="market"] .stage-bg--market,
+#viewport[data-bg="act"] .stage-bg--market,
+#viewport[data-bg="act"] .stage-tint {
+  display: block;
+}
+
+button {
+  font-family: "Roboto", sans-serif;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+button:focus-visible,
+[tabindex]:focus-visible {
+  outline: 4px solid #1a73e8;
+  outline-offset: 3px;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+/* ---------- title (outside the scaled stage, same as previous widgets) ---------- */
+#china-widget .wdgetTitle {
+  position: absolute;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  left: 0;
+  top: 0;
+  z-index: 30;
+}
+
+#china-widget .wdgetTitle h2 {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  font-family: "Roboto", sans-serif;
+  font-size: 25px;
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: left;
+  background: var(--red);
+  padding: 8px 40px;
+  color: #fff;
+  border-radius: 0 0px 20px 20px;
+  white-space: nowrap;
+}
+
+#china-widget .versionText {
+  position: absolute;
+  right: 20px;
+  top: 10px !important;
+  font-size: 12px;
+  line-height: 1;
+  color: rgb(255 255 255 / 30%);
+}
+
+/* ---------- screens ---------- */
+.screen {
+  position: absolute;
+  inset: 0;
+  display: none;
+}
+
+.screen.is-active {
+  display: block;
+  animation: screen-in .45s ease both;
+}
+
+@keyframes screen-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.itext {
+  margin: 0;
+  font-size: 28px;
+  font-style: italic;
+  line-height: 38px;
+  text-align: center;
+}
+
+/* ---------- shared buttons ---------- */
+.btn {
+  height: 69px;
+  padding: 0 32px;
+  border-radius: 34.5px;
+  font-size: 30px;
+  font-weight: 500;
+  color: #000;
+  white-space: nowrap;
+}
+
+.btn--reset {
+  background: var(--yellow);
+}
+
+.btn--back {
+  background: var(--green);
+}
+
+.btn--next {
+  background: var(--orange);
+}
+
+.btn--summary {
+  background: #f5ec32;
+}
+
+.btn--restart {
+  background: #e7e614;
+}
+
+.btn span {
+  margin-left: 6px;
+}
+
+.act-btns {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 953px;
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  z-index: 6;
+}
+
+/* Reset + Back stay centred where the design puts them; the orange
+   button sits to their right without pushing them across. */
+.act-btns .btn--next {
+  position: absolute;
+  left: 1247px;
+  top: 0;
+}
+
+.act-btns--city {
+  top: 956px;
+}
+
+/* ==========================================================================
+   SCREEN 1: TITLE
+   ========================================================================== */
+.itext--intro {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 110px;
+  color: #111742;
+}
+
+.intro-arrow {
+  position: absolute;
+  left: 919px;
+  top: 168px;
+  width: 82px;
+  height: 82px;
+  border-radius: 50%;
+  animation: bob 1.6s ease-in-out infinite;
+}
+
+.intro-arrow img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+@keyframes bob {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(10px);
+  }
+}
+
+/* ==========================================================================
+   SCREEN 2: THE MARKET STREET
+   ========================================================================== */
+.market-itext {
+  position: absolute;
+  left: 50%;
+  top: 77px;
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: 900px;
+  min-width: 520px;
+  min-height: 122px;
+  margin: 0;
+  padding: 18px 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgb(255 255 255 / 90%);
+  border: 2px solid var(--red);
+  border-radius: 20px;
+  font-size: 28px;
+  font-style: italic;
+  line-height: 42px;
+  text-align: center;
+  color: #851618;
+}
+
+.shop {
+  position: absolute;
+  padding: 0;
+}
+
+.shop__sign {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.shop__name {
+  position: absolute;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 30px;
+  color: #fff;
+}
+
+.shop__tick {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  pointer-events: none;
+}
+
+.shop.is-locked {
+  cursor: default;
+}
+
+.shop.is-locked .shop__sign,
+.shop.is-locked .shop__name {
+  filter: grayscale(.55) brightness(.8);
+}
+
+.shop.is-next .shop__sign {
+  animation: sign-glow 1.3s ease-in-out infinite;
+}
+
+@keyframes sign-glow {
+
+  0%,
+  100% {
+    filter: drop-shadow(0 0 0 rgb(255 214 64 / 0));
+  }
+
+  50% {
+    filter: drop-shadow(0 0 14px rgb(255 214 64 / 1)) drop-shadow(0 0 4px rgb(255 214 64 / 1));
+  }
+}
+
+.market-summary {
+  position: absolute;
+  left: 797px;
+  top: 855px;
+  width: 325px;
+  height: 69px;
+  padding: 0;
+}
+
+/* ==========================================================================
+   ACTIVITY PANELS (shared)
+   ========================================================================== */
+.panel {
+  position: absolute;
+  left: 46px;
+  top: 129px;
+  width: 1828px;
+  height: 861px;
+  border-radius: 27px;
+  background: var(--pink-panel);
+  box-shadow: 5px 5px 0 rgb(0 0 0 / 30%);
+}
+
+#screen-timeline .panel {
+  top: 124px;
+  height: 874px;
+}
+
+.act--tall .panel {
+  top: 86px;
+  height: 960px;
+}
+
+.act--dark .panel {
+  background: var(--ink);
+  border: 1.5px solid var(--yellow);
+}
+
+.ribbon {
+  position: absolute;
+  left: 50%;
+  top: 94px;
+  width: var(--w);
+  height: 70px;
+  margin: 0 0 0 calc(var(--w) / -2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 4px;
+  background: url("../assets/svg/ribbon.svg") 0 0 / 100% 100% no-repeat;
+  font-size: 32px;
+  font-weight: 500;
+  color: #fff;
+  white-space: nowrap;
+  z-index: 3;
+}
+
+.tag-ribbon {
+  position: absolute;
+  left: 50%;
+  top: 184px;
+  width: var(--w);
+  height: 46px;
+  margin: 0 0 0 calc(var(--w) / -2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: url("../assets/svg/tag-ribbon.svg") 0 0 / 100% 100% no-repeat;
+  font-size: 26px;
+  font-weight: 500;
+  color: #fff;
+}
+
+.act-itext {
+  position: absolute;
+  left: 60px;
+  right: 60px;
+  font-weight: 500;
+  color: var(--itext);
+}
+
+.act-itext--timeline {
+  top: 180px;
+  font-weight: 400;
+  color: #5d1146;
+}
+
+.act-itext--city {
+  top: 106px;
+}
+
+.act-itext--two {
+  top: 195px;
+}
+
+.act-itext--silk {
+  top: 255px;
+}
+
+.act-itext--gold {
+  color: var(--gold);
+}
+
+.i-inline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #46140d;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 700;
+  font-style: normal;
+  vertical-align: 2px;
+}
+
+.act-note {
+  position: absolute;
+  left: 60px;
+  right: 60px;
+  margin: 0;
+  text-align: center;
+  font-size: 26px;
+  font-weight: 500;
+  line-height: 34px;
+  color: var(--ok-text);
+}
+
+.act-note.is-err,
+.note-box.is-err {
+  color: var(--err);
+}
+
+.act-note--timeline {
+  top: 893px;
+}
+
+.act-note--silk {
+  top: 874px;
+  font-weight: 700;
+  color: #156031;
+}
+
+/* ---------- drag and drop (shared) ---------- */
+.card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  border: 1px solid var(--red-deep);
+  border-radius: 20px;
+  font-size: 28px;
+  font-weight: 700;
+  color: #000;
+  cursor: grab;
+  touch-action: none;
+  white-space: nowrap;
+}
+
+.card.is-selected {
+  box-shadow: 0 0 0 4px var(--red), 0 6px 14px rgb(0 0 0 / 25%);
+}
+
+.card.is-dragging {
+  opacity: .35;
+}
+
+.drag-ghost {
+  position: absolute !important;
+  z-index: 100;
+  margin: 0 !important;
+  opacity: .7;
+  pointer-events: none;
+  transform: none !important;
+}
+
+.has-selection .drop {
+  outline: 3px dashed rgb(174 41 36 / 55%);
+  outline-offset: 3px;
+}
+
+.drop.is-over {
+  outline: 4px solid #e2231a !important;
+  outline-offset: 2px;
+  background-color: rgb(226 35 26 / 12%);
+}
+
+.is-shake {
+  animation: shake .45s ease;
+}
+
+@keyframes shake {
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  20%,
+  60% {
+    transform: translateX(-9px);
+  }
+
+  40%,
+  80% {
+    transform: translateX(9px);
+  }
+}
+
+.is-wrong {
+  box-shadow: 0 0 0 4px var(--err-line) !important;
+}
+
+/* ==========================================================================
+   SCREEN 3: THE TIMEKEEPER'S STALL
+   ========================================================================== */
+.tl__rail {
+  position: absolute;
+  left: 175px;
+  top: 228px;
+  width: 1571px;
+  height: 60px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.tl__col {
+  position: absolute;
+  top: 277px;
+  width: 302px;
+}
+
+.tl__date {
+  height: 102px;
+  padding-top: 18px;
+  border-radius: 20px 20px 0 0;
+  background: var(--peach);
+  text-align: center;
+  font-size: 26px;
+  font-weight: 500;
+}
+
+.tl__img {
+  position: absolute;
+  left: -3px;
+  top: 55px;
+  width: 308px;
+  height: 308px;
+  border: 1px solid #721112;
+  border-radius: 20px;
+  display: block;
+}
+
+.tl__img--flip {
+  transform: scaleX(-1);
+}
+
+.tl__slot {
+  position: absolute;
+  left: 18px;
+  top: 379px;
+  width: 266px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  border: 1px dashed #721011;
+  border-radius: 20px;
+  font-size: 24px;
+  font-style: italic;
+  color: #721011;
+}
+
+.tl__slot.is-done {
+  padding-bottom: 16px;
+  background: var(--ok-fill);
+  border: 2px solid var(--ok-line);
+  font-size: 28px;
+  font-weight: 700;
+  font-style: normal;
+  color: #000;
+}
+
+.tl__info {
+  position: absolute;
+  left: 130.5px;
+  top: 432px;
+  width: 41px;
+  height: 41px;
+  border-radius: 50%;
+  background: #46140d;
+  box-shadow: inset 0 0 0 4px #46140d, inset 0 0 0 5.5px #fff;
+  color: #fff;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 41px;
+  z-index: 2;
+  animation: pop .35s ease-out;
+}
+
+.tl__info.is-active {
+  background: var(--red);
+  box-shadow: inset 0 0 0 4px var(--red), inset 0 0 0 5.5px #fff, 0 0 0 4px #fbd34a;
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(0);
+  }
+
+  70% {
+    transform: scale(1.2);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.tl__tray {
+  position: absolute;
+  left: 0;
+  top: 758px;
+  width: 1920px;
+  height: 81px;
+}
+
+.tl__tray .card {
+  position: absolute;
+  top: 0;
+  width: 266px;
+  height: 81px;
+  background: var(--sand);
+}
+
+.tl-fact {
+  position: absolute;
+  left: 306.5px;
+  top: 796.5px;
+  width: 1307px;
+  min-height: 77px;
+  margin: 0;
+  padding: 12px 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: #f1ed7a;
+  border: 1px solid #961b1e;
+  font-size: 26px;
+  line-height: 34px;
+  z-index: 4;
+  animation: pop-in .3s ease-out;
+}
+
+.tl-fact b {
+  margin-right: 8px;
+  font-weight: 700;
+  color: var(--red);
+}
+
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ==========================================================================
+   SCREEN 6: THE CITY BUILDER'S YARD
+   ========================================================================== */
+.city__tray {
+  position: absolute;
+  left: 340px;
+  top: 158px;
+  width: 1240px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 11px 16px;
+}
+
+.city__tray .card {
+  height: 53px;
+  padding: 0 24px;
+}
+
+.city__map {
+  position: absolute;
+  left: 118.5px;
+  top: 311px;
+  width: 1683px;
+  height: 672px;
+  border: 2px solid #af2925;
+  border-radius: 27.56px;
+  overflow: hidden;
+  background: #fde2e4;
+}
+
+.city__img {
+  position: absolute;
+  left: -3.5px;
+  top: -4px;
+  width: 1689.6px;
+  height: 680.4px;
+  pointer-events: none;
+}
+
+.city__built {
+  position: absolute;
+  left: -1px;
+  top: -138px;
+  width: 1672px;
+  height: 941px;
+  z-index: 5;
+  animation: screen-in .8s ease both;
+}
+
+.city__zones {
+  position: absolute;
+  left: -2px;
+  top: -2px;
+  width: 1683px;
+  height: 672px;
+  overflow: visible;
+}
+
+.zone {
+  fill: transparent;
+  stroke: none;
+  pointer-events: all;
+  cursor: pointer;
+}
+
+.zone--edge {
+  fill: none;
+  stroke: transparent;
+  stroke-width: 70;
+  stroke-linejoin: round;
+  pointer-events: stroke;
+}
+
+.has-selection .zone {
+  fill: rgb(174 41 36 / 6%);
+}
+
+.has-selection .zone--edge {
+  fill: none;
+  stroke: rgb(174 41 36 / 10%);
+}
+
+.zone.is-over {
+  fill: rgb(226 35 26 / 28%);
+}
+
+.zone--edge.is-over {
+  fill: none;
+  stroke: rgb(226 35 26 / 40%);
+}
+
+.zone.is-wrong-flash {
+  animation: zone-flash .6s ease;
+}
+
+.zone--edge.is-wrong-flash {
+  animation: edge-flash .6s ease;
+}
+
+@keyframes zone-flash {
+
+  0%,
+  100% {
+    fill: transparent;
+  }
+
+  30%,
+  70% {
+    fill: rgb(238 38 36 / 45%);
+  }
+}
+
+@keyframes edge-flash {
+
+  0%,
+  100% {
+    stroke: transparent;
+  }
+
+  30%,
+  70% {
+    stroke: rgb(238 38 36 / 55%);
+  }
+}
+
+.zone-lbl {
+  position: absolute;
+  font-size: 28px;
+  line-height: 1;
+  color: #89171a;
+  white-space: nowrap;
+  pointer-events: none;
+  transform-origin: 0 24px;
+}
+
+.zone-lbl--edge {
+  left: 297px;
+  top: 154px;
+  transform: rotate(-19.33deg);
+}
+
+.zone-lbl--river {
+  left: 246.5px;
+  top: 419.5px;
+  transform: rotate(11.73deg);
+}
+
+.zone-lbl--centre {
+  left: 829px;
+  top: 255px;
+  line-height: 38px;
+  text-align: center;
+  transform: translateX(-50%);
+}
+
+.zone-lbl--high {
+  left: 1218.5px;
+  top: 176.5px;
+}
+
+.city__placed {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.chip {
+  position: absolute;
+  height: 53px;
+  padding: 0 22px;
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border: 2px solid #155e30;
+  border-radius: 20px;
+  font-size: 28px;
+  font-weight: 700;
+  white-space: nowrap;
+  transform: translate(-50%, -50%);
+  animation: chip-in .35s ease-out;
+}
+
+@keyframes chip-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(.6);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+.ribbon--city {
+  top: 286px;
+  z-index: 7;
+}
+
+.note-box {
+  position: absolute;
+  left: 579.5px;
+  top: 859px;
+  width: 761px;
+  min-height: 77px;
+  margin: 0;
+  padding: 10px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: #fff;
+  border: 1px solid #155e30;
+  font-size: 26px;
+  line-height: 32px;
+  color: #000;
+  z-index: 6;
+}
+
+.note-box.is-err {
+  border-color: var(--err);
+}
+
+/* ==========================================================================
+   SCREEN 8: THE BRONZE CASTER'S WORKSHOP
+   ========================================================================== */
+.bronze__card {
+  position: absolute;
+  left: 194px;
+  top: 327px;
+  width: 339px;
+  height: 475px;
+  margin: 0;
+}
+
+.bronze__frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.bronze__empty {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 222px;
+  text-align: center;
+  font-size: 24px;
+  font-style: italic;
+  color: #721011;
+}
+
+.bronze__stage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border: 1px solid #af2925;
+  border-radius: 20px;
+  animation: screen-in .5s ease both;
+}
+
+.bronze__caption {
+  position: absolute;
+  left: 68px;
+  top: 816px;
+  width: 591px;
+  margin: 0;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 30px;
+  color: #47220d;
+}
+
+.bronze__tray .card {
+  position: absolute;
+  width: 311px;
+  height: 53px;
+}
+
+.bronze__slot {
+  position: absolute;
+  width: 311px;
+  height: 124px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  background: var(--slot);
+  border: 1px solid var(--red);
+  border-radius: 20px;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.bronze__slot.is-done {
+  background: var(--ok-fill);
+  border-color: var(--ok-line);
+}
+
+.bronze__slot.is-next {
+  box-shadow: 0 0 0 3px rgb(174 41 36 / 45%);
+}
+
+.act-note--bronze {
+  left: 640px;
+  right: auto;
+  width: 1061px;
+  top: 845px;
+}
+
+.ding__title {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 195px;
+  margin: 0;
+  text-align: center;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--red);
+}
+
+.ding__card {
+  position: absolute;
+  left: 765px;
+  top: 252px;
+  width: 390px;
+  height: 560px;
+  overflow: hidden;
+  border: 1px solid #af2925;
+  border-radius: 20px;
+  animation: pop-in .6s ease both;
+}
+
+.ding__card img {
+  position: absolute;
+  left: -23.4px;
+  top: -12.2px;
+  width: 435.7px;
+  height: 583px;
+}
+
+.ding__caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 845px;
+  margin: 0;
+  text-align: center;
+  font-size: 26px;
+  font-weight: 500;
+  color: #214e26;
+}
+
+/* ==========================================================================
+   SCREEN 9-10: THE HISTORIAN'S CURIO SHOP
+   ========================================================================== */
+.oracle {
+  position: absolute;
+  inset: 0;
+  width: 1920px;
+  height: 1080px;
+  pointer-events: none;
+}
+
+.bone {
+  pointer-events: none;
+  transition: filter .3s;
+}
+
+.bone.is-cracked {
+  pointer-events: all;
+  cursor: pointer;
+  filter: url(#boneGlow);
+}
+
+.bone.is-read {
+  filter: url(#boneRead);
+  cursor: default;
+}
+
+.bone:focus-visible {
+  outline: none;
+  filter: url(#boneGlow) drop-shadow(0 0 6px #1a73e8);
+}
+
+.cracks path {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 5px;
+  stroke-linejoin: round;
+  opacity: 0;
+}
+
+.cracks path.is-on {
+  opacity: 1;
+  stroke-dasharray: 400;
+  animation: crack 0.45s ease-out both;
+}
+
+@keyframes crack {
+  from {
+    stroke-dashoffset: 400;
+  }
+
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.ticks image {
+  opacity: 0;
+}
+
+.ticks image.is-on {
+  opacity: 1;
+}
+
+.fire {
+  position: absolute;
+  left: 850px;
+  top: 538px;
+  width: 220.8px;
+  height: 242.3px;
+  pointer-events: none;
+}
+
+.fire img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.fire__flame {
+  transform-origin: 50% 82%;
+  transform: scale(var(--flame, .35));
+  opacity: var(--flame-o, .35);
+  animation: flicker .9s ease-in-out infinite alternate;
+}
+
+@keyframes flicker {
+  from {
+    filter: brightness(1);
+  }
+
+  to {
+    filter: brightness(1.18) drop-shadow(0 0 calc(var(--flame, .35) * 18px) rgb(255 170 50 / 80%));
+  }
+}
+
+.ember {
+  position: absolute;
+  left: 645px;
+  top: 800px;
+  width: 630px;
+  height: 30px;
+  border-radius: 15px;
+  background: #d4712f;
+  border: 2px solid #4a261c;
+  cursor: pointer;
+  touch-action: none;
+}
+
+.ember__fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  border-radius: 15px;
+  background: linear-gradient(90deg, #ffca35, #ff6a1a);
+}
+
+.ember__knob {
+  position: absolute;
+  left: -2px;
+  top: -25px;
+  width: 78px;
+  height: 78px;
+  pointer-events: none;
+}
+
+.ember.is-idle .ember__knob {
+  animation: knob-hint 1.4s ease-in-out infinite;
+}
+
+@keyframes knob-hint {
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  50% {
+    transform: translateX(16px);
+  }
+}
+
+.ember-note {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 852px;
+  margin: 0;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 500;
+  color: #d4712f;
+}
+
+.ember-note.is-done {
+  color: var(--gold);
+  font-size: 26px;
+}
+
+/* ---------- bone panel (modal) ---------- */
+.bone-modal {
+  position: absolute;
+  inset: 0;
+}
+
+.bone-modal__card {
+  position: absolute;
+  left: 393.5px;
+  top: 196px;
+  width: 1133px;
+  height: 572px;
+  border-radius: 34px;
+  background: #fee59a;
+  transition: top .4s ease, height .4s ease;
+}
+
+.bone-modal.is-stage2 .bone-modal__card {
+  top: 95px;
+  height: 931px;
+}
+
+.asker {
+  position: absolute;
+  left: 50%;
+  top: 32px;
+  height: 61px;
+  min-width: 283px;
+  margin: 0;
+  padding: 0 56px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: url("../assets/svg/asker-ribbon.svg") 0 0 / 100% 100% no-repeat;
+  font-size: 40px;
+  font-weight: 700;
+  color: #fff;
+  white-space: nowrap;
+}
+
+.bone-modal__scene {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 108px;
+  margin: 0;
+  text-align: center;
+  font-size: 36px;
+  font-weight: 700;
+}
+
+.bone-modal__q {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 174px;
+  margin: 0;
+  text-align: center;
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--red);
+}
+
+.bone-modal__opts {
+  position: absolute;
+  left: 256.5px;
+  top: 224px;
+  width: 621px;
+  display: flex;
+  flex-direction: column;
+  gap: 17px;
+}
+
+.opt {
+  height: 56px;
+  border: 1px solid var(--red-deep);
+  border-radius: 20px;
+  background: #fff;
+  font-size: 28px;
+  color: #000;
+}
+
+.opt.is-ok {
+  background: #d7e9ba;
+  border-color: #5f9e4c;
+}
+
+.opt.is-err {
+  background: var(--err-fill);
+  border-color: var(--err-line);
+  animation: shake .45s ease;
+}
+
+.opt:disabled {
+  cursor: default;
+}
+
+.bone-modal__stage2 {
+  position: absolute;
+  left: 50.5px;
+  right: 50.5px;
+  top: 459px;
+  height: 340px;
+  border-top: 1px solid var(--red);
+  animation: pop-in .45s ease both;
+}
+
+.bone-modal__stage2 .bone-modal__q {
+  top: 18px;
+}
+
+.bone-modal__stage2 .bone-modal__opts {
+  left: 203px;
+  top: 75px;
+}
+
+.bone-modal__fb {
+  position: absolute;
+  left: 30px;
+  right: 30px;
+  top: 478px;
+  margin: 0;
+  text-align: center;
+  font-size: 26px;
+  font-weight: 500;
+  line-height: 32px;
+  color: var(--err);
+}
+
+.bone-modal__fb.is-ok {
+  color: #156031;
+}
+
+.bone-modal.is-stage2 .bone-modal__fb {
+  top: 848px;
+}
+
+.close-btn {
+  position: absolute;
+  left: 1465px;
+  top: 171px;
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  transition: top .4s ease;
+}
+
+.close-btn img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.bone-modal.is-stage2 .close-btn {
+  top: 65px;
+}
+
+/* ==========================================================================
+   SCREEN 11: JOURNEY OF THE SILK
+   ========================================================================== */
+.plaque {
+  position: absolute;
+  top: 333px;
+  width: 340px;
+  height: 446px;
+  padding: 0;
+  border-radius: 30px;
+  background: var(--peach);
+  transition: opacity .6s ease, box-shadow .3s;
+  cursor: default;
+}
+
+.plaque__img {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 340px;
+  height: 340px;
+  border: 1px solid #af2925;
+  border-radius: 30px;
+  display: block;
+}
+
+.plaque__title {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 349px;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.plaque__sub {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 394px;
+  font-size: 26px;
+  font-weight: 500;
+}
+
+.plaque.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.plaque.is-lit {
+  cursor: pointer;
+  animation: plaque-glow 1.3s ease-in-out infinite;
+}
+
+@keyframes plaque-glow {
+
+  0%,
+  100% {
+    box-shadow: 0 0 0 3px #f4c430, 0 0 6px 2px rgb(244 196 48 / 50%);
+  }
+
+  50% {
+    box-shadow: 0 0 0 6px #f4c430, 0 0 24px 8px rgb(244 196 48 / 85%);
+  }
+}
+
+.plaque__tap {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 475px;
+  font-size: 24px;
+  font-weight: 500;
+  color: var(--red);
+  opacity: 0;
+}
+
+.plaque.is-lit .plaque__tap {
+  opacity: 1;
+}
+
+.chain__threads {
+  position: absolute;
+  inset: 0;
+  width: 1920px;
+  height: 1080px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.thread {
+  fill: none;
+  stroke: #f04b47;
+  stroke-width: 4;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 3px rgb(255 255 255 / 90%));
+}
+
+/* ==========================================================================
+   SCREEN 12: THE TRADE DESK
+   ========================================================================== */
+.desk__table {
+  position: absolute;
+  left: 159px;
+  top: 307px;
+  width: 1603px;
+  height: 253px;
+  background: var(--slot);
+  border: 1px solid var(--red);
+  border-radius: 20px;
+}
+
+.desk__items {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  top: 12px;
+  display: grid;
+  grid-template-columns: repeat(14, 1fr);
+}
+
+.item {
+  height: 122px;
+  padding: 4px 2px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 14px;
+  background: transparent;
+  cursor: grab;
+  touch-action: none;
+}
+
+.item img {
+  width: 70px;
+  height: 70px;
+  pointer-events: none;
+}
+
+.item span {
+  margin-top: 2px;
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 19px;
+  color: #47220d;
+  text-align: center;
+}
+
+.item.is-selected {
+  background: rgb(255 255 255 / 75%);
+  box-shadow: 0 0 0 3px var(--red);
+}
+
+.item.is-dragging {
+  opacity: .3;
+}
+
+.item.is-gone {
+  visibility: hidden;
+}
+
+.desk__clear {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 145px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  animation: pop-in .4s ease both;
+}
+
+.desk__clear b {
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.desk__clear span {
+  font-size: 26px;
+  font-weight: 500;
+}
+
+.chamber {
+  position: absolute;
+  top: 584px;
+  width: 523px;
+  height: 262px;
+  padding-top: 20px;
+  background: #feefef;
+  border: 1px solid var(--red);
+  border-radius: 20px;
+  text-align: center;
+}
+
+.chamber[data-chamber="west"] {
+  left: 159px;
+}
+
+.chamber[data-chamber="within"] {
+  left: 699px;
+}
+
+.chamber[data-chamber="outside"] {
+  left: 1239px;
+}
+
+.chamber>b {
+  display: block;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 32px;
+}
+
+.chamber>span {
+  display: block;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 30px;
+}
+
+.chamber__tags {
+  margin: 14px 18px 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.tag {
+  padding: 5px 14px;
+  border: 2px solid #155e30;
+  border-radius: 14px;
+  background: #fff;
+  font-size: 21px;
+  font-weight: 500;
+  line-height: 24px;
+  animation: pop-in .35s ease-out both;
+}
+
+/* ==========================================================================
+   SCREEN 13: SUMMARY (modal)
+   ========================================================================== */
+.summary {
+  position: absolute;
+  inset: 0;
+}
+
+.summary__panel {
+  position: absolute;
+  left: 288px;
+  top: 179px;
+  width: 1340px;
+  height: 716px;
+  border-radius: 27px;
+  background: #fdcc90;
+  box-shadow: 5px 5px 0 rgb(0 0 0 / 30%);
+  animation: pop-in .4s ease both;
+}
+
+.summary__points {
+  position: absolute;
+  left: 139px;
+  top: 56px;
+  width: 1066px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+
+.summary__points li {
+  min-height: 62px;
+  padding: 12px 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: #fff;
+  border: 1px solid var(--red-deep);
+  border-radius: 20px;
+  font-size: 26px;
+  line-height: 32px;
+}
+
+.summary__think {
+  position: absolute;
+  left: 114px;
+  top: 424px;
+  margin: 0;
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.summary__qs {
+  position: absolute;
+  left: 115px;
+  top: 494px;
+  width: 1080px;
+  margin: 0;
+  padding: 0 0 0 34px;
+  font-size: 26px;
+  line-height: 32px;
+}
+
+.summary__qs li {
+  margin-bottom: 25px;
+  padding-left: 4px;
+}
+
+.summary__btns {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 680px;
+  display: flex;
+  justify-content: center;
+  gap: 17px;
+}
+
+.ribbon--summary {
+  top: 144px;
+}

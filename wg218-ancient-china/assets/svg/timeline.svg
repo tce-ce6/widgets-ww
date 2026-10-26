@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="174.8 228 1571 60"><defs><style>.st64{fill: none; stroke: #ae2924; stroke-width: 3px; stroke-dasharray: 4 4;}.st0{fill: #ae2924;}.st185{fill: #fff;}.st62{fill: none; stroke: #ae2924; stroke-width: 4px;}</style></defs><g id="Group_3149">
+        <g id="Group_3148">
+          <line id="Line_2" class="st64" x1="175.75" y1="258.5" x2="1728.75" y2="258.5"/>
+          <path id="Polygon_1" class="st0" d="M1744.75,258l-19,11v-22l19,11Z"/>
+          <path id="Polygon_2" class="st0" d="M176.25,258l19-11v22l-19-11Z"/>
+        </g>
+        <g id="Group_3145">
+          <g id="Ellipse_3-5">
+            <circle class="st185" cx="743.25" cy="258" r="29"/>
+            <circle class="st62" cx="743.25" cy="258" r="27"/>
+          </g>
+          <circle id="Ellipse_4" class="st0" cx="743.75" cy="258.5" r="13.5"/>
+        </g>
+        <g id="Group_3146">
+          <g id="Ellipse_3-6">
+            <circle class="st185" cx="1160.25" cy="258" r="29"/>
+            <circle class="st62" cx="1160.25" cy="258" r="27"/>
+          </g>
+          <circle id="Ellipse_4-2" class="st0" cx="1160.75" cy="258.5" r="13.5"/>
+        </g>
+        <g id="Group_3147">
+          <g id="Ellipse_3-7">
+            <circle class="st185" cx="1577.25" cy="258" r="29"/>
+            <circle class="st62" cx="1577.25" cy="258" r="27"/>
+          </g>
+          <circle id="Ellipse_4-3" class="st0" cx="1577.75" cy="258.5" r="13.5"/>
+        </g>
+        <g id="Group_3144">
+          <g id="Ellipse_3-8">
+            <circle class="st185" cx="326.25" cy="258" r="29"/>
+            <circle class="st62" cx="326.25" cy="258" r="27"/>
+          </g>
+          <circle id="Ellipse_4-4" class="st0" cx="326.75" cy="258.5" r="13.5"/>
+        </g>
+      </g></svg>
