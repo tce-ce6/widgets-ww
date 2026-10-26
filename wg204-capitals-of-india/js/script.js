@@ -21,6 +21,10 @@ document.addEventListener('DOMContentLoaded', () => {
     state: 'Read the clue and tap the correct state on the map.',
     capital: 'From the list, tap the correct capital for the selected state.',
   };
+  // The Union Territory gateway says "Union Territory" where the others say "state".
+  const itextFor = (step) => (state.corridor && state.corridor.id === 'ut'
+    ? ITEXT[step].replace(/\bstate\b/g, 'Union Territory')
+    : ITEXT[step]);
 
   const FEEDBACK = {
     wrong: { cls: 'feedback--wrong', img: 'assets/images/feedback-wrong.svg', text: 'Try again!' },
@@ -544,7 +548,7 @@ document.addEventListener('DOMContentLoaded', () => {
     state.answerShown = false;
     state.busy = false;
 
-    $('gameItext').textContent = ITEXT.state;
+    $('gameItext').textContent = itextFor('state');
     const clue = $('clueText');
     clue.innerHTML = '<b>Clue:</b> ';
     clue.appendChild(document.createTextNode(s.clue));
@@ -614,7 +618,7 @@ document.addEventListener('DOMContentLoaded', () => {
       later(() => {
         state.busy = false;
         showFeedback(null);
-        $('gameItext').textContent = ITEXT.capital;
+        $('gameItext').textContent = itextFor('capital');
         showCapitalPopup(true);
         setAnswerBtn();
       }, CAPITAL_POPUP_DELAY);
@@ -719,7 +723,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const s = current();
     $('factState').textContent = s.name;
     $('factCapital').textContent = s.capital;
-    $('factText').textContent = s.fact;
+    const list = $('factText');
+    list.innerHTML = '';
+    s.facts.forEach((fact) => {
+      const li = document.createElement('li');
+      li.textContent = fact;
+      list.appendChild(li);
+    });
     openModal('factCard', 'factClose');
   };
 
