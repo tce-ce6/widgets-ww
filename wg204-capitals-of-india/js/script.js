@@ -568,6 +568,7 @@ document.addEventListener('DOMContentLoaded', () => {
     overlay.labels = [];
     renderOverlay();
     proceedBtn.disabled = true;
+    proceedBtn.classList.remove('is-blink');
     proceedBtn.textContent = 'Proceed';
     setAnswerBtn();
   };
@@ -746,6 +747,9 @@ document.addEventListener('DOMContentLoaded', () => {
     state.done.add(s.key);
     $('stateList').querySelector(`[data-state="${s.key}"]`).classList.add('is-done');
     proceedBtn.disabled = false;
+    proceedBtn.classList.remove('is-blink');
+    void proceedBtn.offsetWidth; // restart the animation
+    proceedBtn.classList.add('is-blink'); // blinks 3 times to show it is now active
     proceedBtn.focus();
   });
 

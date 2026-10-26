@@ -657,6 +657,25 @@ button:focus-visible {
   background: var(--blue);
 }
 
+/* the Proceed button blinks 3 times when it becomes active */
+.pill-btn--proceed.is-blink {
+  animation: proceed-blink 0.6s ease-in-out 3;
+}
+
+@keyframes proceed-blink {
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.35;
+    transform: scale(0.94);
+  }
+}
+
 /* ---------- map ---------- */
 .map-panel {
   position: absolute;
