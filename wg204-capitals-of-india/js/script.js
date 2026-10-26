@@ -436,7 +436,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const setSignal = (color) => {
     document.querySelectorAll('.signal__light').forEach((l) => {
-      l.classList.toggle('is-on', l.classList.contains(`signal__light--${color}`));
+      const on = l.classList.contains(`signal__light--${color}`);
+      const turnedOn = on && !l.classList.contains('is-on');
+      l.classList.toggle('is-on', on);
+      l.classList.remove('is-blink');
+      if (turnedOn) {
+        void l.offsetWidth; // restart the animation if it is still running
+        l.classList.add('is-blink');
+      }
     });
     $('signal').setAttribute('aria-label', `Signal: ${color}`);
   };
