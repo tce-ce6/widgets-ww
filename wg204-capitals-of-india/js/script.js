@@ -21,6 +21,10 @@ document.addEventListener('DOMContentLoaded', () => {
     state: 'Read the clue and tap the correct state on the map.',
     capital: 'From the list, tap the correct capital for the selected state.',
   };
+  // The Union Territory gateway says "Union Territory" where the others say "state".
+  const itextFor = (step) => (state.corridor && state.corridor.id === 'ut'
+    ? ITEXT[step].replace(/\bstate\b/g, 'Union Territory')
+    : ITEXT[step]);
 
   const FEEDBACK = {
     wrong: { cls: 'feedback--wrong', img: 'assets/images/feedback-wrong.svg', text: 'Try again!' },
@@ -432,7 +436,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const setSignal = (color) => {
     document.querySelectorAll('.signal__light').forEach((l) => {
-      l.classList.toggle('is-on', l.classList.contains(`signal__light--${color}`));
+      const on = l.classList.contains(`signal__light--${color}`);
+      const turnedOn = on && !l.classList.contains('is-on');
+      l.classList.toggle('is-on', on);
+      l.classList.remove('is-blink');
+      if (turnedOn) {
+        void l.offsetWidth; // restart the animation if it is still running
+        l.classList.add('is-blink');
+      }
     });
     $('signal').setAttribute('aria-label', `Signal: ${color}`);
   };
@@ -544,7 +555,7 @@ document.addEventListener('DOMContentLoaded', () => {
     state.answerShown = false;
     state.busy = false;
 
-    $('gameItext').textContent = ITEXT.state;
+    $('gameItext').textContent = itextFor('state');
     const clue = $('clueText');
     clue.innerHTML = '<b>Clue:</b> ';
     clue.appendChild(document.createTextNode(s.clue));
@@ -557,6 +568,7 @@ document.addEventListener('DOMContentLoaded', () => {
     overlay.labels = [];
     renderOverlay();
     proceedBtn.disabled = true;
+    proceedBtn.classList.remove('is-blink');
     proceedBtn.textContent = 'Proceed';
     setAnswerBtn();
   };
@@ -614,7 +626,7 @@ document.addEventListener('DOMContentLoaded', () => {
       later(() => {
         state.busy = false;
         showFeedback(null);
-        $('gameItext').textContent = ITEXT.capital;
+        $('gameItext').textContent = itextFor('capital');
         showCapitalPopup(true);
         setAnswerBtn();
       }, CAPITAL_POPUP_DELAY);
@@ -719,7 +731,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const s = current();
     $('factState').textContent = s.name;
     $('factCapital').textContent = s.capital;
-    $('factText').textContent = s.fact;
+    const list = $('factText');
+    list.innerHTML = '';
+    s.facts.forEach((fact) => {
+      const li = document.createElement('li');
+      li.textContent = fact;
+      list.appendChild(li);
+    });
     openModal('factCard', 'factClose');
   };
 
@@ -729,6 +747,9 @@ document.addEventListener('DOMContentLoaded', () => {
     state.done.add(s.key);
     $('stateList').querySelector(`[data-state="${s.key}"]`).classList.add('is-done');
     proceedBtn.disabled = false;
+    proceedBtn.classList.remove('is-blink');
+    void proceedBtn.offsetWidth; // restart the animation
+    proceedBtn.classList.add('is-blink'); // blinks 3 times to show it is now active
     proceedBtn.focus();
   });
 

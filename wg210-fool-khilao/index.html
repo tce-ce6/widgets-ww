@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="hi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>&ZeroWidthSpace;फूल खिलाओ&ZeroWidthSpace;</title>
+
+  <link rel="stylesheet" href="./css/global_style.css">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body id="phool-widget">
+  <!-- Polite live region so screen readers hear feedback messages -->
+  <div id="liveRegion" class="sr-only" aria-live="polite"></div>
+
+  <div class="container">
+    <div class="mainContainerOuter">
+      <div class="wdgetTitle">
+        <h2>&ZeroWidthSpace;फूल खिलाओ&ZeroWidthSpace;</h2>
+        <span id="versionId" class="versionText">b4_wg210_261026_01</span>
+      </div>
+      <div id="viewport">
+        <!-- Fixed 1920x1080 design stage, scaled to fit the window by script.js -->
+        <div id="stage">
+          <img class="stage-bg" src="assets/svg/bg.svg" alt="">
+
+          <!-- i-text -->
+          <div class="itext">
+            <p>दो समान अर्थ वाले शब्द ढूँढो। तितलियों को फूल तक ले जाओ।</p>
+            <button class="audio-btn audio-btn--itext" id="itextAudio" type="button" aria-label="निर्देश सुनो">
+              <img src="assets/svg/audio-btn.svg" alt="">
+            </button>
+          </div>
+
+          <!-- word card -->
+          <div class="card">
+            <img class="card__frame" src="assets/svg/card.svg" alt="">
+            <div class="card__pic"><img id="wordPic" alt=""></div>
+            <div class="card__word">
+              <span id="wordText"></span>
+            </div>
+            <button class="audio-btn audio-btn--word" id="wordAudio" type="button" aria-label="शब्द सुनो">
+              <img src="assets/svg/audio-btn.svg" alt="">
+            </button>
+            <ul class="found" id="found" aria-label="मिले हुए शब्द"></ul>
+          </div>
+
+          <!-- flower -->
+          <div class="flower" id="flower" aria-label="फूल">
+            <img class="flower__plant" src="assets/svg/plant.svg" alt="">
+            <img class="flower__petals flower__petals--half" src="assets/svg/petals-half.svg" alt="">
+            <img class="flower__petals flower__petals--full" src="assets/svg/petals-full.svg" alt="">
+          </div>
+
+          <!-- butterflies -->
+          <div class="flies" id="flies"></div>
+
+          <p class="feedback" id="feedback" role="status" hidden></p>
+
+          <button class="btn btn--answer" id="answerBtn" type="button">उत्तर देखें</button>
+          <button class="btn btn--next" id="nextBtn" type="button">
+            <span id="nextLabel">अगला उदाहरण</span>
+            <img src="assets/svg/next-arrow.svg" alt="">
+          </button>
+        </div>
+      </div>
+
+      <!-- Modals live in their own scaled layer above the body::before backdrop,
+           so the dark backdrop can cover the whole viewport, not just the stage. -->
+      <div id="modal-layer">
+        <div id="modal-stage">
+          <!-- ============ END SCREEN ============ -->
+          <div class="end" id="end" role="dialog" aria-modal="true" aria-labelledby="endTitle" hidden>
+            <h3 class="end__title" id="endTitle">सारे फूल खिल गए!</h3>
+            <div class="end__garden" id="garden"></div>
+            <p class="end__score" id="score"></p>
+            <button class="btn btn--again" id="againBtn" type="button">फिर से खेलो</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./js/script.js"></script>
+</body>
+
+</html>

@@ -509,12 +509,6 @@ button { font-family: inherit; }
   background: linear-gradient(180deg, #8fd0f5 0%, #f6d9a0 58%, #d9a766 100%);
 }
 .procession-view__lottie { position: absolute; inset: 0; width: 100%; height: 100%; }
-.sound-chips { position: absolute; left: 0; width: 100%; top: 856px; margin: 0; padding: 0; list-style: none; display: flex; justify-content: center; gap: 18px; }
-.sound-chips li {
-  height: 48px; padding: 0 30px; line-height: 44px; border: 2px solid var(--maroon); border-radius: 24px;
-  background: #fff; font-size: 24px; color: #7f1416; opacity: .55; transition: all .4s ease;
-}
-.sound-chips li.is-on { opacity: 1; background: var(--sand); box-shadow: 0 0 0 4px rgba(237, 32, 36, .45); transform: translateY(-3px); }
 .echo-btn { left: 50%; top: 922px; transform: translateX(-50%); }
 .echo-btn:hover { transform: translate(-50%, -2px); }
 .closing-line {
@@ -526,7 +520,6 @@ button { font-family: inherit; }
 .closing-line p { margin: 0; }
 
 /* ---------- End screen ---------- */
-.seal-tray { position: absolute; left: 784px; top: 87px; width: 352px; height: 94px; }
 .end-card {
   position: absolute; left: 578px; top: 340px; width: 762px; height: 542px; padding-top: 214px;
   background: var(--parchment); border-radius: 27px; text-align: center; box-shadow: 0 10px 0 rgba(0, 0, 0, .3);
@@ -534,7 +527,6 @@ button { font-family: inherit; }
 .end-card__medal { position: absolute; left: 261px; top: -112px; width: 240px; height: auto; animation: medal 2.4s ease-in-out infinite; }
 .end-card__label { margin: 0; font-size: 24px; font-weight: 500; letter-spacing: .02em; }
 .end-card h2 { margin: 14px auto 0; width: 520px; font-size: 60px; line-height: 1.2; color: #b11f24; font-weight: 500; }
-.end-card__text { margin: 18px auto 0; width: 560px; font-size: 28px; line-height: 1.22; }
 .end-btn { left: 838px; top: 850px; width: 243px; padding: 0; text-align: center; }
 
 /* ---------- Portrait phones: ask for landscape ---------- */

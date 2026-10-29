@@ -13,7 +13,10 @@ window.CORRIDORS = [
      "gandhinagar"
     ],
     "clue": "The Asiatic lion lives in Gir. Famous for the white Rann of Kutch. Kite flying is a much-loved celebration.",
-    "fact": "Rann of Kutch – a vast white salt desert. The Asiatic lion survives in the wild mainly in Gujarat's Gir region."
+    "facts": [
+      "The Rann of Kutch is a large white salt desert in Gujarat.",
+      "The Asiatic lion survives in the wild mainly in Gujarat’s Gir region."
+    ]
    },
    {
     "key": "haryana",
@@ -23,7 +26,10 @@ window.CORRIDORS = [
      "chandigarh"
     ],
     "clue": "Known for fertile agricultural land. Dairy farming is important here. Kurukshetra, linked with the Mahabharata, is here.",
-    "fact": "Kurukshetra – a place closely connected with the Mahabharata. Haryana is one of India's important wheat-producing states."
+    "facts": [
+      "Kurukshetra, a place in Haryana, is closely connected with the Mahabharata.",
+      "Haryana is one of India’s important wheat-producing states."
+    ]
    },
    {
     "key": "himachal-pradesh",
@@ -33,7 +39,10 @@ window.CORRIDORS = [
      "shimla"
     ],
     "clue": "A mountainous state in the Himalayas. Famous for growing apples. Has beautiful valleys and snow-covered peaks.",
-    "fact": "Rohtang Pass – a high mountain pass surrounded by Himalayan scenery. The name Himachal Pradesh means “land of snowy mountains”."
+    "facts": [
+      "The name Himachal Pradesh means “land of snowy mountains”.",
+      "Rohtang Pass in Himachal Pradesh is a high mountain pass surrounded by beautiful Himalayan scenery."
+    ]
    },
    {
     "key": "maharashtra",
@@ -43,7 +52,10 @@ window.CORRIDORS = [
      "mumbai"
     ],
     "clue": "Mumbai is home to Bollywood, India's famous Hindi film industry. The Ajanta and Ellora Caves are here. Has a long Arabian Sea coastline.",
-    "fact": "Ganesh Chaturthi – a grand festival with colourful Ganesh idols and processions. Maharashtra is India's second-most populous state."
+    "facts": [
+      "Maharashtra is India’s second-most populous state.",
+      "Ganesh Chaturthi is celebrated with colourful Ganesh idols and grand processions in Maharashtra."
+    ]
    },
    {
     "key": "punjab",
@@ -53,7 +65,10 @@ window.CORRIDORS = [
      "chandigarh"
     ],
     "clue": "Famous for fertile farming lands. The Golden Temple is in Amritsar. Its name means “land of five rivers”.",
-    "fact": "Golden Temple – a beautiful Sikh place of worship surrounded by the Amrit Sarovar. Punjab played an important role in India's Green Revolution."
+    "facts": [
+      "Punjab played an important role in India’s Green Revolution.",
+      "The Golden Temple in Amritsar is a beautiful Sikh place of worship surrounded by the Amrit Sarovar."
+    ]
    },
    {
     "key": "rajasthan",
@@ -63,7 +78,10 @@ window.CORRIDORS = [
      "jaipur"
     ],
     "clue": "Known as the Land of Kings. The Thar Desert covers a large part of it. Famous for grand forts and palaces.",
-    "fact": "Hawa Mahal – the famous “Palace of Winds” with many small windows. Rajasthan is India's largest state by area."
+    "facts": [
+      "Rajasthan is India’s largest state by area.",
+      "Hawa Mahal in Jaipur, also known as the “Palace of Winds”, is famous for its many small windows."
+    ]
    },
    {
     "key": "uttar-pradesh",
@@ -73,7 +91,10 @@ window.CORRIDORS = [
      "lucknow"
     ],
     "clue": "Home to the Taj Mahal. The fertile Ganga plain covers much of the state. Has many important pilgrimage places.",
-    "fact": "Taj Mahal – a world-famous white marble monument at Agra. Uttar Pradesh is India's most populous state."
+    "facts": [
+      "The Taj Mahal is a world-famous white marble monument located in Agra, Uttar Pradesh.",
+      "Uttar Pradesh is India’s most populous state."
+    ]
    },
    {
     "key": "uttarakhand",
@@ -83,7 +104,10 @@ window.CORRIDORS = [
      "dehradun"
     ],
     "clue": "Known for the Himalayas. Important rivers begin in its mountains. Has forests, valleys and hill landscapes.",
-    "fact": "Valley of Flowers – a Himalayan valley filled with colourful flowers during the flowering season. Uttarakhand is often called “Dev Bhoomi”, or Land of the Gods, because of its many pilgrimage sites."
+    "facts": [
+      "Uttarakhand is often called “Dev Bhoomi”, meaning “Land of the Gods”, because of its many pilgrimage sites.",
+      "The Valley of Flowers is a Himalayan valley in Uttarakhand, filled with colourful flowers during the flowering season."
+    ]
    }
   ]
  },
@@ -100,7 +124,10 @@ window.CORRIDORS = [
      "amaravati"
     ],
     "clue": "River Krishna and River Godavari meets the sea in this state. The famous Tirupati temple is in the Tirumala hills.",
-    "fact": "Tirupati Temple – one of India's best-known pilgrimage places. Kondapalli toys are traditional wooden toys made in Andhra Pradesh."
+    "facts": [
+      "Tirupati Temple in Andhra Pradesh is one of India’s best-known pilgrimage places.",
+      "Kondapalli toys are traditional wooden toys made in Andhra Pradesh."
+    ]
    },
    {
     "key": "chhattisgarh",
@@ -110,7 +137,9 @@ window.CORRIDORS = [
      "raipur"
     ],
     "clue": "Has large forest areas. Known for beautiful waterfalls. Rich in minerals.",
-    "fact": "Chitrakote Falls – a wide waterfall often called the “Niagara Falls of India”."
+    "facts": [
+      "Chitrakote Falls in Chhattisgarh is a wide waterfall often called the “Niagara Falls of India”."
+    ]
    },
    {
     "key": "goa",
@@ -120,7 +149,10 @@ window.CORRIDORS = [
      "panaji"
     ],
     "clue": "Famous for beautiful beaches. Has a warm, tropical landscape. Known for colourful festivals and celebrations.",
-    "fact": "Goa Carnival – a colourful celebration with parades, music and dancing. Goa is India's smallest state by area."
+    "facts": [
+      "Goa carnival is a colourful celebration featuring parades, music and dancing.",
+      "Goa is India’s smallest state by area."
+    ]
    },
    {
     "key": "karnataka",
@@ -130,7 +162,10 @@ window.CORRIDORS = [
      "bengaluru"
     ],
     "clue": "Hampi's famous ruins and temples are here. Famous for growing coffee. Has a coastline along the Arabian Sea.",
-    "fact": "Hampi – an ancient city famous for magnificent ruins and temples. Karnataka is one of India's leading coffee-producing states."
+    "facts": [
+      "Hampi is an ancient city in Karnataka and is famous for its magnificent ruins and temples.",
+      "Karnataka is one of India’s leading coffee-producing states."
+    ]
    },
    {
     "key": "kerala",
@@ -140,7 +175,10 @@ window.CORRIDORS = [
      "thiruvananthapuram"
     ],
     "clue": "Known as Gods own Country. Houseboats travel through its waterways. Known for lush greenery and spices.",
-    "fact": "Kerala is famous for its backwaters, Onam, Kathakali and Mohiniyattam. Its backwaters form a large network of lakes, canals, rivers and lagoons."
+    "facts": [
+      "Kerala is famous for its backwaters, the festival of Onam, and classical dance forms such as Kathakali and Mohiniyattam.",
+      "Kerala’s backwaters form a large network of lakes, canals, rivers and lagoons."
+    ]
    },
    {
     "key": "madhya-pradesh",
@@ -150,7 +188,10 @@ window.CORRIDORS = [
      "bhopal"
     ],
     "clue": "Tigers live in my famous national parks. I have large areas of forests. The Khajuraho temples are here.",
-    "fact": "Khajuraho Temples – famous for beautiful stone carvings. Madhya Pradesh is often called the “Heart of India” because of its central location."
+    "facts": [
+      "The Khajuraho Temples in Madhya Pradesh are famous for their beautiful stone carvings.",
+      "Madhya Pradesh is often called the “Heart of India” because of its central location."
+    ]
    },
    {
     "key": "tamil-nadu",
@@ -160,7 +201,10 @@ window.CORRIDORS = [
      "chennai"
     ],
     "clue": "Famous for magnificent temple architecture. Lies along the Bay of Bengal. Bharatanatyam is associated with the state.",
-    "fact": "Brihadisvara Temple – a magnificent Chola-era temple at Thanjavur. Tamil is one of the world's oldest continuously used classical languages."
+    "facts": [
+      "Brihadisvara Temple is a magnificent Chola-era temple located in Thanjavur, Tamil Nadu.",
+      "Tamil is one of the world’s oldest continuously used classical languages."
+    ]
    },
    {
     "key": "telangana",
@@ -170,7 +214,10 @@ window.CORRIDORS = [
      "hyderabad"
     ],
     "clue": "Famous for the Charminar and Golconda Fort. Has rocky landscapes and historic forts. Known for dishes such as Hyderabadi biryani.",
-    "fact": "Charminar – a famous monument with four grand arches. Telangana became a separate state on 2 June 2014."
+    "facts": [
+      "Charminar is a famous monument in Hyderabad known for its four grand arches.",
+      "Telangana became India’s 29th state in 2014."
+    ]
    }
   ]
  },
@@ -187,7 +234,10 @@ window.CORRIDORS = [
      "itanagar"
     ],
     "clue": "One of the first parts of India to see the sunrise. Has high mountains and deep valleys. Much of the land is covered with forests.",
-    "fact": "Arunachal Pradesh is the largest state in Northeast India by area. Tawang Monastery – one of India's largest Buddhist monasteries."
+    "facts": [
+      "Arunachal Pradesh is the largest state in Northeast India by area.",
+      "Tawang Monastery is one of India’s largest Buddhist monasteries."
+    ]
    },
    {
     "key": "assam",
@@ -197,7 +247,10 @@ window.CORRIDORS = [
      "dispur"
     ],
     "clue": "Famous for its tea gardens. The one-horned rhinoceros lives here. The Brahmaputra flows through the state.",
-    "fact": "Assam is one of India's major tea-producing regions. Bihu – colourful festivals celebrated with music and dance."
+    "facts": [
+      "Assam is one of India’s major tea-producing regions.",
+      "Bihu is a group of colourful festivals celebrated in Assam with music and dance."
+    ]
    },
    {
     "key": "bihar",
@@ -207,7 +260,10 @@ window.CORRIDORS = [
      "patna"
     ],
     "clue": "Buddhism has important historical roots here. Ancient Nalanda was located here. Farming is an important part of life.",
-    "fact": "Ancient Nalanda was a famous centre of learning. Bodh Gaya – the place where Buddha is believed to have attained enlightenment."
+    "facts": [
+      "Ancient Nalanda was a famous centre of learning.",
+      "Bodh Gaya is the place where Buddha is believed to have attained enlightenment."
+    ]
    },
    {
     "key": "jharkhand",
@@ -217,7 +273,10 @@ window.CORRIDORS = [
      "ranchi"
     ],
     "clue": "Rich in minerals such as coal and iron ore. Has many forests and waterfalls. Elephants live in its forests.",
-    "fact": "Jharkhand is one of India's important mineral-producing states. Hundru Falls – one of the state's famous waterfalls."
+    "facts": [
+      "Jharkhand is one of India’s important mineral-producing states.",
+      "Hundru Falls is one of the famous waterfalls in Jharkhand."
+    ]
    },
    {
     "key": "manipur",
@@ -227,7 +286,10 @@ window.CORRIDORS = [
      "imphal"
     ],
     "clue": "Known for beautiful Loktak Lake. The lake has floating islands of vegetation. Manipuri is a famous classical dance.",
-    "fact": "The rare Sangai deer is found in Manipur's Keibul Lamjao National Park. Loktak Lake – famous for floating masses of vegetation called phumdis."
+    "facts": [
+      "The rare Sangai deer is found in Manipur’s Keibul Lamjao National Park.",
+      "Loktak Lake is famous for its floating masses of vegetation called phumdis."
+    ]
    },
    {
     "key": "meghalaya",
@@ -237,7 +299,10 @@ window.CORRIDORS = [
      "shillong"
     ],
     "clue": "Its name means “abode of clouds”. It receives very heavy rainfall. Famous for living root bridges.",
-    "fact": "Mawsynram in Meghalaya is famous for receiving extremely heavy rainfall. Living root bridges – bridges grown by guiding the roots of living trees."
+    "facts": [
+      "Mawsynram in Meghalaya is famous for receiving extremely heavy rainfall.",
+      "Living root bridges are formed by guiding the roots of living trees to grow into bridges."
+    ]
    },
    {
     "key": "mizoram",
@@ -247,7 +312,10 @@ window.CORRIDORS = [
      "aizawl"
     ],
     "clue": "A hilly state in Northeast India. Known for green hills and forests. Bamboo grows abundantly here.",
-    "fact": "Mizoram has a very high proportion of forest-covered land. Cheraw – a traditional bamboo dance performed with moving bamboo poles."
+    "facts": [
+      "Mizoram has a very high proportion of forest-covered land.",
+      "Cheraw is a traditional bamboo dance performed using moving bamboo poles."
+    ]
    },
    {
     "key": "nagaland",
@@ -257,7 +325,10 @@ window.CORRIDORS = [
      "kohima"
     ],
     "clue": "Famous for the Hornbill Festival. Has hills and green forests. Has many rich tribal traditions.",
-    "fact": "Nagaland is home to many Naga communities with their own traditions. Hornbill Festival – a colourful celebration of traditions, music and crafts."
+    "facts": [
+      "Nagaland is home to many Naga communities, each with its own traditions.",
+      "The Hornbill Festival is a colourful celebration of Nagaland’s traditions, music and crafts."
+    ]
    },
    {
     "key": "odisha",
@@ -267,7 +338,10 @@ window.CORRIDORS = [
      "bhubaneswar"
     ],
     "clue": "Famous for Konark Sun temple. Olive ridley turtles visit its beaches. Has a coastline along the Bay of Bengal.",
-    "fact": "Odisha's coast is an important nesting area for olive ridley turtles. Jagannath Rath Yatra – a famous festival in which huge chariots are pulled through the streets."
+    "facts": [
+      "Odisha’s coast is an important nesting area for olive ridley turtles.",
+      "Jagannath Rath Yatra is a famous festival in which huge chariots are pulled through the streets."
+    ]
    },
    {
     "key": "sikkim",
@@ -277,7 +351,10 @@ window.CORRIDORS = [
      "gangtok"
     ],
     "clue": "A small Himalayan state. The mighty Kanchenjunga rises beside its landscape. Famous for beautiful flowers and mountains.",
-    "fact": "Sikkim became India's 22nd state in 1975. Kanchenjunga – the world's third-highest mountain, forms a spectacular part of the landscape."
+    "facts": [
+      "Sikkim became India’s 22nd state in 1975.",
+      "Kanchenjunga, the world’s third-highest mountain, forms a spectacular part of Sikkim’s landscape"
+    ]
    },
    {
     "key": "tripura",
@@ -287,7 +364,10 @@ window.CORRIDORS = [
      "agartala"
     ],
     "clue": "Known for green forests and bamboo. Has beautiful historic palaces. Pineapple is an important fruit grown here.",
-    "fact": "Tripura is one of India's important pineapple-growing regions. Neermahal – a beautiful palace built in the middle of a lake."
+    "facts": [
+      "Tripura is one of India’s important pineapple-growing regions.",
+      "Neermahal is a beautiful palace built in the middle of a lake."
+    ]
    },
    {
     "key": "west-bengal",
@@ -297,7 +377,10 @@ window.CORRIDORS = [
      "kolkata"
     ],
     "clue": "The Royal Bengal Tiger lives in the Sundarbans. The Sundarbans has vast mangrove forests. Famous for sweets such as rasgulla.",
-    "fact": "The Sundarbans is the world's largest mangrove forest region. Durga Puja – a spectacular festival with decorated pandals, idols, music and celebrations."
+    "facts": [
+      "The Sundarbans is the world’s largest mangrove forest region.",
+      "Durga Puja is a spectacular festival celebrated with decorated pandals, idols, music and festivities."
+    ]
    }
   ]
  },
@@ -314,7 +397,10 @@ window.CORRIDORS = [
      "srivijayapuram"
     ],
     "clue": "A group of islands in the Bay of Bengal. Surrounded by rich marine life. Have tropical forests and beautiful beaches.",
-    "fact": "Cellular Jail – a historic prison associated with India's freedom struggle. The islands are home to unique tribal communities."
+    "facts": [
+      "Cellular Jail is a historic prison associated with India’s freedom struggle.",
+      "The Andaman and Nicobar Islands are home to unique tribal communities."
+    ]
    },
    {
     "key": "chandigarh",
@@ -324,7 +410,10 @@ window.CORRIDORS = [
      "chandigarh"
     ],
     "clue": "Known for planned streets and gardens. Designed as a modern city after independence. Famous for the Rock Garden.",
-    "fact": "Rock Garden – a unique garden made using waste materials such as broken bangles, tiles and ceramics. Chandigarh serves as the capital of both Punjab and Haryana."
+    "facts": [
+      "Chandigarh serves as the capital of both Punjab and Haryana.",
+      "The Rock Garden is a unique garden made using waste materials such as broken bangles, tiles, and ceramics."
+    ]
    },
    {
     "key": "dnhdd",
@@ -334,7 +423,10 @@ window.CORRIDORS = [
      "daman"
     ],
     "clue": "Includes places along India's western coast. Known for beaches and seaside forts. Also has green forests and tribal traditions.",
-    "fact": "Diu Fort – a historic fort beside the Arabian Sea. It was formed in 2020 by merging two earlier Union Territories."
+    "facts": [
+      "Dadra and Nagar Haveli and Daman and Diu was formed in 2020 by merging two earlier Union Territories.",
+      "Diu Fort is a historic fort located beside the Arabian Sea."
+    ]
    },
    {
     "key": "delhi",
@@ -344,7 +436,10 @@ window.CORRIDORS = [
      "new-delhi"
     ],
     "clue": "Has many important historical monuments. The Red Fort is a famous landmark. Closely connected with India's national government.",
-    "fact": "India Gate – a famous war memorial and landmark. Delhi is the National Capital Territory of India."
+    "facts": [
+      "India Gate is a famous war memorial and landmark in New Delhi.",
+      "Delhi is the National Capital Territory of India."
+    ]
    },
    {
     "key": "jammu-kashmir",
@@ -355,7 +450,10 @@ window.CORRIDORS = [
      "jammu"
     ],
     "clue": "Famous for beautiful Himalayan landscapes. Shikara boats can be seen on its lakes. Well known for growing apples.",
-    "fact": "Dal Lake – famous for colourful shikaras and houseboats. Jammu and Kashmir has two capitals used in different seasons."
+    "facts": [
+      "Dal Lake is famous for its colourful shikaras and houseboats.",
+      "Jammu and Kashmir has two capitals used in different seasons: Srinagar in summer and Jammu in winter."
+    ]
    },
    {
     "key": "ladakh",
@@ -365,7 +463,10 @@ window.CORRIDORS = [
      "leh"
     ],
     "clue": "A land of very high mountains. Famous for its cold desert landscape. Bactrian camels can be found here.",
-    "fact": "Pangong Lake – a beautiful high-altitude lake famous for its changing shades of blue. Ladakh is one of India's highest and most sparsely populated regions."
+    "facts": [
+      "Pangong Lake is a beautiful high-altitude lake famous for its changing shades of blue.",
+      "Ladakh is one of India’s highest and most sparsely populated regions."
+    ]
    },
    {
     "key": "lakshadweep",
@@ -375,7 +476,10 @@ window.CORRIDORS = [
      "kavaratti"
     ],
     "clue": "A group of islands in the Arabian Sea. Famous for coral reefs and clear blue waters. Surrounded by rich marine life.",
-    "fact": "Coral islands – many of its islands are built from coral reefs. Lakshadweep is India's smallest Union Territory by area."
+    "facts": [
+      "Many of Lakshadweep’s islands are formed from coral reefs.",
+      "Lakshadweep is India’s smallest Union Territory by area."
+    ]
    },
    {
     "key": "puducherry",
@@ -385,7 +489,10 @@ window.CORRIDORS = [
      "puducherry"
     ],
     "clue": "Has beautiful seaside promenades. Shows French influence in parts of its architecture. Known for peaceful beaches.",
-    "fact": "Puducherry consists of four separate regions: Puducherry, Karaikal, Mahe and Yanam. French Quarter – known for colourful colonial-style buildings and quiet streets."
+    "facts": [
+      "Puducherry consists of four separate regions: Puducherry, Karaikal, Mahe and Yanam.",
+      "The French quarter in Puducherry is known for its colourful colonial-style buildings and quiet streets."
+    ]
    }
   ]
  }

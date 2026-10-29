@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="hi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>&ZeroWidthSpace;जासूस पहचानो!&ZeroWidthSpace;</title>
+
+  <link rel="stylesheet" href="./css/global_style.css">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body id="jasus-widget">
+  <!-- Polite live region so screen readers hear what happened -->
+  <div id="liveRegion" class="sr-only" aria-live="polite"></div>
+
+  <div class="container">
+    <div class="mainContainerOuter">
+      <div class="wdgetTitle">
+        <h2>&ZeroWidthSpace;जासूस पहचानो!&ZeroWidthSpace;</h2>
+        <span id="versionId" class="versionText">b4_wg214_261026_01</span>
+      </div>
+      <div id="viewport">
+        <!-- Fixed 1920x1080 design stage, scaled to fit the window by script.js -->
+        <div id="stage">
+          <img class="stage-bg" src="assets/svg/bg.svg" alt="">
+          <img class="emblem" src="assets/svg/emblem.svg" alt="">
+          <p class="counter" id="exampleCounter"></p>
+
+          <div class="itext">
+            <p>हर सैनिक को उसके समान अर्थ वाले किले में भेजो। जो सैनिक किसी किले का नहीं, उसे लेंस के नीचे लाकर पहचानो!</p>
+            <button class="audio-btn" id="itextAudio" type="button" aria-label="निर्देश सुनो">
+              <img src="assets/svg/audio-btn.svg" alt="">
+            </button>
+          </div>
+
+          <!-- forts: three bricks on top, word board, members, gate -->
+          <div class="fort fort--a drop" id="fortA" data-zone="a" role="button" tabindex="0">
+            <div class="bricks"><i></i><i></i><i></i></div>
+            <span class="board" id="labelA"></span>
+            <div class="members" id="membersA"></div>
+            <div class="spies-in" id="spiesA"></div>
+            <div class="gate"><i></i><i></i></div>
+          </div>
+          <div class="fort fort--b drop" id="fortB" data-zone="b" role="button" tabindex="0">
+            <div class="bricks"><i></i><i></i><i></i></div>
+            <span class="board" id="labelB"></span>
+            <div class="members" id="membersB"></div>
+            <div class="spies-in" id="spiesB"></div>
+            <div class="gate"><i></i><i></i></div>
+          </div>
+
+          <!-- queue + checkpoint -->
+          <div class="queue" id="queue" aria-hidden="true"></div>
+          <p class="queue-count" id="queueCount"></p>
+          <div class="checkpoint" id="checkpoint"></div>
+
+          <!-- lens zone -->
+          <div class="lens drop" id="lens" data-zone="x" role="button" tabindex="0" aria-label="लेंस से पहचानो">
+            <img class="lens__art" src="assets/svg/lens-banner.svg" alt="">
+            <span class="lens__label">लेंस से पहचानो</span>
+            <div class="lens__spies" id="revealed"></div>
+          </div>
+
+          <div class="timer" aria-hidden="true"><div class="timer__bar" id="timerBar"></div></div>
+
+          <button class="btn btn--answer" id="answerBtn" type="button">उत्तर देखें</button>
+          <button class="btn btn--next" id="nextBtn" type="button">
+            <span id="nextLabel">अगला उदाहरण</span>
+            <img src="assets/svg/next-arrow.svg" alt="">
+          </button>
+        </div>
+      </div>
+
+      <!-- Modals live in their own scaled layer above the body::before backdrop,
+           so the dark backdrop can cover the whole viewport, not just the stage. -->
+      <div id="modal-layer">
+        <div id="modal-stage">
+          <!-- ============ END SCREEN ============ -->
+          <div class="end" id="end" role="dialog" aria-modal="true" aria-labelledby="endTitle" hidden>
+            <img class="end__emblem" src="assets/svg/emblem.svg" alt="">
+            <h3 class="end__title" id="endTitle">सारे जासूस पहचाने गए!</h3>
+            <p class="end__score" id="score"></p>
+            <button class="btn btn--again" id="againBtn" type="button">फिर से खेलो</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./js/script.js"></script>
+</body>
+
+</html>

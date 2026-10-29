@@ -226,12 +226,6 @@
              aria-label="A festival procession passing from left to right: women shaking sistrums, priests with standards, bearers carrying the god's statue on a barque, and a crowd bowing low.">
           <div id="processionLottie" class="procession-view__lottie" aria-hidden="true"></div>
         </div>
-        <ul id="soundChips" class="sound-chips" aria-label="Sounds of the procession">
-          <li data-chip="sistrum">Sistrum</li>
-          <li data-chip="drums">Drums</li>
-          <li data-chip="voices">Voices</li>
-          <li data-chip="statue">The Statue</li>
-        </ul>
         <button id="btnBegin" class="btn btn--yellow echo-btn" type="button">Begin the Procession</button>
         <button id="btnFinish" class="btn btn--yellow echo-btn" type="button" hidden>Collect the Curator's Seal</button>
         <div id="closingLine" class="closing-line" role="status" hidden>
@@ -243,12 +237,11 @@
       <section id="screen-end" class="screen screen--wall screen--end" data-screen="end" aria-labelledby="endTitle">
         <img class="screen__bg" src="assets/images/wall.png" alt="">
         <div class="screen__tint screen__tint--dark"></div>
-        <img class="seal-tray" src="assets/svg/seal-tray.svg" alt="All four gallery seals are earned.">
+        <ol class="tracker" aria-label="Gallery progress"></ol>
         <div class="end-card">
           <img class="end-card__medal" src="assets/svg/seal-medal.svg" alt="A gold medallion showing a pharaoh's mask on a red ribbon.">
           <p class="end-card__label">MUSEUM EXPLORATION COMPLETE</p>
           <h2 id="endTitle">You Have Earned the Curator's Seal</h2>
-          <p class="end-card__text">All four galleries are open. The museum is yours to explore again whenever you wish.</p>
         </div>
         <button id="btnExploreAgain" class="btn btn--yellow end-btn" type="button">Explore Again</button>
       </section>

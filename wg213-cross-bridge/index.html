@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="hi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>&ZeroWidthSpace;पुल बनाओ, पार जाओ!&ZeroWidthSpace;</title>
+
+  <link rel="stylesheet" href="./css/global_style.css">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body id="pul-widget">
+  <!-- Polite live region so screen readers hear what happened -->
+  <div id="liveRegion" class="sr-only" aria-live="polite"></div>
+
+  <div class="container">
+    <div class="mainContainerOuter">
+      <div class="wdgetTitle">
+        <h2>&ZeroWidthSpace;पुल बनाओ, पार जाओ!&ZeroWidthSpace;</h2>
+        <span id="versionId" class="versionText">b4_wg213_261026_01</span>
+      </div>
+      <div id="viewport">
+        <!-- Fixed 1920x1080 design stage, scaled to fit the window by script.js -->
+        <div id="stage">
+          <img class="stage-bg" src="assets/svg/bg.svg" alt="">
+          <img class="stage-bg" src="assets/svg/bridges.svg" alt="">
+
+          <p class="counter" id="exampleCounter"></p>
+
+          <div class="itext">
+            <p>हर शब्द को उसके समान अर्थ वाले पुल में लगाओ। जो शब्द किसी पुल का नहीं, उसे नदी में बहा दो!</p>
+            <button class="audio-btn" id="itextAudio" type="button" aria-label="निर्देश सुनो">
+              <img src="assets/svg/audio-btn.svg" alt="">
+            </button>
+          </div>
+
+          <!-- the two bridges: label plank + three empty slots each -->
+          <div class="bridge drop" id="bridgeA" data-zone="a" role="button" tabindex="0">
+            <span class="plank plank--label" id="labelA"></span>
+            <div class="slots" id="slotsA"></div>
+          </div>
+          <div class="bridge bridge--b drop" id="bridgeB" data-zone="b" role="button" tabindex="0">
+            <span class="plank plank--label" id="labelB"></span>
+            <div class="slots" id="slotsB"></div>
+          </div>
+
+          <img class="rider rider--a" id="riderA" src="assets/svg/girl.svg" alt="साइकिल पर लड़की">
+          <img class="rider rider--b" id="riderB" src="assets/svg/boy.svg" alt="साइकिल पर लड़का">
+
+          <!-- words floating in the river -->
+          <div class="pool" id="pool"></div>
+
+          <!-- whirlpool -->
+          <div class="whirl drop" id="whirl" data-zone="x" role="button" tabindex="0" aria-label="नदी में बहा दो">
+            <div class="whirl__anim" id="whirlAnim"></div>
+            <span class="whirl__label">नदी में बहा दो</span>
+          </div>
+
+          <button class="btn btn--answer" id="answerBtn" type="button">उत्तर देखें</button>
+          <button class="btn btn--next" id="nextBtn" type="button">
+            <span id="nextLabel">अगला उदाहरण</span>
+            <img src="assets/svg/next-arrow.svg" alt="">
+          </button>
+        </div>
+      </div>
+
+      <!-- Modals live in their own scaled layer above the body::before backdrop,
+           so the dark backdrop can cover the whole viewport, not just the stage. -->
+      <div id="modal-layer">
+        <div id="modal-stage">
+          <!-- ============ END SCREEN ============ -->
+          <div class="end" id="end" role="dialog" aria-modal="true" aria-labelledby="endTitle" hidden>
+            <div class="end__riders">
+              <img src="assets/svg/girl.svg" alt="">
+              <img src="assets/svg/boy.svg" alt="">
+            </div>
+            <h3 class="end__title" id="endTitle">सब पार पहुँच गए!</h3>
+            <p class="end__score" id="score"></p>
+            <button class="btn btn--again" id="againBtn" type="button">फिर से खेलो</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./js/lottie.js"></script>
+  <script src="./js/anim-data.js"></script>
+  <script src="./js/script.js"></script>
+</body>
+
+</html>

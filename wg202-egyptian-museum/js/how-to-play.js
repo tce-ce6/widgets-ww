@@ -462,12 +462,6 @@
         text: 'Tap <b>Begin the Procession</b> to start. Make sure the sound is on so you can hear it.',
         target: () => unionRect([$('#btnBegin'), $('#btnFinish')]),
         anim: (tok) => tapLoop(tok, () => [centre($('#btnBegin').offsetParent ? $('#btnBegin') : $('#btnFinish'))])
-      },
-      {
-        title: 'Listen for the sounds',
-        text: 'The sounds light up one by one as the procession passes: the sistrum, drums, voices and the statue.',
-        target: () => unionRect([$('#soundChips')]),
-        anim: (tok) => popLoop(tok, () => $$('#soundChips li'))
       }
     ]
   };
