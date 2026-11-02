@@ -161,11 +161,11 @@
       "author": "Shyamsunder Hait"
     },
     "wg207-i-aur-ee-kee-maatra-mein-antar-gujrati": {
-      "updatedAt": "2026-11-02T12:52:26+05:30",
+      "updatedAt": "2026-11-02T17:10:56+05:30",
       "author": "tce-ashishg"
     },
     "wg208-u-aur-oo-kee-maatra-mein-antar-gujrati": {
-      "updatedAt": "2026-11-02T12:52:26+05:30",
+      "updatedAt": "2026-11-02T17:10:56+05:30",
       "author": "tce-ashishg"
     },
     "wg209-poppulation-density-simulator": {
@@ -222,6 +222,15 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-11-02T17:10:56+05:30",
+      "author": "tce-ashishg",
+      "message": "bg jurking issue resolved",
+      "widgets": [
+        207,
+        208
+      ]
+    },
     {
       "date": "2026-11-02T16:25:02+05:30",
       "author": "tce-nitinc",
@@ -472,14 +481,6 @@
       "message": "wg207 & 208 structuring done",
       "widgets": [
         212
-      ]
-    },
-    {
-      "date": "2026-10-19T15:27:31+05:30",
-      "author": "tce-nitinc",
-      "message": "wg204 fixes",
-      "widgets": [
-        204
       ]
     }
   ]
