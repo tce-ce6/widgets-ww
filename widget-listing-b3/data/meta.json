@@ -161,11 +161,11 @@
       "author": "Shyamsunder Hait"
     },
     "wg207-i-aur-ee-kee-maatra-mein-antar-gujrati": {
-      "updatedAt": "2026-10-23T09:39:40+05:30",
+      "updatedAt": "2026-11-02T12:52:26+05:30",
       "author": "tce-ashishg"
     },
     "wg208-u-aur-oo-kee-maatra-mein-antar-gujrati": {
-      "updatedAt": "2026-10-23T12:24:10+05:30",
+      "updatedAt": "2026-11-02T12:52:26+05:30",
       "author": "tce-ashishg"
     },
     "wg209-poppulation-density-simulator": {
@@ -201,7 +201,7 @@
       "author": "tce-nitinc"
     },
     "wg219-sabdo-me-vayanjan-ki-khoj-gujrati": {
-      "updatedAt": "2026-11-02T12:33:50+05:30",
+      "updatedAt": "2026-11-02T12:52:26+05:30",
       "author": "tce-ashishg"
     },
     "wg223-leaf-lab-transpiration": {
@@ -218,6 +218,16 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-11-02T12:52:26+05:30",
+      "author": "tce-ashishg",
+      "message": "font issue resolved",
+      "widgets": [
+        207,
+        208,
+        219
+      ]
+    },
     {
       "date": "2026-11-02T12:33:50+05:30",
       "author": "tce-ashishg",
@@ -466,14 +476,6 @@
       "message": "wg201 fixes",
       "widgets": [
         201
-      ]
-    },
-    {
-      "date": "2026-10-19T14:52:41+05:30",
-      "author": "tce-nitinc",
-      "message": "wg202",
-      "widgets": [
-        202
       ]
     }
   ]
