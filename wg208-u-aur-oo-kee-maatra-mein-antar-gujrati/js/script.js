@@ -553,6 +553,12 @@ function playLottieAnimation(bandGroup) {
       setInteractionLock("feedback-lottie", false);
     });
 
+    // Lottie reports a failed JSON load as data_failed, not error
+    lottieInstances.addEventListener("data_failed", () => {
+      parentEl.classList.remove("visible");
+      setInteractionLock("feedback-lottie", false);
+    });
+
     // Safety override
     if (lottieInstances.audioController) {
       lottieInstances.audioController.pause = () =>
@@ -589,7 +595,7 @@ function playLottieAnimationStart(bandGroup) {
       renderer: "svg",
       loop: false,
       autoplay: false,
-      path: `assets/Animation/shining stars.json`,
+      path: `assets/animation/shining-stars.json`,
     });
 
     lottieInstances_star.addEventListener("DOMLoaded", () => {
@@ -612,6 +618,12 @@ function playLottieAnimationStart(bandGroup) {
     lottieInstances_star.addEventListener("error", (e) => {
       // console.error('Lottie render error:', e);
       // parentEl.style.display = 'none';
+      setInteractionLock("star-lottie", false);
+    });
+
+    // Lottie reports a failed JSON load as data_failed, not error
+    lottieInstances_star.addEventListener("data_failed", () => {
+      containerEl.classList.remove("visible");
       setInteractionLock("star-lottie", false);
     });
 
