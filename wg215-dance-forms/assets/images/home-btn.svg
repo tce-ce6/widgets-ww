@@ -1,0 +1,445 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="48 966.9 65.2 65.2"><defs>
+    <style>
+      .st0, .st1 {
+        font-family: KrutiDev010Bold, 'Kruti Dev 010';
+      }
+
+      .st2, .st3, .st4, .st5, .st6, .st7, .st8, .st9, .st10, .st11, .st12, .st13, .st14 {
+        isolation: isolate;
+      }
+
+      .st2, .st4, .st5, .st6, .st8, .st11, .st13, .st14 {
+        font-weight: 700;
+      }
+
+      .st2, .st4, .st5, .st11 {
+        font-family: NirmalaUI-Bold, 'Nirmala UI';
+      }
+
+      .st2, .st7, .st10, .st13 {
+        font-size: 30px;
+      }
+
+      .st15 {
+        fill: #f2ba36;
+      }
+
+      .st16, .st17, .st18, .st19, .st20, .st21, .st22, .st23, .st24, .st25, .st26, .st27, .st28, .st29 {
+        fill: none;
+      }
+
+      .st16, .st17, .st18, .st19, .st20, .st21, .st22, .st23, .st25, .st26, .st27, .st28, .st29 {
+        stroke: #000;
+      }
+
+      .st16, .st18, .st19, .st20, .st21, .st22, .st23, .st25, .st26, .st27, .st28, .st29 {
+        stroke-miterlimit: 10;
+      }
+
+      .st3 {
+        font-family: Roboto-Regular, Roboto;
+      }
+
+      .st3, .st12 {
+        font-size: 40px;
+      }
+
+      .st30 {
+        fill: #53271a;
+      }
+
+      .st18 {
+        stroke-dasharray: 2.02 2.02 2.02 2.02;
+      }
+
+      .st31 {
+        fill: #582b31;
+      }
+
+      .st32 {
+        fill: #4e4916;
+      }
+
+      .st33 {
+        fill: #cafbfb;
+      }
+
+      .st34 {
+        fill: #ffa743;
+      }
+
+      .st35 {
+        fill: #bc3c3c;
+      }
+
+      .st36 {
+        fill: #b0ab30;
+      }
+
+      .st1, .st37 {
+        fill: #ec1c24;
+        font-size: 60px;
+      }
+
+      .st38 {
+        fill: #1bb3dd;
+      }
+
+      .st39 {
+        fill: #fff930;
+      }
+
+      .st40 {
+        fill: #a3cc23;
+      }
+
+      .st19 {
+        stroke-dasharray: 2 2 2 2 2 2;
+      }
+
+      .st4, .st8 {
+        fill: #ea0b0b;
+        font-size: 50px;
+      }
+
+      .st20 {
+        stroke-dasharray: 2.01 2.01 2.01 2.01 2.01 2.01;
+      }
+
+      .st5, .st41, .st6, .st11, .st14 {
+        fill: #fff;
+      }
+
+      .st5, .st14 {
+        font-size: 35px;
+      }
+
+      .st6, .st11 {
+        font-size: 45px;
+      }
+
+      .st6, .st13, .st14 {
+        font-family: Roboto-Bold, Roboto;
+      }
+
+      .st42 {
+        fill: #2be2d6;
+      }
+
+      .st43 {
+        fill: #c83734;
+      }
+
+      .st21 {
+        stroke-dasharray: 2.01 2.01 2.01 2.01 2.01 2.01;
+      }
+
+      .st44 {
+        fill: #ffffd8;
+      }
+
+      .st22 {
+        stroke-dasharray: 2.07 2.07 2.07 2.07 2.07 2.07;
+      }
+
+      .st45 {
+        fill: #17b2dc;
+      }
+
+      .st23 {
+        stroke-dasharray: 2.02 2.02 2.02 2.02 2.02 2.02;
+      }
+
+      .st46 {
+        fill: #5ec5c4;
+      }
+
+      .st7 {
+        font-family: Roboto-Italic, Roboto;
+      }
+
+      .st7, .st8 {
+        font-style: italic;
+      }
+
+      .st7, .st10 {
+        fill: #770808;
+      }
+
+      .st47 {
+        fill: #ff2c68;
+      }
+
+      .st48 {
+        fill: #e8de47;
+      }
+
+      .st8 {
+        font-family: Roboto-BoldItalic, Roboto;
+      }
+
+      .st49 {
+        fill: #124f74;
+      }
+
+      .st50 {
+        fill: #ff8222;
+      }
+
+      .st51 {
+        fill: #c0d625;
+      }
+
+      .st52 {
+        fill: #30a749;
+      }
+
+      .st53 {
+        fill: #88a800;
+      }
+
+      .st54 {
+        fill: #89851b;
+      }
+
+      .st55 {
+        clip-path: url(#clippath-1);
+      }
+
+      .st56 {
+        fill: #7dc9cf;
+      }
+
+      .st57 {
+        fill: #4caf50;
+      }
+
+      .st58 {
+        fill: #296d01;
+      }
+
+      .st59 {
+        fill: #f8ec3b;
+      }
+
+      .st60 {
+        fill: #f57ac7;
+      }
+
+      .st61 {
+        fill: #cdc83e;
+      }
+
+      .st62 {
+        fill: #f9a545;
+      }
+
+      .st10 {
+        font-family: NirmalaUI, 'Nirmala UI';
+      }
+
+      .st63 {
+        fill: #773a17;
+      }
+
+      .st64 {
+        fill: #55575b;
+      }
+
+      .st25 {
+        stroke-dasharray: 2.02 2.02 2.02 2.02 2.02 2.02;
+      }
+
+      .st65 {
+        fill: #a8fcfd;
+      }
+
+      .st66 {
+        clip-path: url(#clippath-3);
+      }
+
+      .st67 {
+        fill: #cd77f9;
+      }
+
+      .st68 {
+        fill: #c05d38;
+      }
+
+      .st69 {
+        fill: #0295fc;
+      }
+
+      .st70 {
+        fill: #30a94a;
+      }
+
+      .st71 {
+        fill: #9e4caf;
+      }
+
+      .st72 {
+        fill: #ea3b3b;
+      }
+
+      .st26 {
+        stroke-dasharray: 1.96 1.96 1.96 1.96 1.96 1.96;
+      }
+
+      .st73 {
+        fill: #134f74;
+      }
+
+      .st74 {
+        fill: #c93734;
+      }
+
+      .st12 {
+        font-family: KrutiDev011, 'Kruti Dev 011';
+      }
+
+      .st75 {
+        fill: #da8438;
+      }
+
+      .st76 {
+        fill: #6ee22b;
+      }
+
+      .st77 {
+        fill: #d0dd28;
+      }
+
+      .st78 {
+        display: none;
+      }
+
+      .st79 {
+        fill: #c3c330;
+      }
+
+      .st80 {
+        fill: #a39b28;
+      }
+
+      .st81 {
+        font-family: AdobeDevanagari-Regular, 'Adobe Devanagari';
+      }
+
+      .st82 {
+        fill: #ac7db6;
+      }
+
+      .st27 {
+        stroke-dasharray: 2.02 2.02 2.02 2.02;
+      }
+
+      .st28 {
+        stroke-dasharray: 2.01 2.01 2.01 2.01 2.01 2.01;
+      }
+
+      .st83 {
+        fill: #f4943e;
+      }
+
+      .st84 {
+        opacity: .79;
+      }
+
+      .st85 {
+        fill: #9e592a;
+      }
+
+      .st86 {
+        fill: #2f3235;
+      }
+
+      .st87 {
+        clip-path: url(#clippath-2);
+      }
+
+      .st88 {
+        fill: #89d4d6;
+      }
+
+      .st89 {
+        fill: #18b2db;
+      }
+
+      .st90 {
+        fill: #813a2e;
+      }
+
+      .st91 {
+        fill: #3f2f11;
+      }
+
+      .st92 {
+        fill: #7ec142;
+      }
+
+      .st93 {
+        fill: url(#linear-gradient);
+      }
+
+      .st94 {
+        fill: #ffc28c;
+      }
+
+      .st95 {
+        clip-path: url(#clippath);
+      }
+
+      .st96 {
+        fill: #827821;
+      }
+
+      .st97 {
+        opacity: .5;
+      }
+
+      .st29 {
+        stroke-dasharray: 1.96 1.96 1.96 1.96;
+      }
+
+      .st98 {
+        fill: #56585c;
+      }
+
+      .st99 {
+        fill: #c0fafc;
+      }
+    </style>
+    <clipPath id="clippath">
+      <rect class="st24" width="1920" height="1080"/>
+    </clipPath>
+    <linearGradient id="linear-gradient" x1="1776.44" y1="1214.88" x2="1768.46" y2="1409.21" gradientTransform="translate(.0234 1056.4923) scale(.9766 -.9764)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#e8fbff"/>
+      <stop offset="1" stop-color="#cffefe"/>
+    </linearGradient>
+    <clipPath id="clippath-1">
+      <rect class="st24" x="607.95" y="392.8" width="209.88" height="145.91"/>
+    </clipPath>
+    <clipPath id="clippath-2">
+      <rect class="st24" x="1460.2" y="393.28" width="209.88" height="145.91"/>
+    </clipPath>
+    <clipPath id="clippath-3">
+      <rect class="st24" x="60.18" y="977.97" width="41.46" height="42.84"/>
+    </clipPath>
+  </defs><g id="home_button">
+    <g id="Group_1226">
+      <path id="Path_2124" class="st94" d="M109.36,1032.14h-57.59c-2.1,0-3.8-1.7-3.8-3.8v-57.6c0-2.1,1.7-3.8,3.8-3.8h57.59c2.1,0,3.8,1.7,3.8,3.8v57.59c0,2.1-1.7,3.8-3.8,3.8"/>
+      <path id="Path_2125" class="st75" d="M109.36,1032.14h-57.59c-2.1,0-3.8-1.7-3.8-3.8v-57.6c.07-1.06.3-2.33,1.11-2.69,3.43-1.53,11,15.96,25.67,31.59,17.89,19.06,39.05,27.58,37.3,31.38-.37.81-1.62,1.05-2.69,1.11"/>
+      <path id="Path_2126" class="st83" d="M103.97,1026.75h-46.81c-2.1,0-3.8-1.7-3.8-3.8v-46.82c0-2.1,1.7-3.8,3.8-3.8h46.81c2.1,0,3.8,1.7,3.8,3.8v46.81c0,2.1-1.7,3.8-3.8,3.8"/>
+      <g id="Group_601" class="st84">
+        <g id="Group_600">
+          <g class="st66">
+            <g id="Group_599">
+              <path id="Path_2127" class="st41" d="M60.37,997.44c.42,1.14,1.51,1.9,2.73,1.89h.22c.19,0,.34.15.34.34v18.43c0,1.49,1.21,2.7,2.7,2.7h7.39c1.49,0,2.7-1.21,2.7-2.7h0v-12.95c0-.19.15-.34.34-.34h8.23c.19,0,.34.15.34.34v12.95c0,1.49,1.21,2.7,2.7,2.7h7.4c1.49,0,2.7-1.21,2.7-2.7h0v-18.45c0-.19.16-.34.35-.33.01,0,.02,0,.04,0h.18c1.61,0,2.92-1.31,2.92-2.92,0-.84-.36-1.64-1-2.2l-17.82-15.53c-1.1-.96-2.74-.96-3.83,0l-17.8,15.53c-.92.8-1.25,2.08-.81,3.22"/>
+            </g>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+  </svg>
