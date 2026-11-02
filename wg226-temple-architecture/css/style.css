@@ -1,0 +1,1443 @@
+/* ==========================================================================
+   Temple Architecture (wg226)
+   Layout is authored on a fixed 1920x1080 stage (matching the XD layout) and
+   scaled to the window by script.js, so the widget always fits one screen.
+   ========================================================================== */
+
+:root {
+  --rust: #ae4e25;
+  --brown: #522810;
+  --band: #f7eab7;
+  --paper: #fff9e5;
+  --pink: #ee3569;
+  --itext: #cd1f3d;
+  --line: #ae2924;
+  --tag: #fcf396;
+  --placed: #a75e26;
+  --placed-line: #f68b1f;
+  --back: #965550;
+  --ok: #8bcb84;
+  --ok-line: #2f7d3a;
+  --bad: #f6a0a2;
+  --bad-line: #b72025;
+  --route: #bc2126;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  overflow: hidden;
+}
+
+body {
+  background: #000;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mainContainerOuter {
+  background: transparent;
+}
+
+/* Layering, bottom to top: #viewport (the widget) -> body::before (modal
+   backdrop) -> #modal-layer (popups) */
+#viewport,
+#modal-layer {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+}
+
+#viewport {
+  z-index: 1;
+
+}
+
+/* Dark backdrop behind an open modal, covering the whole viewport. */
+body.has-modal::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+#modal-layer {
+  z-index: 3;
+  pointer-events: none;
+}
+
+body.has-modal #modal-layer {
+  pointer-events: auto;
+}
+
+/* #stage holds the widget, #modal-stage the modals; both are the same fixed
+   1920x1080 design stage, scaled together by script.js. */
+#stage{
+    background-image:url("../assets/svg/bg-pattern.png");
+  background-size: 100% 100%;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+#stage,
+#modal-stage {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1920px;
+  height: 1080px;
+  transform-origin: 0 0;
+  overflow: hidden;
+  font-family: "Roboto", "Segoe UI", sans-serif;
+  line-height: 1.3;
+  color: #000;
+}
+
+button {
+  font-family: inherit;
+  padding: 0;
+  cursor: pointer;
+}
+
+button:focus-visible {
+  outline: 4px solid #1a73e8;
+  outline-offset: 2px;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+/* ---------- title (inside the scaled stage) ---------- */
+#temple-widget .wdgetTitle {
+  position: absolute;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  left: 0;
+  top: 0;
+  z-index: 30;
+}
+
+#temple-widget .wdgetTitle h2 {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  font-family: "Roboto", sans-serif;
+  font-size: 40px;
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: left;
+  background: var(--rust);
+  padding: 8px 40px;
+  color: #fff;
+  border-radius: 0 0 20px 20px;
+  white-space: nowrap;
+}
+
+#temple-widget .versionText {
+  position: absolute;
+  right: 20px;
+  top: 10px !important;
+  font-size: 17px;
+  line-height: 1;
+  color: rgb(0 0 0 / 30%);
+      font-family: 'Roboto';
+}
+
+/* ---------- screens + shared parts ---------- */
+.screen {
+  position: absolute;
+  inset: 0;
+  display: none;
+}
+
+.screen.is-active {
+  display: block;
+}
+
+.itext {
+  position: absolute;
+  margin: 0;
+  color: var(--itext);
+  font-size: 28px;
+  font-style: italic;
+  line-height: 36px;
+  text-align: center;
+}
+
+.panel {
+  position: absolute;
+  background: var(--band);
+  border: 1px solid var(--rust);
+  border-radius: 20px;
+}
+
+.panel--mystery {
+  left: 62px;
+  top: 136px;
+  width: 1796px;
+  height: 897px;
+}
+
+.panel--walk {
+  left: 31px;
+  top: 110px;
+  width: 1858px;
+  height: 944px;
+}
+
+.ribbon {
+  position: absolute;
+  z-index: 6;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 72px;
+  transform: translateX(-50%);
+  background: var(--brown);
+  border: 1px solid var(--placed-line);
+  border-radius: 36px;
+  color: #fff;
+  font-size: 32px;
+  font-weight: 500;
+  white-space: nowrap;
+  padding: 0 40px;
+}
+
+.ribbon--mystery {
+  left: 960px;
+  top: 104px;
+}
+
+.ribbon--walk,
+.ribbon--temples {
+  left: 960px;
+  top: 74px;
+}
+
+.pill-btn {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  height: 70px;
+  border: none;
+  border-radius: 35px;
+  background: var(--pink);
+  color: #fff;
+  font-size: 34px;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.pill-btn:active {
+  transform: translateY(3px);
+}
+
+.pill-btn:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+
+/* ---------- intro ---------- */
+.intro-sun {
+  position: absolute;
+  left: 500px;
+  top: 272px;
+  width: 289px;
+  height: 289px;
+  border-radius: 50%;
+  background: #f6996a;
+}
+
+.intro-temple {
+  position: absolute;
+  left: 345px;
+  top: 101px;
+  width: 1227px;
+  height: 535px;
+}
+
+.intro-band {
+  position: absolute;
+  left: -200px;
+  right: -200px;
+  top: 634px;
+  height: 446px;
+  background: var(--band);
+  border-top: 1px solid #000;
+}
+
+.intro-text {
+  position: absolute;
+  left: 600px;
+  width: 1120px;
+  top: 34px;
+  margin: 0;
+  color: var(--brown);
+  font-size: 32px;
+  line-height: 46px;
+  text-align: center;
+}
+
+.intro-itext {
+  left: 600px;
+  width: 1120px;
+  top: 252px;
+}
+
+.intro-start {
+  left: 1056px;
+  top: 311px;
+  width: 209px;
+  height: 93px;
+  border-radius: 47px;
+}
+
+/* ---------- screen 1: the mystery ---------- */
+.tower-box {
+  position: absolute;
+  left: 135px;
+  top: 209px;
+  width: 844px;
+  height: 755px;
+  background: #c5af72;
+  border: 1px solid var(--brown);
+  border-radius: 20px;
+}
+
+.tower-img {
+  position: absolute;
+  left: 38px;
+  top: 43px;
+  width: 455px;
+  height: 668px;
+}
+
+.tower-leads,
+.guess-leads {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1920px;
+  height: 1080px;
+  pointer-events: none;
+}
+
+.slot,
+.body-tag {
+  position: absolute;
+  width: 210px;
+  height: 58px;
+  border-radius: 14px;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.slot {
+  background: #fff1e0;
+  border: 3px solid var(--placed-line);
+  color: #fff;
+}
+
+.slot.is-filled,
+.guess-tag {
+  background: var(--placed);
+  color: #fff;
+}
+
+.slot.is-target {
+  outline: 4px solid var(--itext);
+  outline-offset: 1px;
+}
+
+.slot.is-locked {
+  cursor: default;
+}
+
+.body-tag {
+  background: var(--tag);
+  border: 2px solid #000;
+  color: #181818;
+  touch-action: none;
+}
+
+.body-tag.is-selected {
+  background: var(--brown);
+  color: #fff;
+}
+
+.is-dragging {
+  opacity: .35;
+}
+
+.drag-ghost {
+  position: absolute;
+  z-index: 50;
+  margin: 0;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, .35);
+}
+
+.mystery-head {
+  position: absolute;
+  left: 1078px;
+  width: 683px;
+  top: 208px;
+  margin: 0;
+  color: var(--rust);
+  font-size: 40px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.mystery-itext {
+  left: 1078px;
+  width: 683px;
+  top: 284px;
+}
+
+.mystery-lock {
+  left: 1258px;
+  top: 713px;
+  width: 327px;
+}
+
+.mystery-count {
+  position: absolute;
+  left: 1078px;
+  width: 683px;
+  top: 794px;
+  margin: 0;
+  color: var(--brown);
+  font-size: 24px;
+  text-align: center;
+}
+
+.lock-msg {
+  position: absolute;
+  left: 1081px;
+  top: 640px;
+  width: 683px;
+  padding: 18px 28px;
+  background: var(--paper);
+  border: 2px solid var(--line);
+  border-radius: 20px;
+  color: #851618;
+  font-size: 26px;
+  line-height: 38px;
+  text-align: center;
+}
+
+.lock-msg b,
+.lock-msg span {
+  display: block;
+}
+
+.mystery-walk {
+  left: 1209px;
+  top: 836px;
+  width: 427px;
+}
+
+/* ---------- screen 2: map ---------- */
+.map-pane {
+  position: absolute;
+  left: 31px;
+  top: 110px;
+  width: 1302px;
+  height: 944px;
+  overflow: hidden;
+  border-radius: 20px 0 0 20px;
+  touch-action: none;
+}
+
+.map {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+  transition: opacity .3s ease;
+}
+
+/* plan lines keep their weight at every zoom, as in the wireframe */
+#plan *,
+#routeLine {
+  vector-effect: non-scaling-stroke;
+}
+
+.map.is-elev #plan,
+.map.is-elev #routeLine,
+.map:not(.is-elev) #elev {
+  display: none;
+}
+
+.map.is-grabbing {
+  cursor: grabbing;
+}
+
+.map.is-fading {
+  opacity: 0;
+}
+
+.map-overlay {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.pin {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  height: 34px;
+  padding: 0 12px 0 0;
+  background: var(--tag);
+  border: 1px solid #000;
+  border-radius: 17px;
+  color: #181818;
+  font-size: 20px;
+  line-height: 1;
+  white-space: nowrap;
+  pointer-events: auto;
+}
+
+.pin__num {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  margin: -1px 8px -1px -1px;
+  background: #BD1722;
+  border: 1px solid #000;
+  border-radius: 50%;
+  font-weight: 500;
+  color: #fff;
+}
+
+.pin.is-visited .pin__num {
+  background: #262d34;
+  color: #fff;
+}
+
+.pin.is-current .pin__num {
+  background: var(--route);
+  color: #fff;
+}
+
+.pin.is-current {
+  z-index: 2;
+  font-weight: 500;
+}
+
+.walker {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  margin: -15px 0 0 -15px;
+  background: #fff;
+  border: 2px solid var(--route);
+  border-radius: 50%;
+  z-index: 3;
+}
+
+.walker::after {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border-radius: 50%;
+  background: var(--route);
+}
+
+.walk-arrow {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  margin: -30px 0 0 -30px;
+  background: #1f1f1f;
+  border: none;
+  border-radius: 50%;
+  z-index: 4;
+  pointer-events: auto;
+}
+
+.walk-arrow svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: #fff;
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.compass {
+  position: absolute;
+  left: 49px;
+  top: 28px;
+  width: 106px;
+  height: 106px;
+  pointer-events: none;
+}
+
+/* both sit on a pale backing so they stay readable over the zoomed-in plan */
+.map-itext {
+  left: 170px;
+  width: 1040px;
+  top: 44px;
+  padding: 2px 10px;
+  background: rgb(247 234 183 / 88%);
+  border-radius: 10px;
+  font-size: 25px;
+  line-height: 32px;
+  pointer-events: none;
+}
+
+.map-itext:empty {
+  display: none;
+}
+
+.map-note {
+  position: absolute;
+  left: 1069px;
+  top: 816px;
+  margin: 0;
+  padding: 0 8px;
+  background: rgb(247 234 183 / 88%);
+  border-radius: 8px;
+  color: var(--brown);
+  font-size: 22px;
+  font-style: italic;
+  pointer-events: none;
+}
+
+.guess-btn {
+  position: absolute;
+  left: 25px;
+  top: 820px;
+  width: 103px;
+  height: 103px;
+  background: none;
+  border: none;
+}
+
+.guess-btn img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.tools {
+  position: absolute;
+  left: 1230px;
+  top: 678px;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+
+.tool {
+  width: 51px;
+  height: 51px;
+  background: #fff;
+  border: 1px solid #707071;
+  border-radius: 5px;
+}
+
+.tool svg {
+  display: block;
+  width: 30px;
+  height: 30px;
+  margin: auto;
+  fill: none;
+  stroke: #444;
+  stroke-width: 1.6;
+}
+
+.minimap {
+  position: absolute;
+  left: 53px;
+  top: 815px;
+  width: 191px;
+  height: 112px;
+  overflow: hidden;
+  background: #d9dbd0;
+  border: 4px solid #262d34;
+  pointer-events: none;
+}
+
+.minimap svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* side view of the tower */
+.elev-text {
+  font-family: "Roboto", "Segoe UI", sans-serif;
+  font-size: 24px;
+  font-weight: 500;
+  fill: #181818;
+}
+
+.elev-text--term {
+  font-style: italic;
+}
+
+.elev-text--sub {
+  font-style: italic;
+  font-size: 24px;
+}
+
+.elev-text--head {
+  font-size: 26px;
+  font-weight: 700;
+  fill: var(--rust);
+}
+
+.elev-text--ok {
+  fill: #1c6b2a;
+}
+
+.elev-text--bad {
+  fill: #b72025;
+}
+
+.elev-part.is-on .elev-text {
+  fill: var(--route);
+  font-weight: 700;
+}
+
+.band {
+  fill: #ef3a37;
+  opacity: 0;
+  transition: opacity .35s ease;
+}
+
+.band.is-on {
+  opacity: .5;
+}
+
+.band-line {
+  fill: none;
+  stroke: var(--brown);
+  stroke-dasharray: 4 4;
+}
+
+/* ---------- screen 2: information card ---------- */
+.card-pane {
+  position: absolute;
+  left: 1333px;
+  top: 110px;
+  width: 556px;
+  height: 944px;
+  background: var(--paper);
+  border: 1px solid var(--rust);
+  border-left: 1px solid var(--rust);
+  border-radius: 0 20px 20px 0;
+}
+
+.card-scroll {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 106px;
+  overflow-y: auto;
+  padding: 22px 28px 12px;
+  color: #000;
+  font-size: 25px;
+  line-height: 33px;
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+.card-nav {
+  position: absolute;
+  left: 28px;
+  right: 33px;
+  bottom: 33px;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.card-nav .pill-btn {
+  position: static;
+  padding: 0 34px;
+  font-size: 32px;
+}
+
+.card-nav .pill-btn svg {
+  width: 38px;
+  height: 26px;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 3.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.card-nav .nav-back {
+  flex: none;
+  gap: 8px;
+  padding: 0 22px;
+  background: var(--back);
+}
+
+.card-nav .nav-next {
+  margin-left: auto;
+}
+
+.card-nav .nav-next.is-wide {
+  flex: 1;
+  padding: 0 10px;
+}
+
+/* stop names vary in length: they share the row with Back without overflowing */
+.card-nav .nav-next.is-fit {
+  flex: 1;
+  gap: 10px;
+  padding: 0 10px;
+  font-size: 26px;
+}
+
+.card-nav .nav-next.is-fit svg {
+  width: 32px;
+}
+
+.card-step {
+  margin: 0;
+  color: var(--itext);
+  font-size: 26px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.card-title {
+  margin: 6px 0 0;
+  color: var(--rust);
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 48px;
+  text-align: center;
+}
+
+.card-sub {
+  margin: 2px 0 12px;
+  color: var(--rust);
+  font-size: 22px;
+  font-style: italic;
+  text-align: center;
+}
+
+.card-body {
+  margin: 0 0 14px;
+  color: #851618;
+}
+
+.card-link {
+  display: block;
+  margin: -4px auto 14px;
+  background: none;
+  border: none;
+  color: var(--itext);
+  font-size: 24px;
+  font-weight: 500;
+  text-decoration: underline;
+}
+
+.card-box {
+  margin: 0 0 16px;
+  padding: 12px 20px 16px;
+  background: #fff;
+  border: 2px solid var(--line);
+  border-radius: 20px;
+}
+
+.card-box h5 {
+  margin: 0 0 6px;
+  color: #b63c30;
+  font-size: 26px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.card-intro-itext {
+  position: static;
+  margin-bottom: 18px;
+  font-size: 26px;
+  line-height: 36px;
+}
+
+.card-box--story {
+  color: #851618;
+  font-size: 25px;
+  line-height: 36px;
+  text-align: center;
+}
+
+.card-box--story b {
+  display: block;
+  color: #851618;
+  font-size: 26px;
+}
+
+.card-explore {
+  margin: 0;
+  font-size: 25px;
+  line-height: 34px;
+  text-align: center;
+}
+
+.card-explore b {
+  display: block;
+}
+
+.quiz-q {
+  margin: 0 0 10px;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 31px;
+  text-align: center;
+}
+
+.quiz-opt {
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  margin: 0 0 12px;
+  padding: 6px 12px;
+  background: #fbe9d5;
+  border: 1px solid var(--back);
+  border-radius: 10px;
+  color: #000;
+  font-size: 23px;
+  line-height: 28px;
+}
+
+.quiz-opt:disabled {
+  cursor: default;
+  color: #000;
+}
+
+.quiz-opt.is-right {
+  background: var(--ok);
+  border-color: var(--ok-line);
+}
+
+.quiz-opt.is-wrong {
+  background: var(--bad);
+  border-color: var(--bad-line);
+}
+
+.quiz-fb {
+  margin: 4px 0 8px;
+  color: #851618;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 30px;
+  text-align: center;
+}
+
+.quiz-fb.is-right {
+  color: #1c6b2a;
+}
+
+.quiz-expl {
+  margin: 0;
+  color: #1c3b1b;
+  font-size: 23px;
+  line-height: 30px;
+  text-align: center;
+}
+
+.card-term {
+  margin: 0 0 12px;
+  text-align: center;
+}
+
+.card-term i {
+  display: block;
+}
+
+.card-term b {
+  display: block;
+}
+
+.guess-check {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 0 0 16px;
+  padding: 10px 16px;
+  border: 2px solid var(--ok-line);
+  border-radius: 14px;
+  background: #e1f3dc;
+  color: #1c3b1b;
+  font-size: 24px;
+  line-height: 30px;
+}
+
+.guess-check.is-wrong {
+  border-color: var(--bad-line);
+  background: #fde3e3;
+  color: #851618;
+}
+
+.guess-check__mark {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--ok-line);
+  color: #fff;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.guess-check.is-wrong .guess-check__mark {
+  background: var(--bad-line);
+}
+
+.card-level-text {
+  margin: 0 0 16px;
+  text-align: center;
+}
+
+.card-box--look {
+  font-size: 24px;
+  line-height: 32px;
+  text-align: center;
+}
+
+.card-box--score h5 {
+  color: #851618;
+  font-size: 28px;
+}
+
+/* ---------- popup: your guess ---------- */
+.modal {
+  position: absolute;
+  inset: 0;
+}
+
+.guess-card {
+  position: absolute;
+  left: 57px;
+  top: 169px;
+  width: 1038px;
+  height: 788px;
+  background: #c5af72;
+  border: 1px solid var(--brown);
+  border-radius: 20px;
+}
+
+.guess-tower {
+  position: absolute;
+  left: 40px;
+  top: 76px;
+  width: 455px;
+  height: 668px;
+}
+
+.guess-leads {
+  left: -57px;
+  top: -169px;
+}
+
+.guess-tag {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 210px;
+  height: 58px;
+  border: 3px solid var(--placed-line);
+  border-radius: 14px;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.close-btn {
+  position: absolute;
+  width: 88px;
+  height: 88px;
+  background: none;
+  border: none;
+  border-radius: 50%;
+}
+
+.close-btn img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.close-btn--guess {
+  left: 1043px;
+  top: 137px;
+}
+
+.close-btn--insight {
+  left: 1455px;
+  top: 80px;
+}
+
+/* ---------- screen 3: four temples ---------- */
+.temples-itext {
+  left: 100px;
+  width: 1720px;
+  top: 164px;
+}
+
+.clue-tray {
+  position: absolute;
+  left: 60px;
+  width: 1800px;
+  top: 208px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: flex-start;
+  gap: 10px 12px;
+}
+
+.clue {
+  flex: none;
+  max-width: 1000px;
+  padding: 11px 22px;
+  background: #fbf8e8;
+  border: 2px solid var(--rust);
+  border-radius: 24px;
+  color: #000;
+  font-size: 22px;
+  line-height: 28px;
+  touch-action: none;
+}
+
+.clue.is-selected {
+  background: var(--brown);
+  color: #fff;
+}
+
+.clue.is-shake {
+  animation: shake .4s ease;
+  border-color: var(--bad-line);
+}
+
+@keyframes shake {
+  20%, 60% { transform: translateX(-9px); }
+  40%, 80% { transform: translateX(9px); }
+}
+
+.clue-hint {
+  position: absolute;
+  left: 100px;
+  width: 1720px;
+  top: 392px;
+  margin: 0;
+  color: var(--bad-line);
+  font-size: 25px;
+  font-weight: 500;
+  line-height: 32px;
+  text-align: center;
+}
+
+.temple-card {
+  position: absolute;
+  top: 448px;
+  width: 363px;
+  height: 566px;
+  border-radius: 23px;
+  transition: top .5s ease, height .5s ease;
+}
+
+.temple-card.is-target .temple-card__img {
+  outline: 4px solid var(--itext);
+  outline-offset: 1px;
+}
+
+.temple-card__name {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  top: -16px;
+  transform: translateX(-50%);
+  height: 36px;
+  padding: 0 20px;
+  background: var(--tag);
+  border: 1px solid var(--placed-line);
+  border-radius: 18px;
+  color: #000;
+  font-size: 21px;
+  line-height: 34px;
+  white-space: nowrap;
+}
+
+.temple-card__img {
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  top: 0;
+  width: 363px;
+  height: 200px;
+  overflow: hidden;
+  background: #e8f4b0;
+  border: 1px solid var(--brown);
+  border-radius: 23px;
+  transition: height .5s ease;
+}
+
+.temple-card__img > img:first-child {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 312px;
+  transform: translate(-50%, -50%);
+  transition: opacity .6s ease;
+}
+
+.temple-card__img > img.is-flipped {
+  transform: translate(-50%, -50%) scaleX(-1);
+}
+
+.temple-card__core {
+  position: absolute;
+  display: none;
+}
+
+.temple-card__body {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 180px;
+  bottom: 0;
+  padding: 28px 10px 8px;
+  background: rgba(255, 255, 255, .49);
+  border: 1px solid #b9b3a4;
+  overflow: hidden;
+  transition: top .5s ease;
+}
+
+.temple-card__count {
+  margin: 0 0 6px;
+  color: var(--brown);
+  font-size: 20px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.temple-card__clues {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.placed-clue {
+  padding: 5px 10px;
+  background: #d8efcf;
+  border: 2px solid var(--ok-line);
+  border-radius: 14px;
+  color: #123c1a;
+  font-size: 18px;
+  line-height: 22px;
+  text-align: center;
+}
+
+.temple-card__standout {
+  margin: 8px 0 0;
+  color: #851618;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 22px;
+  text-align: center;
+}
+
+.temples-note {
+  position: absolute;
+  left: 400px;
+  width: 1120px;
+  top: 1018px;
+  margin: 0;
+  color: #9e3a23;
+  font-size: 20px;
+  font-style: italic;
+  font-weight: 500;
+  text-align: center;
+}
+
+/* all clues sorted: the tray goes, the cards rise, the shared core appears */
+#screen-temples.is-complete .temple-card {
+  top: 226px;
+  height: 654px;
+}
+
+#screen-temples.is-complete .temple-card__img {
+  height: 257px;
+}
+
+#screen-temples.is-complete .temple-card__img > img:first-child {
+  width: 362px;
+  opacity: .35;
+}
+
+#screen-temples.is-complete .temple-card__core {
+  display: block;
+}
+
+#screen-temples.is-complete .temple-card__body {
+  top: 236px;
+}
+
+#screen-temples.is-complete .clue-tray,
+#screen-temples.is-complete .clue-hint {
+  display: none;
+}
+
+.core-box {
+  position: absolute;
+  left: 178px;
+  top: 892px;
+  width: 1168px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 0 24px 0 40px;
+  background: var(--paper);
+  border: 2px solid var(--line);
+  border-radius: 20px;
+}
+
+.core-box img {
+  flex: none;
+  width: 122px;
+  height: 69px;
+}
+
+.core-box p {
+  margin: 0;
+  color: #851618;
+  font-size: 24px;
+  line-height: 32px;
+}
+
+.insight-btn {
+  left: 1365px;
+  top: 906px;
+  width: 251px;
+  background: #f7941d;
+}
+
+.insight-btn svg {
+  width: 56px;
+  height: 56px;
+  flex: none;
+}
+
+.again-btn {
+  left: 1635px;
+  top: 906px;
+  width: 224px;
+}
+
+/* ---------- popup: insight ---------- */
+.insight-card {
+  position: absolute;
+  left: 412px;
+  top: 108px;
+  width: 1096px;
+  height: 866px;
+  padding: 26px 34px;
+  overflow-y: auto;
+  background: #fffef9;
+  border: 4px solid #f7941d;
+  border-radius: 30px;
+}
+
+.insight-card h4 {
+  margin: 0;
+  color: var(--rust);
+  font-size: 36px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.insight-itext {
+  position: static;
+  margin: 6px 0 16px;
+  font-size: 24px;
+  line-height: 32px;
+}
+
+.insight-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+}
+
+.insight-col h5 {
+  margin: 0 0 12px;
+  padding-bottom: 6px;
+  border-bottom: 3px solid #9c7219;
+  color: #22303a;
+  font-size: 26px;
+  font-weight: 700;
+}
+
+.insight-col--changes h5 {
+  border-bottom-color: #a8212b;
+}
+
+.insight-col ul {
+  margin: 0;
+  padding-left: 24px;
+  color: #22303a;
+  font-size: 21px;
+  line-height: 28px;
+}
+
+.insight-col li {
+  margin-bottom: 12px;
+}
+
+.insight-col li span {
+  display: block;
+  color: #5b6670;
+  font-size: 18px;
+  line-height: 24px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .temple-card,
+  .temple-card__img,
+  .temple-card__body,
+  .map {
+    transition: none;
+  }
+}
