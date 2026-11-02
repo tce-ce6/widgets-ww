@@ -542,7 +542,6 @@ input[type="number"]::-webkit-inner-spin-button {
   max-width: 500px;
   /* Limits width on desktop */
   box-shadow: 0 15px 50px rgba(0, 0, 0, 0.6);
-  font-family: 'Segoe UI', sans-serif;
   position: relative;
 
   /* Entry Animation */
@@ -626,7 +625,7 @@ input[type="number"]::-webkit-inner-spin-button {
 .word {
   font-size: 80px;
   font-weight: 600;
-  font-family: 'Roboto';
+  font-family: 'Noto Sans Gujarati';
   /* width: 100%; */
   text-align: center;
   height: 100%;
