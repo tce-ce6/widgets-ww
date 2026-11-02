@@ -208,6 +208,10 @@
       "updatedAt": "2026-10-19T10:58:01+05:30",
       "author": "tce-nitinc"
     },
+    "wg226-temple-architecture": {
+      "updatedAt": "2026-11-02T16:25:02+05:30",
+      "author": "tce-nitinc"
+    },
     "wg31-world-war": {
       "updatedAt": "2026-10-21T09:34:16+05:30",
       "author": "tce-nitinc"
@@ -218,6 +222,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-11-02T16:25:02+05:30",
+      "author": "tce-nitinc",
+      "message": "wg226",
+      "widgets": [
+        226
+      ]
+    },
     {
       "date": "2026-11-02T12:52:26+05:30",
       "author": "tce-ashishg",
@@ -468,14 +480,6 @@
       "message": "wg204 fixes",
       "widgets": [
         204
-      ]
-    },
-    {
-      "date": "2026-10-19T15:12:00+05:30",
-      "author": "tce-nitinc",
-      "message": "wg201 fixes",
-      "widgets": [
-        201
       ]
     }
   ]
