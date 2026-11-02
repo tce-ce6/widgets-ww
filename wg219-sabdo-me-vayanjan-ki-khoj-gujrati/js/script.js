@@ -86,7 +86,7 @@ let letterData = {
   },
   "ન": {
     "answers": ["નદી", "પાન", "નળ"],
-    "distractors": ["દૂધ", "ધનુષ", "બદામ"],
+    "distractors": ["દૂધ", "રથ", "બદામ"],
     "question": "'ન' ની ધ્વનિ વાળા શબ્દોને ઓળખો."
   },
   "પ": {
@@ -400,6 +400,7 @@ let wordSoundJson = {
   "મણકો": "13-manako.mp3",
 
   "તરબૂચ": "14-tarabuj.mp3",
+  "તકિયો": "14-takiyo.mp3",
   "બતક": "14-batakh.mp3",
 
   "થડ": "15-thad.mp3",
