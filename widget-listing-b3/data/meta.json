@@ -201,7 +201,7 @@
       "author": "tce-nitinc"
     },
     "wg219-sabdo-me-vayanjan-ki-khoj-gujrati": {
-      "updatedAt": "2026-11-02T12:52:26+05:30",
+      "updatedAt": "2026-11-02T18:42:26+05:30",
       "author": "tce-ashishg"
     },
     "wg223-leaf-lab-transpiration": {
@@ -210,6 +210,10 @@
     },
     "wg226-temple-architecture": {
       "updatedAt": "2026-11-02T16:25:02+05:30",
+      "author": "tce-nitinc"
+    },
+    "wg236-road-signs": {
+      "updatedAt": "2026-11-03T14:28:37+05:30",
       "author": "tce-nitinc"
     },
     "wg31-world-war": {
@@ -222,6 +226,22 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-11-03T14:28:37+05:30",
+      "author": "tce-nitinc",
+      "message": "wg236 fixes",
+      "widgets": [
+        236
+      ]
+    },
+    {
+      "date": "2026-11-02T18:42:26+05:30",
+      "author": "tce-ashishg",
+      "message": "wg219 issue resolved",
+      "widgets": [
+        219
+      ]
+    },
     {
       "date": "2026-11-02T17:10:56+05:30",
       "author": "tce-ashishg",
@@ -464,23 +484,6 @@
         9,
         31,
         202
-      ]
-    },
-    {
-      "date": "2026-10-21T08:40:27+05:30",
-      "author": "tce-ashishg",
-      "message": "wg207 completed",
-      "widgets": [
-        207,
-        208
-      ]
-    },
-    {
-      "date": "2026-10-19T16:13:28+05:30",
-      "author": "tce-ashishg",
-      "message": "wg207 & 208 structuring done",
-      "widgets": [
-        212
       ]
     }
   ]

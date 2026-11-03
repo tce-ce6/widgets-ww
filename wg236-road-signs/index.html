@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>&ZeroWidthSpace;Road Signs&ZeroWidthSpace;</title>
+
+  <link rel="stylesheet" href="./css/global_style.css">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body id="road-signs-widget">
+  <div class="container">
+    <div class="mainContainerOuter">
+      <div id="viewport">
+        <!-- Fixed 1920x1080 design stage, scaled to fit the window by script.js -->
+        <div id="stage">
+          <div class="wdgetTitle">
+            <h2>&ZeroWidthSpace;Road Signs&ZeroWidthSpace;</h2>
+            <span id="versionId" class="versionText">b4_wg236_261103_01</span>
+          </div>
+
+          <!-- ============ START SCREEN ============ -->
+          <section id="screen-start" class="screen is-active" aria-label="Start">
+            <p class="start-text">Ride along with Officer Asha through a city. At every stop, choose the road sign that helps to keep people safe and informed.</p>
+            <div class="start-card">
+              <img class="start-art" src="assets/svg/start-scene.svg" alt="Officer Asha on her scooter on an empty road">
+              <div class="scooter scooter--start" aria-hidden="true">
+                <img class="wheel wheel--rear" src="assets/svg/scooter-wheel.svg" alt="">
+                <img class="wheel wheel--front" src="assets/svg/scooter-wheel.svg" alt="">
+                <img class="scooter-body" src="assets/svg/scooter-body.svg" alt="">
+              </div>
+            </div>
+            <button class="pill-btn pill-btn--large start-btn" id="startBtn" type="button">Start the ride</button>
+          </section>
+
+          <!-- ============ RIDE SCREEN ============ -->
+          <section id="screen-ride" class="screen" aria-label="Road journey">
+            <div class="prompt">
+              <p class="prompt-text" id="promptText" aria-live="polite"></p>
+            </div>
+            <img class="avatar" src="assets/svg/avatar-asha.svg" alt="Officer Asha">
+
+            <ol class="stones" id="stones" aria-label="Stops on the journey"></ol>
+
+            <div class="scene-card">
+              <div class="worlds" id="worlds" role="img"></div>
+              <div class="scooter scooter--ride" id="scooter" aria-hidden="true">
+                <img class="wheel wheel--rear" src="assets/svg/scooter-wheel.svg" alt="">
+                <img class="wheel wheel--front" src="assets/svg/scooter-wheel.svg" alt="">
+                <img class="scooter-body" src="assets/svg/scooter-body.svg" alt="">
+              </div>
+              <p class="stop-pill" id="stopPill"></p>
+              <div class="bubble" id="bubble" hidden>
+                <p class="bubble-text" id="bubbleText" aria-live="assertive"></p>
+                <svg class="bubble-tail" viewBox="0 0 56 44" aria-hidden="true">
+                  <path class="tail-fill" d="M20 0 L2 41 L50 0 Z" />
+                  <path class="tail-line" d="M20 1 L2 41 L50 1" />
+                </svg>
+              </div>
+            </div>
+
+            <aside class="choose">
+              <p class="choose-text" id="chooseText">Tap the sign that belongs here.</p>
+              <div class="opts" id="opts" role="group" aria-labelledby="chooseText"></div>
+            </aside>
+
+            <button class="pill-btn restart-btn" id="restartBtn" type="button">Restart</button>
+            <button class="next-btn" id="nextBtn" type="button" hidden>Ride to the next stop</button>
+          </section>
+
+          <!-- ============ END SCREEN ============ -->
+          <section id="screen-end" class="screen" aria-labelledby="endTitle">
+            <h3 class="end-title" id="endTitle" tabindex="-1">Well done!</h3>
+            <p class="end-text">Every road sign is now in the correct place!</p>
+            <div class="end-panel">
+              <ul class="tiles" id="tiles"></ul>
+            </div>
+            <img class="end-confetti" src="assets/svg/confetti.svg" alt="">
+            <img class="end-avatar" src="assets/svg/avatar-asha.svg" alt="Officer Asha">
+            <button class="pill-btn pill-btn--large again-btn" id="againBtn" type="button">Ride again</button>
+          </section>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./js/content-data.js"></script>
+  <script src="./js/script.js"></script>
+</body>
+
+</html>
