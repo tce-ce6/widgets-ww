@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>&ZeroWidthSpace;Sort-O-Matic&ZeroWidthSpace;</title>
+
+  <link rel="stylesheet" href="./css/global_style.css">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body id="sort-o-matic-widget">
+  <div class="container">
+    <div class="mainContainerOuter">
+      <div id="viewport">
+        <!-- Fixed 1920x1080 design stage, scaled to fit the window by script.js -->
+        <div id="stage">
+          <div class="wdgetTitle">
+            <h2>&ZeroWidthSpace;Sort-O-Matic&ZeroWidthSpace;</h2>
+            <span id="versionId" class="versionText">b4_wg230_261103_01</span>
+          </div>
+
+          <!-- ============ OPENING SCREEN ============ -->
+          <section id="screen-home" class="screen is-active" aria-label="Pick a property">
+            <p class="cue home-cue">Pick a property to begin</p>
+            <img class="belt-home" src="assets/svg/belt-home.svg" alt="">
+            <div class="tiles" id="tiles"></div>
+            <button class="line-btn home-how" data-help type="button">How to use this widget</button>
+          </section>
+
+          <!-- ============ ROUND SCREEN ============ -->
+          <section id="screen-round" class="screen" aria-label="Sorting machine">
+            <ol class="dots" id="dots" aria-label="Items in this round"></ol>
+            <p class="cue round-cue" id="cue" aria-live="polite"></p>
+
+            <div class="belt" id="belt" aria-hidden="true">
+              <div class="belt-slats"><img src="assets/svg/belt-slats.svg" alt=""></div>
+              <img class="belt-body" src="assets/svg/belt-body.svg" alt="">
+              <img class="roller" style="left:39.7px" src="assets/svg/belt-roller.svg" alt="">
+              <img class="roller" style="left:169.2px" src="assets/svg/belt-roller.svg" alt="">
+              <img class="roller" style="left:298.6px" src="assets/svg/belt-roller.svg" alt="">
+              <img class="roller" style="left:428.1px" src="assets/svg/belt-roller.svg" alt="">
+              <img class="roller" style="left:557.6px" src="assets/svg/belt-roller.svg" alt="">
+              <img class="roller" style="left:687.1px" src="assets/svg/belt-roller.svg" alt="">
+            </div>
+
+            <!-- Float or sink -->
+            <div class="station station--float" aria-hidden="true">
+              <img class="tank" src="assets/svg/tank.svg" alt="">
+            </div>
+
+            <!-- See-through -->
+            <div class="station station--see" aria-hidden="true">
+              <img class="torch-stand" src="assets/svg/torch-stand.svg" alt="">
+              <img class="screen-board" src="assets/svg/screen.svg" alt="">
+              <div class="screen-clip">
+                <div class="screen-light" id="screenLight"></div>
+                <img class="screen-shadow" id="screenShadow" alt="">
+              </div>
+              <img class="item-stand" src="assets/svg/item-stand.svg" alt="">
+              <svg class="beam" viewBox="0 0 1920 1080"><polygon id="beam" fill="#fff353" /></svg>
+              <img class="torch-head" id="torchHead" src="assets/svg/torch-head.svg" alt="">
+            </div>
+
+            <!-- Hard or soft -->
+            <div class="station station--hard" aria-hidden="true">
+              <img class="press-frame" src="assets/svg/press-frame.svg" alt="">
+            </div>
+
+            <img class="item" id="item" alt="">
+
+            <div class="station station--float" aria-hidden="true">
+              <div class="water-front"></div>
+            </div>
+            <div class="station station--hard" aria-hidden="true">
+              <div class="press-rod" id="pressRod"></div>
+              <img class="press-plate" id="pressPlate" src="assets/svg/press-plate.svg" alt="">
+            </div>
+
+            <div class="fx" id="fx" aria-hidden="true"></div>
+
+            <p class="item-name" id="itemName" hidden></p>
+
+            <div class="trays" id="trays" role="group" aria-label="Trays"></div>
+
+            <div class="card" id="card" role="status" hidden>
+              <img class="card-icon" id="cardIcon" alt="">
+              <h3 class="card-title" id="cardTitle"></h3>
+              <p class="card-text" id="cardText"></p>
+              <button class="line-btn card-next" id="nextBtn" type="button">Next</button>
+            </div>
+
+            <div class="tabs" id="tabs" role="group" aria-label="Property"></div>
+            <button class="line-btn round-how" data-help type="button">How to use this widget</button>
+            <button class="line-btn round-reset" id="resetBtn" type="button">Reset</button>
+          </section>
+
+          <!-- ============ END OF ROUND ============ -->
+          <section id="screen-end" class="screen" aria-labelledby="endTitle">
+            <img class="belt-home" src="assets/svg/belt-home.svg" alt="">
+            <div class="end-card">
+              <h3 class="end-title" id="endTitle" tabindex="-1">Machine sorted!</h3>
+              <p class="end-score" id="endScore"></p>
+            </div>
+            <img class="trophy" src="assets/svg/trophy.svg" alt="">
+            <div class="end-btns" id="endBtns"></div>
+            <button class="line-btn end-home" id="homeBtn" type="button">Home</button>
+            <div class="confetti" id="confetti" aria-hidden="true"></div>
+          </section>
+
+          <!-- ============ HOW TO USE ============ -->
+          <div class="help" id="help" role="dialog" aria-modal="true" aria-labelledby="helpTitle" hidden>
+            <div class="help-card">
+              <h3 class="help-title" id="helpTitle">How to use this widget</h3>
+              <ol class="help-list">
+                <li>Pick a property at the top: Float or sink, See-through, or Hard or soft.</li>
+                <li>Show the class the item that arrives on the belt.</li>
+                <li>Ask the class for their answer.</li>
+                <li>Tap the tray the class chooses.</li>
+                <li>Watch the machine show the real result.</li>
+                <li>Tap Next for the next item.</li>
+                <li>Tap Reset to start the round again.</li>
+              </ol>
+              <button class="help-btn" id="helpClose" type="button">Got it</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./js/content-data.js"></script>
+  <script src="./js/script.js"></script>
+</body>
+
+</html>
