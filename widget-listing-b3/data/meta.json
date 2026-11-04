@@ -113,7 +113,7 @@
       "author": "tce-ashishg"
     },
     "wg191-blood-pressure-measurment": {
-      "updatedAt": "2026-10-14T09:54:22+05:30",
+      "updatedAt": "2026-11-04T17:21:54+05:30",
       "author": "tce-ashishg"
     },
     "wg193-swar-ki-pahchan-gujrati": {
@@ -234,6 +234,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-11-04T17:21:54+05:30",
+      "author": "tce-ashishg",
+      "message": "wg191 issue resolved",
+      "widgets": [
+        191
+      ]
+    },
     {
       "date": "2026-11-04T15:36:58+05:30",
       "author": "tce-ashishg",
@@ -483,14 +491,6 @@
         199,
         200,
         202
-      ]
-    },
-    {
-      "date": "2026-10-21T14:31:18+05:30",
-      "author": "tce-nitinc",
-      "message": "wg163 fixes",
-      "widgets": [
-        163
       ]
     }
   ]
