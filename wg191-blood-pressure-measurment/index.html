@@ -15,7 +15,7 @@
     <div class="mainContainerOuter">
       <div class="wdgetTitle">
         <h2>​Determine The Blood Pressure​</h2>
-        <span id="versionId" class="versionText">b4_wg191_261014_01</span>
+        <span id="versionId" class="versionText">b4_wg191_261104_01</span>
       </div>
       <div class="svg-container" id="svg-container">
          <svg id="master-svg" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1920 1080" width="1920" height="1080">
@@ -1105,13 +1105,7 @@
             exact same 1920x1080 coordinate space (the static "illustration"/"meter"
             groups inside the master SVG are hidden by script.js so this is the only
             copy visible). See src/README.md for why this is Lottie, not hand SVG. -->
-        <div class="lottie-stage" id="lottie-stage" role="img" aria-label="Sphygmomanometer illustration">
-          <div class="live-reading hidden" id="live-reading">
-            <span class="live-reading-label" id="live-reading-label">Current pressure</span>
-            <span class="live-reading-value" id="live-reading-value">200</span>
-            <span class="live-reading-unit">mmHg</span>
-          </div>
-        </div>
+        <div class="lottie-stage" id="lottie-stage" role="img" aria-label="Sphygmomanometer illustration"></div>
 
         <button class="btn-back hidden" type="button" id="btn-back" aria-label="Back to instrument selection">
           <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path d="M15 4 7 12l8 8" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -1528,7 +1522,7 @@
     <g id="Tap_a_sphygmomanometer_to_begin._" class="st53">
       <text class="st56" transform="translate(740.1 173)"><tspan x="0" y="0">Tap a </tspan></text>
       <text class="st64" transform="translate(813.84 173)"><tspan x="0" y="0">sphygmomanometer</tspan></text>
-      <text class="st56" transform="translate(1068.39 173)"><tspan x="0" y="0" xml:space="preserve"> to begin.</tspan><tspan class="st175" x="112.78" y="0">​</tspan></text>
+      <text class="st56" transform="translate(1068.39 173)"><tspan x="6" y="0" xml:space="preserve"> to begin.</tspan><tspan class="st175" x="112.78" y="0">​</tspan></text>
     </g>
   </g>
   <!-- Aneroid answer dashboard — plain HTML in a foreignObject (1 CSS px = 1 SVG unit,
@@ -2605,10 +2599,9 @@
     </div>
   </div>
 
-  <audio id="tap-audio" src="assets/audio/blood-pressure-practice-sounds-with-answers-korotkoff-sounds-nursing-school-sk_8ARl53qi.mp3" preload="auto" hidden></audio>
-
   <script src="./js/lottie.js"></script>
   <script src="./js/lottie-data.js"></script>
+  <script src="./js/audio-data.js"></script>
   <script src="./js/script.js"></script>
 </body>
 
