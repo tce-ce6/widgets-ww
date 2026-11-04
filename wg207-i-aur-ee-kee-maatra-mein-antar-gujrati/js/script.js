@@ -420,6 +420,7 @@ function naya_shabd() {
     if (lottieInstances) { lottieInstances.destroy(); lottieInstances = null; }
     if (starAnimationTimeout) { clearTimeout(starAnimationTimeout); starAnimationTimeout = null; }
     if (lottieInstances_star) { lottieInstances_star.destroy(); lottieInstances_star = null; }
+    hideLottieAnimation();
     const _lc = document.getElementById("lottie-container");
     if (_lc) _lc.innerHTML = "";
     const _pt = document.getElementById("Character_train_01");
@@ -442,11 +443,17 @@ function getRandomAnimation() {
   selectedLottie = LottieAnimations[randomAnimal];
 }
 
+function hideLottieAnimation() {
+  const lottieEl = document.getElementById("lottie_animation");
+  if (lottieEl) lottieEl.style.display = "none";
+}
+
 function playLottieAnimation(bandGroup) {
   const containerEl = document.getElementById("lottie-container");
   const parentEl = document.getElementById("Character_train_01");
+  const lottieEl = document.getElementById("lottie_animation");
 
-  if (!containerEl || !parentEl) return;
+  if (!containerEl || !parentEl || !lottieEl) return;
 
   const animationPath = LottieAnimations[selectedWord.type][bandGroup];
   if (!animationPath) return;
@@ -462,6 +469,7 @@ function playLottieAnimation(bandGroup) {
   parentEl.classList.remove("visible");
   parentEl.style.visibility = "hidden"; // keep hidden while loading
   parentEl.style.opacity = "";
+  lottieEl.style.display = "block";
   setInteractionLock("feedback-lottie", true);
   try {
     lottieInstances = lottie.loadAnimation({
@@ -491,6 +499,7 @@ function playLottieAnimation(bandGroup) {
       setInteractionLock("feedback-lottie", false);
       animationTimeout = setTimeout(() => {
         parentEl.classList.remove("visible");
+        hideLottieAnimation();
         resetFeedbackVisuals();
                 if (lottieInstances) {
           lottieInstances.destroy();
@@ -503,11 +512,13 @@ function playLottieAnimation(bandGroup) {
     lottieInstances.addEventListener("error", (e) => {
       // console.error('Lottie render error:', e);
       // parentEl.style.display = 'none';
+      hideLottieAnimation();
       setInteractionLock("feedback-lottie", false);
     });
 
   } catch (err) {
     console.error("Lottie load crashed:", err);
+    hideLottieAnimation();
     parentEl.classList.remove("visible");
     setInteractionLock("feedback-lottie", false);
   }
