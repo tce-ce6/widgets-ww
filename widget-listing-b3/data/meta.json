@@ -88,6 +88,10 @@
       "updatedAt": "2026-08-24T12:52:42+05:30",
       "author": "tce-ashishg"
     },
+    "wg184-find-the-market-price": {
+      "updatedAt": "2026-11-04T11:48:40+05:30",
+      "author": "tce-ashishg"
+    },
     "wg186-the-satavahana-stronghold-jenga": {
       "updatedAt": "2026-08-24T12:52:42+05:30",
       "author": "tce-ashishg"
@@ -230,6 +234,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-11-04T11:48:40+05:30",
+      "author": "tce-ashishg",
+      "message": "wg184 completed",
+      "widgets": [
+        184
+      ]
+    },
     {
       "date": "2026-11-03T17:55:28+05:30",
       "author": "tce-nitinc",
@@ -479,14 +491,6 @@
       "message": "fixed 189 issues",
       "widgets": [
         189
-      ]
-    },
-    {
-      "date": "2026-10-21T10:34:00+05:30",
-      "author": "tce-ashishg",
-      "message": "wg208 completed",
-      "widgets": [
-        208
       ]
     }
   ]
