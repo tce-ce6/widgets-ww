@@ -129,55 +129,6 @@ button:focus-visible,
   height: 100% !important;
 }
 
-.live-reading {
-  position: absolute;
-  left: 8.5%;
-  top: 2.2%;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 2px;
-  background: rgba(0, 0, 0, 0.55);
-  padding: 0.5% 1.2%;
-  border-radius: 10px;
-  z-index: 5;
-  pointer-events: none;
-  transition: background 0.15s ease, color 0.15s ease;
-}
-
-.live-reading-label {
-  font-size: 0.9cqw;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: #cbb9e8;
-}
-
-.live-reading-value {
-  font-size: 2.6cqw;
-  font-weight: 800;
-  color: #fff;
-  font-variant-numeric: tabular-nums;
-  line-height: 1;
-}
-
-.live-reading-unit {
-  font-size: 1.1cqw;
-  font-weight: 600;
-  color: #cbb9e8;
-  margin-left: 4px;
-}
-
-.live-reading.is-listening {
-  background: var(--color-highlight);
-}
-
-.live-reading.is-listening .live-reading-value,
-.live-reading.is-listening .live-reading-unit,
-.live-reading.is-listening .live-reading-label {
-  color: #2b1345;
-}
-
 /* ---------------------------------------------------------------------- */
 /* Back button (no equivalent artwork in layout.svg, so this stays plain)  */
 /* ---------------------------------------------------------------------- */
@@ -444,9 +395,19 @@ button:focus-visible,
 
 .final-feedback {
   position: absolute;
-  margin: 0;
-  font-size: 1.05cqw;
-  line-height: 1.3;
+  left: 0;
+  right: 0;
+  top: 80.2%; /* centred on the stage, just above the Reset and Replay buttons */
+  box-sizing: border-box;
+  width: fit-content;
+  max-width: 52%;
+  margin: 0 auto;
+  padding: 0.4cqw 1.2cqw;
+  background: #1a116b;
+  border: 3px solid var(--color-highlight);
+  border-radius: 20px;
+  font-size: 1.5cqw;
+  line-height: 1.15;
   color: var(--color-highlight);
   font-weight: 600;
   text-align: center;
