@@ -1,0 +1,270 @@
+/* Sized in XD pixels (1920x1080) through --u, so the header scales with the svg stage. */
+:root {
+  --u: min(calc(100vw / 1920), calc(100vh / 1080));
+}
+
+*:focus {
+  outline: none;
+}
+
+svg * {
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  overflow: hidden;
+}
+
+#spelling-wrapper .container {
+  border: none;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:#000;
+  user-select: none;
+}
+
+#spelling-wrapper .mainContainerOuter {
+  position: relative;
+  flex: 0 0 auto;
+  width: calc(1920 * var(--u));
+  height: calc(1080 * var(--u));
+  min-height: 0;
+  background: transparent;
+}
+
+#spelling-wrapper .wdgetTitle {
+  position: absolute;
+  z-index: 3;
+  left: 0;
+  top: 0;
+  width: 100%;
+  pointer-events: none;
+}
+
+#spelling-wrapper .wdgetTitle h2 {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(490 * var(--u));
+  height: calc(90 * var(--u));
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(46 * var(--u));
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+  white-space: nowrap;
+  background: #e92098;
+  border-radius: 0 0 calc(25 * var(--u)) calc(25 * var(--u));
+  box-shadow: 0 calc(3 * var(--u)) calc(3 * var(--u)) rgba(0, 0, 0, .3);
+}
+
+#spelling-wrapper .versionText {
+  position: absolute;
+  right: calc(20 * var(--u));
+  top: 0;
+  font-size: calc(16 * var(--u));
+  line-height: 1.2;
+  color: rgb(0 0 0 / 30%);
+}
+
+#spelling-wrapper .svg-container {
+  position: absolute;
+  inset: 0;
+}
+
+#spelling-wrapper svg#stage {
+  display: block;
+  width: 100%;
+  height: 100%;
+  font-family: "Noto Sans Gujarati", sans-serif;
+}
+
+.hidden {
+  display: none;
+}
+
+/* Text */
+.instruction {
+  font-size: 42px;
+  font-weight: 700;
+  text-anchor: middle;
+}
+
+.sub-instruction {
+  font-size: 40px;
+  text-anchor: middle;
+}
+
+/* Counter */
+.counter-pill {
+  fill: #29f099;
+}
+
+.counter-text {
+  font-size: 40px;
+  font-weight: 700;
+}
+
+.counter-label {
+  font-weight: 400;
+}
+
+/* Cards */
+/* Variables, because plain selectors cannot reach inside the card's <use> artwork. */
+.card {
+  --card-fill: #fff;
+  --card-stroke: #6391ff;
+  --card-stroke-width: 10;
+  cursor: pointer;
+}
+
+.card-fill {
+  fill: var(--card-fill);
+}
+
+.card-border {
+  fill: none;
+  stroke: var(--card-stroke);
+  stroke-width: var(--card-stroke-width);
+}
+
+.card.correct {
+  --card-fill: #e6ffcf;
+  --card-stroke: #4c9936;
+}
+
+.card.wrong {
+  --card-fill: #feffdf;
+  --card-stroke: #d63434;
+}
+
+.card-word {
+  font-size: 56px;
+  font-weight: 700;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+.card-label {
+  font-size: 34px;
+  font-weight: 700;
+  text-anchor: middle;
+}
+
+.card.correct .card-label {
+  fill: #4c9936;
+}
+
+.card.wrong .card-label {
+  fill: #d63434;
+}
+
+.mark {
+  display: none;
+}
+
+.card.correct .mark-correct,
+.card.wrong .mark-wrong {
+  display: inline;
+}
+
+.icon-green {
+  fill: #4c9936;
+}
+
+.icon-red {
+  fill: #d63434;
+}
+
+.icon-mark {
+  fill: #fff;
+}
+
+/* The shake moves the children, because each card's transform attribute holds its position. */
+.card.shake > * {
+  animation: card-shake .4s;
+}
+
+@keyframes card-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-10px); }
+  40% { transform: translateX(10px); }
+  60% { transform: translateX(-6px); }
+  80% { transform: translateX(6px); }
+}
+
+.card:focus-visible {
+  --card-stroke-width: 14;
+}
+
+/* Hint */
+.hint-box {
+  fill: #f8ffcd;
+  stroke: #707070;
+  stroke-width: 1;
+}
+
+.hint-text {
+  font-size: 38px;
+  text-anchor: middle;
+}
+
+/* End screen */
+.end-box {
+  fill: #f8ffcd;
+  stroke: #707070;
+  stroke-width: 1;
+}
+
+.end-text {
+  font-size: 50px;
+  font-weight: 700;
+  text-anchor: middle;
+}
+
+/* Buttons */
+.svg-btn {
+  cursor: pointer;
+  transition: opacity .2s ease;
+}
+
+.svg-btn:hover:not(.disabled) > rect:first-child {
+  filter: brightness(.9);
+}
+
+.svg-btn:focus-visible > rect:first-child {
+  stroke: #fff;
+  stroke-width: 4;
+}
+
+.svg-btn.disabled {
+  cursor: not-allowed;
+  opacity: .5;
+}
+
+.btn-label {
+  fill: #fff;
+  font-size: 38px;
+  font-weight: 700;
+  text-anchor: middle;
+}
+
+/* Lottie */
+.lottie-layer {
+  pointer-events: none;
+}
+
+.lottie-container {
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
