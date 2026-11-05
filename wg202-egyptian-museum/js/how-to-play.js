@@ -562,7 +562,8 @@
     const button = document.createElement('button');
     button.type = 'button';
     button.className = 'how-btn';
-    button.innerHTML = '<span aria-hidden="true">?</span>How to play';
+    button.setAttribute('aria-label', 'How to play');
+    button.innerHTML = '<img src="assets/images/help-btn.svg" alt="">';
     button.addEventListener('click', open);
     section.appendChild(button);
   });

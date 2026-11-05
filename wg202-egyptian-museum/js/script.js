@@ -37,15 +37,22 @@
     { ids: ['jar', 'stone'], slips: ['Storage jars carry short written labels.', 'The stone reopened Egypt’s lost script.', 'Champollion finished deciphering in 1822.'], answer: 'Shelved pots can now be read as a catalogue.', title: 'Reading the labels', note: 'Once the script was deciphered, the writing on jars and shelves could be read too. Labels turn a shelf of pots into a catalogue, showing what was stored and how Egyptians organised their records.' }
   ];
 
-  // Reference course of the Nile in map-pixel coordinates (760 x 507 map image).
-  const NILE_PATH = [[330, 507], [340, 440], [360, 370], [385, 300], [405, 235], [415, 175], [418, 120], [415, 70]];
-  const NILE_ANSWER_PATHS = [
-    NILE_PATH.slice(0, -1),
+  // Course of the Nile in map-pixel coordinates (760 x 507 map image), listed south to north.
+  const NILE_TRUNK = [[330, 507], [340, 440], [360, 370], [385, 300], [405, 235], [415, 175], [418, 120]];
+  // The three Delta branches, from where the river forks to the Mediterranean.
+  const NILE_BRANCHES = [
     [[418, 120], [395, 95], [365, 65]],
     [[418, 120], [415, 80], [415, 35]],
     [[418, 120], [435, 90], [465, 60]]
   ];
-  const NILE_TOLERANCE = 60;
+  const NILE_PATH = NILE_TRUNK.concat(NILE_BRANCHES[1].slice(1)); // south edge of the map to the sea
+  const NILE_ANSWER_PATHS = [NILE_TRUNK, ...NILE_BRANCHES];
+  const NILE_TOLERANCE = 80; // a hand-drawn line only has to stay roughly on the river
+  const NILE_MIN_ON_RIVER = 0.8; // share of the line that must be within that tolerance
+  const NILE_MIN_STROKE = 12; // shorter strokes are stray taps, and are ignored
+  const NILE_SOUTH_GAP = 50; // how far short of the south edge of the map the line may start
+  const NILE_SEA_GAP = 60; // how far short of the sea the line may stop
+  const NILE_MAX_GAP = 60; // the biggest break allowed in the middle of the line
   window.museumHowTo = { nilePath: NILE_PATH }; // read by how-to-play.js
 
   const SEASONS = [
@@ -56,7 +63,7 @@
 
   const RIVER = [
     { key: 'ditch', label: 'Water led into the fields', img: 'river-01.png', alt: 'A worker with a hoe digs a channel from the river to planted field strips.', note: 'Farmers discovered that by digging ditches they could divert water from the Nile straight into their fields.' },
-    { key: 'basin', label: 'Water kept back for later', img: 'river-02.png', alt: 'A walled basin holds still water, fed by a channel from the river.', note: 'Water was stored in reservoirs so the fields could be watered long after the flood had drained away.' },
+    { key: 'basin', label: 'Water kept back for later use', img: 'river-02.png', alt: 'A walled basin holds still water, fed by a channel from the river.', note: 'Water was stored in reservoirs so the fields could be watered long after the flood had drained away.' },
     { key: 'dam', label: 'Water held by a built wall', img: 'river-03.png', alt: 'Several workers stack stone blocks to build a wall across the water.', note: 'Constructing dams demanded collective effort, and that shared work gave rise to Egypt’s earliest local government.' },
     { key: 'mud', label: 'Mud left where water stood', img: 'river-04.png', alt: 'Dark rich mud with a thin pool of water and one figure standing on the silt.', note: 'When the flood drew back it left rich black mud behind. That silt, not the water itself, is what made the land fertile.' }
   ];
@@ -724,14 +731,6 @@
     return Math.hypot(p[0] - (a[0] + t * dx), p[1] - (a[1] + t * dy));
   }
 
-  function distanceToPath(point) {
-    let best = Infinity;
-    for (let i = 0; i < NILE_PATH.length - 1; i++) {
-      best = Math.min(best, pointSegmentDistance(point, NILE_PATH[i], NILE_PATH[i + 1]));
-    }
-    return best;
-  }
-
   function densify(points, step) {
     const out = [];
     for (let i = 0; i < points.length - 1; i++) {
@@ -744,15 +743,47 @@
     return out;
   }
 
-  /** Accepts a trace inside a tolerance band: it must follow the river and cover most of it. */
+  function pathLength(path) {
+    let total = 0;
+    for (let i = 0; i < path.length - 1; i++) total += Math.hypot(path[i + 1][0] - path[i][0], path[i + 1][1] - path[i][1]);
+    return total;
+  }
+
+  /** Nearest place on a south-to-north route: how far off it the point is, and how far along it. */
+  function projectOnRoute(point, route) {
+    let best = { distance: Infinity, along: 0 };
+    let travelled = 0;
+    for (let i = 0; i < route.length - 1; i++) {
+      const a = route[i];
+      const b = route[i + 1];
+      const length = Math.hypot(b[0] - a[0], b[1] - a[1]);
+      const distance = pointSegmentDistance(point, a, b);
+      if (distance < best.distance) {
+        const t = Math.max(0, Math.min(1, ((point[0] - a[0]) * (b[0] - a[0]) + (point[1] - a[1]) * (b[1] - a[1])) / (length * length)));
+        best = { distance, along: travelled + t * length };
+      }
+      travelled += length;
+    }
+    return best;
+  }
+
+  /**
+   * Teachers draw by hand, so the exact shape and direction do not matter. A trace is right if
+   * it stays roughly on the river and runs its whole length, from the south to the sea. A small
+   * space at either end is fine; a half-drawn river is not.
+   */
   function judgeNileTrace(strokes) {
-    const drawn = [];
-    strokes.forEach((stroke) => { if (stroke.length > 1) drawn.push(...densify(stroke, 6)); else drawn.push(...stroke); });
-    if (drawn.length < 20) return false;
-    const onRiver = drawn.filter((p) => distanceToPath(p) <= NILE_TOLERANCE * 1.2).length / drawn.length;
-    const reference = densify(NILE_PATH, 8);
-    const covered = reference.filter((r) => drawn.some((p) => Math.hypot(p[0] - r[0], p[1] - r[1]) <= NILE_TOLERANCE)).length / reference.length;
-    return onRiver >= 0.8 && covered >= 0.75;
+    const drawn = strokes.filter((stroke) => pathLength(stroke) >= NILE_MIN_STROKE).flatMap((stroke) => densify(stroke, 6));
+    if (!drawn.length) return false;
+
+    const projected = drawn.map((point) => projectOnRoute(point, NILE_PATH));
+    const onRiver = projected.filter((p) => p.distance <= NILE_TOLERANCE);
+    if (onRiver.length / projected.length < NILE_MIN_ON_RIVER) return false;
+
+    const along = onRiver.map((p) => p.along).sort((x, y) => x - y);
+    if (along[0] > NILE_SOUTH_GAP) return false;
+    if (along[along.length - 1] < pathLength(NILE_PATH) - NILE_SEA_GAP) return false;
+    return along.every((value, i) => i === 0 || value - along[i - 1] <= NILE_MAX_GAP);
   }
 
   function initNile() {
@@ -847,7 +878,7 @@
     $('#btnNileHint').addEventListener('click', () => {
       showGuide = true;
       redraw();
-      showFeedback('Follow the dotted line from the Nile Delta south through Egypt.', false, true);
+      showFeedback('Follow the dotted line from the south of Egypt, north through the Delta to the sea.', false, true);
       Sound.play('tap');
     });
     $('#btnNileSubmit').addEventListener('click', () => {
