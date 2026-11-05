@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>&ZeroWidthSpace;Double Agent Words&ZeroWidthSpace;</title>
+
+  <link rel="stylesheet" href="./css/global_style.css">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body id="double-agent-words-widget">
+  <div class="container">
+    <div class="mainContainerOuter">
+      <div id="viewport">
+        <!-- Fixed 1920x1080 design stage, scaled to fit the window by script.js -->
+        <div id="stage">
+          <img class="bg" src="assets/svg/bg.svg" alt="">
+
+          <!-- Folder and paper animation: everything on the game and result screens sits on this -->
+          <div class="anim" id="anim" aria-hidden="true"></div>
+
+          <div class="wdgetTitle">
+            <h2>&ZeroWidthSpace;Double Agent Words&ZeroWidthSpace;</h2>
+            <span id="versionId" class="versionText">b4_wg237_261105_01</span>
+          </div>
+
+          <p class="status" id="status" aria-live="polite" hidden></p>
+
+          <!-- ============ BRIEFING SCREEN ============ -->
+          <section id="screen-start" class="screen is-active" aria-label="Briefing">
+            <p class="intro">Some words lead double lives. Read each sentence closely to find out which job the word is doing.</p>
+
+            <img class="note note--noun" src="assets/svg/note-noun.svg" alt="">
+            <h3 class="clue-title clue-title--noun">Noun clues</h3>
+            <ul class="clue-list clue-list--noun">
+              <li>Names a person, place, animal or thing</li>
+              <li>Often comes after a, an, the, my or her</li>
+              <li>Often comes after a describing word, like big or blue</li>
+            </ul>
+
+            <img class="note note--verb" src="assets/svg/note-verb.svg" alt="">
+            <h3 class="clue-title clue-title--verb">Verb clues</h3>
+            <ul class="clue-list clue-list--verb">
+              <li>Tells us what someone or something does</li>
+              <li>Often comes after to, will, can or might</li>
+              <li>Often begins an instruction</li>
+            </ul>
+
+            <button class="pill start-btn" id="startBtn" type="button" disabled>START THE MISSION</button>
+          </section>
+
+          <!-- ============ GAME SCREEN: moves with the paper in the animation ============ -->
+          <section id="screen-game" class="screen sheet" aria-label="Case">
+            <p class="prompt" id="prompt"></p>
+            <div class="rule rule--1"></div>
+            <div class="rule rule--2"></div>
+            <div id="rows"></div>
+            <button class="pill main-btn is-check" id="mainBtn" type="button" disabled>Check</button>
+          </section>
+
+          <!-- ============ RESULT SCREEN ============ -->
+          <section id="screen-end" class="screen" aria-labelledby="endScore">
+            <img class="closed" src="assets/svg/stamp-case-closed.svg" alt="Case closed">
+            <p class="end-score" id="endScore" tabindex="-1"></p>
+            <button class="pill again-btn" id="againBtn" type="button">Play again</button>
+          </section>
+
+          <button class="pill help-btn" id="helpBtn" type="button">
+            <img class="help-icon" src="assets/svg/help-icon.svg" alt="">
+            <span>Help</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Popups sit above the full-window backdrop, on a stage scaled like the main one -->
+      <div id="modal-layer">
+        <div id="modal-stage">
+          <div class="help-card" id="helpCard" role="dialog" aria-modal="true" aria-labelledby="helpTitle" hidden>
+            <img class="help-agent" src="assets/svg/agent-question.svg" alt="">
+            <h3 class="help-title" id="helpTitle">How to play</h3>
+            <ol class="help-steps">
+              <li>Read both sentences for the case.</li>
+              <li>Tap Noun or Verb beside each sentence. You can change your choice until you tap Check.</li>
+              <li>Tap Check to see the correct answers and why they are correct.</li>
+              <li>You unmask an agent when you label both sentences correctly.</li>
+            </ol>
+            <div class="help-clues">
+              <div class="help-clue help-clue--noun">
+                <h4>Noun clues</h4>
+                <ul>
+                  <li>Names a person, place, animal or thing</li>
+                  <li>Often comes after a, an, the, my or her</li>
+                  <li>Often comes after a describing word, like big or blue</li>
+                </ul>
+              </div>
+              <div class="help-clue help-clue--verb">
+                <h4>Verb clues</h4>
+                <ul>
+                  <li>Tells us what someone or something does</li>
+                  <li>Often comes after to, will, can or might</li>
+                  <li>Often begins an instruction</li>
+                </ul>
+              </div>
+            </div>
+            <button class="pill help-close" id="helpClose" type="button">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./js/lottie.min.js"></script>
+  <script src="./js/anim-data.js"></script>
+  <script src="./js/content-data.js"></script>
+  <script src="./js/script.js"></script>
+</body>
+
+</html>
