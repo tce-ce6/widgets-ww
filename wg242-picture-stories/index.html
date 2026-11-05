@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>&ZeroWidthSpace;Picture Stories&ZeroWidthSpace;</title>
+
+  <link rel="stylesheet" href="./css/global_style.css">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body id="picture-stories-widget">
+  <div class="container">
+    <div class="mainContainerOuter">
+      <div id="viewport">
+        <!-- Fixed 1920x1080 design stage, scaled to fit the window by script.js -->
+        <div id="stage">
+          <div class="wdgetTitle">
+            <h2>&ZeroWidthSpace;Picture Stories&ZeroWidthSpace;</h2>
+            <span id="versionId" class="versionText">b4_wg242_261105_01</span>
+          </div>
+
+          <!-- ============ START SCREEN ============ -->
+          <section id="screen-start" class="screen is-active" aria-label="Start">
+            <img class="props" src="assets/svg/props-intro.svg" alt="">
+            <img class="cover-book" src="assets/svg/cover-book.svg" alt="A closed book titled Picture Stories">
+            <p class="cover-line">Look closely. Plan smart. Build a story.</p>
+            <button class="cover-start" id="startBtn" type="button">Start</button>
+            <button class="help-btn help-btn--start js-help" type="button">
+              <img src="assets/svg/help-icon.svg" alt="">
+              <span>Help</span>
+            </button>
+          </section>
+
+          <!-- ============ PICTURE MENU ============ -->
+          <section id="screen-menu" class="screen" aria-labelledby="menuHeading">
+            <img class="props" src="assets/svg/props-menu.svg" alt="">
+            <h3 class="ribbon" id="menuHeading" tabindex="-1">Pick a picture</h3>
+            <p class="line">Then build a story about it, one step at a time.</p>
+            <div class="picture-grid" id="menuGrid"></div>
+            <div class="task-box">
+              <h4 class="task-tag">The task</h4>
+              <p>Study the picture you pick. Write a story or a description or an account of what it suggests to you. Your composition may be about the subject of the picture, or you may take suggestions from it. However, there must be a clear connection between the picture and your composition.</p>
+            </div>
+            <button class="help-btn help-btn--menu js-help" type="button">
+              <img src="assets/svg/help-icon.svg" alt="">
+              <span>Help</span>
+            </button>
+          </section>
+
+          <!-- ============ STORY STEPS: notice, outline, build and title ============ -->
+          <section id="screen-step" class="screen" data-step="notice" aria-labelledby="stepHeading">
+            <ol class="progress" id="progress" aria-label="Story steps"></ol>
+            <h3 class="ribbon" id="stepHeading" tabindex="-1"></h3>
+            <p class="line" id="stepLine"></p>
+
+            <div class="picture" id="picture">
+              <img id="pictureImg" src="assets/images/picture-1.jpg" alt="">
+              <div class="zones" id="zones"></div>
+            </div>
+
+            <div class="slots" id="slots"></div>
+            <p class="part-pill" id="partPill"></p>
+            <div class="cards" id="cards"></div>
+            <p class="feedback" id="feedback" aria-live="polite" hidden></p>
+
+            <button class="home-btn" id="homeBtn" type="button" aria-label="Back to the start screen">
+              <img src="assets/svg/home-icon.svg" alt="">
+            </button>
+            <button class="help-btn help-btn--step" id="tourBtn" type="button">
+              <img src="assets/svg/help-icon.svg" alt="">
+              <span>Help</span>
+            </button>
+            <div class="nav">
+              <button class="pill pill--dark" id="backBtn" type="button"></button>
+              <button class="pill pill--gold" id="nextBtn" type="button"></button>
+            </div>
+          </section>
+
+          <!-- ============ FINISHED STORY ============ -->
+          <section id="screen-read" class="screen" aria-labelledby="readTitle">
+            <ol class="progress" id="readProgress" aria-label="Story steps"></ol>
+            <div class="picture picture--read">
+              <img id="readImg" src="assets/images/picture-1.jpg" alt="">
+            </div>
+            <p class="read-line">Here's the story you built.</p>
+            <div class="read-box" id="readBox"></div>
+            <h3 class="ribbon ribbon--read" id="readTitle" tabindex="-1"></h3>
+            <button class="pill pill--yellow read-next" id="readNext" type="button"></button>
+          </section>
+
+          <!-- ============ COMPLETION ============ -->
+          <section id="screen-done" class="screen" aria-labelledby="doneHeading">
+            <h3 class="ribbon" id="doneHeading" tabindex="-1">Well done! You've built all five stories.</h3>
+            <p class="line line--done">For each picture, you noticed the details, picked the outline that fitted, chose the strongest version of each part and gave the story a title.</p>
+            <div class="picture-grid picture-grid--done" id="doneGrid"></div>
+            <button class="pill pill--yellow done-again" id="againBtn" type="button">Back to the start</button>
+          </section>
+        </div>
+      </div>
+
+      <!-- Popups sit above the full-window backdrop, on a stage scaled like the main one -->
+      <div id="modal-layer">
+        <div id="modal-stage">
+          <div class="help-card" id="helpCard" role="dialog" aria-modal="true" aria-labelledby="helpTitle" hidden>
+            <h3 class="ribbon help-title" id="helpTitle">How to build a story</h3>
+            <ol class="help-steps">
+              <li>Pick a picture.</li>
+              <li>Tap four things in the picture that make you ask a question.</li>
+              <li>Pick the outline that fits the picture better.</li>
+              <li>Build the story one part at a time. Pick the stronger version of each part.</li>
+              <li>Pick the title that fits best, and then read your story.</li>
+            </ol>
+            <button class="pill pill--yellow help-close" id="helpClose" type="button">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- How-to-play tour (shown over the stage; positioned in viewport coordinates) -->
+  <div id="tour" class="tour" aria-hidden="true">
+    <div id="tourSpot" class="tour-spot"></div>
+    <div id="tourDemo" class="tour-demo"></div>
+    <div id="tourCard" class="tour-card" role="dialog" aria-modal="true" aria-labelledby="tourTitle">
+      <button id="tourSkip" class="tour-skip" type="button" aria-label="Close how to play"><span aria-hidden="true">&times;</span></button>
+      <div id="tourCount" class="tour-count"></div>
+      <h2 id="tourTitle"></h2>
+      <p id="tourText"></p>
+      <div class="tour-nav">
+        <div id="tourDots" class="tour-dots"></div>
+        <div class="tour-btns">
+          <button id="tourBack" class="tour-btn tour-btn--ghost" type="button">Back</button>
+          <button id="tourNext" class="tour-btn" type="button">Next</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./js/content-data.js"></script>
+  <script src="./js/script.js"></script>
+  <script src="./js/how-to-play.js"></script>
+</body>
+
+</html>
