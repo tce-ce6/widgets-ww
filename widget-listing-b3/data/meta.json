@@ -220,6 +220,10 @@
       "updatedAt": "2026-11-03T17:55:28+05:30",
       "author": "tce-nitinc"
     },
+    "wg231-choose-the-correct-spelling-gujrati": {
+      "updatedAt": "2026-11-05T17:23:03+05:30",
+      "author": "tce-ashishg"
+    },
     "wg232-sentence-construction-gujrati": {
       "updatedAt": "2026-11-05T15:57:57+05:30",
       "author": "tce-ashishg"
@@ -246,6 +250,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-11-05T17:23:03+05:30",
+      "author": "tce-ashishg",
+      "message": "wg231 completed",
+      "widgets": [
+        231
+      ]
+    },
     {
       "date": "2026-11-05T16:24:10+05:30",
       "author": "tce-nitinc",
@@ -488,17 +500,6 @@
       "message": "178 fixes",
       "widgets": [
         178
-      ]
-    },
-    {
-      "date": "2026-10-22T15:20:08+05:30",
-      "author": "tce-nitinc",
-      "message": "fixes",
-      "widgets": [
-        178,
-        187,
-        189,
-        204
       ]
     }
   ]
