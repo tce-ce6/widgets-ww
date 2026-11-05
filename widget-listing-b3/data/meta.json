@@ -153,7 +153,7 @@
       "author": "tce-nitinc"
     },
     "wg202-egyptian-museum": {
-      "updatedAt": "2026-10-26T15:01:49+05:30",
+      "updatedAt": "2026-11-05T16:24:10+05:30",
       "author": "tce-nitinc"
     },
     "wg204-capitals-of-india": {
@@ -221,12 +221,20 @@
       "author": "tce-nitinc"
     },
     "wg232-sentence-construction-gujrati": {
-      "updatedAt": "2026-11-05T13:13:41+05:30",
+      "updatedAt": "2026-11-05T15:57:57+05:30",
+      "author": "tce-ashishg"
+    },
+    "wg233-sabdo-me-vayanjan-ki-khoj-gujrati": {
+      "updatedAt": "2026-11-05T15:57:57+05:30",
       "author": "tce-ashishg"
     },
     "wg236-road-signs": {
       "updatedAt": "2026-11-03T14:28:37+05:30",
       "author": "tce-nitinc"
+    },
+    "wg237-double-agent-words": {
+      "updatedAt": "2026-11-05T16:01:37+05:30",
+      "author": "Shyamsunder Hait"
     },
     "wg31-world-war": {
       "updatedAt": "2026-10-21T09:34:16+05:30",
@@ -238,6 +246,31 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-11-05T16:24:10+05:30",
+      "author": "tce-nitinc",
+      "message": "resolved ejypt widget bugs",
+      "widgets": [
+        202
+      ]
+    },
+    {
+      "date": "2026-11-05T16:01:37+05:30",
+      "author": "Shyamsunder Hait",
+      "message": "added wg236",
+      "widgets": [
+        237
+      ]
+    },
+    {
+      "date": "2026-11-05T15:57:57+05:30",
+      "author": "tce-ashishg",
+      "message": "wg233 completed",
+      "widgets": [
+        232,
+        233
+      ]
+    },
     {
       "date": "2026-11-05T13:13:41+05:30",
       "author": "tce-ashishg",
@@ -466,31 +499,6 @@
         187,
         189,
         204
-      ]
-    },
-    {
-      "date": "2026-10-22T11:55:46+05:30",
-      "author": "tce-nitinc",
-      "message": "wg 189 fixes",
-      "widgets": [
-        189
-      ]
-    },
-    {
-      "date": "2026-10-22T11:45:58+05:30",
-      "author": "tce-nitinc",
-      "message": "wg208 fixes",
-      "widgets": [
-        208
-      ]
-    },
-    {
-      "date": "2026-10-22T11:03:32+05:30",
-      "author": "tce-ashishg",
-      "message": "wg208 error resolved",
-      "widgets": [
-        207,
-        208
       ]
     }
   ]

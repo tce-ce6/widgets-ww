@@ -1,0 +1,690 @@
+/* ==========================================================================
+   Double Agent Words (wg237)
+   Layout is authored on a fixed 1920x1080 stage (matching layout.svg and the
+   Lottie) and scaled to the window by script.js, so it always fits one screen.
+   ========================================================================== */
+
+:root {
+  --bg: #427e6a;
+  --title: #02b698;
+  --noun: #2b72e8;
+  --noun-dark: #042c6e;
+  --verb: #e321d6;
+  --verb-dark: #a8089d;
+  --mark: #feee85;
+  --status: #3bdff9;
+  --note: #f6fff6;
+  --orange: #ff8901;
+  --shadow: rgba(0, 0, 0, 0.3);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  overflow: hidden;
+}
+
+body {
+  background: var(--bg);
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mainContainerOuter {
+  background: transparent;
+}
+
+#viewport {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+#stage,
+#modal-stage {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1920px;
+  height: 1080px;
+  transform-origin: 0 0;
+  font-family: "Roboto", "Segoe UI", sans-serif;
+  line-height: 1.2;
+  color: #000;
+}
+
+#stage {
+  overflow: hidden;
+}
+
+img {
+  display: block;
+  -webkit-user-drag: none;
+}
+
+button {
+  font-family: inherit;
+  padding: 0;
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: default;
+}
+
+button:focus-visible,
+[tabindex]:focus-visible {
+  outline: 4px solid #fff;
+  outline-offset: 3px;
+}
+
+[tabindex]:focus:not(:focus-visible) {
+  outline: none;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.bg,
+.anim {
+  position: absolute;
+  inset: 0;
+  width: 1920px;
+  height: 1080px;
+}
+
+.anim {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease;
+}
+
+.anim.is-on {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* ---------- title and score ---------- */
+#double-agent-words-widget .wdgetTitle {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 0;
+  z-index: 30;
+}
+
+#double-agent-words-widget .wdgetTitle h2 {
+  position: absolute;
+  top: 0;
+  left: 715px;
+  width: 490px;
+  height: 90px;
+  margin: 0;
+  font-size: 45px;
+  font-weight: 500;
+  line-height: 84px;
+  text-align: center;
+  white-space: nowrap;
+  background: var(--title);
+  color: #fff;
+  border-radius: 0 0 25px 25px;
+  box-shadow: 0 3px 3px var(--shadow);
+}
+
+#double-agent-words-widget .versionText {
+  position: absolute;
+  right: 20px;
+  top: 10px;
+  font-size: 17px;
+  line-height: 1;
+  color: rgb(255 255 255 / 30%);
+}
+
+.status {
+  position: absolute;
+  right: 70px;
+  top: 80px;
+  z-index: 30;
+  margin: 0;
+  color: var(--status);
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 40px;
+  white-space: pre;
+}
+
+.status b {
+  color: #fff;
+  font-size: 35px;
+}
+
+/* ---------- shared ---------- */
+.screen {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: none;
+}
+
+.screen.is-active {
+  display: block;
+}
+
+.pill {
+  position: absolute;
+  height: 93px;
+  border: 0;
+  border-radius: 47px;
+  color: #fff;
+  font-size: 35px;
+  font-weight: 500;
+  box-shadow: 3px 3px 3px var(--shadow);
+}
+
+.help-btn {
+  left: 32px;
+  top: 955px;
+  z-index: 30;
+  width: 185px;
+  background: #000;
+}
+
+.help-icon {
+  position: absolute;
+  left: 16px;
+  top: 12px;
+  width: 66px;
+  height: 66px;
+}
+
+.help-btn span {
+  position: absolute;
+  left: 89px;
+  top: 26px;
+  line-height: 41px;
+}
+
+/* ---------- briefing ---------- */
+.intro {
+  position: absolute;
+  left: 558px;
+  top: 189px;
+  width: 803px;
+  margin: 0;
+  color: #fff;
+  font-size: 32px;
+  line-height: 38px;
+  text-align: center;
+}
+
+.note {
+  position: absolute;
+}
+
+.note--noun {
+  left: 102px;
+  top: 344px;
+  width: 844px;
+  height: 309px;
+}
+
+.note--verb {
+  left: 980px;
+  top: 367px;
+  width: 847px;
+  height: 311px;
+}
+
+.clue-title,
+.clue-list {
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  transform-origin: 0 0;
+  white-space: nowrap;
+}
+
+.clue-title {
+  font-size: 35px;
+  font-weight: 700;
+  line-height: 41px;
+}
+
+.clue-list {
+  font-size: 32px;
+  line-height: 43px;
+}
+
+.clue-list li::before {
+  content: "\2022\00a0";
+}
+
+.clue-title--noun {
+  left: 432.65px;
+  top: 409.75px;
+  color: var(--noun);
+  transform: rotate(-2.01deg);
+}
+
+.clue-list--noun {
+  left: 149.87px;
+  top: 473.23px;
+  transform: rotate(-2.01deg);
+}
+
+.clue-title--verb {
+  left: 1320.84px;
+  top: 420.66px;
+  color: var(--verb);
+  transform: rotate(1deg);
+}
+
+.clue-list--verb {
+  left: 1034.87px;
+  top: 474.46px;
+  transform: rotate(1deg);
+}
+
+.start-btn {
+  left: 745.5px;
+  top: 711px;
+  width: 429px;
+  background: var(--orange);
+}
+
+/* ---------- game: everything here rides on the Lottie paper ---------- */
+.sheet {
+  will-change: transform, opacity;
+}
+
+.prompt {
+  position: absolute;
+  left: 400px;
+  top: 345px;
+  width: 1120px;
+  margin: 0;
+  font-size: 30px;
+  line-height: 36px;
+  text-align: center;
+}
+
+.rule {
+  position: absolute;
+  left: 432px;
+  width: 1192px;
+  height: 2px;
+  background: repeating-linear-gradient(to right, #404040 0 4px, transparent 4px 8px);
+}
+
+.rule--1 {
+  top: 603px;
+}
+
+.rule--2 {
+  top: 840px;
+}
+
+.row {
+  --sentence-y: 458px;
+  --job-y: 451px;
+  --why-y: 547px;
+}
+
+.row--2 {
+  --sentence-y: 696px;
+  --job-y: 687px;
+  --why-y: 779px;
+}
+
+.sentence {
+  position: absolute;
+  left: 426.5px;
+  top: var(--sentence-y);
+  width: 832px;
+  height: 59px;
+  margin: 0;
+  isolation: isolate;
+  font-size: 40px;
+  line-height: 59px;
+  white-space: pre;
+}
+
+.target {
+  position: relative;
+  display: inline-block;
+  font-weight: 700;
+}
+
+/* The yellow marker stretches past the word without pushing its neighbours away. */
+.target::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0 -6px;
+  background: var(--mark);
+}
+
+.verdict {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 12px);
+  width: 114px;
+  height: 47px;
+  font-size: 30px;
+  font-weight: 500;
+  line-height: 46px;
+  text-align: center;
+  transform: translateX(-50%) rotate(-5deg);
+  animation: thud 0.35s cubic-bezier(0.2, 1.6, 0.4, 1) both;
+}
+
+.verdict--noun {
+  color: var(--noun);
+  background: url("../assets/svg/stamp-noun.svg") center / 100% 100% no-repeat;
+}
+
+.verdict--verb {
+  color: var(--verb);
+  background: url("../assets/svg/stamp-verb.svg") center / 100% 100% no-repeat;
+}
+
+@keyframes thud {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) rotate(-5deg) scale(1.9);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(-50%) rotate(-5deg) scale(1);
+  }
+}
+
+.job {
+  position: absolute;
+  top: var(--job-y);
+  width: 169px;
+  height: 75px;
+  background: #fff;
+  border: 5px solid;
+  border-radius: 38px;
+  font-size: 35px;
+  font-weight: 500;
+}
+
+.job--noun {
+  left: 1271px;
+  border-color: var(--noun);
+  color: var(--noun);
+}
+
+.job--verb {
+  left: 1455px;
+  border-color: var(--verb-dark);
+  color: var(--verb);
+}
+
+.job--noun[aria-pressed="true"] {
+  background: var(--noun);
+  border-color: var(--noun-dark);
+  color: #fff;
+}
+
+.job--verb[aria-pressed="true"] {
+  background: var(--verb);
+  color: #fff;
+}
+
+.why {
+  position: absolute;
+  left: 426.5px;
+  top: var(--why-y);
+  width: 1198px;
+  height: 36px;
+  margin: 0;
+  font-size: 30px;
+  line-height: 36px;
+  white-space: pre;
+}
+
+.why strong {
+  font-weight: 700;
+}
+
+.why .is-ok {
+  color: #0eb502;
+}
+
+.why .is-no {
+  color: #f00;
+}
+
+.main-btn {
+  left: 1024px;
+  top: 873px;
+  transform: translateX(-50%);
+}
+
+.main-btn.is-check {
+  width: 207px;
+  background: #1b538b;
+}
+
+.main-btn.is-check:disabled {
+  opacity: 0.3;
+}
+
+.main-btn.is-next {
+  width: 243px;
+  background: #00a707;
+}
+
+.main-btn.is-final {
+  width: 307px;
+  background: #9d1eac;
+}
+
+/* ---------- result ---------- */
+.closed {
+  position: absolute;
+  left: 549px;
+  top: 233px;
+  width: 912px;
+  height: 602px;
+  animation: slam 0.5s cubic-bezier(0.2, 1.6, 0.4, 1) 0.1s both;
+}
+
+@keyframes slam {
+  from {
+    opacity: 0;
+    transform: scale(2.2);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.end-score {
+  position: absolute;
+  left: 648px;
+  top: 731px;
+  width: 715px;
+  margin: 0;
+  font-size: 50px;
+  line-height: 60px;
+  text-align: center;
+  white-space: pre;
+  animation: appear 0.3s ease 0.45s both;
+}
+
+.end-score b {
+  font-size: 55px;
+  line-height: 1;
+}
+
+.again-btn {
+  left: 870px;
+  top: 811px;
+  width: 247px;
+  background: #fff700;
+  color: #000;
+  animation: appear 0.3s ease 0.45s both;
+}
+
+.again-btn:focus-visible {
+  outline-color: #000;
+}
+
+@keyframes appear {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* ---------- help popup and its full-window backdrop ---------- */
+body.has-modal::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  background: rgba(0, 0, 0, 0.8);
+}
+
+#modal-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+body.has-modal #modal-layer {
+  pointer-events: auto;
+}
+
+.help-card {
+  position: absolute;
+  left: 280px;
+  top: 90px;
+  width: 1360px;
+  height: 900px;
+  background: var(--note);
+  box-shadow: -12px 12px 0 var(--shadow);
+}
+
+.help-agent {
+  position: absolute;
+  left: 40px;
+  top: 16px;
+  width: 150px;
+  height: 150px;
+}
+
+.help-title {
+  position: absolute;
+  left: 0;
+  top: 44px;
+  width: 100%;
+  margin: 0;
+  font-size: 50px;
+  font-weight: 700;
+  line-height: 60px;
+  text-align: center;
+}
+
+.help-steps {
+  position: absolute;
+  left: 76px;
+  top: 170px;
+  width: 1210px;
+  margin: 0;
+  padding: 0 0 0 42px;
+  font-size: 32px;
+  line-height: 44px;
+}
+
+.help-clues {
+  position: absolute;
+  left: 76px;
+  top: 412px;
+  width: 1208px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+}
+
+.help-clue {
+  height: 336px;
+  padding: 18px 26px;
+  background: #fff;
+  border: 4px solid;
+  border-radius: 20px;
+}
+
+.help-clue--noun {
+  border-color: var(--noun);
+}
+
+.help-clue--verb {
+  border-color: var(--verb);
+}
+
+.help-clue h4 {
+  margin: 0 0 8px;
+  font-size: 35px;
+  font-weight: 700;
+  line-height: 41px;
+  text-align: center;
+}
+
+.help-clue--noun h4 {
+  color: var(--noun);
+}
+
+.help-clue--verb h4 {
+  color: var(--verb);
+}
+
+.help-clue ul {
+  margin: 0;
+  padding: 0 0 0 28px;
+  font-size: 30px;
+  line-height: 38px;
+}
+
+.help-close {
+  left: 581px;
+  top: 776px;
+  width: 198px;
+  background: var(--orange);
+}
+
+.help-close:focus-visible {
+  outline-color: #000;
+}
+
+/* ---------- reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
