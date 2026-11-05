@@ -220,6 +220,10 @@
       "updatedAt": "2026-11-03T17:55:28+05:30",
       "author": "tce-nitinc"
     },
+    "wg231-choose-the-correct-spelling-gujrati": {
+      "updatedAt": "2026-11-05T17:23:03+05:30",
+      "author": "tce-ashishg"
+    },
     "wg232-sentence-construction-gujrati": {
       "updatedAt": "2026-11-05T15:57:57+05:30",
       "author": "tce-ashishg"
@@ -236,6 +240,10 @@
       "updatedAt": "2026-11-05T16:01:37+05:30",
       "author": "Shyamsunder Hait"
     },
+    "wg242-picture-stories": {
+      "updatedAt": "2026-11-05T17:27:17+05:30",
+      "author": "Shyamsunder Hait"
+    },
     "wg31-world-war": {
       "updatedAt": "2026-10-21T09:34:16+05:30",
       "author": "tce-nitinc"
@@ -246,6 +254,22 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-11-05T17:27:17+05:30",
+      "author": "Shyamsunder Hait",
+      "message": "added the 242 widget",
+      "widgets": [
+        242
+      ]
+    },
+    {
+      "date": "2026-11-05T17:23:03+05:30",
+      "author": "tce-ashishg",
+      "message": "wg231 completed",
+      "widgets": [
+        231
+      ]
+    },
     {
       "date": "2026-11-05T16:24:10+05:30",
       "author": "tce-nitinc",
@@ -480,25 +504,6 @@
       "widgets": [
         207,
         208
-      ]
-    },
-    {
-      "date": "2026-10-22T16:02:23+05:30",
-      "author": "tce-nitinc",
-      "message": "178 fixes",
-      "widgets": [
-        178
-      ]
-    },
-    {
-      "date": "2026-10-22T15:20:08+05:30",
-      "author": "tce-nitinc",
-      "message": "fixes",
-      "widgets": [
-        178,
-        187,
-        189,
-        204
       ]
     }
   ]
