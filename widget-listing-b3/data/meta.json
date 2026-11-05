@@ -220,6 +220,10 @@
       "updatedAt": "2026-11-03T17:55:28+05:30",
       "author": "tce-nitinc"
     },
+    "wg232-sentence-construction-gujrati": {
+      "updatedAt": "2026-11-05T13:13:41+05:30",
+      "author": "tce-ashishg"
+    },
     "wg236-road-signs": {
       "updatedAt": "2026-11-03T14:28:37+05:30",
       "author": "tce-nitinc"
@@ -234,6 +238,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-11-05T13:13:41+05:30",
+      "author": "tce-ashishg",
+      "message": "wg232 completed",
+      "widgets": [
+        232
+      ]
+    },
     {
       "date": "2026-11-04T17:21:54+05:30",
       "author": "tce-ashishg",
@@ -479,18 +491,6 @@
       "widgets": [
         207,
         208
-      ]
-    },
-    {
-      "date": "2026-10-22T10:51:43+05:30",
-      "author": "tce-nitinc",
-      "message": "wg193 fixes",
-      "widgets": [
-        193,
-        198,
-        199,
-        200,
-        202
       ]
     }
   ]
