@@ -81,7 +81,7 @@
       "author": "tce-ashishg"
     },
     "wg181-wild-about-articles": {
-      "updatedAt": "2026-10-07T17:38:51+05:30",
+      "updatedAt": "2026-11-05T18:27:27+05:30",
       "author": "tce-ashishg"
     },
     "wg183-the-chola-fortress-jenga": {
@@ -101,7 +101,7 @@
       "author": "tce-nitinc"
     },
     "wg188-feed-the-animals": {
-      "updatedAt": "2026-09-01T16:45:24+05:30",
+      "updatedAt": "2026-11-05T18:27:27+05:30",
       "author": "tce-ashishg"
     },
     "wg189-irrigation-system": {
@@ -109,7 +109,7 @@
       "author": "tce-nitinc"
     },
     "wg190-my-healthy-plate": {
-      "updatedAt": "2026-09-07T15:29:08+05:30",
+      "updatedAt": "2026-11-05T18:27:27+05:30",
       "author": "tce-ashishg"
     },
     "wg191-blood-pressure-measurment": {
@@ -121,15 +121,15 @@
       "author": "tce-nitinc"
     },
     "wg194-ginti-mela": {
-      "updatedAt": "2026-10-08T19:01:39+05:30",
+      "updatedAt": "2026-11-05T18:27:27+05:30",
       "author": "tce-ashishg"
     },
     "wg195-chitra-dekh-kar-vakya-banaye": {
-      "updatedAt": "2026-10-09T17:03:30+05:30",
+      "updatedAt": "2026-11-05T18:27:27+05:30",
       "author": "tce-ashishg"
     },
     "wg196-perfect-pairs": {
-      "updatedAt": "2026-10-01T18:03:02+05:30",
+      "updatedAt": "2026-11-05T18:27:27+05:30",
       "author": "tce-ashishg"
     },
     "wg197-vyanjan-ki-pahchan-gujurati": {
@@ -165,11 +165,11 @@
       "author": "Shyamsunder Hait"
     },
     "wg207-i-aur-ee-kee-maatra-mein-antar-gujrati": {
-      "updatedAt": "2026-11-04T15:36:58+05:30",
+      "updatedAt": "2026-11-05T18:27:27+05:30",
       "author": "tce-ashishg"
     },
     "wg208-u-aur-oo-kee-maatra-mein-antar-gujrati": {
-      "updatedAt": "2026-11-03T15:17:29+05:30",
+      "updatedAt": "2026-11-05T18:27:27+05:30",
       "author": "tce-ashishg"
     },
     "wg209-poppulation-density-simulator": {
@@ -185,7 +185,7 @@
       "author": "tce-nitinc"
     },
     "wg212-sabdo-me-swar-ki-khoj-gujrati": {
-      "updatedAt": "2026-10-19T16:13:28+05:30",
+      "updatedAt": "2026-11-05T18:27:27+05:30",
       "author": "tce-ashishg"
     },
     "wg213-cross-bridge": {
@@ -205,7 +205,7 @@
       "author": "tce-nitinc"
     },
     "wg219-sabdo-me-vayanjan-ki-khoj-gujrati": {
-      "updatedAt": "2026-11-02T18:42:26+05:30",
+      "updatedAt": "2026-11-05T18:27:27+05:30",
       "author": "tce-ashishg"
     },
     "wg223-leaf-lab-transpiration": {
@@ -254,6 +254,23 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-11-05T18:27:27+05:30",
+      "author": "tce-ashishg",
+      "message": "thumb nail image added",
+      "widgets": [
+        181,
+        188,
+        190,
+        194,
+        195,
+        196,
+        207,
+        208,
+        212,
+        219
+      ]
+    },
     {
       "date": "2026-11-05T17:27:17+05:30",
       "author": "Shyamsunder Hait",
@@ -494,15 +511,6 @@
       "author": "tce-ashishg",
       "message": "wg207 & wg208 error resolved",
       "widgets": [
-        208
-      ]
-    },
-    {
-      "date": "2026-10-23T09:39:40+05:30",
-      "author": "tce-ashishg",
-      "message": "wg207 & wg208 error resolved",
-      "widgets": [
-        207,
         208
       ]
     }
