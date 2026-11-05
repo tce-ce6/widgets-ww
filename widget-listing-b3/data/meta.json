@@ -221,7 +221,11 @@
       "author": "tce-nitinc"
     },
     "wg232-sentence-construction-gujrati": {
-      "updatedAt": "2026-11-05T13:13:41+05:30",
+      "updatedAt": "2026-11-05T15:57:57+05:30",
+      "author": "tce-ashishg"
+    },
+    "wg233-sabdo-me-vayanjan-ki-khoj-gujrati": {
+      "updatedAt": "2026-11-05T15:57:57+05:30",
       "author": "tce-ashishg"
     },
     "wg236-road-signs": {
@@ -238,6 +242,15 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-11-05T15:57:57+05:30",
+      "author": "tce-ashishg",
+      "message": "wg233 completed",
+      "widgets": [
+        232,
+        233
+      ]
+    },
     {
       "date": "2026-11-05T13:13:41+05:30",
       "author": "tce-ashishg",
@@ -481,15 +494,6 @@
       "author": "tce-nitinc",
       "message": "wg208 fixes",
       "widgets": [
-        208
-      ]
-    },
-    {
-      "date": "2026-10-22T11:03:32+05:30",
-      "author": "tce-ashishg",
-      "message": "wg208 error resolved",
-      "widgets": [
-        207,
         208
       ]
     }
