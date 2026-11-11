@@ -14,6 +14,8 @@
   <!-- Polite live region so screen readers hear feedback messages -->
   <div id="liveRegion" class="sr-only" aria-live="polite"></div>
 
+  <div class="market-under" aria-hidden="true"></div>
+
   <div class="container">
     <div class="mainContainerOuter">
       <div class="wdgetTitle">
@@ -100,7 +102,7 @@
               <figure class="bronze__card" id="bronzeCard">
                 <img class="bronze__frame" src="assets/svg/frame.svg" alt="">
                 <span class="bronze__empty">empty workbench</span>
-                <img class="bronze__stage" id="bronzeStageImg" alt="" hidden>
+                <div class="bronze__view" id="bronzeView" hidden><img class="bronze__stage" id="bronzeStageImg" alt=""></div>
               </figure>
               <p class="bronze__caption" id="bronzeCaption" role="status">Drag the first step into slot 1 to begin.</p>
               <div class="bronze__tray" id="bronzeTray"></div>

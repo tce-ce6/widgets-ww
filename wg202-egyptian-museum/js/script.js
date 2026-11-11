@@ -53,6 +53,9 @@
   const NILE_SOUTH_GAP = 50; // how far short of the south edge of the map the line may start
   const NILE_SEA_GAP = 60; // how far short of the sea the line may stop
   const NILE_MAX_GAP = 60; // the biggest break allowed in the middle of the line
+  const NILE_MIN_BRANCHES = 3; // the Delta must be drawn as a fork of three branches (west, middle, east)
+  const NILE_DELTA_ROWS = [95, 85, 75, 65, 55]; // heights near the sea where the branches are counted
+  const NILE_BRANCH_SPLIT = 18; // how far apart two lines must be to count as separate branches
   window.museumHowTo = { nilePath: NILE_PATH }; // read by how-to-play.js
 
   const SEASONS = [
@@ -783,7 +786,29 @@
     const along = onRiver.map((p) => p.along).sort((x, y) => x - y);
     if (along[0] > NILE_SOUTH_GAP) return false;
     if (along[along.length - 1] < pathLength(NILE_PATH) - NILE_SEA_GAP) return false;
-    return along.every((value, i) => i === 0 || value - along[i - 1] <= NILE_MAX_GAP);
+    if (!along.every((value, i) => i === 0 || value - along[i - 1] <= NILE_MAX_GAP)) return false;
+    return countDeltaBranches(strokes) >= NILE_MIN_BRANCHES;
+  }
+
+  /** How many separate lines cross the Delta near the sea, at the height where most cross. */
+  function countDeltaBranches(strokes) {
+    const lines = strokes.filter((stroke) => pathLength(stroke) >= NILE_MIN_STROKE).map((stroke) => densify(stroke, 6));
+    let most = 0;
+    NILE_DELTA_ROWS.forEach((row) => {
+      const crossings = [];
+      lines.forEach((line) => {
+        for (let i = 0; i < line.length - 1; i++) {
+          const [a, b] = [line[i], line[i + 1]];
+          if ((a[1] - row) * (b[1] - row) > 0 || a[1] === b[1]) continue;
+          const x = a[0] + ((row - a[1]) * (b[0] - a[0])) / (b[1] - a[1]);
+          if (projectOnRoute([x, row], NILE_PATH).distance <= NILE_TOLERANCE) crossings.push(x);
+        }
+      });
+      crossings.sort((x, y) => x - y);
+      const separate = crossings.filter((x, i) => i === 0 || x - crossings[i - 1] > NILE_BRANCH_SPLIT).length;
+      most = Math.max(most, separate);
+    });
+    return most;
   }
 
   function initNile() {

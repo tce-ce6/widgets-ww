@@ -81,7 +81,7 @@
       "author": "tce-ashishg"
     },
     "wg181-wild-about-articles": {
-      "updatedAt": "2026-10-07T17:38:51+05:30",
+      "updatedAt": "2026-11-05T18:27:27+05:30",
       "author": "tce-ashishg"
     },
     "wg183-the-chola-fortress-jenga": {
@@ -101,7 +101,7 @@
       "author": "tce-nitinc"
     },
     "wg188-feed-the-animals": {
-      "updatedAt": "2026-09-01T16:45:24+05:30",
+      "updatedAt": "2026-11-05T18:27:27+05:30",
       "author": "tce-ashishg"
     },
     "wg189-irrigation-system": {
@@ -109,7 +109,7 @@
       "author": "tce-nitinc"
     },
     "wg190-my-healthy-plate": {
-      "updatedAt": "2026-09-07T15:29:08+05:30",
+      "updatedAt": "2026-11-05T18:27:27+05:30",
       "author": "tce-ashishg"
     },
     "wg191-blood-pressure-measurment": {
@@ -121,15 +121,15 @@
       "author": "tce-nitinc"
     },
     "wg194-ginti-mela": {
-      "updatedAt": "2026-10-08T19:01:39+05:30",
+      "updatedAt": "2026-11-05T18:27:27+05:30",
       "author": "tce-ashishg"
     },
     "wg195-chitra-dekh-kar-vakya-banaye": {
-      "updatedAt": "2026-10-09T17:03:30+05:30",
+      "updatedAt": "2026-11-05T18:27:27+05:30",
       "author": "tce-ashishg"
     },
     "wg196-perfect-pairs": {
-      "updatedAt": "2026-10-01T18:03:02+05:30",
+      "updatedAt": "2026-11-05T18:27:27+05:30",
       "author": "tce-ashishg"
     },
     "wg197-vyanjan-ki-pahchan-gujurati": {
@@ -153,7 +153,7 @@
       "author": "tce-nitinc"
     },
     "wg202-egyptian-museum": {
-      "updatedAt": "2026-11-05T16:24:10+05:30",
+      "updatedAt": "2026-11-11T11:45:15+05:30",
       "author": "tce-nitinc"
     },
     "wg204-capitals-of-india": {
@@ -161,15 +161,15 @@
       "author": "tce-nitinc"
     },
     "wg205-species-z-factor-explorer": {
-      "updatedAt": "2026-10-16T18:34:01+05:30",
-      "author": "Shyamsunder Hait"
+      "updatedAt": "2026-11-11T12:33:53+05:30",
+      "author": "tce-nitinc"
     },
     "wg207-i-aur-ee-kee-maatra-mein-antar-gujrati": {
-      "updatedAt": "2026-11-04T15:36:58+05:30",
+      "updatedAt": "2026-11-05T18:27:27+05:30",
       "author": "tce-ashishg"
     },
     "wg208-u-aur-oo-kee-maatra-mein-antar-gujrati": {
-      "updatedAt": "2026-11-03T15:17:29+05:30",
+      "updatedAt": "2026-11-05T18:27:27+05:30",
       "author": "tce-ashishg"
     },
     "wg209-poppulation-density-simulator": {
@@ -185,7 +185,7 @@
       "author": "tce-nitinc"
     },
     "wg212-sabdo-me-swar-ki-khoj-gujrati": {
-      "updatedAt": "2026-10-19T16:13:28+05:30",
+      "updatedAt": "2026-11-05T18:27:27+05:30",
       "author": "tce-ashishg"
     },
     "wg213-cross-bridge": {
@@ -201,11 +201,11 @@
       "author": "tce-nitinc"
     },
     "wg218-ancient-china": {
-      "updatedAt": "2026-10-26T13:03:25+05:30",
+      "updatedAt": "2026-11-11T12:06:11+05:30",
       "author": "tce-nitinc"
     },
     "wg219-sabdo-me-vayanjan-ki-khoj-gujrati": {
-      "updatedAt": "2026-11-02T18:42:26+05:30",
+      "updatedAt": "2026-11-05T18:27:27+05:30",
       "author": "tce-ashishg"
     },
     "wg223-leaf-lab-transpiration": {
@@ -213,7 +213,7 @@
       "author": "tce-nitinc"
     },
     "wg226-temple-architecture": {
-      "updatedAt": "2026-11-02T16:25:02+05:30",
+      "updatedAt": "2026-11-11T14:49:17+05:30",
       "author": "tce-nitinc"
     },
     "wg230-sort-o-matic": {
@@ -233,7 +233,7 @@
       "author": "tce-ashishg"
     },
     "wg236-road-signs": {
-      "updatedAt": "2026-11-03T14:28:37+05:30",
+      "updatedAt": "2026-11-11T14:49:17+05:30",
       "author": "tce-nitinc"
     },
     "wg237-double-agent-words": {
@@ -254,6 +254,65 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-11-11T14:49:17+05:30",
+      "author": "tce-nitinc",
+      "message": "resolved the bugs",
+      "widgets": [
+        226,
+        236
+      ]
+    },
+    {
+      "date": "2026-11-11T12:33:53+05:30",
+      "author": "tce-nitinc",
+      "message": "resolved the comments of wg205",
+      "widgets": [
+        205
+      ]
+    },
+    {
+      "date": "2026-11-11T12:06:11+05:30",
+      "author": "tce-nitinc",
+      "message": "resolved comments form the wg218",
+      "widgets": [
+        218
+      ]
+    },
+    {
+      "date": "2026-11-11T11:45:15+05:30",
+      "author": "tce-nitinc",
+      "message": "wg202 resolved river functionality issue",
+      "widgets": [
+        202
+      ]
+    },
+    {
+      "date": "2026-11-11T10:58:58+05:30",
+      "author": "tce-nitinc",
+      "message": "resolved the comments of wg218",
+      "widgets": [
+        202,
+        218
+      ]
+    },
+    {
+      "date": "2026-11-05T18:27:27+05:30",
+      "author": "tce-ashishg",
+      "message": "thumb nail image added",
+      "widgets": [
+        181,
+        188,
+        190,
+        194,
+        195,
+        196,
+        207,
+        208,
+        212,
+        219
+      ]
+    },
     {
       "date": "2026-11-05T17:27:17+05:30",
       "author": "Shyamsunder Hait",
@@ -454,56 +513,6 @@
       "message": "added blink effect on 204",
       "widgets": [
         204
-      ]
-    },
-    {
-      "date": "2026-10-26T15:01:49+05:30",
-      "author": "tce-nitinc",
-      "message": "fixed 202 changes",
-      "widgets": [
-        202
-      ]
-    },
-    {
-      "date": "2026-10-26T13:03:25+05:30",
-      "author": "tce-nitinc",
-      "message": "wg208 removed unwanted files",
-      "widgets": [
-        218
-      ]
-    },
-    {
-      "date": "2026-10-26T12:32:30+05:30",
-      "author": "Shyamsunder Hait",
-      "message": "wg209 added",
-      "widgets": [
-        209,
-        218
-      ]
-    },
-    {
-      "date": "2026-10-26T12:22:30+05:30",
-      "author": "tce-nitinc",
-      "message": "resolved comments of wg 204",
-      "widgets": [
-        204
-      ]
-    },
-    {
-      "date": "2026-10-23T12:24:10+05:30",
-      "author": "tce-ashishg",
-      "message": "wg207 & wg208 error resolved",
-      "widgets": [
-        208
-      ]
-    },
-    {
-      "date": "2026-10-23T09:39:40+05:30",
-      "author": "tce-ashishg",
-      "message": "wg207 & wg208 error resolved",
-      "widgets": [
-        207,
-        208
       ]
     }
   ]
