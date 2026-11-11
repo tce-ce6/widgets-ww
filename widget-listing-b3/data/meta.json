@@ -133,20 +133,20 @@
       "author": "tce-ashishg"
     },
     "wg197-vyanjan-ki-pahchan-gujurati": {
-      "updatedAt": "2026-09-29T17:27:18+05:30",
+      "updatedAt": "2026-11-11T18:20:02+05:30",
       "author": "tce-ashishg"
     },
     "wg198-aa-kee-maatra-kee-pahachaan-gujrati": {
-      "updatedAt": "2026-10-22T10:51:43+05:30",
-      "author": "tce-nitinc"
+      "updatedAt": "2026-11-11T18:20:02+05:30",
+      "author": "tce-ashishg"
     },
     "wg199-e-aur-ai-kee-maatra-mein-antar-gujrati": {
-      "updatedAt": "2026-10-22T10:51:43+05:30",
-      "author": "tce-nitinc"
+      "updatedAt": "2026-11-11T18:20:02+05:30",
+      "author": "tce-ashishg"
     },
     "wg200-o-aur-au-kee-maatra-mein-antar-gujrati": {
-      "updatedAt": "2026-10-22T10:51:43+05:30",
-      "author": "tce-nitinc"
+      "updatedAt": "2026-11-11T18:20:02+05:30",
+      "author": "tce-ashishg"
     },
     "wg201-parts-of-speech": {
       "updatedAt": "2026-10-19T15:12:00+05:30",
@@ -165,11 +165,11 @@
       "author": "tce-nitinc"
     },
     "wg207-i-aur-ee-kee-maatra-mein-antar-gujrati": {
-      "updatedAt": "2026-11-11T16:01:38+05:30",
+      "updatedAt": "2026-11-11T18:20:02+05:30",
       "author": "tce-ashishg"
     },
     "wg208-u-aur-oo-kee-maatra-mein-antar-gujrati": {
-      "updatedAt": "2026-11-11T16:01:38+05:30",
+      "updatedAt": "2026-11-11T18:20:02+05:30",
       "author": "tce-ashishg"
     },
     "wg209-poppulation-density-simulator": {
@@ -185,7 +185,7 @@
       "author": "tce-nitinc"
     },
     "wg212-sabdo-me-swar-ki-khoj-gujrati": {
-      "updatedAt": "2026-11-11T16:01:38+05:30",
+      "updatedAt": "2026-11-11T18:20:02+05:30",
       "author": "tce-ashishg"
     },
     "wg213-cross-bridge": {
@@ -205,7 +205,7 @@
       "author": "tce-nitinc"
     },
     "wg219-sabdo-me-vayanjan-ki-khoj-gujrati": {
-      "updatedAt": "2026-11-11T16:01:38+05:30",
+      "updatedAt": "2026-11-11T18:20:02+05:30",
       "author": "tce-ashishg"
     },
     "wg223-leaf-lab-transpiration": {
@@ -258,6 +258,21 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-11-11T18:20:02+05:30",
+      "author": "tce-ashishg",
+      "message": "widgets thumbnail updated",
+      "widgets": [
+        197,
+        198,
+        199,
+        200,
+        207,
+        208,
+        212,
+        219
+      ]
+    },
     {
       "date": "2026-11-11T17:46:05+05:30",
       "author": "tce-nitinc",
@@ -506,16 +521,6 @@
       "author": "Shyamsunder Hait",
       "message": "Added black background",
       "widgets": [
-        213,
-        214
-      ]
-    },
-    {
-      "date": "2026-10-26T16:27:50+05:30",
-      "author": "Shyamsunder Hait",
-      "message": "removed unwanted files",
-      "widgets": [
-        210,
         213,
         214
       ]
