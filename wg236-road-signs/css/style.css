@@ -351,37 +351,36 @@ button:focus-visible,
   box-shadow: 4px 4px 3px var(--shadow);
 }
 
-.worlds,
-.world {
+/* The Lottie is drawn on a 1920x1080 canvas; its card sits at (256, 174) there,
+   so the canvas is shifted to line that card up with this one. */
+.scene-lottie {
+  position: absolute;
+  left: -256px;
+  top: -174px;
+  width: 1920px;
+  height: 1080px;
+  pointer-events: none;
+}
+
+.worlds {
   position: absolute;
   inset: 0;
 }
 
-/* Slightly oversized (same aspect ratio) so neighbouring road sections overlap
-   while sliding, which hides the seam between them. */
-.world-art {
-  position: absolute;
-  left: -2px;
-  top: -1px;
-  width: 1411px;
-  height: 702px;
-}
-
-.world-sign {
-  position: absolute;
-  left: 590px;
-  top: 112px;
-  width: 165px;
-  height: 165px;
-  object-fit: contain;
-  object-position: center;
+/* The chosen sign, drawn inside the Lottie's SVG on the post (moved there by script). */
+.post-sign__sign {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
   filter:
     drop-shadow(4px 0 0 #fe0) drop-shadow(-4px 0 0 #fe0)
     drop-shadow(0 4px 0 #fe0) drop-shadow(0 -4px 0 #fe0);
+  animation: drop 0.7s cubic-bezier(0.3, 1.5, 0.6, 1) both;
 }
 
-.world-sign.is-placed {
-  animation: drop 0.7s cubic-bezier(0.3, 1.5, 0.6, 1) both;
+.post-sign__confetti {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  animation: burst 0.8s ease-out both;
 }
 
 @keyframes drop {
@@ -396,15 +395,6 @@ button:focus-visible,
   }
 }
 
-.world-confetti {
-  position: absolute;
-  left: 549px;
-  top: 73px;
-  width: 246px;
-  height: 244px;
-  animation: burst 0.8s ease-out both;
-}
-
 @keyframes burst {
   from {
     transform: scale(0.3);
@@ -417,10 +407,6 @@ button:focus-visible,
   }
 }
 
-.scooter--ride {
-  left: 70px;
-  top: 194px;
-}
 
 .stop-pill {
   position: absolute;

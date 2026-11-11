@@ -275,6 +275,7 @@
     $('placedCount').hidden = true;
     $('lockMsg').hidden = false;
     $('walkBtn').hidden = false;
+    $('screen-mystery').classList.add('is-locked');
     $('mysteryItext').textContent = ITEXT.mysteryLocked;
     $('walkBtn').focus();
   });
@@ -654,18 +655,21 @@
     const scroll = $('cardScroll');
     scroll.scrollTop = 0;
     $('walkRibbon').textContent = 'Temple Walk';
-    $('mapItext').textContent = walk.idx < 0 ? '' : ITEXT.walkStop;
+    $('mapItext').textContent = '';
+    scroll.classList.toggle('is-intro', walk.idx < 0);
     if (walk.idx < 0) {
       scroll.innerHTML = `
-        <p class="itext card-intro-itext">${ITEXT.walkIntro}</p>
         <div class="card-box card-box--story"><b>One temple stands for many</b>The temple you are about to walk through is a model, put together to show the main parts found in many Indian temples. Real temples differ in size, shape and material, but most follow a similar plan, from the entrance to the innermost shrine.</div>
-        <p class="card-explore"><b>How to explore</b>Follow the red route from the gateway to the innermost shrine, then climb the tower above it.<br>Tap the arrow on the map to move. Tap any numbered label to jump straight to it. Drag the map to look around, and pinch or scroll to zoom.</p>`;
+        <p class="card-explore"><b>How to explore</b><span>Follow the red route from the gateway to the innermost shrine, then climb the tower above&nbsp;it.</span><span>Tap the arrow on the map to move. Tap any numbered label to jump straight to it. Drag the map to look around, and use + or – to&nbsp;zoom.</span></p>
+        <p class="card-disclaimer">Disclaimer: Simplified floor plan for learning. Not an exact plan of the Bṛihadīśhvara Temple.</p>
+        <p class="itext card-itext card-itext--cta">${ITEXT.walkBegin}</p>`;
       setNav('', 'Begin at the Gopuram', 'is-wide');
       return;
     }
     const stop = STOPS[walk.idx];
     scroll.innerHTML = `
       <p class="card-step">Stop ${walk.idx + 1} of ${STOPS.length}</p>
+      <p class="itext card-itext">${ITEXT.walkStop}</p>
       <h4 class="card-title">${stop.name}</h4>
       <p class="card-sub">${stop.sub}</p>
       <p class="card-body">${stop.body}</p>
@@ -861,7 +865,6 @@
     $('compass').hidden = on;
     $('minimap').hidden = on;
     $('mapNote').hidden = on;
-    $('guessBtn').hidden = !on;
   }
 
   function fadeMap(change) {
@@ -921,12 +924,13 @@
     const ok = guess[i] === level.key;
     const score = LEVELS.filter((l, k) => guess[k] === l.key).length;
     $('walkRibbon').textContent = top ? 'Top of the tower' : 'Climb the vimāna';
-    $('mapItext').textContent = ITEXT.climb;
+    $('mapItext').textContent = '';
     const scroll = $('cardScroll');
     scroll.scrollTop = 0;
+    scroll.classList.remove('is-intro');
     scroll.innerHTML = `
       <p class="card-step">Stop ${STOPS.length} of ${STOPS.length}: the vimāna, level ${i + 1} of ${LEVELS.length}</p>
-      <h4 class="card-title">${level.title}</h4>
+      <p class="itext card-itext">${ITEXT.climb}</p>
       <p class="card-sub">${level.sub}</p>
       ${level.term ? `<p class="card-term"><i>Temple term, just for interest:</i><b>${level.term}</b></p>` : ''}
       <div class="guess-check${ok ? '' : ' is-wrong'}">
@@ -939,28 +943,6 @@
     const label = top ? 'Continue' : LEVELS[i + 1].part;
     setNav(`${ARROW_LEFT}Back`, `${label}${ARROW_RIGHT}`);
   }
-
-  /* ---- your guess popup ---- */
-
-  function renderGuessPopup() {
-    const dx = -78.5;
-    const dy = -7;
-    $('guessLeads').innerHTML = leadsMarkup(dx, dy, 843);
-    const box = $('guessTags');
-    box.innerHTML = '';
-    SLOTS.forEach(({ level, top }) => {
-      const tag = el('div', 'guess-tag', guess[level] ? tagOf(guess[level]) : '');
-      tag.style.left = `${843 - 57}px`;
-      tag.style.top = `${top + dy - 169}px`;
-      box.appendChild(tag);
-    });
-  }
-
-  $('guessBtn').addEventListener('click', () => {
-    renderGuessPopup();
-    openModal('guessModal', 'guessClose');
-  });
-  $('guessClose').addEventListener('click', () => closeModal('guessModal'));
 
   /* ------------------------------------------------------------------------
      6. SCREEN 3: FOUR TEMPLES, ONE IDEA
@@ -1076,6 +1058,7 @@
     $('placedCount').hidden = false;
     $('lockMsg').hidden = true;
     $('walkBtn').hidden = true;
+    $('screen-mystery').classList.remove('is-locked');
     $('mysteryItext').textContent = ITEXT.mystery;
     goTo('mystery');
   }
@@ -1084,8 +1067,7 @@
 
   document.addEventListener('keydown', (e) => {
     if (e.key !== 'Escape') return;
-    if (!$('guessModal').hidden) closeModal('guessModal');
-    else if (!$('insightModal').hidden) closeModal('insightModal');
+    if (!$('insightModal').hidden) closeModal('insightModal');
   });
 
   fitStage();

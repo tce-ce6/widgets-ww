@@ -44,13 +44,10 @@
 
             <ol class="stones" id="stones" aria-label="Stops on the journey"></ol>
 
-            <div class="scene-card">
+            <div class="scene-card" id="sceneCard">
+              <!-- the road, stops and scooter: one Lottie timeline (assets/json/scene-lottie.json) -->
+              <div class="scene-lottie" id="sceneLottie" aria-hidden="true"></div>
               <div class="worlds" id="worlds" role="img"></div>
-              <div class="scooter scooter--ride" id="scooter" aria-hidden="true">
-                <img class="wheel wheel--rear" src="assets/svg/scooter-wheel.svg" alt="">
-                <img class="wheel wheel--front" src="assets/svg/scooter-wheel.svg" alt="">
-                <img class="scooter-body" src="assets/svg/scooter-body.svg" alt="">
-              </div>
               <p class="stop-pill" id="stopPill"></p>
               <div class="bubble" id="bubble" hidden>
                 <p class="bubble-text" id="bubbleText" aria-live="assertive"></p>
@@ -86,6 +83,8 @@
     </div>
   </div>
 
+  <script src="./js/lottie.min.js"></script>
+  <script src="./js/scene-lottie-data.js"></script>
   <script src="./js/content-data.js"></script>
   <script src="./js/script.js"></script>
 </body>
