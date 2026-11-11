@@ -239,7 +239,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         setQuestion(data.question); // ✅ call here
         setOptions(data);           // ✅ call here
-        playSound(letter);
       }
     });
   });
@@ -255,7 +254,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const letter = swarList[currentIndex];
     loadSwar(letter);
-    playSound(letter);
     resetOptions();
 
     // if reached last → disable button
