@@ -516,6 +516,8 @@ function playLottieAnimation(bandGroup) {
       loop: false,
       autoplay: false,
       path: `assets/JSON/${type}/${animationPath}`,
+      // foreignObject is sized to the measured fit against bg.png (non-uniform scale)
+      rendererSettings: { preserveAspectRatio: "none" },
     });
 
     lottieInstances.addEventListener("DOMLoaded", () => {
