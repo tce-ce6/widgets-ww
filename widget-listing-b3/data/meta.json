@@ -161,8 +161,8 @@
       "author": "tce-nitinc"
     },
     "wg205-species-z-factor-explorer": {
-      "updatedAt": "2026-10-16T18:34:01+05:30",
-      "author": "Shyamsunder Hait"
+      "updatedAt": "2026-11-11T12:33:53+05:30",
+      "author": "tce-nitinc"
     },
     "wg207-i-aur-ee-kee-maatra-mein-antar-gujrati": {
       "updatedAt": "2026-11-05T18:27:27+05:30",
@@ -201,7 +201,7 @@
       "author": "tce-nitinc"
     },
     "wg218-ancient-china": {
-      "updatedAt": "2026-11-11T10:58:58+05:30",
+      "updatedAt": "2026-11-11T12:06:11+05:30",
       "author": "tce-nitinc"
     },
     "wg219-sabdo-me-vayanjan-ki-khoj-gujrati": {
@@ -213,7 +213,7 @@
       "author": "tce-nitinc"
     },
     "wg226-temple-architecture": {
-      "updatedAt": "2026-11-02T16:25:02+05:30",
+      "updatedAt": "2026-11-11T14:49:17+05:30",
       "author": "tce-nitinc"
     },
     "wg230-sort-o-matic": {
@@ -233,7 +233,7 @@
       "author": "tce-ashishg"
     },
     "wg236-road-signs": {
-      "updatedAt": "2026-11-03T14:28:37+05:30",
+      "updatedAt": "2026-11-11T14:49:17+05:30",
       "author": "tce-nitinc"
     },
     "wg237-double-agent-words": {
@@ -254,6 +254,31 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-11-11T14:49:17+05:30",
+      "author": "tce-nitinc",
+      "message": "resolved the bugs",
+      "widgets": [
+        226,
+        236
+      ]
+    },
+    {
+      "date": "2026-11-11T12:33:53+05:30",
+      "author": "tce-nitinc",
+      "message": "resolved the comments of wg205",
+      "widgets": [
+        205
+      ]
+    },
+    {
+      "date": "2026-11-11T12:06:11+05:30",
+      "author": "tce-nitinc",
+      "message": "resolved comments form the wg218",
+      "widgets": [
+        218
+      ]
+    },
     {
       "date": "2026-11-11T11:45:15+05:30",
       "author": "tce-nitinc",
@@ -488,31 +513,6 @@
       "message": "added blink effect on 204",
       "widgets": [
         204
-      ]
-    },
-    {
-      "date": "2026-10-26T15:01:49+05:30",
-      "author": "tce-nitinc",
-      "message": "fixed 202 changes",
-      "widgets": [
-        202
-      ]
-    },
-    {
-      "date": "2026-10-26T13:03:25+05:30",
-      "author": "tce-nitinc",
-      "message": "wg208 removed unwanted files",
-      "widgets": [
-        218
-      ]
-    },
-    {
-      "date": "2026-10-26T12:32:30+05:30",
-      "author": "Shyamsunder Hait",
-      "message": "wg209 added",
-      "widgets": [
-        209,
-        218
       ]
     }
   ]
