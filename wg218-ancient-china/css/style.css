@@ -860,10 +860,10 @@ button:focus-visible,
 
 .city__built {
   position: absolute;
-  left: -1px;
-  top: -138px;
-  width: 1672px;
-  height: 941px;
+  left: 0px;
+  top: -2px;
+  width: 1682px;
+  height: 681px;
   z-index: 5;
   animation: screen-in .8s ease both;
 }
