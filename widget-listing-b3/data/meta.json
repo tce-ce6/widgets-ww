@@ -165,11 +165,11 @@
       "author": "tce-nitinc"
     },
     "wg207-i-aur-ee-kee-maatra-mein-antar-gujrati": {
-      "updatedAt": "2026-11-05T18:27:27+05:30",
+      "updatedAt": "2026-11-11T16:01:38+05:30",
       "author": "tce-ashishg"
     },
     "wg208-u-aur-oo-kee-maatra-mein-antar-gujrati": {
-      "updatedAt": "2026-11-05T18:27:27+05:30",
+      "updatedAt": "2026-11-11T16:01:38+05:30",
       "author": "tce-ashishg"
     },
     "wg209-poppulation-density-simulator": {
@@ -185,7 +185,7 @@
       "author": "tce-nitinc"
     },
     "wg212-sabdo-me-swar-ki-khoj-gujrati": {
-      "updatedAt": "2026-11-05T18:27:27+05:30",
+      "updatedAt": "2026-11-11T16:01:38+05:30",
       "author": "tce-ashishg"
     },
     "wg213-cross-bridge": {
@@ -205,7 +205,7 @@
       "author": "tce-nitinc"
     },
     "wg219-sabdo-me-vayanjan-ki-khoj-gujrati": {
-      "updatedAt": "2026-11-05T18:27:27+05:30",
+      "updatedAt": "2026-11-11T16:01:38+05:30",
       "author": "tce-ashishg"
     },
     "wg223-leaf-lab-transpiration": {
@@ -254,6 +254,17 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-11-11T16:01:38+05:30",
+      "author": "tce-ashishg",
+      "message": "widgets jurking issue resolved",
+      "widgets": [
+        207,
+        208,
+        212,
+        219
+      ]
+    },
     {
       "date": "2026-11-11T14:49:17+05:30",
       "author": "tce-nitinc",
@@ -503,14 +514,6 @@
       "date": "2026-10-26T15:34:10+05:30",
       "author": "tce-nitinc",
       "message": "added blink effect on proceed button",
-      "widgets": [
-        204
-      ]
-    },
-    {
-      "date": "2026-10-26T15:12:30+05:30",
-      "author": "tce-nitinc",
-      "message": "added blink effect on 204",
       "widgets": [
         204
       ]
