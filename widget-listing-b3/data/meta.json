@@ -153,7 +153,7 @@
       "author": "tce-nitinc"
     },
     "wg202-egyptian-museum": {
-      "updatedAt": "2026-11-05T16:24:10+05:30",
+      "updatedAt": "2026-11-11T10:58:58+05:30",
       "author": "tce-nitinc"
     },
     "wg204-capitals-of-india": {
@@ -201,7 +201,7 @@
       "author": "tce-nitinc"
     },
     "wg218-ancient-china": {
-      "updatedAt": "2026-10-26T13:03:25+05:30",
+      "updatedAt": "2026-11-11T10:58:58+05:30",
       "author": "tce-nitinc"
     },
     "wg219-sabdo-me-vayanjan-ki-khoj-gujrati": {
@@ -254,6 +254,15 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-11-11T10:58:58+05:30",
+      "author": "tce-nitinc",
+      "message": "resolved the comments of wg218",
+      "widgets": [
+        202,
+        218
+      ]
+    },
     {
       "date": "2026-11-05T18:27:27+05:30",
       "author": "tce-ashishg",
@@ -504,14 +513,6 @@
       "message": "resolved comments of wg 204",
       "widgets": [
         204
-      ]
-    },
-    {
-      "date": "2026-10-23T12:24:10+05:30",
-      "author": "tce-ashishg",
-      "message": "wg207 & wg208 error resolved",
-      "widgets": [
-        208
       ]
     }
   ]
