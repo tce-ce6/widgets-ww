@@ -23,14 +23,10 @@
     { name: 'The Silk Merchant’s Stall', screen: 'silk', box: [1555, 379.8, 325.7, 99.3], band: [14, 64], tick: [1688, 341] }
   ];
 
-  const MARKET_TEXT = [
-    'There are 5 shops in the Market street.<br>Tap the Timekeeper’s Stall to enter and explore.',
-    'Tap the City Builder’s Yard to enter and explore.',
-    'Tap the Bronze Caster’s Workshop to enter and explore.',
-    'Tap the Historian’s Curio Shop to enter and explore.',
-    'Tap the Silk Merchant’s Stall to enter and explore.',
-    'All five shops explored. Revisit any shop,<br>or see the summary.'
-  ];
+  const MARKET_TEXT = {
+    explore: 'There are 5 shops in the Market street.<br>Tap any shop to enter and explore.',
+    done: 'All five shops explored. Revisit any shop,<br>or see the summary.'
+  };
 
   // Data Table 2 - slots in date order
   const DYNASTIES = [
@@ -64,12 +60,12 @@
 
   // Data Table 4
   const STAGES = [
-    { name: 'Design the vessel', note: 'The shape is decided first.', caption: 'Stage 1 — the vessel is designed.' },
-    { name: 'Make mould & core', note: 'The gap between mould and core becomes the bronze.', caption: 'Stage 2 — mould sections and inner core formed.' },
-    { name: 'Carve patterns', note: 'Patterns cut inward stand raised on the vessel.', caption: 'Stage 3 — patterns carved into the mould faces.' },
-    { name: 'Assemble the mould', note: 'Clamped shut, gap kept even.', caption: 'Stage 4 — mould assembled around the core.' },
-    { name: 'Pour molten bronze', note: 'Copper and tin, poured.', caption: 'Stage 5 — molten bronze poured into the gap.' },
-    { name: 'Break mould & finish', note: 'The mould breaks — so every vessel is unique.', caption: 'Stage 6 — mould broken away, vessel finished.' }
+    { name: 'Design the vessel', note: 'The shape is decided first.', caption: 'Stage 1 — The vessel is designed' },
+    { name: 'Make mould & core', note: 'The gap between mould and core becomes the bronze.', caption: 'Stage 2 — Mould sections and inner core formed' },
+    { name: 'Carve patterns', note: 'Patterns cut inward stand raised on the vessel.', caption: 'Stage 3 — Patterns carved into the mould faces' },
+    { name: 'Assemble the mould', note: 'Clamped shut, gap kept even.', caption: 'Stage 4 — Mould assembled around the core' },
+    { name: 'Pour molten bronze', note: 'Copper and tin, poured.', caption: 'Stage 5 — Molten bronze poured into the gap' },
+    { name: 'Break mould & finish', note: 'The mould breaks — so every vessel is unique.', caption: 'Stage 6 — Mould broken away, vessel finished' }
   ];
   const BRONZE_X = [644, 1015, 1386];
 
@@ -98,7 +94,7 @@
     },
     potter: {
       who: 'A Potter', pronoun: 'he', scene: 'The kiln is lit',
-      options: ['On which day should the kiln be lit?', 'On which day should the field be ploughed?', 'On which day should the army set out?'],
+      options: ['On which day will the pots be ready for heating?', 'On which day should the field be ploughed?', 'On which day should the army set out?'],
       feeling: 'Daily life',
       note1: 'Potters, weavers and smiths asked too — about the work of an ordinary day.',
       note2: 'Daily life — a craftsman worrying about his own kiln.'
@@ -470,11 +466,15 @@
       const gx = stageOrigin[0] + 960 * stageScale;
       const gy = stageOrigin[1] + 700 * stageScale;
       viewport.style.transformOrigin = `${gx}px ${gy}px`;
+      // the market behind glides in around the same point, in step with the zoom
+      $('.market-under').style.transformOrigin = `${gx}px ${gy}px`;
+      document.body.classList.add('is-entering');
       viewport.classList.add('is-zooming');
       window.setTimeout(() => {
         viewport.classList.remove('is-zooming');
         viewport.style.transformOrigin = '';
-        goTo('market');
+        goTo('market'); // the street is at rest now, so only its signs and text fade in
+        document.body.classList.remove('is-entering');
       }, 1450);
     });
   }
@@ -483,30 +483,22 @@
 
   const shopsBox = $('#shops');
 
-  function nextShop() {
-    for (let i = 0; i < SHOPS.length; i++) if (!state.done.has(i)) return i;
-    return SHOPS.length;
-  }
-
   function renderMarket() {
-    const next = nextShop();
-    $('#marketItext').innerHTML = MARKET_TEXT[next];
-    $('#marketSummaryBtn').hidden = next < SHOPS.length;
+    const allDone = state.done.size === SHOPS.length;
+    $('#marketItext').innerHTML = allDone ? MARKET_TEXT.done : MARKET_TEXT.explore;
+    $('#marketSummaryBtn').hidden = !allDone;
     shopsBox.innerHTML = '';
     SHOPS.forEach((shop, i) => {
       const done = state.done.has(i);
-      const locked = !done && i > next;
       const btn = document.createElement('button');
       btn.type = 'button';
-      btn.className = `shop${done ? ' is-done' : ''}${locked ? ' is-locked' : ''}${i === next ? ' is-next' : ''}`;
+      btn.className = `shop${done ? ' is-done' : ''}`;
       Object.assign(btn.style, { left: `${shop.box[0]}px`, top: `${shop.box[1]}px`, width: `${shop.box[2]}px`, height: `${shop.box[3]}px` });
       const plain = shop.name.replace('<br>', ' ');
-      btn.setAttribute('aria-label', `${plain}. ${done ? 'Explored. Tap to revisit.' : locked ? 'Opens after the shop before it.' : 'Tap to enter.'}`);
-      if (locked) btn.setAttribute('aria-disabled', 'true');
+      btn.setAttribute('aria-label', `${plain}. ${done ? 'Explored. Tap to revisit.' : 'Tap to enter.'}`);
       btn.innerHTML = `<img class="shop__sign" src="assets/svg/sign-${i + 1}.svg" alt="">` +
         `<span class="shop__name" style="top:${shop.band[0]}px;height:${shop.band[1]}px">${shop.name}</span>`;
       btn.addEventListener('click', () => {
-        if (locked) { Sound.play('wrong'); restart(btn, 'is-shake'); return; }
         Sound.play('tap');
         goTo(shop.screen);
       });
@@ -589,7 +581,7 @@
     slot.parentElement.appendChild(info);
     setNote($('#tlNote'), '', true);
     if (TL.placed.size === DYNASTIES.length) {
-      setNote($('#tlNote'), 'Shang and Zhou: Bronze Age. Qin and Han: Iron Age. Next: build a Shang city.', true);
+      setNote($('#tlNote'), 'Shang and Zhou: Bronze Age. Qin and Han: Iron Age.', true);
       complete(0);
     } else {
       announce(`Correct. ${d.name} placed. Tap i to read the fact.`);
@@ -706,7 +698,7 @@
       slot.innerHTML = `<span>${i + 1}</span>`;
       slots.appendChild(slot);
     });
-    $('#bronzeStageImg').hidden = true;
+    $('#bronzeView').hidden = true;
     $('#bronzeCaption').textContent = 'Drag the first step into slot 1 to begin.';
     setNote($('#bronzeNote'), '', true);
     $('#bronze').hidden = false;
@@ -741,7 +733,7 @@
     const img = $('#bronzeStageImg');
     img.src = `assets/images/bronze-${stageIndex + 1}.png`;
     img.alt = s.caption;
-    img.hidden = false;
+    $('#bronzeView').hidden = false;
     restart(img, 'bronze__stage');
     $('#bronzeCaption').textContent = s.caption;
     setNote($('#bronzeNote'), s.note, true);
