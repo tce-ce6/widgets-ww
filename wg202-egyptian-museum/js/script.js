@@ -53,7 +53,7 @@
   const NILE_SOUTH_GAP = 50; // how far short of the south edge of the map the line may start
   const NILE_SEA_GAP = 60; // how far short of the sea the line may stop
   const NILE_MAX_GAP = 60; // the biggest break allowed in the middle of the line
-  const NILE_MIN_BRANCHES = 2; // the Delta must be drawn as a fork, with at least this many branches
+  const NILE_MIN_BRANCHES = 3; // the Delta must be drawn as a fork of three branches (west, middle, east)
   const NILE_DELTA_ROWS = [95, 85, 75, 65, 55]; // heights near the sea where the branches are counted
   const NILE_BRANCH_SPLIT = 18; // how far apart two lines must be to count as separate branches
   window.museumHowTo = { nilePath: NILE_PATH }; // read by how-to-play.js
