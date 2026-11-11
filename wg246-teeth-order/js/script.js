@@ -12,10 +12,6 @@
   const $ = (id) => document.getElementById(id);
   const stage = $('stage');
   const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const store = {
-    get(k) { try { return window.localStorage.getItem(k); } catch (e) { return null; } },
-    set(k, v) { try { window.localStorage.setItem(k, v); } catch (e) { /* storage blocked */ } },
-  };
   const fill = (text, tooth) => text.replace('{tooth}', tooth);
 
   const hasGL = (function () {
@@ -584,9 +580,6 @@
     [main, doneV].forEach((v) => { if (v) v.resize(); });
     const h = $(`screen-${screen}`).querySelector('.screen-title');
     if (h) h.focus({ preventScroll: true });
-    if (!store.get(`wg246Tour:${tourKey()}`)) {
-      setTimeout(() => { if (state.screen === screen && $('tour').hidden) startTour(); }, 400);
-    }
   }
 
   /* ---------- the jaw screen ---------- */
@@ -857,7 +850,6 @@
      How to use: a spotlight with one short sentence per step
      ====================================================================== */
   const tour = { i: 0, steps: null, lastFocus: null };
-  const tourKey = () => (state.screen === 'jaw' ? `jaw-${state.jaw}` : state.screen);
   function startTour() {
     closeModal();
     document.body.classList.add('has-tour');
@@ -869,7 +861,6 @@
   function endTour() {
     $('tour').hidden = true;
     document.body.classList.remove('has-tour');
-    store.set(`wg246Tour:${tourKey()}`, '1');
     if (tour.lastFocus && tour.lastFocus.focus) tour.lastFocus.focus({ preventScroll: true });
   }
   function showStep() {
