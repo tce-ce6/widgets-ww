@@ -9,13 +9,14 @@ document.addEventListener('DOMContentLoaded', () => {
     home: 'Choose a mode to begin.',
     m1Step1:
       '<b>Step 1</b>. Tap <span class="reveal-chip">Reveal</span> next to each area below. This shows how many species live in an area of that size.',
-    m1Step2: '<b>Step 2</b>. All five points are shown. Look at the curve: it rises fast, then flattens.',
+    m1Step2:
+      '<b>Step 2</b>. All five points are shown. Look at the curve: it rises fast, then flattens. Click on either axis, to find a matching value.',
     m1Step3:
-      '<b>Step 3</b>. The curve is now a straight line. Click on either axis, on both graphs, to find a matching value.',
+      '<b>Step 3</b>. The curve is now a straight line. Click on either axis, to find a matching value.',
     m2Step1: '<b>Step 1</b>. Choose a region size below.',
     m2Step2: (lo, hi) => `<b>Step 2</b>. Type a Z value between ${lo} and ${hi}. Then tap "Plot graph."`,
-    m2Step3: '<b>Step 3</b>. Here is your graph. Now switch to the log scale below.',
-    m2Step4: '<b>Step 4</b>. Click on either axis, on both graphs, to find a matching value.',
+    m2Step3: '<b>Step 3</b>. Here is your graph. Click on either axis, to find a matching value.',
+    m2Step4: '<b>Step 4</b>. Click on either axis, to find a matching value.',
   };
 
   const EQUATION = 'log S = log C + Z log A';
@@ -385,6 +386,23 @@ document.addEventListener('DOMContentLoaded', () => {
     return ctm ? pt.matrixTransform(ctm.inverse()) : { x: 0, y: 0 };
   };
 
+  /** The areas whose point on the line is inside the plot, on both axes. */
+  const visibleAreaRange = () => {
+    const linear = state.scale === 'linear';
+    const xMin = linear ? linXMax * 0.01 : Math.pow(10, LOG_MIN);
+    const xMax = linear ? linXMax : Math.pow(10, logXMax);
+    const sMin = linear ? linYMax * 0.01 : Math.pow(10, LOG_MIN);
+    const sMax = linear ? linYMax : Math.pow(10, logYMax);
+    const areaFor = (s) => Math.pow(s / state.C, 1 / state.Z);
+    return [Math.max(xMin, areaFor(sMin)), Math.min(xMax, areaFor(sMax))];
+  };
+
+  /** Clicks beyond the line (near 0, or left of the plot) read off the nearest point that is on it. */
+  const clampToPlot = (area) => {
+    const [lo, hi] = visibleAreaRange();
+    return Math.min(hi, Math.max(lo, area));
+  };
+
   const drawAxisRead = (area, s, fromAxis) => {
     axisReadG.innerHTML = '';
     const cx = px(area);
@@ -402,18 +420,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   xAxisHit.addEventListener('click', (evt) => {
     if (!state.axisUnlocked) return;
-    const area = pxToArea(svgPoint(evt).x);
+    const area = clampToPlot(pxToArea(svgPoint(evt).x));
     drawAxisRead(area, richness(area), 'x');
   });
 
   yAxisHit.addEventListener('click', (evt) => {
     if (!state.axisUnlocked) return;
-    let s = pyToRichness(svgPoint(evt).y);
-    let area = Math.pow(s / state.C, 1 / state.Z);
-    const domainMax = state.scale === 'linear' ? linXMax : Math.pow(10, logXMax);
-    area = Math.max(state.areas[0] * 0.3, Math.min(domainMax, area));
-    s = richness(area);
-    drawAxisRead(area, s, 'y');
+    const s = pyToRichness(svgPoint(evt).y);
+    const area = clampToPlot(Math.pow(s / state.C, 1 / state.Z));
+    drawAxisRead(area, richness(area), 'y');
   });
 
   const lockAxisRead = () => {
@@ -421,6 +436,15 @@ document.addEventListener('DOMContentLoaded', () => {
     xAxisHit.classList.remove('is-active', 'is-pulse');
     yAxisHit.classList.remove('is-active', 'is-pulse');
     hideAxisRead();
+  };
+
+  /** Replays the yellow highlight on both axes (e.g. each time the graph switches to log-log). */
+  const pulseAxes = () => {
+    [xAxisHit, yAxisHit].forEach((h) => {
+      h.classList.remove('is-pulse');
+      void h.getBoundingClientRect(); // restart the animation
+      h.classList.add('is-pulse');
+    });
   };
 
   const unlockAxisRead = () => {
@@ -454,10 +478,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (next === 'linear') {
       showFeedback('hyperbola', hyperbolaText());
+      setItext(state.appMode === 1 ? ITEXT.m1Step2 : ITEXT.m2Step3);
+      if (state.axisUnlocked) pulseAxes(); // blink on every switch, back to linear too
       return;
     }
     showLogFeedback();
     unlockAxisRead();
+    pulseAxes();
     setItext(state.appMode === 1 ? ITEXT.m1Step3 : ITEXT.m2Step4);
   };
 
@@ -536,6 +563,7 @@ document.addEventListener('DOMContentLoaded', () => {
       scaleSwitch.disabled = false;
       setItext(ITEXT.m1Step2);
       showFeedback('hyperbola', hyperbolaText());
+      unlockAxisRead();
     } else {
       // keep keyboard focus moving down the list
       const next = areaList.querySelector('.reveal-btn');
@@ -686,6 +714,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setItext(ITEXT.m2Step3);
     showFeedback('hyperbola', hyperbolaText());
     lockAxisRead();
+    unlockAxisRead();
     redraw();
   };
 
