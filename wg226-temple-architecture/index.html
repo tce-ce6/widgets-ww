@@ -42,7 +42,7 @@
             <svg class="tower-leads" id="towerLeads" viewBox="0 0 1920 1080" aria-hidden="true"></svg>
             <div id="slots"></div>
             <h4 class="mystery-head">What shape is a temple?</h4>
-            <p class="itext mystery-itext" id="mysteryItext">Tap the human body parts matching them to the part of the temple tower. Lock your guess when all seven parts are placed.</p>
+            <p class="itext mystery-itext" id="mysteryItext">Tap a body part, then tap a blank label to match it with the temple tower. Lock your guess when you are done.</p>
             <div id="tagTray"></div>
             <button class="pill-btn mystery-lock" id="lockBtn" type="button" disabled>Lock my guess</button>
             <p class="mystery-count" id="placedCount" role="status">0 of 7 placed</p>
@@ -66,9 +66,6 @@
               <img class="compass" id="compass" src="assets/svg/compass.svg" alt="North is up">
               <p class="itext map-itext" id="mapItext"></p>
               <p class="map-note" id="mapNote">Not to scale</p>
-              <button class="guess-btn" id="guessBtn" type="button" aria-label="Your guess" hidden>
-                <img src="assets/svg/guess-btn.svg" alt="">
-              </button>
               <div class="tools">
                 <button class="tool" id="zoomIn" type="button" aria-label="Zoom in">
                   <svg viewBox="0 0 24 24"><path d="M12 4v16M4 12h16"/></svg>
@@ -127,18 +124,6 @@
            so the dark backdrop can cover the whole viewport, not just the stage. -->
       <div id="modal-layer">
         <div id="modal-stage">
-          <!-- ============ YOUR GUESS ============ -->
-          <div class="modal" id="guessModal" role="dialog" aria-modal="true" aria-label="Your guess" hidden>
-            <div class="guess-card">
-              <img class="guess-tower" src="assets/svg/tower.svg" alt="">
-              <svg class="guess-leads" id="guessLeads" viewBox="0 0 1920 1080" aria-hidden="true"></svg>
-              <div id="guessTags"></div>
-            </div>
-            <button class="close-btn close-btn--guess" id="guessClose" type="button" aria-label="Close">
-              <img src="assets/svg/close-btn.svg" alt="">
-            </button>
-          </div>
-
           <!-- ============ INSIGHT ============ -->
           <div class="modal" id="insightModal" role="dialog" aria-modal="true" aria-labelledby="insightTitle" hidden>
             <div class="insight-card">
