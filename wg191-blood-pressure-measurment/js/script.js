@@ -7,8 +7,8 @@
    resources/assets/layout.svg, embedded verbatim). This file drives it: it
    shows/hides named groups by id to switch screens/states, attaches click +
    keyboard handlers directly to the SVG's own button/card groups, and
-   overlays a few real controls (the two <select>s, the back button, the
-   live pressure readout) positioned exactly on top of the matching artwork.
+   overlays a few real controls (the two <select>s, the back button)
+   positioned exactly on top of the matching artwork.
 
    The animated needle / mercury column still comes from the provided Lottie
    JSON (embedded via lottie-data.js) — that is the asset built for exactly
@@ -22,10 +22,12 @@ const ANIMATION_DATA = {
   mercury: window.LOTTIE_DATA.mercury,
 };
 
-const TOTAL_FRAMES = 250; // full 200 mmHg -> 0 mmHg sweep baked into every animation
+const SWEEP_END_FRAME = 248.998; // last needle/mercury keyframe: the linear 200 mmHg -> 0 mmHg sweep in every animation
 const START_VALUE = 200;
-const RELEASE_SPEED = 0.2; // slow, steady fall while listening (~5 mmHg/sec)
+const RELEASE_SPEED = 0.2; // slow, steady fall while listening (4 mmHg/sec)
 const QUICK_DROP_SPEED = 1.3; // faster fall once the tapping sound has stopped
+const TAP_LOOP_START = 0.26; // seconds: just before the first beat of the clip
+const TAP_LOOP_END = 10.6; // seconds: silent point one beat after the last beat, so the rhythm holds across the repeat
 
 // Valid systolic / diastolic combinations (from the storyboard's reading-range table).
 const VALID_COMBOS = {
@@ -54,8 +56,7 @@ const DIASTOLIC_BANDS = {
 };
 
 // Per-instrument ids. Each answer dashboard is plain HTML inside its own
-// <foreignObject> in the master SVG (#dashboard / #dashboard-2); `panel` is
-// its position in the 1920x1080 canvas, used to place the final sentence.
+// <foreignObject> in the master SVG (#dashboard / #dashboard-2).
 const LAYOUT = {
   aneroid: {
     group: 'dashboard',
@@ -66,7 +67,6 @@ const LAYOUT = {
     answerButton: 'answer-btn',
     positive: { systolic: 'systolic-correct', diastolic: 'diastolic-correct' },
     negative: { systolic: 'systolic-wrong', diastolic: 'diastolic-wrong' },
-    panel: { x: 1369, y: 161, w: 484, h: 699 },
     cuffBalloon: 'itext_2',
   },
   mercury: {
@@ -78,7 +78,6 @@ const LAYOUT = {
     answerButton: 'answer-btn-2',
     positive: { systolic: 'systolic-correct-2', diastolic: 'diastolic-correct-2' },
     negative: { systolic: 'systolic-wrong-2', diastolic: 'diastolic-wrong-2' },
-    panel: { x: 1315, y: 161, w: 484, h: 699 },
     cuffBalloon: 'Group_12301',
   },
 };
@@ -107,15 +106,14 @@ let mainAnim = null;
 let isMainAnimReady = false;
 let rafId = null;
 let lastFocusedElement = null;
+let tapBuffer = null;
+let tapSource = null;
 
 /* ---------------------------------------------------------------------- */
 /* Element references                                                     */
 /* ---------------------------------------------------------------------- */
 
 const lottieStage = document.getElementById('lottie-stage');
-const liveReading = document.getElementById('live-reading');
-const liveReadingValue = document.getElementById('live-reading-value');
-const liveReadingLabel = document.getElementById('live-reading-label');
 const valueAnnouncer = document.getElementById('value-announcer');
 
 const finalFeedback = document.getElementById('final-feedback');
@@ -126,8 +124,8 @@ const answerBackdrop = document.getElementById('answer-backdrop');
 const answerClose = document.getElementById('answer-close');
 const answerSystolic = document.getElementById('answer-systolic');
 const answerDiastolic = document.getElementById('answer-diastolic');
-const audio = document.getElementById('tap-audio');
 const measurementComponent = document.getElementById('measurment-component');
+const tapContext = new AudioContext();
 
 /* ---------------------------------------------------------------------- */
 /* Master-SVG group helpers                                                */
@@ -190,8 +188,8 @@ function setDashButtonsEnabled(layout, enabled) {
 }
 
 // The Release button's label is baked as real SVG text ("Release") — update
-// it in place so the button reads "Pause"/"Resume" while it's actually doing
-// that, instead of leaving stale text next to a changed aria-label.
+// it in place so the button reads "Replay" once it does that, instead of
+// leaving stale text next to a changed aria-label.
 function setReleaseLabel(text) {
   const tspan = byId('Release')?.querySelector('tspan');
   if (tspan) tspan.textContent = text;
@@ -234,7 +232,7 @@ function populateSelect(select, options) {
 }
 
 function frameToValue(frame) {
-  return START_VALUE * (1 - frame / TOTAL_FRAMES);
+  return START_VALUE * (1 - frame / SWEEP_END_FRAME);
 }
 
 // lottie-web mutates the animationData object it is given (e.g. it tags assets),
@@ -270,12 +268,6 @@ function loadMainAnimation(instrument) {
     animationData: cloneAnimationData(ANIMATION_DATA[instrument]),
     rendererSettings: { preserveAspectRatio: 'none' },
   });
-  // lottie-web replaces the container's content wholesale, so the readout
-  // markup that lives inside #lottie-stage in index.html would be wiped out
-  // on the very first load — put it back as a sibling instead.
-  if (liveReading.parentElement !== lottieStage.parentElement) {
-    lottieStage.parentElement.insertBefore(liveReading, lottieStage.nextSibling);
-  }
   mainAnim.addEventListener('DOMLoaded', () => {
     mainAnim.goToAndStop(0, true);
     isMainAnimReady = true;
@@ -297,7 +289,7 @@ function showSelectionScreen() {
   state.phase = 'select';
   state.instrument = null;
   cancelAnimationFrame(rafId);
-  audio.pause();
+  stopTapSound();
   if (mainAnim) mainAnim.pause();
 
   showGroup('home_tab');
@@ -322,7 +314,6 @@ function showSelectionScreen() {
   btnBack.classList.add('hidden');
   finalFeedback.classList.add('hidden');
   lottieStage.classList.add('hidden');
-  liveReading.classList.add('hidden');
   measurementComponent.style.display = 'none';
   hideGroup('itext_2');
   hideGroup('Group_12301');
@@ -363,18 +354,9 @@ function selectInstrument(instrument) {
   btnBack.classList.remove('hidden');
 
   lottieStage.classList.remove('hidden');
-  liveReading.classList.remove('hidden');
   loadMainAnimation(instrument);
 
-  audio.pause();
-  audio.currentTime = 0;
-  liveReading.classList.remove('is-listening');
-  liveReadingValue.textContent = '200';
-  liveReadingLabel.textContent = 'Current pressure';
-
-  finalFeedback.style.left = `${(layout.panel.x / 1920) * 100}%`;
-  finalFeedback.style.top = `${((layout.panel.y + layout.panel.h + 10) / 1080) * 100}%`;
-  finalFeedback.style.width = `${(layout.panel.w / 1920) * 100}%`;
+  stopTapSound();
 
   const selects = currentSelects();
   populateSelect(selects.systolic, Object.keys(VALID_COMBOS).map(Number));
@@ -426,44 +408,54 @@ function startRelease() {
   if (state.phase !== 'idle' || !mainAnim || !isMainAnimReady) return;
   state.phase = 'releasing';
   hideGroup(currentLayout().cuffBalloon);
-  byId(BTN_RELEASE).setAttribute('aria-label', 'Pause the falling pressure');
-  setReleaseLabel('Pause');
+  tapContext.resume();
+  byId(BTN_RELEASE).setAttribute('aria-label', 'Replay the falling pressure');
+  setReleaseLabel('Replay');
   mainAnim.setSpeed(RELEASE_SPEED);
   mainAnim.play();
   rafId = requestAnimationFrame(watchRelease);
 }
 
-function pauseRelease() {
-  if (state.phase !== 'releasing' || !mainAnim || mainAnim.isPaused) return;
-  mainAnim.pause();
-  if (state.soundStarted && !state.soundStopped) {
-    audio.pause();
-  }
-  byId(BTN_RELEASE).setAttribute('aria-label', 'Resume the falling pressure');
-  setReleaseLabel('Resume');
-  liveReadingLabel.textContent = 'Paused at';
-  valueAnnouncer.textContent = `Paused at ${liveReadingValue.textContent} millimeters of mercury.`;
-}
-
-function resumeRelease() {
-  if (state.phase !== 'releasing' || !mainAnim || !mainAnim.isPaused) return;
-  mainAnim.play();
-  if (state.soundStarted && !state.soundStopped) {
-    audio.play().catch(() => {});
-  }
-  byId(BTN_RELEASE).setAttribute('aria-label', 'Pause the falling pressure');
-  setReleaseLabel('Pause');
-  liveReadingLabel.textContent = 'Current pressure';
+function replayRelease() {
+  cancelAnimationFrame(rafId);
+  stopTapSound();
+  hideGroup(SOUND_REACTION_GROUP);
+  state.soundStarted = false;
+  state.soundStopped = false;
+  state.phase = 'idle';
+  Object.values(currentSelects()).forEach((select) => {
+    select.disabled = true;
+  });
+  setDashButtonsEnabled(currentLayout(), false);
+  mainAnim.goToAndStop(0, true);
+  startRelease();
 }
 
 function handleReleaseClick() {
   if (state.phase === 'idle') {
     if (!isReleaseEnabled()) return;
     startRelease();
-  } else if (state.phase === 'releasing') {
-    if (mainAnim && mainAnim.isPaused) resumeRelease();
-    else pauseRelease();
+  } else if (isMainAnimReady) {
+    replayRelease();
   }
+}
+
+function startTapSound() {
+  if (!tapBuffer) return;
+  stopTapSound();
+  tapSource = tapContext.createBufferSource();
+  tapSource.buffer = tapBuffer;
+  tapSource.loop = true;
+  tapSource.loopStart = TAP_LOOP_START;
+  tapSource.loopEnd = TAP_LOOP_END;
+  tapSource.connect(tapContext.destination);
+  tapSource.start(0, TAP_LOOP_START);
+}
+
+function stopTapSound() {
+  if (!tapSource) return;
+  tapSource.stop();
+  tapSource = null;
 }
 
 function watchRelease() {
@@ -473,21 +465,16 @@ function watchRelease() {
   const value = frameToValue(frame);
   const { systolic, diastolic } = state.reading;
 
-  liveReadingValue.textContent = Math.round(value);
-
   if (!state.soundStarted && value <= systolic && value > diastolic) {
     state.soundStarted = true;
-    audio.currentTime = 0;
-    audio.play().catch(() => {});
-    liveReading.classList.add('is-listening');
+    startTapSound();
     showGroup(SOUND_REACTION_GROUP);
     valueAnnouncer.textContent = 'Tapping sound started.';
   }
 
   if (state.soundStarted && !state.soundStopped && value <= diastolic) {
     state.soundStopped = true;
-    audio.pause();
-    liveReading.classList.remove('is-listening');
+    stopTapSound();
     hideGroup(SOUND_REACTION_GROUP);
     mainAnim.setSpeed(QUICK_DROP_SPEED);
     valueAnnouncer.textContent = 'Tapping sound stopped. Pressure dropping to zero.';
@@ -499,15 +486,9 @@ function watchRelease() {
 function onReleaseComplete() {
   cancelAnimationFrame(rafId);
   state.phase = 'done';
-  audio.pause();
-  liveReading.classList.remove('is-listening');
-  liveReadingValue.textContent = '0';
-  liveReadingLabel.textContent = 'Current pressure';
+  stopTapSound();
   hideGroup(SOUND_REACTION_GROUP);
 
-  disableRelease();
-  byId(BTN_RELEASE).setAttribute('aria-label', 'Release (already used — tap Reset to try again)');
-  setReleaseLabel('Release');
   const selects = currentSelects();
   selects.systolic.disabled = false;
   selects.diastolic.disabled = false;
@@ -518,11 +499,7 @@ function onReleaseComplete() {
 
 function resetMeasurement() {
   cancelAnimationFrame(rafId);
-  audio.pause();
-  audio.currentTime = 0;
-  liveReading.classList.remove('is-listening');
-  liveReadingValue.textContent = '200';
-  liveReadingLabel.textContent = 'Current pressure';
+  stopTapSound();
   hideGroup(SOUND_REACTION_GROUP);
   showGroup(currentLayout().cuffBalloon);
 
@@ -674,5 +651,13 @@ answerBackdrop.addEventListener('click', (event) => {
 // not a state machine) — permanently hide the pieces this widget doesn't use:
 // the Insights overlay (until opened) and duplicate/unused button artwork.
 ['insights', 'Group_1566', 'Group_2781'].forEach(hideGroup);
+
+tapContext.decodeAudioData(
+  Uint8Array.from(atob(window.TAP_AUDIO_BASE64), (char) => char.charCodeAt(0)).buffer,
+  (buffer) => {
+    tapBuffer = buffer;
+  },
+  (error) => console.error('Unable to decode the tapping sound:', error)
+);
 
 showSelectionScreen();

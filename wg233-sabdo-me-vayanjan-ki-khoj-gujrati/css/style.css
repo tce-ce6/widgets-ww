@@ -1,0 +1,286 @@
+/* Sized in XD pixels (1920x1080) through --u, so the header scales with the svg stage. */
+:root {
+  --u: min(calc(100vw / 1920), calc(100vh / 1080));
+}
+
+*:focus {
+  outline: none;
+}
+
+svg * {
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  overflow: hidden;
+}
+
+#vyanjan-wrapper .container {
+  border: none;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+  user-select: none;
+}
+
+#vyanjan-wrapper .mainContainerOuter {
+  position: relative;
+  flex: 0 0 auto;
+  width: calc(1920 * var(--u));
+  height: calc(1080 * var(--u));
+  min-height: 0;
+  background: transparent;
+}
+
+#vyanjan-wrapper .wdgetTitle {
+  position: absolute;
+  z-index: 3;
+  left: 0;
+  top: 0;
+  width: 100%;
+  pointer-events: none;
+}
+
+#vyanjan-wrapper .wdgetTitle h2 {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(405 * var(--u));
+  height: calc(75 * var(--u));
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(44 * var(--u));
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+  white-space: nowrap;
+  background: #7c1dd1;
+  border-radius: 0 0 calc(25 * var(--u)) calc(25 * var(--u));
+  box-shadow: 0 calc(3 * var(--u)) calc(3 * var(--u)) rgba(0, 0, 0, .3);
+}
+
+#vyanjan-wrapper .versionText {
+  position: absolute;
+  right: calc(20 * var(--u));
+  top: calc(8 * var(--u));
+  font-size: calc(16 * var(--u));
+  line-height: 1.2;
+  color: rgb(0 0 0 / 30%);
+}
+
+#vyanjan-wrapper .svg-container {
+  position: absolute;
+  inset: 0;
+}
+
+#vyanjan-wrapper svg#stage {
+  display: block;
+  width: 100%;
+  height: 100%;
+  font-family: "Noto Sans Gujarati", sans-serif;
+}
+
+.hidden {
+  display: none;
+}
+
+/* Text */
+.instruction {
+  font-size: 34px;
+  font-weight: 700;
+  text-anchor: middle;
+}
+
+/* Progress */
+.progress-pill {
+  fill: #059884;
+}
+
+.progress-track {
+  fill: #0fd9bd;
+  stroke: #00ae96;
+  stroke-width: 10;
+}
+
+.progress-fill {
+  fill: #00ffb9;
+  transition: width .3s ease;
+}
+
+.round-count {
+  fill: #fff;
+  font-size: 27px;
+  font-weight: 700;
+  text-anchor: middle;
+}
+
+/* Boards */
+.ground {
+  fill: #61ac17;
+}
+
+.orange {
+  fill: #fc6900;
+}
+
+.orange-dark {
+  fill: #be5610;
+}
+
+.tab {
+  fill: #fc6900;
+  stroke: #be5610;
+  stroke-width: 5;
+}
+
+.board-fill {
+  fill: #fff;
+}
+
+.board-border {
+  fill: #ffc300;
+}
+
+.board-letter {
+  fill: #fff;
+  font-size: 50px;
+  font-weight: 700;
+  text-anchor: middle;
+}
+
+.board-outline {
+  fill: none;
+  stroke: none;
+  stroke-width: 6;
+  pointer-events: none;
+}
+
+.board.hot .board-outline {
+  stroke: #0013ff;
+}
+
+.board.wrong .board-outline {
+  stroke: #ff0000;
+}
+
+/* The shake moves the children, because each board's transform attribute holds its position. */
+.board.wrong > * {
+  animation: board-shake .4s;
+}
+
+@keyframes board-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-10px); }
+  40% { transform: translateX(10px); }
+  60% { transform: translateX(-6px); }
+  80% { transform: translateX(6px); }
+}
+
+.word-pill {
+  fill: #fbff86;
+}
+
+.word-text {
+  font-size: 33px;
+  text-anchor: middle;
+}
+
+/* Word clouds */
+.chip {
+  cursor: grab;
+  touch-action: none;
+}
+
+.chip.dragging {
+  cursor: grabbing;
+}
+
+.chip use {
+  fill: #fff;
+  stroke-width: 5;
+}
+
+.chip.active use {
+  stroke: #0013ff;
+}
+
+.chip text {
+  font-size: 42px;
+  font-weight: 700;
+  text-anchor: middle;
+}
+
+/* Hint */
+.hint-box {
+  fill: #ccffec;
+  stroke: #2d0dff;
+  stroke-width: 3;
+}
+
+.hint-text {
+  font-size: 28px;
+  text-anchor: middle;
+}
+
+/* End message */
+.end-shadow {
+  fill: #0ab7eb;
+}
+
+.end-face {
+  fill: #00eeff;
+}
+
+.end-text {
+  font-size: 56px;
+  font-weight: 700;
+  text-anchor: middle;
+}
+
+/* Buttons */
+.svg-btn {
+  cursor: pointer;
+  filter: drop-shadow(-6px 6px 3px rgba(0, 0, 0, .3));
+  transition: opacity .2s ease;
+}
+
+.svg-btn:hover:not(.disabled) > rect:first-child {
+  filter: brightness(.9);
+}
+
+.svg-btn:focus-visible > rect:first-child {
+  stroke: #fff;
+  stroke-width: 4;
+}
+
+.svg-btn.disabled {
+  cursor: not-allowed;
+  opacity: .5;
+  filter: none;
+}
+
+.btn-label {
+  fill: #fff;
+  font-size: 38px;
+  font-weight: 500;
+  text-anchor: middle;
+}
+
+/* Lottie */
+.lottie-layer {
+  pointer-events: none;
+}
+
+.lottie-container {
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}

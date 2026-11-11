@@ -81,11 +81,15 @@
       "author": "tce-ashishg"
     },
     "wg181-wild-about-articles": {
-      "updatedAt": "2026-10-07T17:38:51+05:30",
+      "updatedAt": "2026-11-05T18:27:27+05:30",
       "author": "tce-ashishg"
     },
     "wg183-the-chola-fortress-jenga": {
       "updatedAt": "2026-08-24T12:52:42+05:30",
+      "author": "tce-ashishg"
+    },
+    "wg184-find-the-market-price": {
+      "updatedAt": "2026-11-04T11:48:40+05:30",
       "author": "tce-ashishg"
     },
     "wg186-the-satavahana-stronghold-jenga": {
@@ -97,7 +101,7 @@
       "author": "tce-nitinc"
     },
     "wg188-feed-the-animals": {
-      "updatedAt": "2026-09-01T16:45:24+05:30",
+      "updatedAt": "2026-11-05T18:27:27+05:30",
       "author": "tce-ashishg"
     },
     "wg189-irrigation-system": {
@@ -105,11 +109,11 @@
       "author": "tce-nitinc"
     },
     "wg190-my-healthy-plate": {
-      "updatedAt": "2026-09-07T15:29:08+05:30",
+      "updatedAt": "2026-11-05T18:27:27+05:30",
       "author": "tce-ashishg"
     },
     "wg191-blood-pressure-measurment": {
-      "updatedAt": "2026-10-14T09:54:22+05:30",
+      "updatedAt": "2026-11-04T17:21:54+05:30",
       "author": "tce-ashishg"
     },
     "wg193-swar-ki-pahchan-gujrati": {
@@ -117,15 +121,15 @@
       "author": "tce-nitinc"
     },
     "wg194-ginti-mela": {
-      "updatedAt": "2026-10-08T19:01:39+05:30",
+      "updatedAt": "2026-11-05T18:27:27+05:30",
       "author": "tce-ashishg"
     },
     "wg195-chitra-dekh-kar-vakya-banaye": {
-      "updatedAt": "2026-10-09T17:03:30+05:30",
+      "updatedAt": "2026-11-05T18:27:27+05:30",
       "author": "tce-ashishg"
     },
     "wg196-perfect-pairs": {
-      "updatedAt": "2026-10-01T18:03:02+05:30",
+      "updatedAt": "2026-11-05T18:27:27+05:30",
       "author": "tce-ashishg"
     },
     "wg197-vyanjan-ki-pahchan-gujurati": {
@@ -149,7 +153,7 @@
       "author": "tce-nitinc"
     },
     "wg202-egyptian-museum": {
-      "updatedAt": "2026-10-26T15:01:49+05:30",
+      "updatedAt": "2026-11-11T10:58:58+05:30",
       "author": "tce-nitinc"
     },
     "wg204-capitals-of-india": {
@@ -161,11 +165,11 @@
       "author": "Shyamsunder Hait"
     },
     "wg207-i-aur-ee-kee-maatra-mein-antar-gujrati": {
-      "updatedAt": "2026-10-23T09:39:40+05:30",
+      "updatedAt": "2026-11-05T18:27:27+05:30",
       "author": "tce-ashishg"
     },
     "wg208-u-aur-oo-kee-maatra-mein-antar-gujrati": {
-      "updatedAt": "2026-10-23T09:39:54+05:30",
+      "updatedAt": "2026-11-05T18:27:27+05:30",
       "author": "tce-ashishg"
     },
     "wg209-poppulation-density-simulator": {
@@ -181,7 +185,7 @@
       "author": "tce-nitinc"
     },
     "wg212-sabdo-me-swar-ki-khoj-gujrati": {
-      "updatedAt": "2026-10-19T16:13:28+05:30",
+      "updatedAt": "2026-11-05T18:27:27+05:30",
       "author": "tce-ashishg"
     },
     "wg213-cross-bridge": {
@@ -192,13 +196,53 @@
       "updatedAt": "2026-10-26T16:30:15+05:30",
       "author": "Shyamsunder Hait"
     },
-    "wg218-ancient-china": {
-      "updatedAt": "2026-10-26T13:03:25+05:30",
+    "wg215-dance-forms": {
+      "updatedAt": "2026-10-30T17:36:31+05:30",
       "author": "tce-nitinc"
+    },
+    "wg218-ancient-china": {
+      "updatedAt": "2026-11-11T10:58:58+05:30",
+      "author": "tce-nitinc"
+    },
+    "wg219-sabdo-me-vayanjan-ki-khoj-gujrati": {
+      "updatedAt": "2026-11-05T18:27:27+05:30",
+      "author": "tce-ashishg"
     },
     "wg223-leaf-lab-transpiration": {
       "updatedAt": "2026-10-19T10:58:01+05:30",
       "author": "tce-nitinc"
+    },
+    "wg226-temple-architecture": {
+      "updatedAt": "2026-11-02T16:25:02+05:30",
+      "author": "tce-nitinc"
+    },
+    "wg230-sort-o-matic": {
+      "updatedAt": "2026-11-03T17:55:28+05:30",
+      "author": "tce-nitinc"
+    },
+    "wg231-choose-the-correct-spelling-gujrati": {
+      "updatedAt": "2026-11-05T17:23:03+05:30",
+      "author": "tce-ashishg"
+    },
+    "wg232-sentence-construction-gujrati": {
+      "updatedAt": "2026-11-05T15:57:57+05:30",
+      "author": "tce-ashishg"
+    },
+    "wg233-sabdo-me-vayanjan-ki-khoj-gujrati": {
+      "updatedAt": "2026-11-05T15:57:57+05:30",
+      "author": "tce-ashishg"
+    },
+    "wg236-road-signs": {
+      "updatedAt": "2026-11-03T14:28:37+05:30",
+      "author": "tce-nitinc"
+    },
+    "wg237-double-agent-words": {
+      "updatedAt": "2026-11-05T16:01:37+05:30",
+      "author": "Shyamsunder Hait"
+    },
+    "wg242-picture-stories": {
+      "updatedAt": "2026-11-05T17:27:17+05:30",
+      "author": "Shyamsunder Hait"
     },
     "wg31-world-war": {
       "updatedAt": "2026-10-21T09:34:16+05:30",
@@ -210,6 +254,189 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-11-11T10:58:58+05:30",
+      "author": "tce-nitinc",
+      "message": "resolved the comments of wg218",
+      "widgets": [
+        202,
+        218
+      ]
+    },
+    {
+      "date": "2026-11-05T18:27:27+05:30",
+      "author": "tce-ashishg",
+      "message": "thumb nail image added",
+      "widgets": [
+        181,
+        188,
+        190,
+        194,
+        195,
+        196,
+        207,
+        208,
+        212,
+        219
+      ]
+    },
+    {
+      "date": "2026-11-05T17:27:17+05:30",
+      "author": "Shyamsunder Hait",
+      "message": "added the 242 widget",
+      "widgets": [
+        242
+      ]
+    },
+    {
+      "date": "2026-11-05T17:23:03+05:30",
+      "author": "tce-ashishg",
+      "message": "wg231 completed",
+      "widgets": [
+        231
+      ]
+    },
+    {
+      "date": "2026-11-05T16:24:10+05:30",
+      "author": "tce-nitinc",
+      "message": "resolved ejypt widget bugs",
+      "widgets": [
+        202
+      ]
+    },
+    {
+      "date": "2026-11-05T16:01:37+05:30",
+      "author": "Shyamsunder Hait",
+      "message": "added wg236",
+      "widgets": [
+        237
+      ]
+    },
+    {
+      "date": "2026-11-05T15:57:57+05:30",
+      "author": "tce-ashishg",
+      "message": "wg233 completed",
+      "widgets": [
+        232,
+        233
+      ]
+    },
+    {
+      "date": "2026-11-05T13:13:41+05:30",
+      "author": "tce-ashishg",
+      "message": "wg232 completed",
+      "widgets": [
+        232
+      ]
+    },
+    {
+      "date": "2026-11-04T17:21:54+05:30",
+      "author": "tce-ashishg",
+      "message": "wg191 issue resolved",
+      "widgets": [
+        191
+      ]
+    },
+    {
+      "date": "2026-11-04T15:36:58+05:30",
+      "author": "tce-ashishg",
+      "message": "wg207 layout corrected",
+      "widgets": [
+        207
+      ]
+    },
+    {
+      "date": "2026-11-04T14:29:09+05:30",
+      "author": "tce-ashishg",
+      "message": "wg207 layout corrected",
+      "widgets": [
+        207
+      ]
+    },
+    {
+      "date": "2026-11-04T11:48:40+05:30",
+      "author": "tce-ashishg",
+      "message": "wg184 completed",
+      "widgets": [
+        184
+      ]
+    },
+    {
+      "date": "2026-11-03T17:55:28+05:30",
+      "author": "tce-nitinc",
+      "message": "wg230 fixes",
+      "widgets": [
+        230
+      ]
+    },
+    {
+      "date": "2026-11-03T15:17:29+05:30",
+      "author": "tce-ashishg",
+      "message": "wg208 issue resolved",
+      "widgets": [
+        207,
+        208
+      ]
+    },
+    {
+      "date": "2026-11-03T14:28:37+05:30",
+      "author": "tce-nitinc",
+      "message": "wg236 fixes",
+      "widgets": [
+        236
+      ]
+    },
+    {
+      "date": "2026-11-02T18:42:26+05:30",
+      "author": "tce-ashishg",
+      "message": "wg219 issue resolved",
+      "widgets": [
+        219
+      ]
+    },
+    {
+      "date": "2026-11-02T17:10:56+05:30",
+      "author": "tce-ashishg",
+      "message": "bg jurking issue resolved",
+      "widgets": [
+        207,
+        208
+      ]
+    },
+    {
+      "date": "2026-11-02T16:25:02+05:30",
+      "author": "tce-nitinc",
+      "message": "wg226",
+      "widgets": [
+        226
+      ]
+    },
+    {
+      "date": "2026-11-02T12:52:26+05:30",
+      "author": "tce-ashishg",
+      "message": "font issue resolved",
+      "widgets": [
+        207,
+        208,
+        219
+      ]
+    },
+    {
+      "date": "2026-11-02T12:33:50+05:30",
+      "author": "tce-ashishg",
+      "message": "wg219 completed",
+      "widgets": [
+        219
+      ]
+    },
+    {
+      "date": "2026-10-30T17:36:31+05:30",
+      "author": "tce-nitinc",
+      "message": "wg215 changes",
+      "widgets": [
+        215
+      ]
+    },
     {
       "date": "2026-10-26T16:30:15+05:30",
       "author": "Shyamsunder Hait",
@@ -286,188 +513,6 @@
       "message": "resolved comments of wg 204",
       "widgets": [
         204
-      ]
-    },
-    {
-      "date": "2026-10-23T09:39:40+05:30",
-      "author": "tce-ashishg",
-      "message": "wg207 & wg208 error resolved",
-      "widgets": [
-        207,
-        208
-      ]
-    },
-    {
-      "date": "2026-10-22T16:02:23+05:30",
-      "author": "tce-nitinc",
-      "message": "178 fixes",
-      "widgets": [
-        178
-      ]
-    },
-    {
-      "date": "2026-10-22T15:20:08+05:30",
-      "author": "tce-nitinc",
-      "message": "fixes",
-      "widgets": [
-        178,
-        187,
-        189,
-        204
-      ]
-    },
-    {
-      "date": "2026-10-22T11:55:46+05:30",
-      "author": "tce-nitinc",
-      "message": "wg 189 fixes",
-      "widgets": [
-        189
-      ]
-    },
-    {
-      "date": "2026-10-22T11:45:58+05:30",
-      "author": "tce-nitinc",
-      "message": "wg208 fixes",
-      "widgets": [
-        208
-      ]
-    },
-    {
-      "date": "2026-10-22T11:03:32+05:30",
-      "author": "tce-ashishg",
-      "message": "wg208 error resolved",
-      "widgets": [
-        207,
-        208
-      ]
-    },
-    {
-      "date": "2026-10-22T10:51:43+05:30",
-      "author": "tce-nitinc",
-      "message": "wg193 fixes",
-      "widgets": [
-        193,
-        198,
-        199,
-        200,
-        202
-      ]
-    },
-    {
-      "date": "2026-10-21T14:31:18+05:30",
-      "author": "tce-nitinc",
-      "message": "wg163 fixes",
-      "widgets": [
-        163
-      ]
-    },
-    {
-      "date": "2026-10-21T13:17:43+05:30",
-      "author": "tce-nitinc",
-      "message": "wg187 completed",
-      "widgets": [
-        187
-      ]
-    },
-    {
-      "date": "2026-10-21T12:09:57+05:30",
-      "author": "tce-nitinc",
-      "message": "fixed 189 issues",
-      "widgets": [
-        189
-      ]
-    },
-    {
-      "date": "2026-10-21T10:34:00+05:30",
-      "author": "tce-ashishg",
-      "message": "wg208 completed",
-      "widgets": [
-        208
-      ]
-    },
-    {
-      "date": "2026-10-21T10:11:04+05:30",
-      "author": "tce-ashishg",
-      "message": "wg208 completed",
-      "widgets": [
-        208
-      ]
-    },
-    {
-      "date": "2026-10-21T09:34:16+05:30",
-      "author": "tce-nitinc",
-      "message": "added how to play into the last batch widgets also",
-      "widgets": [
-        9,
-        31,
-        202
-      ]
-    },
-    {
-      "date": "2026-10-21T08:40:27+05:30",
-      "author": "tce-ashishg",
-      "message": "wg207 completed",
-      "widgets": [
-        207,
-        208
-      ]
-    },
-    {
-      "date": "2026-10-19T16:13:28+05:30",
-      "author": "tce-ashishg",
-      "message": "wg207 & 208 structuring done",
-      "widgets": [
-        212
-      ]
-    },
-    {
-      "date": "2026-10-19T15:27:31+05:30",
-      "author": "tce-nitinc",
-      "message": "wg204 fixes",
-      "widgets": [
-        204
-      ]
-    },
-    {
-      "date": "2026-10-19T15:12:00+05:30",
-      "author": "tce-nitinc",
-      "message": "wg201 fixes",
-      "widgets": [
-        201
-      ]
-    },
-    {
-      "date": "2026-10-19T14:52:41+05:30",
-      "author": "tce-nitinc",
-      "message": "wg202",
-      "widgets": [
-        202
-      ]
-    },
-    {
-      "date": "2026-10-19T14:46:08+05:30",
-      "author": "tce-nitinc",
-      "message": "wg201 fixes",
-      "widgets": [
-        201
-      ]
-    },
-    {
-      "date": "2026-10-19T14:36:42+05:30",
-      "author": "tce-nitinc",
-      "message": "wg 211 fixes",
-      "widgets": [
-        211
-      ]
-    },
-    {
-      "date": "2026-10-19T14:19:45+05:30",
-      "author": "tce-ashishg",
-      "message": "wg207 & 208 structuring done",
-      "widgets": [
-        207,
-        208,
-        212
       ]
     }
   ]

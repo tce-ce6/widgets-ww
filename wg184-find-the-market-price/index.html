@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>&ZeroWidthSpace;Find the Market Price&ZeroWidthSpace;</title>
+
+  <link rel="stylesheet" href="./css/global_style.css">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body id="market-price-widget">
+  <div class="container">
+    <div class="mainContainerOuter">
+      <div id="viewport">
+        <!-- Fixed 1920x1080 design stage, scaled to fit the window by script.js -->
+        <div id="stage">
+          <div class="wdgetTitle">
+            <h2>&ZeroWidthSpace;Find the Market Price&ZeroWidthSpace;</h2>
+            <span id="versionId" class="versionText">b4_wg184_261104_01</span>
+          </div>
+
+          <!-- ============ START SCREEN ============ -->
+          <section id="screen-start" class="screen is-active" aria-label="Start">
+            <div class="start-card start-card--intro">
+              <p>A busy street market has dozens of momo stalls and hundreds of buyers. No single person sets the price here. Find the price where the market clears. Then take charge of the news desk and predict how real events move the whole market.</p>
+            </div>
+            <img class="start-plate" src="assets/svg/momo-plate.svg" alt="A bamboo steamer of momos on a plate">
+            <div class="start-card start-card--takeaway">
+              <h3>Market equilibrium, and what moves it</h3>
+              <p>The market clears where Qs = Qd. A change in the price moves you along the curves. A change in anything else, tastes, incomes, costs, technology, the number of buyers or sellers, moves a whole curve, and the equilibrium price and quantity move with it. Real markets are never still: they are always adjusting towards a new equilibrium.</p>
+            </div>
+            <button class="pill-btn start-btn" id="startBtn" type="button">Start</button>
+          </section>
+
+          <!-- ============ MARKET SCREEN ============ -->
+          <section id="screen-market" class="screen" aria-label="The momo market">
+            <ol class="rail" id="rail" aria-label="Steps">
+              <li class="rail-step"><span class="rail-num">1</span><span class="rail-name">Find it</span></li>
+              <li class="rail-step"><span class="rail-num">2</span><span class="rail-name">Explain</span></li>
+              <li class="rail-step"><span class="rail-num">3</span><span class="rail-name">News days</span></li>
+            </ol>
+
+            <!-- ---------- Find it ---------- -->
+            <div class="task-card" data-phase="find">
+              <h3 class="task-head">Find the market-clearing price</h3>
+              <p class="task-text">Pick a price and open the market.<br>When Qs = Qd, the market clears.</p>
+            </div>
+            <p class="day-note" id="dayNote" aria-live="polite" hidden></p>
+
+            <div class="board" id="board" data-phase="find" aria-label="Market board">
+              <p class="board-head"><img src="assets/svg/icon-tag.svg" alt="">Market board</p>
+              <div class="cell cell--qd">
+                <span class="cell-label">Buyers want (Qd)</span>
+                <b class="cell-num" id="qdOut"></b>
+                <span class="cell-unit">plates</span>
+              </div>
+              <div class="cell cell--qs">
+                <span class="cell-label">Sellers offer (Qs)</span>
+                <b class="cell-num" id="qsOut"></b>
+                <span class="cell-unit">plates</span>
+              </div>
+              <div class="cell cell--price">
+                <span class="cell-label">Price per plate</span>
+                <span class="price-out" id="priceOut"></span>
+              </div>
+              <div class="cell cell--cmp">
+                <p class="cmp-row"><span class="cell-label">Comparison</span><b class="cmp-out" id="cmpOut"></b></p>
+                <p class="cmp-sub" id="subOut"></p>
+              </div>
+            </div>
+
+            <div class="slider-card" id="sliderCard" data-phase="find">
+              <label class="slider-label" for="priceSlider">Test a price</label>
+              <span class="day-count" id="dayCount"></span>
+              <input class="range" id="priceSlider" type="range" min="20" max="100" step="1" value="50">
+              <div class="range-ticks" aria-hidden="true"><span>20</span><span>40</span><span>60</span><span>80</span><span>100</span></div>
+            </div>
+
+            <button class="open-btn" id="openBtn" type="button" disabled>Open the market at this price</button>
+            <button class="pill-btn action-btn action-btn--upper" id="settleBtn" type="button" hidden>Watch the market settle on its own</button>
+            <button class="pill-btn action-btn" id="toExplainBtn" type="button" hidden>One last check</button>
+
+            <!-- ---------- Explain ---------- -->
+            <div class="check-card" data-phase="explain" hidden>
+              <h3 class="check-head">One last check</h3>
+              <p class="task-text">Suppose the price were pushed up to ₹90 a plate. In a free market, what happens next?</p>
+              <div class="check-opts" id="explainOpts" role="group" aria-label="What happens next?"></div>
+            </div>
+            <img class="scene scene--explain" id="explainScene" data-phase="explain" src="assets/svg/market-scene.svg" alt="" hidden>
+            <div class="check-fb" id="explainFb" aria-live="polite" hidden>
+              <p class="check-fb-head"><img src="assets/svg/icon-thumb.svg" alt=""><span id="explainFbHead"></span></p>
+              <p class="check-fb-text" id="explainFbText"></p>
+            </div>
+            <button class="pill-btn action-btn" id="toNewsBtn" type="button" hidden>Report to the news desk</button>
+
+            <!-- ---------- News days ---------- -->
+            <img class="scene scene--news" id="newsScene" data-phase="news" src="assets/svg/market-scene.svg" alt="" hidden>
+            <div class="paper" data-phase="news" hidden>
+              <div class="masthead">
+                <span class="mast-block mast-block--a"></span>
+                <span class="mast-block mast-block--b"></span>
+                <span class="mast-name">The Momo Street Times</span>
+                <span class="mast-edition" id="edition"></span>
+                <span class="mast-rule mast-rule--a"></span>
+                <span class="mast-rule mast-rule--b"></span>
+              </div>
+              <h3 class="headline" id="headline"></h3>
+              <p class="standfirst" id="standfirst"></p>
+              <div class="news-q news-q--shift">
+                <p class="news-q-text" id="shiftQ">Which curve moves, and which way?</p>
+                <div class="shift-opts" id="shiftOpts" role="group" aria-labelledby="shiftQ"></div>
+              </div>
+            </div>
+            <p class="news-fb news-fb--shift" id="shiftFb" aria-live="polite" hidden></p>
+
+            <div class="news-q news-q--price" id="priceCard" hidden>
+              <p class="news-fb" id="priceFb" aria-live="polite"></p>
+              <p class="news-q-text news-q-text--price" id="priceQ">Before we print the graph: what happens to the market price?</p>
+              <div class="price-opts" id="priceOpts" role="group" aria-labelledby="priceQ"></div>
+            </div>
+
+            <p class="printing" id="printing" hidden><img src="assets/svg/icon-printer.svg" alt="">Locked in. Printing the graph...</p>
+            <button class="pill-btn next-btn" id="nextBtn" type="button" hidden>Next headline</button>
+
+            <!-- ---------- Free play ---------- -->
+            <div class="task-card task-card--free" data-phase="free" hidden>
+              <h3 class="task-head">Your market, your experiment</h3>
+              <p class="task-text">The news desk is closed. Now shift either curve yourself and watch the equilibrium chase the changes. The price finds its own level: you no longer control it, the market does.</p>
+            </div>
+            <div class="slider-card slider-card--free slider-card--demand" data-phase="free" hidden>
+              <label class="slider-label" for="fpDemand">Demand shift (tastes, income, population)</label>
+              <input class="range" id="fpDemand" type="range" min="-30" max="30" step="15" value="0">
+              <div class="range-ends" aria-hidden="true"><span>fewer buyers</span><span>normal</span><span>more buyers</span></div>
+            </div>
+            <div class="slider-card slider-card--free slider-card--supply" data-phase="free" hidden>
+              <label class="slider-label" for="fpSupply">Supply shift (costs, technology, sellers)</label>
+              <input class="range" id="fpSupply" type="range" min="-30" max="30" step="15" value="0">
+              <div class="range-ends" aria-hidden="true"><span>harder to make</span><span>normal</span><span>easier to make</span></div>
+            </div>
+            <dl class="readout" data-phase="free" aria-live="polite" hidden>
+              <div><dt>Price per plate</dt><dd id="fpPrice"></dd></div>
+              <div><dt>Buyers want (Qd)</dt><dd id="fpQd"></dd></div>
+              <div><dt>Sellers offer (Qs)</dt><dd id="fpQs"></dd></div>
+            </dl>
+            <div class="takeaway" data-phase="free" hidden>
+              <h3>Market equilibrium, and what moves it</h3>
+              <p>The market clears where Qs = Qd. A change in the price moves you along the curves. A change in anything else, tastes, incomes, costs, technology, the number of buyers or sellers, moves a whole curve, and the equilibrium price and quantity move with it. Real markets are never still: they are always adjusting towards a new equilibrium.</p>
+            </div>
+
+            <!-- ---------- Graph ---------- -->
+            <figure class="graph-card">
+              <figcaption class="graph-title"><img src="assets/svg/icon-graph.svg" alt="">Market graph</figcaption>
+              <svg class="chart" id="chart" viewBox="779 130 986 733" role="img"
+                aria-label="A demand curve sloping downward and a supply curve sloping upward. Price is on the vertical axis and quantity of plates on the horizontal axis. In the news days, curves shift left or right and the equilibrium point moves."></svg>
+            </figure>
+            <p class="wide-note" id="wideNote" aria-live="polite" hidden></p>
+
+            <button class="reset-btn" id="resetBtn" type="button">Reset</button>
+            <button class="insights-btn" id="insightsBtn" type="button" aria-haspopup="dialog"><img src="assets/svg/icon-insights.svg" alt="">Insights</button>
+
+            <!-- ---------- Insights ---------- -->
+            <div class="insights" id="insights" role="dialog" aria-modal="true" aria-label="Insights" hidden>
+              <div class="insights-box">
+                <p>Everything else stays the same while you test prices: only the price moves. When Qs &lt; Qd there is excess demand, a shortage. When Qs &gt; Qd there is excess supply, a surplus. Below ₹45 no seller opens a stall, because the price does not cover their costs. In the news days, one outside factor changes and you will watch a whole curve move.</p>
+              </div>
+              <button class="insights-close" id="insightsClose" type="button" aria-label="Close"><img src="assets/svg/icon-close.svg" alt=""></button>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./js/content-data.js"></script>
+  <script src="./js/script.js"></script>
+</body>
+
+</html>
