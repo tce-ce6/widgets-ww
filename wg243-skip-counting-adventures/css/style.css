@@ -1,0 +1,828 @@
+/* ==========================================================================
+   Skip Counting Adventures (wg243)
+   Layout is authored on a fixed 1920x1080 stage (matching the XD) and scaled
+   to the window by script.js, so it always fits one screen.
+   ========================================================================== */
+
+:root {
+  --page: #106d7c;
+  --title: #0295fc;
+  --title-shadow: rgba(0, 0, 0, 0.3);
+  --tab: #baff85;
+  --green: #53f77e;
+  --green-dark: #004412;
+  --navy: #004096;
+  --sky: #b6e3ff;
+  --badge: #000216;
+  --gold-line: #f2b83d;
+  --star-text: #fff700;
+  --label-ink: #000735;
+  --good: #6df992;
+  --good-line: #006b07;
+  --bad: #ffa2a2;
+  --bad-line: #dc1200;
+  --info-line: #005dad;
+  --hop: #ff0000;
+  --hop-pill: #ff0f00;
+  --glow: #fffe00;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  overflow: hidden;
+}
+
+body {
+  background: var(--page);
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mainContainerOuter {
+  background: transparent;
+}
+
+#viewport {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background: var(--page);
+}
+
+/* Full-window backdrop behind the how-to-play guide (covers the letterbox bars too). */
+#viewport::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgb(0 0 0 / 62%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+body.has-tour #viewport::before {
+  opacity: 1;
+}
+
+#stage {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1920px;
+  height: 1080px;
+  overflow: hidden;
+  transform-origin: 0 0;
+  background: var(--page);
+  font-family: "Roboto", "Segoe UI", sans-serif;
+  line-height: 1.2;
+  color: #000;
+}
+
+img {
+  display: block;
+  -webkit-user-drag: none;
+}
+
+button {
+  font-family: inherit;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+button:focus-visible,
+[tabindex]:focus-visible {
+  outline: 4px solid #fff;
+  outline-offset: 3px;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+p {
+  margin: 0;
+}
+
+/* ---------- title (same as the other widgets) ---------- */
+#skip-counting-widget .wdgetTitle {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  z-index: 60;
+  pointer-events: none;
+}
+
+#skip-counting-widget .wdgetTitle h2 {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 70px;
+  margin: 0;
+  padding: 0 40px;
+  background: var(--title);
+  border-radius: 0 0 25px 25px;
+  box-shadow: 0 3px 3px var(--title-shadow);
+  color: #fff;
+  font-size: 45px;
+  font-weight: 500;
+  line-height: 70px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+#skip-counting-widget .versionText {
+  position: absolute;
+  right: 20px;
+  top: 10px;
+  font-size: 17px;
+  line-height: 1;
+  color: rgb(255 255 255 / 30%);
+}
+
+/* ---------- world tabs and stars ---------- */
+.tab {
+  position: absolute;
+  top: 118px;
+  height: 79px;
+  background: var(--tab);
+  border: 1px solid #707070;
+  border-bottom: 0;
+  border-radius: 20px 20px 0 0;
+  font-size: 38px;
+  font-weight: 500;
+  opacity: 0.4;
+  transition: opacity 0.15s ease;
+}
+
+.tab[aria-selected="true"] {
+  opacity: 1;
+}
+
+.tab:hover {
+  opacity: 0.75;
+}
+
+.tab[aria-selected="true"]:hover {
+  opacity: 1;
+}
+
+.tab--islands { left: 492px; width: 190px; }
+.tab--train { left: 709px; width: 190px; }
+.tab--space { left: 925px; width: 190px; }
+.tab--jungle { left: 1142px; width: 286px; }
+
+.stars {
+  position: absolute;
+  left: 1688px;
+  top: 116px;
+  width: 172px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  background: var(--badge);
+  border: 4px solid var(--gold-line);
+  border-radius: 35px;
+  color: var(--star-text);
+  font-size: 40px;
+  font-weight: 700;
+}
+
+.stars img {
+  width: 46px;
+  height: 44px;
+}
+
+.stars.pop {
+  animation: pop 0.4s ease-out;
+}
+
+/* ---------- the scene card ---------- */
+.scene-shadow {
+  position: absolute;
+  left: 71px;
+  top: 202px;
+  width: 1799px;
+  height: 770px;
+  background: #000;
+  border-radius: 27px;
+}
+
+.scene {
+  position: absolute;
+  left: 61px;
+  top: 193px;
+  width: 1803px;
+  height: 770px;
+  overflow: hidden;
+  border-radius: 27px;
+}
+
+.scene::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  border: 6px solid #fff;
+  border-radius: 27px;
+  pointer-events: none;
+}
+
+/* Inside the card everything is placed in stage pixels. */
+.scene-inner {
+  position: absolute;
+  left: -61px;
+  top: -193px;
+  width: 1920px;
+  height: 1080px;
+}
+
+.scene-bg {
+  position: absolute;
+  left: 61px;
+  top: 193px;
+  width: 1803px;
+  height: 770px;
+}
+
+.scene-title {
+  position: absolute;
+  left: 0;
+  width: 1920px;
+  font-size: 28px;
+  font-style: italic;
+  text-align: center;
+}
+
+.layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.layer > * {
+  pointer-events: auto;
+}
+
+.layer img,
+.engine,
+.stump,
+.monkey,
+.goal-star,
+.confetti {
+  position: absolute;
+}
+
+.sign {
+  position: absolute;
+  width: 222px;
+  height: 210.8px;
+  pointer-events: none;
+}
+
+.sign img {
+  width: 100%;
+  height: 100%;
+}
+
+.sign span {
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  width: 218px;
+  height: 70px;
+  color: #900000;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 70px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* ---------- pieces: drawn around an anchor at (0, 0) ---------- */
+.pc {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+}
+
+.pc .art {
+  position: absolute;
+}
+
+.lbl {
+  position: absolute;
+  display: block;
+  color: var(--label-ink);
+  font-size: 30px;
+  font-weight: 700;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.lbl--box,
+.lbl--rung {
+  background: #fff;
+  border: 1px solid #000;
+}
+
+.lbl--circle {
+  background: #fff;
+  border: 1px solid #000;
+  border-radius: 50%;
+}
+
+.pile-piece {
+  cursor: pointer;
+}
+
+.pile-piece .art,
+.pile-piece .lbl {
+  pointer-events: none;
+}
+
+.hit {
+  position: absolute;
+  z-index: 3;
+  cursor: pointer;
+}
+
+.hit--islands { left: -56px; top: -28px; width: 112px; height: 56px; border-radius: 50%; }
+.hit--train { left: -76px; top: -56px; width: 150px; height: 156px; }
+.hit--space { left: -62px; top: -62px; width: 124px; height: 124px; border-radius: 50%; }
+.hit--jungle { left: -126px; top: -25px; width: 252px; height: 50px; }
+
+.pile-piece > * {
+  transition: translate 0.15s ease;
+}
+
+.pile-piece:hover > * {
+  translate: 0 -6px;
+}
+
+.pile-piece:focus-visible {
+  outline: none;
+}
+
+.pile-piece:focus-visible .lbl {
+  outline: 4px solid var(--glow);
+  outline-offset: 2px;
+}
+
+/* the gap that is filled next glows */
+.q {
+  position: absolute;
+  color: var(--glow);
+  font-size: 50px;
+  font-weight: 700;
+  line-height: 61px;
+  text-align: center;
+}
+
+.q--wagon,
+.q--planet {
+  color: #ff0000;
+}
+
+.q--planet {
+  font-size: 30px;
+  line-height: 40px;
+}
+
+.q--rung {
+  background: #f1f90f;
+  border: 1px solid #000;
+  color: #e50d03;
+  font-size: 30px;
+  line-height: 38px;
+}
+
+.gap-frame {
+  position: absolute;
+  left: -125px;
+  top: -23.5px;
+  width: 250px;
+  height: 47px;
+  border: 4px dashed #ff0000;
+}
+
+.gap .art,
+.gap .gap-frame {
+  opacity: 0.55;
+}
+
+.gap .q {
+  opacity: 0.45;
+}
+
+.gap.active .art,
+.gap.active .gap-frame,
+.gap.active .q {
+  opacity: 1;
+  animation: glow 1.1s ease-in-out infinite;
+}
+
+@keyframes glow {
+
+  0%,
+  100% {
+    filter: drop-shadow(0 0 0 rgb(255 254 0 / 0%));
+  }
+
+  50% {
+    filter: drop-shadow(0 0 10px rgb(255 254 0 / 95%));
+  }
+}
+
+.pc.land > * {
+  animation: land 0.35s ease-out;
+}
+
+@keyframes land {
+  0% {
+    scale: 1.15;
+  }
+
+  100% {
+    scale: 1;
+  }
+}
+
+.pc.lit .lbl {
+  background: #ffe27a;
+  border-radius: 8px;
+}
+
+.pc.lit .lbl--circle {
+  border-radius: 50%;
+}
+
+/* ---------- jump arcs ---------- */
+.hops {
+  position: absolute;
+  inset: 0;
+  width: 1920px;
+  height: 1080px;
+  pointer-events: none;
+}
+
+.hop {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.hops.show .hop,
+.hop.lit {
+  opacity: 1;
+}
+
+.hop-line {
+  fill: none;
+  stroke: var(--hop);
+  stroke-width: 4;
+  stroke-dasharray: 8 8;
+  stroke-linecap: round;
+}
+
+.hop-head {
+  fill: none;
+  stroke: var(--hop);
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.hop-pill {
+  fill: var(--hop-pill);
+}
+
+.hop-text {
+  fill: #fff;
+  font-family: "Roboto", sans-serif;
+  font-size: 26px;
+  font-weight: 500;
+  text-anchor: middle;
+}
+
+/* ---------- characters ---------- */
+.char {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.char-art {
+  position: absolute;
+}
+
+.goal-star {
+  animation: star-in 0.9s ease-out both;
+}
+
+@keyframes star-in {
+  0% {
+    transform: scale(0.2) rotate(0);
+    opacity: 0;
+  }
+
+  60% {
+    transform: scale(1.3) rotate(300deg);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1) rotate(360deg);
+  }
+}
+
+.confetti {
+  animation: confetti 1.4s ease-out both;
+  pointer-events: none;
+}
+
+@keyframes confetti {
+  0% {
+    transform: translateY(40px) scale(0.4);
+    opacity: 0;
+  }
+
+  25% {
+    opacity: 1;
+  }
+
+  80% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(-20px) scale(1.05);
+    opacity: 0;
+  }
+}
+
+/* ---------- message bubble ---------- */
+.msg {
+  position: absolute;
+  left: 50%;
+  z-index: 15;
+  transform: translateX(-50%);
+  min-width: 442px;
+  max-width: 900px;
+  padding: 14px 26px;
+  border-radius: 20px;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 40px;
+  text-align: center;
+  pointer-events: none;
+}
+
+.msg--info {
+  max-width: 499px;
+  min-height: 104px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  border: 2px solid var(--info-line);
+  font-size: 26px;
+  line-height: 34px;
+}
+
+.msg--good,
+.msg--win {
+  background: var(--good);
+  border: 2px solid var(--good-line);
+}
+
+.msg--win {
+  max-width: 600px;
+}
+
+.msg--bad {
+  background: var(--bad);
+  border: 2px solid var(--bad-line);
+}
+
+/* ---------- count up / count down ---------- */
+.dir-toggle {
+  position: absolute;
+  left: 772px;
+  top: 884px;
+  z-index: 15;
+  display: flex;
+}
+
+.dir-btn {
+  height: 58px;
+  padding: 0 22px;
+  font-size: 28px;
+  font-weight: 500;
+}
+
+.dir-btn--up {
+  width: 170px;
+  border-radius: 29px 0 0 29px;
+}
+
+.dir-btn--down {
+  width: 207px;
+  border-radius: 0 29px 29px 0;
+}
+
+.dir-btn[aria-pressed="true"] {
+  background: var(--navy);
+  color: #fff;
+}
+
+.dir-btn[aria-pressed="false"] {
+  background: var(--sky);
+  border: 4px solid var(--navy);
+  color: #000;
+}
+
+/* ---------- buttons under the card ---------- */
+.help-btn {
+  position: absolute;
+  left: 61px;
+  top: 990px;
+  width: 176px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-left: 10px;
+  background: #000;
+  border-radius: 35px;
+  color: #fff;
+  font-size: 35px;
+  font-weight: 500;
+}
+
+.help-btn img {
+  width: 55px;
+  height: 55px;
+}
+
+.green-btn {
+  position: absolute;
+  top: 990px;
+  width: 219px;
+  height: 69px;
+  background: var(--green);
+  border-radius: 34.5px;
+  font-size: 30px;
+  font-weight: 500;
+  transition: filter 0.15s ease;
+}
+
+.green-btn:hover {
+  filter: brightness(1.06);
+}
+
+.hint-btn {
+  left: 731px;
+}
+
+.new-btn {
+  left: 971px;
+}
+
+.hint-btn.is-on {
+  background: var(--green-dark);
+  color: var(--green);
+}
+
+.new-btn.is-next {
+  animation: pulse-btn 1.2s ease-in-out infinite;
+}
+
+@keyframes pulse-btn {
+
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgb(83 247 126 / 0%);
+  }
+
+  50% {
+    box-shadow: 0 0 0 9px rgb(83 247 126 / 55%);
+  }
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(0.8);
+  }
+
+  70% {
+    transform: scale(1.12);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* ---------- how to play ---------- */
+.tour {
+  position: absolute;
+  inset: 0;
+  z-index: 80;
+}
+
+.tour-spot {
+  position: absolute;
+  border-radius: 24px;
+  box-shadow: 0 0 0 4000px rgb(0 0 0 / 62%);
+  outline: 4px solid #fdcd02;
+  pointer-events: none;
+  transition: left 0.25s ease, top 0.25s ease, width 0.25s ease, height 0.25s ease;
+}
+
+.tour-card {
+  position: absolute;
+  width: 560px;
+  padding: 26px 30px;
+  background: #fff;
+  border: 4px solid var(--info-line);
+  border-radius: 30px;
+  box-shadow: 0 16px 40px rgb(0 0 0 / 35%);
+}
+
+.tour-close {
+  position: absolute;
+  right: -22px;
+  top: -22px;
+  width: 56px;
+  height: 56px;
+  background: #4caf50;
+  border: 4px solid #fff;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 38px;
+  line-height: 44px;
+}
+
+.tour-step {
+  color: #506470;
+  font-size: 22px;
+}
+
+.tour-text {
+  margin-top: 8px;
+  color: #000473;
+  font-size: 30px;
+  font-weight: 500;
+  line-height: 38px;
+}
+
+.tour-row {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.tour-btn {
+  min-width: 120px;
+  height: 50px;
+  padding: 0 20px;
+  background: var(--green);
+  border-radius: 25px;
+  font-size: 26px;
+  font-weight: 500;
+}
+
+.tour-btn--back {
+  background: var(--sky);
+}
+
+.tour-btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+/* ---------- reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

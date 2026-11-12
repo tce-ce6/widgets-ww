@@ -1,0 +1,113 @@
+/* Skip Counting Adventures (wg243): the four worlds, their positions on the 1920x1080 stage and all text.
+   Every piece is placed by its "anchor": the centre of its number label, in stage pixels (from the XD). */
+window.SKIP_CONTENT = {
+  steps: [2, 3, 5, 10], // each round picks one of these at random, never the same twice in a row
+  starsPerPattern: 5,
+
+  worlds: {
+    islands: {
+      bg: 'assets/svg/bg-islands.svg',
+      title: 'Fill the stone bridge so the frog can hop across',
+      titleColor: '#000473',
+      titleTop: 210,
+      pieceName: 'Stone',
+      instr: 'Tap a stone on the island to fill the glowing gap.',
+      ready: 'The bridge is ready! Watch the frog hop across.',
+      win: 'You crossed!',
+      sign: [235, 499],
+      instrTop: 257,
+      msgTop: 567,
+      slots: [[657.9, 785.5], [789.9, 763.5], [931.7, 759.5], [1061.9, 772.5], [1197.9, 785.5], [1333.9, 790.5]],
+      pile: [[164.2, 754.9], [132, 821.3], [260.3, 799.4], [344.1, 857.2], [220.8, 885.5]],
+      arcFrom: [0, -32], arcCtrl: [0, -70], // the jump arcs go over the stones
+      char: { src: 'assets/svg/frog.svg', w: 128.6, h: 145, start: [463.3, 787.2], on: [0, 8], end: [1490, 763], lift: 70 },
+      goalStar: [1450.3, 512.6],
+    },
+    train: {
+      bg: 'assets/svg/bg-train.svg',
+      title: 'Add the missing wagons, then count them as the train leaves.',
+      titleColor: '#000473',
+      titleTop: 210,
+      pieceName: 'Wagon',
+      instr: 'Tap a wagon in the yard to fill the glowing gap.',
+      ready: 'The train is ready! Count each wagon as it lights up.',
+      win: 'All aboard! Choo choo!',
+      sign: [121, 403],
+      instrTop: 257,
+      msgTop: 387,
+      slots: [[461, 547.5], [619, 547.5], [779, 547.5], [942, 547.5], [1104, 547.5], [1266, 547.5]],
+      pile: [[655.5, 759.5], [851.5, 759.5], [1047.5, 759.5], [1242.5, 759.5], [1438.5, 759.5]],
+      arcFrom: [0, -62], arcCtrl: [0, -60],
+      engine: { src: 'assets/svg/engine.svg', box: [1350.9, 490.6, 194.5, 160.4] },
+    },
+    space: {
+      bg: 'assets/svg/bg-space.svg',
+      title: 'Build a planet path for the astronaut to reach the moon.',
+      titleColor: '#00e6ff',
+      titleTop: 210,
+      pieceName: 'Planet',
+      instr: 'Tap a planet on the home planet to fill the glowing gap.',
+      ready: 'The space path is ready! Watch the astronaut float across.',
+      win: 'Landed on the moon!',
+      sign: [98, 288.2],
+      instrTop: 257,
+      msgTop: 364,
+      slots: [[576.5, 620.5], [730.5, 585.5], [899, 558], [1056.5, 561.5], [1225.5, 585.5], [1382, 615]],
+      pile: [[193.5, 779.5], [309.5, 721.5], [314.5, 852.5], [438.5, 779.5], [430, 890]],
+      arcFrom: [0, -40], arcCtrl: [0, -70],
+      char: { src: 'assets/svg/astronaut.svg', w: 131.9, h: 152.4, start: [339, 526], on: [0, -36], end: [1597.3, 529.4], lift: 60,
+        endSrc: 'assets/svg/astronaut-moon.svg', endW: 185.4, endH: 194.3 },
+      goalStar: [1696.8, 259.1, 58.2, 55.6],
+    },
+    jungle: {
+      bg: 'assets/svg/bg-jungle.svg',
+      title: 'Fix the ladder rungs so the monkey can climb to the bananas.',
+      titleColor: '#000000',
+      titleTop: 237,
+      pieceName: 'Rung',
+      instr: 'Tap a rung on the rack to fix the glowing gap in the ladder.',
+      ready: 'The ladder is fixed! Watch the monkey climb up.',
+      win: 'Bananas! The monkey made it!',
+      sign: [1319, 645.2],
+      instrTop: 297,
+      msgTop: 384,
+      // bottom rung first: the monkey climbs up
+      slots: [[508, 846], [508, 764], [508, 682], [508, 599], [508, 517], [508, 434]],
+      pile: [[856, 546], [1116, 546], [856, 675], [1116, 675], [986, 803]],
+      arcFrom: [144, 0], arcCtrl: [56, 0], // the jump arcs go up the right of the ladder
+      monkey: { start: [1525, 610.8, 206.3, 279.3], stump: [1525, 781.7, 206.3, 108.3], climb: [175, 333.1], climbX: 314.9, climbDy: -216 },
+    },
+  },
+
+  // Planet art, chosen by the number on the planet. Offsets put the art around the number label.
+  planets: [
+    { src: 'assets/svg/planet-orange.svg', w: 194, h: 138, dx: -132.5, dy: -76.5 },
+    { src: 'assets/svg/planet-teal.svg', w: 221.9, h: 122.8, dx: -123.9, dy: -59.5 },
+    { src: 'assets/svg/planet-yellow.svg', w: 317.1, h: 142.7, dx: -169.5, dy: -59.5 },
+    { src: 'assets/svg/planet-tan.svg', w: 300.7, h: 197.6, dx: -145.2, dy: -93.2 },
+    { src: 'assets/svg/planet-blue.svg', w: 255.6, h: 226.7, dx: -131.6, dy: -120.8 },
+    { src: 'assets/svg/planet-brown.svg', w: 302.9, h: 202.7, dx: -158, dy: -131.2 },
+  ],
+
+  text: {
+    rule: (up, step) => `${up ? 'Count by' : 'Count back by'} ${step}s`,
+    yes: (v, prev) => `Yes! ${v} comes after ${prev}.`,
+    notQuite: (prev, op, step) => `Not quite. What is ${prev} ${op} ${step}?`,
+    lookJumps: (prev, op, step) => `Look at the jumps. What is ${prev} ${op} ${step}?`,
+    showJumps: 'Show jumps',
+    hideJumps: 'Hide jumps',
+    newPattern: 'New pattern',
+    nextPattern: 'Next pattern',
+  },
+
+  tour: [
+    { sel: '#tabs', text: 'Choose a world: Islands, Train, Space or Jungle ladder.' },
+    { sel: '#sign', text: 'The sign shows the rule. Find how much each number jumps by.' },
+    { sel: '#slots', text: 'The glowing gap shows which number is missing next.' },
+    { sel: '#pile', text: 'Tap the piece that fills the gap. Trick pieces bounce back.' },
+    { sel: '#dirToggle', text: 'Switch to Count down to count backward.' },
+    { sel: '#hintBtn', text: 'Show jumps shows the + or − jump between the numbers.' },
+    { sel: '#newBtn', text: 'New pattern gives you a new set of numbers.' },
+    { sel: '#stars', text: 'Finish a pattern to collect stars.' },
+  ],
+};
