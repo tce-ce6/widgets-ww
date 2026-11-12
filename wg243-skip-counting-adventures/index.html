@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>&ZeroWidthSpace;Skip Counting Adventures&ZeroWidthSpace;</title>
+
+  <link rel="stylesheet" href="./css/global_style.css">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body id="skip-counting-widget">
+  <div class="container">
+    <div class="mainContainerOuter">
+      <div id="viewport">
+        <!-- Fixed 1920x1080 design stage, scaled to fit the window by script.js -->
+        <div id="stage">
+          <div class="wdgetTitle">
+            <h2>&ZeroWidthSpace;Skip Counting Adventures&ZeroWidthSpace;</h2>
+            <span id="versionId" class="versionText">b4_wg243_261112_01</span>
+          </div>
+
+          <!-- choose a world -->
+          <div class="tabs" id="tabs" role="tablist" aria-label="Choose a world">
+            <button class="tab tab--islands" role="tab" type="button" data-world="islands" aria-selected="true">Islands</button>
+            <button class="tab tab--train" role="tab" type="button" data-world="train" aria-selected="false">Train</button>
+            <button class="tab tab--space" role="tab" type="button" data-world="space" aria-selected="false">Space</button>
+            <button class="tab tab--jungle" role="tab" type="button" data-world="jungle" aria-selected="false">Jungle ladder</button>
+          </div>
+
+          <div class="stars" id="stars" aria-label="Stars earned">
+            <img src="assets/svg/star-badge.svg" alt=""><span id="starCount">0</span>
+          </div>
+
+          <!-- the scene -->
+          <div class="scene-shadow"></div>
+          <div class="scene" id="scene" role="tabpanel">
+            <div class="scene-inner" id="sceneInner">
+              <img class="scene-bg" id="sceneBg" src="assets/svg/bg-islands.svg" alt="">
+              <p class="scene-title" id="sceneTitle"></p>
+              <div class="sign" id="sign"><img src="assets/svg/sign.svg" alt=""><span id="signText"></span></div>
+              <div class="layer" id="decor"></div>
+              <svg class="hops" id="hops" viewBox="0 0 1920 1080" aria-hidden="true"></svg>
+              <div class="layer" id="slots"></div>
+              <div class="layer" id="pile" role="group" aria-label="Pieces to choose from"></div>
+              <div class="layer" id="charLayer"></div>
+              <div class="layer" id="fx"></div>
+              <p class="msg msg--info" id="msg" aria-live="polite"></p>
+              <div class="dir-toggle" id="dirToggle" role="group" aria-label="Direction">
+                <button class="dir-btn dir-btn--up" type="button" data-dir="up" aria-pressed="true">Count up</button>
+                <button class="dir-btn dir-btn--down" type="button" data-dir="down" aria-pressed="false">Count down</button>
+              </div>
+            </div>
+          </div>
+
+          <button class="help-btn" id="helpBtn" type="button" aria-label="How to play">
+            <img src="assets/svg/help-icon.svg" alt=""><span>Help</span>
+          </button>
+          <button class="green-btn hint-btn" id="hintBtn" type="button">Show jumps</button>
+          <button class="green-btn new-btn" id="newBtn" type="button">New pattern</button>
+
+          <!-- ============ HOW TO PLAY ============ -->
+          <div class="tour" id="tour" hidden>
+            <div class="tour-spot" id="tourSpot"></div>
+            <div class="tour-card" id="tourCard" role="dialog" aria-modal="true" aria-label="How to play">
+              <button class="tour-close" id="tourSkip" type="button" aria-label="Close how to play">&times;</button>
+              <p class="tour-step" id="tourStep"></p>
+              <p class="tour-text" id="tourText"></p>
+              <div class="tour-row">
+                <button class="tour-btn tour-btn--back" id="tourPrev" type="button">Back</button>
+                <button class="tour-btn" id="tourNext" type="button">Next</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./js/content-data.js"></script>
+  <script src="./js/script.js"></script>
+</body>
+
+</html>
