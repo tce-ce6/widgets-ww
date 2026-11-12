@@ -30,36 +30,6 @@
     return { left: x, top: y, right: x + r.width / stageScale, bottom: y + r.height / stageScale };
   }
 
-  /* ---------- sound: short tones, and the numbers read aloud ---------- */
-  let ctx = null;
-  function ensureAudio() {
-    try {
-      if (!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)();
-      if (ctx.state === 'suspended') ctx.resume();
-    } catch (e) { /* no audio */ }
-  }
-  function tone(freq, dur, type = 'sine', vol = 0.15, when = 0) {
-    if (!ctx) return;
-    try {
-      const t = ctx.currentTime + when;
-      const o = ctx.createOscillator();
-      const g = ctx.createGain();
-      o.type = type; o.frequency.setValueAtTime(freq, t);
-      g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(0.001, t + dur);
-      o.connect(g).connect(ctx.destination); o.start(t); o.stop(t + dur);
-    } catch (e) { /* ignore */ }
-  }
-  const sfx = {
-    good() { tone(660, 0.15, 'triangle'); tone(880, 0.22, 'triangle', 0.15, 0.12); },
-    bad() { tone(180, 0.25, 'sine', 0.2); tone(140, 0.3, 'sine', 0.15, 0.1); },
-    hop() { tone(520, 0.08, 'square', 0.05); tone(780, 0.08, 'square', 0.04, 0.05); },
-    win() { [523, 659, 784, 1047].forEach((f, i) => tone(f, 0.25, 'triangle', 0.14, i * 0.12)); },
-    whistle() { tone(880, 0.5, 'triangle', 0.1); tone(1100, 0.5, 'triangle', 0.08); },
-  };
-  function speak(text) {
-    if (!('speechSynthesis' in window)) return;
-    try { speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(String(text)); u.rate = 0.95; u.pitch = 1.15; speechSynthesis.speak(u); } catch (e) { /* ignore */ }
-  }
 
   /* ---------- small DOM helpers ---------- */
   function div(cls, parent) { const d = document.createElement('div'); d.className = cls; if (parent) parent.appendChild(d); return d; }
@@ -175,12 +145,23 @@
     m.textContent = text;
     m.className = `msg msg--${kind || 'info'}`;
     const T = W[world];
-    m.style.top = `${kind && kind !== 'info' ? T.msgTop : T.instrTop}px`;
+    let top = kind && kind !== 'info' ? T.msgTop : T.instrTop;
+    // Feedback sits above the jump arcs, so it never covers them (shown or not).
+    if (kind && kind !== 'info' && L.hops.firstChild) {
+      const h = L.hops.getBBox();
+      const w = m.offsetWidth;
+      const overlapsX = 960 - w / 2 < h.x + h.width && 960 + w / 2 > h.x;
+      const gap = 16;
+      if (overlapsX && top + m.offsetHeight > h.y - gap) top = h.y - gap - m.offsetHeight;
+      top = Math.max(top, T.titleTop + 44); // and below the world's title line
+    }
+    m.style.top = `${top}px`;
   }
   function burst() {
     if (reduce) return;
     const T = W[world];
-    const c = img('confetti', 'assets/svg/confetti.svg', [722, T.msgTop - 233, 475, 282.4], L.fx);
+    const top = parseFloat($('msg').style.top) || T.msgTop;
+    const c = img('confetti', 'assets/svg/confetti.svg', [722, top - 233, 475, 282.4], L.fx);
     setTimeout(() => c.remove(), 1400);
   }
 
@@ -284,7 +265,6 @@
     if (!S || S.busy || S.done || p.used || tourOpen) return;
     const gi = nextGap();
     if (gi === undefined) return;
-    ensureAudio();
     S.busy = true;
     L.fx.appendChild(p.g);
     const prev = S.seq[gi - 1];
@@ -297,13 +277,11 @@
       S.gaps[gi].remove(); delete S.gaps[gi];
       const g = drawPiece(world, p.value, 'slot'); setPos(g, tx, ty); g.classList.add('land'); L.slots.appendChild(g); S.pieces[gi] = g;
       S.filled.add(gi); S.wrong = 0;
-      sfx.good(); speak(p.value);
       say(TX.yes(p.value, prev), 'good');
       burst();
       markActiveGap();
       if (nextGap() === undefined) { S.busy = false; await finish(); return; }
     } else {
-      sfx.bad();
       await shake(p.g);
       S.wrong++;
       const op = dir === 'up' ? '+' : '−';
@@ -319,20 +297,17 @@
   /* ---------- the character crosses as the numbers are counted ---------- */
   async function countAlong(i) {
     S.pieces[i].classList.add('lit');
-    speak(S.seq[i]);
     say(S.seq.slice(0, i + 1).join(', ') + (i < 5 ? ' …' : ''), 'good');
   }
   async function walkFinale() {
     const T = W[world];
     for (let i = 0; i < 6; i++) {
       if (i > 0) L.hops.children[i - 1].classList.add('lit');
-      sfx.hop();
       const [x, y] = T.slots[i];
       await tween(S.char, [x + T.char.on[0], y + T.char.on[1]], 480, T.char.lift);
       await countAlong(i);
       await wait(520);
     }
-    sfx.hop();
     await tween(S.char, T.char.end, 600, T.char.lift + 20);
     if (T.char.endSrc) {
       const a = S.char.querySelector('.char-art');
@@ -343,18 +318,17 @@
   async function trainFinale() {
     for (let i = 0; i < 6; i++) {
       if (i > 0) L.hops.children[i - 1].classList.add('lit');
-      sfx.hop();
       await countAlong(i);
       await wait(620);
     }
     await wait(300);
-    sfx.whistle();
     L.hops.classList.remove('show');
     Array.from(L.hops.children).forEach((h) => h.classList.remove('lit')); // the arcs stay behind as the train leaves
     const parts = [S.engine].concat(S.pieces);
     parts.forEach((el) => { el._x = el._x || 0; el._y = el._y || 0; });
     S.engine._x = 0; S.engine._y = 0;
-    await Promise.all(parts.map((el) => tween(el, [el._x + 1250, el._y], 2200)));
+    // far enough that the last wagon (left edge 383) clears the card's right edge (1864)
+    await Promise.all(parts.map((el) => tween(el, [el._x + 1560, el._y], 2700)));
   }
   async function jungleFinale() {
     const T = W[world];
@@ -366,7 +340,6 @@
     setPos(ch, M.climbX, T.slots[0][1] - 19 + M.climbDy + 60);
     for (let i = 0; i < 6; i++) {
       if (i > 0) L.hops.children[i - 1].classList.add('lit');
-      sfx.hop();
       await tween(ch, [M.climbX, T.slots[i][1] - 19 + M.climbDy], 480, 0);
       await countAlong(i);
       await wait(520);
@@ -381,7 +354,6 @@
     if (world === 'train') await trainFinale();
     else if (world === 'jungle') await jungleFinale();
     else await walkFinale();
-    sfx.win();
     if (T.goalStar) {
       const [x, y, w, h] = T.goalStar;
       img('goal-star', 'assets/svg/star.svg', [x, y, w || 95.8, h || 91.7], L.fx);
@@ -403,17 +375,17 @@
     document.querySelectorAll('.tab').forEach((t) => t.setAttribute('aria-selected', String(t.dataset.world === id)));
     $('starCount').textContent = stars[world];
     round = 0;
-    ensureAudio(); newRound();
+    newRound();
   }
   document.querySelectorAll('.tab').forEach((b) => b.addEventListener('click', () => chooseWorld(b.dataset.world)));
   document.querySelectorAll('.dir-btn').forEach((b) => b.addEventListener('click', () => {
     if (S && S.busy) return;
     dir = b.dataset.dir;
     document.querySelectorAll('.dir-btn').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
-    round = 0; ensureAudio(); newRound();
+    round = 0; newRound();
   }));
   $('hintBtn').addEventListener('click', () => { if (S && !S.done) setHints(!S.hint); });
-  $('newBtn').addEventListener('click', () => { ensureAudio(); newRound(); });
+  $('newBtn').addEventListener('click', () => { newRound(); });
 
   /* ======================================================================
      How to play: a spotlight with one short sentence per step
