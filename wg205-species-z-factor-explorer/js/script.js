@@ -727,7 +727,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const showScreen = (name) => {
     Object.entries(screens).forEach(([k, el]) => el.classList.toggle('is-active', k === name));
-    insightsBtn.hidden = name === 'home';
+    // Insights is on every screen; on the start screen it sits bottom centre beside Help
+    insightsBtn.hidden = false;
+    document.body.classList.toggle('is-home', name === 'home');
     if (name === 'home') closeInsights();
   };
 
