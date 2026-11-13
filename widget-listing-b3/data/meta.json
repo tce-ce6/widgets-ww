@@ -201,7 +201,7 @@
       "author": "tce-nitinc"
     },
     "wg218-ancient-china": {
-      "updatedAt": "2026-11-11T12:06:11+05:30",
+      "updatedAt": "2026-11-13T15:31:10+05:30",
       "author": "tce-nitinc"
     },
     "wg219-sabdo-me-vayanjan-ki-khoj-gujrati": {
@@ -274,6 +274,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-11-13T15:31:10+05:30",
+      "author": "tce-nitinc",
+      "message": "resolved wg218",
+      "widgets": [
+        218
+      ]
+    },
     {
       "date": "2026-11-13T15:12:42+05:30",
       "author": "tce-ashishg",
@@ -527,14 +535,6 @@
     },
     {
       "date": "2026-11-04T15:36:58+05:30",
-      "author": "tce-ashishg",
-      "message": "wg207 layout corrected",
-      "widgets": [
-        207
-      ]
-    },
-    {
-      "date": "2026-11-04T14:29:09+05:30",
       "author": "tce-ashishg",
       "message": "wg207 layout corrected",
       "widgets": [
