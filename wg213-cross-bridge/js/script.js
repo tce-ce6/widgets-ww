@@ -330,6 +330,17 @@ if (
     announce(`${R()[k][0]} का पुल पूरा हुआ।`);
   }
 
+  /** Disable the whirlpool and its "नदी में बहा दो" label while no plank is left in the river. */
+  function updateWhirl() {
+    const empty = !$$('.plank.piece', pool).some((p) => !p.classList.contains('is-gone'));
+    const whirl = zoneEls.x;
+    whirl.classList.toggle('is-disabled', empty);
+    whirl.setAttribute('aria-disabled', String(empty));
+    whirl.tabIndex = empty ? -1 : 0;
+  }
+  // re-check whenever a plank is added, removed, or gone / back
+  new MutationObserver(updateWhirl).observe(pool, { childList: true, subtree: true, attributes: true, attributeFilter: ['class'] });
+
   function checkDone() {
     if (state.handled === state.total && !state.done) {
       state.done = true;
@@ -354,7 +365,12 @@ if (
   }
 
   function flush(p) {
-    flyPiece(p, [1540, 830], () => {
+    // centre of #whirlAnim (1476 + 345/2, 776 + 216/2) minus half a piece
+    const sink = [1648 - PIECE[0] / 2, 884 - PIECE[1] / 2];
+    flyPiece(p, sink, () => {
+      // flyPiece clears its transform, so park the piece on the whirlpool before it spins down
+      p.style.left = `${sink[0]}px`;
+      p.style.top = `${sink[1]}px`;
       restart(p, 'is-flushing');
       later(() => {
         p.classList.remove('is-flushing');
@@ -430,7 +446,9 @@ if (
     ordered.forEach((p, i) => later(() => {
       const fam = familyOf(p.dataset.word);
       if (fam === 'x') {
-        p.animate([{ opacity: 1 }, { opacity: 0, transform: 'scale(.6)' }], { duration: 450, fill: 'forwards' }).onfinish = () => p.classList.add('is-gone');
+        // left-over words fly into the whirlpool and sink
+        Sound.sfx('flush');
+        flush(p);
       } else {
         Sound.sfx('correct');
         placeCorrect(p, fam);

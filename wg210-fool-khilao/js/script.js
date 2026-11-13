@@ -193,8 +193,15 @@
     found: 0,
     missed: false, // a wrong tap this round
     done: false, // flower fully open (by the learner or by Show Answer)
+    showing: false, // Show Answer is on (the button now reads Hide Answer)
+    revealed: false, // Show Answer was used this round
+    mine: [], // words the learner found themselves this round
+    layout: [], // [word, ok, slot index] for this round's butterflies
     solo: [] // rounds bloomed with no wrong tap and no Show Answer
   };
+
+  const ANSWER_SHOW = 'उत्तर देखें';
+  const ANSWER_HIDE = 'उत्तर छिपाएँ';
 
   function setFeedback(text, kind) {
     feedback.hidden = !text;
@@ -234,6 +241,7 @@
     const el = document.createElement('div');
     el.className = 'fly';
     el.dataset.word = word;
+    el.dataset.slot = i;
     el.dataset.ok = ok ? '1' : '0';
     el.tabIndex = 0;
     el.setAttribute('role', 'button');
@@ -257,6 +265,9 @@
     state.found = 0;
     state.missed = false;
     state.done = false;
+    state.showing = false;
+    state.revealed = false;
+    state.mine = [];
 
     $('#wordText').textContent = R.w;
     const pic = $('#wordPic');
@@ -266,11 +277,14 @@
     bloom();
     setFeedback('');
     answerBtn.disabled = false;
+    answerBtn.textContent = ANSWER_SHOW;
+    answerBtn.setAttribute('aria-pressed', 'false');
     $('#nextLabel').textContent = state.r < ROUNDS.length - 1 ? 'अगला उदाहरण' : 'परिणाम देखें';
 
     // the four words land in random slots every time
     flies.innerHTML = '';
     const words = shuffle([...R.ok.map((w) => [w, true]), ...R.no.map((w) => [w, false])]);
+    state.layout = words.map(([w, ok], i) => [w, ok, i]);
     words.forEach(([w, ok], i) => flies.appendChild(makeFly(w, ok, SLOTS[i], i)));
 
     later(() => Sound.play(`assets/audio/word-${pad(state.r + 1)}.wav`, $('#wordAudio')), 350);
@@ -288,7 +302,12 @@
       { transform: `translate(${dx * 0.5}px, ${dy * 0.5 - 90}px) scale(.75)`, opacity: 1, offset: 0.55 },
       { transform: `translate(${dx}px, ${dy}px) scale(.15)`, opacity: 0 }
     ], { duration: 900, easing: 'ease-in-out', fill: 'forwards' });
-    anim.onfinish = () => { el.remove(); if (done) done(); };
+    anim.onfinish = () => {
+      // skip if Hide Answer already rebuilt the butterflies
+      if (!el.isConnected) return;
+      el.remove();
+      if (done) done();
+    };
   }
 
   function choose(el) {
@@ -311,13 +330,14 @@
     Sound.speak(word, 150);
     flyIn(el, () => {
       state.found++;
+      state.mine.push(word);
       markFound(word);
       bloom();
       if (state.found === R.ok.length) {
         Sound.sfx('bloom');
         state.done = true;
         answerBtn.disabled = true;
-        if (!state.missed) state.solo.push(state.r);
+        if (!state.missed && !state.revealed) state.solo.push(state.r);
         $$('.fly').forEach((f) => f.classList.add('is-faded'));
         setFeedback('');
       } else {
@@ -328,25 +348,56 @@
     el.classList.add('is-flying');
   }
 
+  /** Show Answer / Hide Answer toggle: no feedback text and no audio either way. */
+  function toggleAnswer() {
+    if (state.showing) hideAnswer();
+    else showAnswer();
+  }
+
+  function setAnswerBtn(showing) {
+    state.showing = showing;
+    answerBtn.textContent = showing ? ANSWER_HIDE : ANSWER_SHOW;
+    answerBtn.setAttribute('aria-pressed', String(showing));
+  }
+
   function showAnswer() {
     if (state.done) return;
-    Sound.unlock();
-    const R = ROUNDS[state.r];
+    Sound.stop();
     state.done = true;
-    answerBtn.disabled = true;
+    state.revealed = true;
+    setAnswerBtn(true);
+    setFeedback('');
     $$('.fly').forEach((f) => { if (f.dataset.ok !== '1') f.classList.add('is-faded'); });
     const rest = $$('.fly').filter((f) => f.dataset.ok === '1' && !f.classList.contains('is-flying'));
     rest.forEach((f, i) => later(() => flyIn(f, () => {
       state.found++;
       markFound(f.dataset.word);
       bloom();
-      if (state.found === R.ok.length) Sound.sfx('bloom');
     }), i * 650));
     rest.forEach((f) => f.classList.add('is-flying'));
-    const text = `सही उत्तर: ‘${R.w}’ के समान अर्थ वाले शब्द हैं — ‘${R.ok[0]}’ और ‘${R.ok[1]}’।`;
-    setFeedback(text, 'answer');
+  }
+
+  /** Put the round back the way the learner left it before Show Answer. */
+  function hideAnswer() {
+    clearTimers();
     Sound.stop();
-    Sound.speak(`${R.w} के समान अर्थ वाले शब्द हैं, ${R.ok[0]} और ${R.ok[1]}`, 200);
+    const R = ROUNDS[state.r];
+    setAnswerBtn(false);
+    setFeedback('');
+    state.done = false;
+    state.found = state.mine.length;
+    renderFound(R);
+    state.mine.forEach((word, i) => {
+      const li = $$('#found li')[i];
+      if (!li) return;
+      li.classList.add('is-found');
+      $('span', li).textContent = word;
+    });
+    bloom();
+    flies.innerHTML = '';
+    state.layout
+      .filter(([w]) => !state.mine.includes(w))
+      .forEach(([w, ok, i]) => flies.appendChild(makeFly(w, ok, SLOTS[i], i)));
   }
 
   /* drag a butterfly to the flower, or just tap it */
@@ -446,7 +497,7 @@
 
   $('#itextAudio').addEventListener('click', (event) => { Sound.unlock(); Sound.play('assets/audio/itext.wav', event.currentTarget); });
   $('#wordAudio').addEventListener('click', (event) => { Sound.unlock(); Sound.play(`assets/audio/word-${pad(state.r + 1)}.wav`, event.currentTarget); });
-  answerBtn.addEventListener('click', showAnswer);
+  answerBtn.addEventListener('click', toggleAnswer);
   $('#nextBtn').addEventListener('click', next);
   $('#againBtn').addEventListener('click', restart);
 
