@@ -180,32 +180,96 @@ if (
       else if (name === 'end') { [523, 659, 784, 1047, 1319].forEach((f, i) => tone(f, t + i * 0.12, 0.45, 'triangle', 0.15)); }
     }
 
-    /** No word recordings were supplied, so words use the browser's Hindi voice. */
-    function speak(text, btn) {
+    /* ---- voice: recorded files in assets/audio, browser Hindi voice only as a fallback ----
+       The browser voice was unreliable (no Hindi voice on many machines, a late voice list,
+       and cancel() swallowing the next word), so every line now plays a recording.
+       If a recording is missing, that one line falls back to the browser voice. */
+
+    const player = new Audio();
+    player.preload = 'auto';
+    let playToken = 0;
+    let playingBtn = null;
+
+    // the browser's voice list arrives late: keep the Hindi voice once it is known
+    let hindiVoice = null;
+    const pickVoice = () => {
       try {
-        if (!('speechSynthesis' in window)) return;
+        hindiVoice = window.speechSynthesis.getVoices().find((v) => v.lang && v.lang.toLowerCase().startsWith('hi')) || null;
+      } catch (e) { hindiVoice = null; }
+    };
+    if ('speechSynthesis' in window) {
+      pickVoice();
+      window.speechSynthesis.addEventListener('voiceschanged', pickVoice);
+    }
+
+    function markBtn(btn) {
+      if (playingBtn && playingBtn !== btn) playingBtn.classList.remove('is-playing');
+      playingBtn = btn || null;
+      if (playingBtn) playingBtn.classList.add('is-playing');
+    }
+
+    function done(tok) {
+      if (tok !== playToken) return;
+      if (playingBtn) playingBtn.classList.remove('is-playing');
+      playingBtn = null;
+    }
+
+    function tts(text, tok) {
+      try {
+        if (!('speechSynthesis' in window)) { done(tok); return; }
         window.speechSynthesis.cancel();
-        const u = new SpeechSynthesisUtterance(text);
-        u.lang = 'hi-IN';
-        u.rate = 0.85;
-        const hindi = window.speechSynthesis.getVoices().find((v) => v.lang && v.lang.startsWith('hi'));
-        if (hindi) u.voice = hindi;
-        if (btn) {
-          btn.classList.add('is-playing');
-          const done = () => btn.classList.remove('is-playing');
-          u.onend = done;
-          u.onerror = done;
-        }
-        window.speechSynthesis.speak(u);
-      } catch (e) { /* no speech */ }
+        // speaking straight after cancel() drops the line in Chrome: wait a moment
+        window.setTimeout(() => {
+          if (tok !== playToken) return;
+          const u = new SpeechSynthesisUtterance(text);
+          u.lang = 'hi-IN';
+          u.rate = 0.85;
+          if (!hindiVoice) pickVoice();
+          if (hindiVoice) u.voice = hindiVoice;
+          u.onend = () => done(tok);
+          u.onerror = () => done(tok);
+          window.speechSynthesis.speak(u);
+        }, 60);
+      } catch (e) { done(tok); }
+    }
+
+    /**
+     * Plays the recordings in `files` one after another (paths under assets/audio,
+     * without .mp3). `text` is what the browser voice says if a recording is missing.
+     */
+    function say(files, text, btn) {
+      const tok = ++playToken;
+      halt();
+      markBtn(btn);
+      const list = [].concat(files);
+      let i = 0;
+      const next = () => {
+        if (tok !== playToken) return;
+        if (i >= list.length) { done(tok); return; }
+        player.src = `assets/audio/${list[i++]}.mp3`;
+        const p = player.play();
+        if (p && p.catch) p.catch(() => { /* reported by the error event, or autoplay was blocked */ });
+      };
+      player.onended = next;
+      player.onerror = () => { if (tok === playToken) tts(text, tok); };
+      next();
+    }
+
+    function halt() {
+      player.onended = null;
+      player.onerror = null;
+      try { player.pause(); } catch (e) { /* nothing playing */ }
+      try { window.speechSynthesis.cancel(); } catch (e) { /* no speech */ }
     }
 
     function stop() {
-      try { window.speechSynthesis.cancel(); } catch (e) { /* no speech */ }
+      playToken++;
+      halt();
+      markBtn(null);
       $$('.audio-btn.is-playing').forEach((b) => b.classList.remove('is-playing'));
     }
 
-    return { sfx, speak, stop, unlock: ensure };
+    return { sfx, say, stop, unlock: ensure };
   }());
 
   /* ------------------------------------------------------------------------
@@ -224,6 +288,21 @@ if (
   };
 
   const R = () => ROUNDS[state.r];
+
+  /**
+   * Recording for a word of the current example, e.g. round 1: r01-a0 = top bridge word,
+   * r01-a1..a3 = its three words, r01-b0..b3 = the bottom bridge, r01-x1..x2 = whirlpool words.
+   */
+  function audioFor(word, r = state.r) {
+    const round = ROUNDS[r];
+    const id = String(r + 1).padStart(2, '0');
+    const a = round.a.indexOf(word);
+    if (a >= 0) return `r${id}-a${a}`;
+    const b = round.b.indexOf(word);
+    if (b >= 0) return `r${id}-b${b}`;
+    return `r${id}-x${round.x.indexOf(word) + 1}`;
+  }
+  const speakWord = (word) => Sound.say(audioFor(word), word);
   const familyOf = (word) => (R().a.slice(1).includes(word) ? 'a' : R().b.slice(1).includes(word) ? 'b' : 'x');
 
   function clearSelection() {
@@ -238,7 +317,7 @@ if (
     state.selected = piece;
     piece.classList.add('is-selected');
     stage.classList.add('has-selection');
-    Sound.speak(piece.dataset.word);
+    speakWord(piece.dataset.word);
   }
 
   function load() {
@@ -287,7 +366,8 @@ if (
       pool.appendChild(p);
     });
 
-    later(() => Sound.speak(`${round.a[0]} और ${round.b[0]}`), 400);
+    // the two bridge words, one after the other
+    later(() => Sound.say([audioFor(round.a[0]), audioFor(round.b[0])], `${round.a[0]} और ${round.b[0]}`), 400);
   }
 
   // a slot is reserved (data-taken) as soon as a piece starts flying to it
@@ -396,13 +476,14 @@ if (
     }
     if (fam === k) {
       Sound.sfx('correct');
-      Sound.speak(word);
+      speakWord(word);
       placeCorrect(p, k);
       return;
     }
     state.mistake = true;
-    if (fam === 'x') {
-      // an outsider fits in for a moment, then breaks and falls back into the river
+    if (k !== 'x') {
+      // any wrong word on a bridge (a trick word, or a word from the other bridge)
+      // fits in for a moment, then breaks and falls back into the river
       const slot = nextSlot(k);
       if (!slot) { Sound.sfx('wrong'); restart(p, 'is-shake'); return; }
       slot.dataset.taken = '1';
@@ -428,7 +509,7 @@ if (
       });
       return;
     }
-    // a bridge word dropped on the other bridge or in the whirlpool
+    // a bridge word dropped in the whirlpool
     Sound.sfx('wrong');
     restart(p, 'is-shake');
   }
@@ -514,6 +595,17 @@ if (
   }
 
   // tap a selected piece, then tap a bridge or the whirlpool
+  // tapping a bridge's label plank says its word (r01-a0 / r01-b0 ...); with a word
+  // selected, the tap still goes to the bridge and places that word as before
+  ['a', 'b'].forEach((k) => {
+    const label = $(k === 'a' ? '#labelA' : '#labelB');
+    label.addEventListener('click', () => {
+      if (state.selected) return;
+      Sound.unlock();
+      speakWord(R()[k][0]);
+    });
+  });
+
   Object.entries(zoneEls).forEach(([k, el]) => {
     const go = () => { if (state.selected) attempt(state.selected, k); };
     el.addEventListener('click', go);
@@ -570,7 +662,7 @@ if (
     $('#whirlAnim').innerHTML = '<img src="assets/svg/whirlpool.svg" alt="" style="width:100%;height:100%">';
   }
 
-  $('#itextAudio').addEventListener('click', (event) => { Sound.unlock(); Sound.speak(ITEXT, event.currentTarget); });
+  $('#itextAudio').addEventListener('click', (event) => { Sound.unlock(); Sound.say('itext', ITEXT, event.currentTarget); });
   answerBtn.addEventListener('click', showAnswer);
   $('#nextBtn').addEventListener('click', next);
   $('#againBtn').addEventListener('click', restartGame);
