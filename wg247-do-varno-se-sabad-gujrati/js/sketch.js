@@ -273,9 +273,135 @@ function playLetterSound(letter) {
     console.log(letter);
     if (audioPath) {
         const audio = new Audio(audioPath);
+        lastLetterAudio = audio;
         audio.play().catch(err => console.log("Audio play failed:", err));
     }
 }
+
+// --- Word sound after the last letter ---
+const WORD_SOUND_DELAY_MS = 1000;   // gap between the last letter's sound ending and the word sound
+const LETTER_SOUND_MAX_WAIT_MS = 4000; // fallback if the letter sound never reports "ended"
+const SHOW_ANSWER_WORD_SOUND_DELAY_MS = 1000; // word sound delay after "જવાબ જુઓ" (same as wg248)
+let lastLetterAudio = null;
+let wordSoundTimer = null;
+let wordSoundToken = 0;
+
+function cancelPendingWordSound() {
+    wordSoundToken++;
+    clearTimeout(wordSoundTimer);
+    wordSoundTimer = null;
+}
+
+// Letter/word recordings have silence at the start and end (letters: ~0.2-1.2s at the end).
+// To make the heard gap between the letter and the word exactly WORD_SOUND_DELAY_MS,
+// the silence is measured once per file (when a word loads) and taken into account.
+const WORD_PLAYBACK_RATE = 0.75;
+const SILENCE_THRESHOLD = 0.05; // samples below 5% of the file's peak count as silence
+const soundSilencePending = new Map(); // absolute url -> Promise
+const soundSilenceInfo = {};           // absolute url -> { duration, lead, tail } (seconds)
+let silenceDecodeCtx = null;
+
+function toAbsoluteUrl(path) {
+    return new URL(path, document.baseURI).href;
+}
+
+function getSoundSilence(path) {
+    const url = toAbsoluteUrl(path);
+    if (!soundSilencePending.has(url)) {
+        const pending = (async () => {
+            try {
+                const Ctx = window.OfflineAudioContext || window.webkitOfflineAudioContext;
+                if (!Ctx) return null;
+                if (!silenceDecodeCtx) silenceDecodeCtx = new Ctx(1, 1, 44100);
+                const data = await (await fetch(url)).arrayBuffer();
+                const buffer = await silenceDecodeCtx.decodeAudioData(data);
+                const samples = buffer.getChannelData(0);
+                let peak = 0;
+                for (let i = 0; i < samples.length; i++) {
+                    const v = Math.abs(samples[i]);
+                    if (v > peak) peak = v;
+                }
+                const threshold = peak * SILENCE_THRESHOLD;
+                let start = 0;
+                while (start < samples.length && Math.abs(samples[start]) < threshold) start++;
+                let end = samples.length - 1;
+                while (end > start && Math.abs(samples[end]) < threshold) end--;
+                const info = {
+                    duration: buffer.duration,
+                    lead: start / buffer.sampleRate,
+                    tail: (samples.length - 1 - end) / buffer.sampleRate
+                };
+                soundSilenceInfo[url] = info;
+                return info;
+            } catch (err) {
+                return null; // fall back to timing from the file's end
+            }
+        })();
+        soundSilencePending.set(url, pending);
+    }
+    return soundSilencePending.get(url);
+}
+
+/**
+ * Measures the silence of the current word's answer letters and word sound in advance.
+ */
+function preloadWordSoundTiming(word) {
+    if (!word) return;
+    word.answer.forEach(letter => {
+        const path = getLetterAudioPath(letter);
+        if (path) getSoundSilence(path);
+    });
+    if (word.audio) getSoundSilence(WORD_AUDIO_PATH_BASE + word.audio);
+}
+
+/**
+ * Plays the word sound WORD_SOUND_DELAY_MS after the last letter is heard
+ * (measured from the end of the letter's voice to the start of the word's voice).
+ */
+function playWordSoundAfterLetter() {
+    cancelPendingWordSound();
+    const token = wordSoundToken;
+    const fire = (ms) => {
+        clearTimeout(wordSoundTimer);
+        wordSoundTimer = setTimeout(() => {
+            wordSoundTimer = null;
+            if (token === wordSoundToken) playWordSound();
+        }, Math.max(0, ms));
+    };
+
+    const wordInfo = currentWord && currentWord.audio
+        ? soundSilenceInfo[toAbsoluteUrl(WORD_AUDIO_PATH_BASE + currentWord.audio)]
+        : null;
+    const wordLeadMs = wordInfo ? (wordInfo.lead / WORD_PLAYBACK_RATE) * 1000 : 0;
+
+    const audio = lastLetterAudio;
+    const letterPlaying = audio && !audio.paused && !audio.ended;
+    if (!letterPlaying) {
+        fire(WORD_SOUND_DELAY_MS - wordLeadMs);
+        return;
+    }
+
+    const letterInfo = soundSilenceInfo[audio.src];
+    if (letterInfo) {
+        const duration = isFinite(audio.duration) ? audio.duration : letterInfo.duration;
+        const audibleEnd = duration - letterInfo.tail;
+        const remainingMs = (audibleEnd - audio.currentTime) * 1000;
+        fire(Math.max(0, remainingMs) + WORD_SOUND_DELAY_MS - wordLeadMs);
+        return;
+    }
+
+    // Silence not measured (e.g. decoding unsupported): wait for the letter file to end
+    let scheduled = false;
+    const schedule = () => {
+        if (scheduled || token !== wordSoundToken) return;
+        scheduled = true;
+        fire(WORD_SOUND_DELAY_MS - wordLeadMs);
+    };
+    audio.addEventListener('ended', schedule, { once: true });
+    audio.addEventListener('error', schedule, { once: true });
+    wordSoundTimer = setTimeout(schedule, LETTER_SOUND_MAX_WAIT_MS);
+}
+
 
 /**
  * Plays word sound
@@ -285,7 +411,7 @@ function playWordSound() {
         const wordName = currentWord.word;
         const audioPath = WORD_AUDIO_PATH_BASE + currentWord.audio;
         const audio = new Audio(audioPath);
-        audio.playbackRate = 0.75;
+        audio.playbackRate = WORD_PLAYBACK_RATE;
         audio.volume = 1.0;
         audio.play().catch(err => console.log("Word audio play failed:", err));
     }
@@ -350,6 +476,7 @@ function loadWord(word) {
     });
 
     // --- LOTTIE INTEGRATION POINT 1: Load initial image/state ---
+    preloadWordSoundTiming(word);
     hideLottieAnimation(); // Ensure clean slate
     loadInitialLottie(word);
     
@@ -364,8 +491,9 @@ function showFinalImage() {
     // --- LOTTIE INTEGRATION POINT 2: Play the animation ---
 
     // Play word sound after a small delay to sync with animation start
+    // Word sound plays 1 sec after the last letter's sound ends
+    playWordSoundAfterLetter();
     setTimeout(() => {
-        playWordSound();
         letterButton.forEach((item)=>{
             item.style.pointerEvents = 'none';
         });
@@ -536,6 +664,7 @@ function shakeAnswerSlots() {
  * Resets the game with a new word
  */
 function resetSentence() {
+    cancelPendingWordSound();
     document.getElementById("starLottie-wrapper").style.display="none";
     instructionText.textContent = ITEXT_SCRATCH;
     showAnswerBtn.textContent = SHOW_ANSWER_TEXT;
@@ -576,9 +705,15 @@ function showAnswer() {
         lettersDiv.style.display = 'none';
        // showAnswerBtn.disabled = false;
 
-        setTimeout(() => {
-            playWordSound();
+        // Word sound plays 2.5 sec after the answer is shown (same timing as wg248)
+        cancelPendingWordSound();
+        const token = wordSoundToken;
+        wordSoundTimer = setTimeout(() => {
+            wordSoundTimer = null;
+            if (token === wordSoundToken) playWordSound();
+        }, SHOW_ANSWER_WORD_SOUND_DELAY_MS);
 
+        setTimeout(() => {
             letterButton.forEach(item => {
                 item.style.pointerEvents = 'none';
             });
@@ -597,6 +732,7 @@ function showAnswer() {
     // ---------------------- TOGGLE OFF ----------------------
     // Second click → Hide answer and restore original UI
 
+    cancelPendingWordSound();
     dashLine.style.display = 'block';
     wordBox.style.display = 'none';
     completeWord.style.display = 'none';
