@@ -177,8 +177,8 @@
       "author": "Shyamsunder Hait"
     },
     "wg210-fool-khilao": {
-      "updatedAt": "2026-10-26T16:27:50+05:30",
-      "author": "Shyamsunder Hait"
+      "updatedAt": "2026-11-13T12:02:13+05:30",
+      "author": "tce-nitinc"
     },
     "wg211-railgadi-banao": {
       "updatedAt": "2026-10-19T14:36:42+05:30",
@@ -189,12 +189,12 @@
       "author": "tce-ashishg"
     },
     "wg213-cross-bridge": {
-      "updatedAt": "2026-10-26T16:30:15+05:30",
-      "author": "Shyamsunder Hait"
+      "updatedAt": "2026-11-13T12:02:13+05:30",
+      "author": "tce-nitinc"
     },
     "wg214-jasus-pehchano": {
-      "updatedAt": "2026-10-26T16:30:15+05:30",
-      "author": "Shyamsunder Hait"
+      "updatedAt": "2026-11-13T12:02:13+05:30",
+      "author": "tce-nitinc"
     },
     "wg215-dance-forms": {
       "updatedAt": "2026-10-30T17:36:31+05:30",
@@ -266,6 +266,16 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-11-13T12:02:13+05:30",
+      "author": "tce-nitinc",
+      "message": "resolved comments",
+      "widgets": [
+        210,
+        213,
+        214
+      ]
+    },
     {
       "date": "2026-11-12T19:08:04+05:30",
       "author": "tce-ashishg",
@@ -521,15 +531,6 @@
       "message": "wg219 issue resolved",
       "widgets": [
         219
-      ]
-    },
-    {
-      "date": "2026-11-02T17:10:56+05:30",
-      "author": "tce-ashishg",
-      "message": "bg jurking issue resolved",
-      "widgets": [
-        207,
-        208
       ]
     }
   ]
