@@ -253,15 +253,15 @@
       "author": "tce-nitinc"
     },
     "wg247-do-varno-se-sabad-gujrati": {
-      "updatedAt": "2026-11-13T12:59:00+05:30",
+      "updatedAt": "2026-11-13T17:42:52+05:30",
       "author": "tce-ashishg"
     },
     "wg248-tin-varno-se-sabad-gujrati": {
-      "updatedAt": "2026-11-13T12:59:00+05:30",
+      "updatedAt": "2026-11-13T17:42:52+05:30",
       "author": "tce-ashishg"
     },
     "wg250-varno-se-sabad-banaye-gujrati": {
-      "updatedAt": "2026-11-13T15:12:42+05:30",
+      "updatedAt": "2026-11-13T17:42:52+05:30",
       "author": "tce-ashishg"
     },
     "wg31-world-war": {
@@ -274,6 +274,16 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-11-13T17:42:52+05:30",
+      "author": "tce-ashishg",
+      "message": "few audio updated",
+      "widgets": [
+        247,
+        248,
+        250
+      ]
+    },
     {
       "date": "2026-11-13T15:31:10+05:30",
       "author": "tce-nitinc",
@@ -531,14 +541,6 @@
       "message": "wg191 issue resolved",
       "widgets": [
         191
-      ]
-    },
-    {
-      "date": "2026-11-04T15:36:58+05:30",
-      "author": "tce-ashishg",
-      "message": "wg207 layout corrected",
-      "widgets": [
-        207
       ]
     }
   ]
