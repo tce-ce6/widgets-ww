@@ -22,6 +22,11 @@
         <div id="stage">
           <p class="itext" id="itext" aria-live="polite"></p>
 
+          <!-- How to play (on the mode select and in both modes) -->
+          <button class="how-btn" id="helpBtn" type="button" aria-label="How to play">
+            <img src="assets/img/help-btn.svg" alt="">
+          </button>
+
           <!-- ============ MODE SELECT ============ -->
           <section id="screen-home" class="screen is-active" aria-label="Choose a mode">
             <button class="mode-card mode-card--1" id="cardSpecies" type="button">
@@ -156,7 +161,7 @@
                 <li><b>Species richness (S)</b> generally increases as the <b>area (A)</b> surveyed increases, but not without limit &mdash; the relationship curves and eventually flattens rather than rising forever.</li>
                 <li>This relationship is expressed as <b>S = C&middot;A<sup>Z</sup></b>, where C is a constant and <b>Z</b> is the <b>slope (the regression coefficient)</b> of the relationship on a logarithmic scale.</li>
                 <li>On a normal <b>(linear scale)</b>, the species-area relationship appears as a curve &mdash; specifically a <b>rectangular hyperbola</b>.</li>
-                <li>On a <b>log-log scale</b>, the same relationship becomes a <b>straight line</b>, described by log <b>S = log C + Z log A</b>, with Z as the line's slope and log C as its <b>y-intercept</b>.</li>
+                <li>On a <b>log-log scale</b>, the same relationship becomes a <b>straight line</b>, described by <b>log  S = log C + Z log A</b>, with Z as the line's slope and log C as its <b>y-intercept</b>.</li>
                 <li>Ecologists have found that <b>Z</b> usually lies <b>between 0.1 and 0.2</b>, regardless of the taxonomic group or the region studied.</li>
                 <li>When the species-area relationship is examined across <b>very large areas</b>, such as entire continents, the slope Z is much steeper, typically in the range of <b>0.6 to 1.2</b>.</li>
                 <li>A <b>steeper Z</b> means species richness increases much more sharply with area; a <b>shallower Z</b> means richness rises more gradually and flattens sooner.</li>
@@ -176,7 +181,27 @@
     </div>
   </div>
 
+  <!-- How-to-play tour (shown over the stage; positioned in viewport coordinates) -->
+  <div id="tour" class="tour" aria-hidden="true">
+    <div id="tourSpot" class="tour-spot"></div>
+    <div id="tourDemo" class="tour-demo"></div>
+    <div id="tourCard" class="tour-card" role="dialog" aria-modal="true" aria-labelledby="tourTitle">
+      <button id="tourSkip" class="tour-skip" type="button" aria-label="Close how to play"><span aria-hidden="true">&times;</span></button>
+      <div id="tourCount" class="tour-count"></div>
+      <h2 id="tourTitle"></h2>
+      <p id="tourText"></p>
+      <div class="tour-nav">
+        <div id="tourDots" class="tour-dots"></div>
+        <div class="tour-btns">
+          <button id="tourBack" class="tour-btn tour-btn--ghost" type="button">Back</button>
+          <button id="tourNext" class="tour-btn" type="button">Next</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="./js/script.js"></script>
+  <script src="./js/how-to-play.js"></script>
 </body>
 
 </html>
