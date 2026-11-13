@@ -280,7 +280,7 @@
       },
       {
         title: 'Choose the right claim',
-        text: 'Read the three claims and tap the one that is only true when you use <b>both</b> objects. A wrong tap lets you try again.',
+        text: 'Read the options and tap the one that is only true when you use <b>both</b> objects. A wrong tap lets you try again.',
         target: () => unionRect([$('#objectRow')]),
         anim: null
       },
@@ -295,7 +295,7 @@
     nile: [
       {
         title: 'Trace the river',
-        text: 'Draw the course of the Nile on the map with your finger or mouse. Start in the south at the bottom and follow the river north up to the sea.',
+        text: 'Draw the course of the river Nile on the map. Start in the south at the bottom and follow the river north up to the sea.',
         target: () => unionRect([$('#mapWrap')]),
         anim: (tok) => {
           const nile = (window.museumHowTo && window.museumHowTo.nilePath) || [[330, 507], [418, 120], [415, 70]];
@@ -326,7 +326,7 @@
       },
       {
         title: 'Still stuck?',
-        text: 'After two wrong tries a <b>Show Answer</b> button appears next to Submit. It draws the river for you, and you cannot draw while it is showing. Tap <b>Hide Answer</b> or <b>Clear</b> to try again.',
+        text: 'After two wrong tries, a <b>Show Answer</b> button appears next to Submit. It draws the river for you. Tap <b>Hide Answer</b> or <b>Clear</b> to try again.',
         target: () => unionRect([$('#btnNileClear'), $('#btnNileSubmit'), $('#btnNileAnswer')]),
         anim: null
       }
