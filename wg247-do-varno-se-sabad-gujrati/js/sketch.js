@@ -30,7 +30,7 @@ const SHOW_ANSWER_TEXT = "જવાબ જુઓ";
 const HIDE_ANSWER_TEXT = "જવાબ છુપાવો";
 
 // Game state
-let currentWordIndex = -1; // selectNextWord() increments before use, so the first word shown is index 0
+let currentWordIndex = -1; // index into `words` of the word on screen (-1 = none yet)
 let currentWord = null;
 let answerSlots = ["", ""]; // Two answer slots
 let letterButtons = [];
@@ -236,20 +236,36 @@ function hideLottieAnimation() {
 }
 
 
+// Shuffled order of word indices; each word appears once per round.
+let wordQueue = [];
+
+/** Fisher-Yates shuffle (in place). */
+function shuffleArray(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+}
+
+/** Builds a fresh random round of all words, never starting with the word just shown. */
+function refillWordQueue() {
+    wordQueue = shuffleArray(words.map((_, i) => i));
+    if (wordQueue.length > 1 && wordQueue[0] === currentWordIndex) {
+        const swapWith = 1 + Math.floor(Math.random() * (wordQueue.length - 1));
+        [wordQueue[0], wordQueue[swapWith]] = [wordQueue[swapWith], wordQueue[0]];
+    }
+}
+
 /**
- * Selects words one by one sequentially, wrapping back to the start 
- * when the end of the list is reached.
+ * Selects words in random order without repeats until every word has been
+ * shown, then starts a new random round.
  * @returns {object} The next word object.
  */
 function selectNextWord() {
-    // 1. Check if we've reached the end of the array
-    if (currentWordIndex >= words.length - 1 || currentWordIndex === null) {
-        currentWordIndex = 0; // Reset to the first word
-    } else {
-        currentWordIndex++; // Move to the next word
-    }
+    if (wordQueue.length === 0) refillWordQueue();
 
-    // 2. Select the current word
+    currentWordIndex = wordQueue.shift();
     currentWord = words[currentWordIndex];
     return currentWord;
 }

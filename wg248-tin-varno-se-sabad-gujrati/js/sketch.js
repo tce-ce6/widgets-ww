@@ -100,12 +100,137 @@ function loadInitialLottie(wordObj) {
     });
 
     // 4. Go to frame 0 immediately upon loading to show the initial state (the image)
-    currentLottieInstance.addEventListener('DOMLoaded', () => {
+    const anim = currentLottieInstance;
+    anim.addEventListener('DOMLoaded', () => {
         requestAnimationFrame(() => {
-             currentLottieInstance.goToAndStop(0, true);
+            if (anim !== currentLottieInstance) return;
+            fitLottieToSafeArea(anim);
+            anim.goToAndStop(0, true);
         });
     });
 }
+
+// --- LOTTIE SAFE-AREA BOUNDARY ---
+// Keeps the puzzle animation from overlapping the instruction text, sound
+// button, word box, letter panel and the bottom control buttons.
+// All values are in the main SVG's viewBox units (1920 x 1080).
+const LOTTIE_SAFE_PADDING = 15;
+const LOTTIE_FO_ORIGIN = { x: -130, y: 30 }; // x/y of the foreignObject holding #lottie-wrapper
+
+function getMainSvg() {
+    return document.querySelector('.svg-container > svg');
+}
+
+/** Converts a screen-space DOMRect into main-SVG viewBox coordinates. */
+function screenRectToViewBox(rect, svg) {
+    const inv = svg.getScreenCTM().inverse();
+    const pt = svg.createSVGPoint();
+    pt.x = rect.left; pt.y = rect.top;
+    const a = pt.matrixTransform(inv);
+    pt.x = rect.right; pt.y = rect.bottom;
+    const b = pt.matrixTransform(inv);
+    return { x1: Math.min(a.x, b.x), y1: Math.min(a.y, b.y), x2: Math.max(a.x, b.x), y2: Math.max(a.y, b.y) };
+}
+
+/** Builds the rectangle the puzzle is allowed to occupy. */
+function getLottieSafeArea(svg) {
+    const pad = LOTTIE_SAFE_PADDING;
+    const area = { x1: pad, y1: 225, x2: 725, y2: 1080 - pad };
+
+    // Below the instruction text
+    const instr = document.getElementById('instruction-text-wrap');
+    if (instr) {
+        const r = screenRectToViewBox(instr.getBoundingClientRect(), svg);
+        area.y1 = Math.max(area.y1, r.y2 + pad);
+    }
+
+    // Left of the sound button / word box / letter panel
+    ['Group 196', 'Group 150', 'Rectangle 9'].forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        const r = screenRectToViewBox(el.getBoundingClientRect(), svg);
+        area.x2 = Math.min(area.x2, r.x1 - pad);
+    });
+
+    // Above the bottom control buttons (HTML, overlaid on the SVG)
+    const controls = document.querySelector('.button-controls');
+    if (controls) {
+        const r = screenRectToViewBox(controls.getBoundingClientRect(), svg);
+        if (r.y1 > area.y1) area.y2 = Math.min(area.y2, r.y1 - pad);
+    }
+    return area;
+}
+
+/** Union of the animation's rendered bounds over its whole timeline (viewBox units). */
+function measureLottieBounds(anim, svg) {
+    const lottieSvg = document.querySelector('#' + LOTTIE_CONTAINER_ID + ' > svg');
+    if (!lottieSvg) return null;
+    const content = lottieSvg.querySelector(':scope > g') || lottieSvg;
+    const total = Math.max(1, Math.floor(anim.totalFrames) - 1);
+    const samples = 24;
+    let box = null;
+
+    for (let i = 0; i <= samples; i++) {
+        anim.goToAndStop(Math.round((total * i) / samples), true);
+        const rect = content.getBoundingClientRect();
+        if (!rect.width || !rect.height) continue;
+        const r = screenRectToViewBox(rect, svg);
+        box = box
+            ? { x1: Math.min(box.x1, r.x1), y1: Math.min(box.y1, r.y1), x2: Math.max(box.x2, r.x2), y2: Math.max(box.y2, r.y2) }
+            : r;
+    }
+    if (!box) return null;
+
+    // Lottie clips content to its composition; don't count anything outside it.
+    const comp = screenRectToViewBox(lottieSvg.getBoundingClientRect(), svg);
+    box.x1 = Math.max(box.x1, comp.x1); box.y1 = Math.max(box.y1, comp.y1);
+    box.x2 = Math.min(box.x2, comp.x2); box.y2 = Math.min(box.y2, comp.y2);
+    return box.x2 > box.x1 && box.y2 > box.y1 ? box : null;
+}
+
+/** Scales/shifts #lottie-wrapper so the whole animation stays inside the safe area. */
+function fitLottieToSafeArea(anim) {
+    const svg = getMainSvg();
+    const wrapper = document.getElementById(LOTTIE_CONTAINER_ID);
+    if (!svg || !wrapper || !anim) return;
+
+    wrapper.style.transform = 'none';
+    const box = measureLottieBounds(anim, svg);
+    if (!box) return;
+    const safe = getLottieSafeArea(svg);
+
+    const bw = box.x2 - box.x1, bh = box.y2 - box.y1;
+    const sw = safe.x2 - safe.x1, sh = safe.y2 - safe.y1;
+    const k = Math.min(1, sw / bw, sh / bh);
+
+    // Keep the puzzle as close to its designed spot as possible, clamped into the safe area.
+    const clamp = (v, lo, hi) => Math.min(Math.max(v, lo), hi);
+    const cx = (box.x1 + box.x2) / 2, cy = (box.y1 + box.y2) / 2;
+    const left = clamp(cx - (bw * k) / 2, safe.x1, safe.x2 - bw * k);
+    const top = clamp(cy - (bh * k) / 2, safe.y1, safe.y2 - bh * k);
+
+    // Wrapper-local px == viewBox units (foreignObject is unscaled).
+    const tx = (left - LOTTIE_FO_ORIGIN.x) - k * (box.x1 - LOTTIE_FO_ORIGIN.x);
+    const ty = (top - LOTTIE_FO_ORIGIN.y) - k * (box.y1 - LOTTIE_FO_ORIGIN.y);
+
+    wrapper.style.transformOrigin = '0 0';
+    wrapper.style.transform = `translate(${tx}px, ${ty}px) scale(${k})`;
+}
+
+// Re-fit on resize (the bottom buttons' position in SVG units depends on screen size).
+let lottieResizeTimer = null;
+window.addEventListener('resize', () => {
+    clearTimeout(lottieResizeTimer);
+    lottieResizeTimer = setTimeout(() => {
+        const anim = currentLottieInstance;
+        if (!anim || !anim.isLoaded) return;
+        const frame = anim.currentFrame;
+        const wasPlaying = !anim.isPaused;
+        fitLottieToSafeArea(anim);
+        if (wasPlaying) anim.goToAndPlay(frame, true);
+        else anim.goToAndStop(frame, true);
+    }, 150);
+});
 
 /**
  * Starts playing the Lottie animation. (Replaces showFinalImage visual logic)
