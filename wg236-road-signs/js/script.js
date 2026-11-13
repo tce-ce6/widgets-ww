@@ -36,8 +36,11 @@
   const bubbleText = $('bubbleText');
   const opts = $('opts');
   const nextBtn = $('nextBtn');
+  const chooseText = $('chooseText');
 
   let index = 0;
+  let furthest = 0; // the furthest stop reached: every stop up to here can be revisited from its milestone
+  const completed = new Set(); // stops whose sign has been put up
   let busy = false;
   let wrongTimer = 0;
   let placed = null; // { stop, group }: the sign that is up, following its post
@@ -103,17 +106,40 @@
     }
   }
 
+  /**
+   * Milestones: green = sign put up, amber = where you are (or the furthest stop reached).
+   * Every milestone already reached is a tab: tapping it goes straight to that stop,
+   * so a teacher can revisit one road sign without replaying the whole ride.
+   */
   function renderStones() {
     const list = $('stones');
     list.textContent = '';
     stops.forEach((stop, i) => {
-      const state = i < index ? 'is-done' : i === index ? 'is-now' : '';
-      const li = el('li', `stone ${state}`, String(i + 1));
-      const status = i < index ? ', done' : i === index ? ', you are here' : '';
-      li.setAttribute('aria-label', `Stop ${i + 1}${status}`);
+      const done = completed.has(i) && i !== index;
+      const reached = i <= furthest;
+      const state = i === index ? 'is-now' : done ? 'is-done' : reached ? 'is-reached' : '';
+      const li = el('li', `stone ${state}`);
+      const status = i === index ? ', you are here' : done ? ', done' : '';
+      if (reached && i !== index) {
+        const tab = el('button', 'stone-tab', String(i + 1));
+        tab.type = 'button';
+        tab.setAttribute('aria-label', `Go to stop ${i + 1}: ${stop.place}${status}`);
+        tab.addEventListener('click', () => jumpTo(i));
+        li.appendChild(tab);
+      } else {
+        li.textContent = String(i + 1);
+        li.setAttribute('aria-label', `Stop ${i + 1}${status}`);
+      }
       if (i === index) li.setAttribute('aria-current', 'step');
       list.appendChild(li);
     });
+  }
+
+  /** Goes straight to a stop already reached (no ride from the start). */
+  function jumpTo(i) {
+    if (i === index || i > furthest) return;
+    index = i;
+    loadStop(SCENE.arrive[i]);
   }
 
   /** Shows one frame of the scene. Frames count from the start of the whole timeline. */
@@ -192,10 +218,38 @@
     bubbleText.textContent = '';
   }
 
+  /*
+   * The bubble sits above Asha. Where a stop's signpost stands close to her (stops 3, 4, 6),
+   * the bubble slides left until it clears the board, and its tail moves the other way so it
+   * still points at Asha. Elsewhere it keeps its design position (left 183px in the card).
+   */
+  const BUBBLE = { left: 183, width: 365, minLeft: 20, gap: 12, tail: 30 };
+
+  function placeBubble() {
+    bubble.style.left = '';
+    bubble.style.setProperty('--tail-left', `${BUBBLE.tail}px`);
+    const board = boardElement(index);
+    if (!board || !board.getScreenCTM) return;
+    const card = $('sceneCard').getBoundingClientRect();
+    const scale = card.width / $('sceneCard').offsetWidth;
+    // left edge of the sign (the "?" board before it), worked out from the board's geometry,
+    // so it is right even before the sign's image has loaded
+    const svg = board.ownerSVGElement;
+    const corner = svg.createSVGPoint();
+    corner.x = SIGN_BOX.x;
+    corner.y = SIGN_BOX.y;
+    const onScreen = corner.matrixTransform(board.getScreenCTM());
+    const boardLeft = (onScreen.x - card.left) / scale;
+    const left = Math.max(BUBBLE.minLeft, Math.min(BUBBLE.left, boardLeft - BUBBLE.gap - BUBBLE.width));
+    bubble.style.left = `${left}px`;
+    bubble.style.setProperty('--tail-left', `${BUBBLE.tail + BUBBLE.left - left}px`);
+  }
+
   function showBubble(kind, text) {
     window.clearTimeout(wrongTimer);
     bubble.className = `bubble bubble--${kind}`;
     bubble.hidden = false;
+    placeBubble();
     // Emptied first, so that a second wrong tap is announced again by screen readers.
     bubbleText.textContent = '';
     wrongTimer = window.setTimeout(() => {
@@ -213,6 +267,8 @@
     const stop = stops[index];
     busy = true;
     stopRide();
+    furthest = Math.max(furthest, index);
+    chooseText.classList.remove('is-blink');
     renderStones();
     hideBubble();
     nextBtn.hidden = true;
@@ -230,6 +286,8 @@
 
   function ready() {
     busy = false;
+    // "Tap the sign that belongs here." blinks while the learner is choosing
+    chooseText.classList.add('is-blink');
     const buttons = opts.querySelectorAll('.opt');
     buttons.forEach((btn) => {
       btn.disabled = false;
@@ -256,8 +314,11 @@
     opts.querySelectorAll('.opt').forEach((option) => {
       option.disabled = true;
     });
+    chooseText.classList.remove('is-blink');
+    completed.add(index);
+    renderStones();
+    placeSign(stop); // first, so the bubble can keep clear of the sign
     showBubble('right', stop.right);
-    placeSign(stop);
     nextBtn.textContent = index === stops.length - 1 ? lastText : nextText;
     nextBtn.hidden = false;
     nextBtn.focus({ preventScroll: true });
@@ -308,6 +369,8 @@
 
   function startRide() {
     index = 0;
+    furthest = 0;
+    completed.clear();
     clearPlaced();
     goTo('ride');
     loadStop(0); // the ride in to the first stop
@@ -319,6 +382,7 @@
     clearPlaced();
     showSceneFrame(0);
     busy = false;
+    chooseText.classList.remove('is-blink');
     goTo('start');
     $('startBtn').focus({ preventScroll: true });
   }
@@ -332,7 +396,8 @@
   }
 
   $('startBtn').addEventListener('click', startRide);
-  $('againBtn').addEventListener('click', startRide);
+  // Ride again goes back to the introduction (home) screen
+  $('againBtn').addEventListener('click', restart);
   $('restartBtn').addEventListener('click', restart);
   nextBtn.addEventListener('click', next);
   window.addEventListener('resize', fitStage);
