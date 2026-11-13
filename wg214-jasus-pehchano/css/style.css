@@ -179,6 +179,29 @@ button:disabled {
   pointer-events: none;
 }
 
+/* shield on the banner; one sword is earned for each fort completed this example */
+.emblem img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.emblem__sword {
+  opacity: 0;
+  transform: scale(1.8) rotate(-25deg);
+  transition: opacity .35s ease, transform .55s cubic-bezier(.3, 1.6, .5, 1);
+}
+
+.emblem__sword--2 {
+  transform: scale(1.8) rotate(25deg);
+}
+
+.emblem__sword.is-earned {
+  opacity: 1;
+  transform: none;
+}
+
 .counter {
   position: absolute;
   right: 220px;

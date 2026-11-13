@@ -36,7 +36,9 @@
 
   // stage geometry (px, from the AI layout)
   const ZONES = { a: [50, 200, 700, 620], b: [1235, 200, 650, 620], x: [710, 629, 537, 250] };
-  const GATE = { a: [405, 745], b: [1558, 746] };
+  // doorway of each fort: centre x and the threshold y (bottom of the arch), from bg.svg
+  const GATE = { a: [405, 812], b: [1558, 812] };
+  const DOOR_H = 128; // the soldier shrinks to the doorway's height so he fits inside the arch
   const SOLDIER = [838, 465, 201, 354];
   const GRASS_Y = 900;
 
@@ -233,6 +235,17 @@
     if (!slot) return;
     slot.classList.add('is-filled');
     slot.textContent = word;
+    // the fort's last word is in: the player earns the next sword on the emblem
+    if ($$('.member', membersEl[k]).every((m) => m.classList.contains('is-filled'))) earnSword();
+  }
+
+  /** First completed fort gives sword 1, the next one gives sword 2. */
+  function earnSword() {
+    const sword = $$('#emblem .emblem__sword').find((s) => !s.classList.contains('is-earned'));
+    if (!sword) return;
+    sword.classList.add('is-earned');
+    later(() => Sound.sfx('salute'), 250);
+    announce('तुम्हें एक तलवार मिली!');
   }
 
   function addSpyChip(box, word, withIcon) {
@@ -261,7 +274,8 @@
     }
   }
 
-  function nextSoldier() {
+  /** resume = { timeLeft } when Hide Answer brings the same soldier back (no re-speak, same time left). */
+  function nextSoldier(resume) {
     if (state.done) return;
     state.current = null;
     checkpoint.innerHTML = '';
@@ -282,22 +296,34 @@
     });
     checkpoint.appendChild(el);
     state.current = { word, el };
+    if (resume) {
+      state.timeLeft = resume.timeLeft;
+      return;
+    }
     state.timeLeft = state.timeMax;
     later(() => Sound.speak(word), 250);
+    // Show Answer was pressed while the last soldier was still on the move
+    if (state.pendingShow) showAnswer();
   }
 
   /** Sends the soldier into a fort: the gate shuts behind him and he is counted. */
   function enterFort(el, k, done) {
     const [gx, gy] = GATE[k];
+    // the soldier scales about his centre, so his feet end at centre + s * half his height:
+    // put that on the doorway threshold
+    const s = DOOR_H / SOLDIER[3];
+    const cy = SOLDIER[1] + SOLDIER[3] / 2;
     const dx = gx - (SOLDIER[0] + SOLDIER[2] / 2);
-    const dy = gy - (SOLDIER[1] + SOLDIER[3] * 0.75);
+    const dy = gy - cy - (s * SOLDIER[3]) / 2;
     const from = el.style.transform || 'none';
     el.style.transform = '';
     el.animate([
       { transform: from, opacity: 1 },
-      { transform: `translate(${dx}px, ${dy}px) scale(.35)`, opacity: 0.9, offset: 0.85 },
-      { transform: `translate(${dx}px, ${dy}px) scale(.3)`, opacity: 0 }
-    ], { duration: 750, easing: 'ease-in-out', fill: 'forwards' }).onfinish = () => {
+      // walk up to the threshold at doorway size
+      { transform: `translate(${dx}px, ${dy}px) scale(${s})`, opacity: 1, offset: 0.7 },
+      // step in through the doorway: a little smaller and further in, fading into the dark
+      { transform: `translate(${dx}px, ${dy - 6 + (s * 0.1 * SOLDIER[3]) / 2}px) scale(${s * 0.9})`, opacity: 0 }
+    ], { duration: 1000, easing: 'ease-in-out', fill: 'forwards' }).onfinish = () => {
       const fort = zoneEls[k];
       fort.classList.add('is-shut');
       later(() => fort.classList.remove('is-shut'), 700);
@@ -422,12 +448,18 @@
     });
   });
 
+  /** True while the instruction text is being read out (the timer waits for it). */
+  function instructionsPlaying() {
+    if (!$('#itextAudio').classList.contains('is-playing')) return false;
+    try { return window.speechSynthesis.speaking; } catch (e) { return false; }
+  }
+
   /* the timer: running out sends the soldier to the back of the queue */
   function tick(now) {
     const dt = Math.min(0.05, (now - state.last) / 1000 || 0);
     state.last = now;
     const cur = state.current;
-    if (cur && !state.done && !cur.el.classList.contains('is-dragging')) {
+    if (cur && !state.done && !cur.el.classList.contains('is-dragging') && !instructionsPlaying()) {
       state.timeLeft -= dt;
       const pct = Math.max(0, state.timeLeft / state.timeMax);
       timerBar.style.width = `${pct * 100}%`;
@@ -466,9 +498,13 @@
       $$('.bricks i', zoneEls[k]).forEach((b) => b.classList.remove('is-fallen'));
     });
     $('#revealed').innerHTML = '';
+    $$('#emblem .emblem__sword').forEach((s) => s.classList.remove('is-earned'));
     timerBar.style.width = '100%';
     timerBar.classList.remove('is-low');
     answerBtn.disabled = false;
+    state.pendingShow = false;
+    state.saved = null;
+    setAnswerBtn(false);
     $('#nextLabel').textContent = state.r < ROUNDS.length - 1 ? 'अगला उदाहरण' : 'परिणाम देखें';
 
     // soldiers come in a new random order every time
@@ -477,12 +513,72 @@
     later(() => announce(`${round.a[0]} और ${round.b[0]} के किले।`), 50);
   }
 
-  function showAnswer() {
-    if (state.done) return;
+  const ANSWER_SHOW = 'उत्तर देखें';
+  const ANSWER_HIDE = 'उत्तर छिपाएँ';
+
+  function setAnswerBtn(showing) {
+    state.showing = showing;
+    answerBtn.textContent = showing ? ANSWER_HIDE : ANSWER_SHOW;
+    answerBtn.setAttribute('aria-pressed', String(showing));
+  }
+
+  function toggleAnswer() {
     Sound.unlock();
+    if (state.showing) hideAnswer();
+    else if (!state.current) state.pendingShow = true; // a soldier is still walking: open once he is in
+    else showAnswer();
+  }
+
+  /** Everything Show Answer changes, so Hide Answer can put the round back exactly. */
+  function snapshot() {
+    const html = (el) => el.innerHTML;
+    return {
+      queue: state.queue.slice(),
+      word: state.current.word,
+      timeLeft: state.timeLeft,
+      handled: state.handled,
+      filled: { ...state.filled },
+      members: { a: html(membersEl.a), b: html(membersEl.b) },
+      spiesIn: { a: html(spiesInEl.a), b: html(spiesInEl.b) },
+      revealed: html($('#revealed')),
+      bricks: $$('.bricks i').map((b) => b.classList.contains('is-fallen')),
+      swords: $$('#emblem .emblem__sword').map((s) => s.classList.contains('is-earned'))
+    };
+  }
+
+  function hideAnswer() {
+    const snap = state.saved;
+    if (!snap) return;
+    clearTimers();
+    Sound.stop();
+    setAnswerBtn(false);
+    state.saved = null;
+    state.done = false;
+    state.handled = snap.handled;
+    state.filled = { ...snap.filled };
+    ['a', 'b'].forEach((k) => {
+      membersEl[k].innerHTML = snap.members[k];
+      spiesInEl[k].innerHTML = snap.spiesIn[k];
+    });
+    $('#revealed').innerHTML = snap.revealed;
+    $$('.bricks i').forEach((b, i) => b.classList.toggle('is-fallen', snap.bricks[i]));
+    $$('#emblem .emblem__sword').forEach((s, i) => s.classList.toggle('is-earned', snap.swords[i]));
+    // the same soldier steps back up with the same time left
+    state.queue = [snap.word, ...snap.queue];
+    nextSoldier({ timeLeft: snap.timeLeft });
+    const pct = Math.max(0, snap.timeLeft / state.timeMax);
+    timerBar.style.width = `${pct * 100}%`;
+    timerBar.classList.toggle('is-low', pct < 0.3);
+  }
+
+  function showAnswer() {
+    state.pendingShow = false;
+    if (state.done || !state.current) return;
+    Sound.unlock();
+    state.saved = snapshot();
     state.done = true;
-    state.mistake = true;
-    answerBtn.disabled = true;
+    state.mistake = true; // the answer was seen: this example no longer counts as clean
+    setAnswerBtn(true);
     const rest = [...(state.current ? [state.current.word] : []), ...state.queue];
     state.current = null;
     state.queue = [];
@@ -535,7 +631,7 @@
   /* ---- boot ---- */
 
   $('#itextAudio').addEventListener('click', (event) => { event.stopPropagation(); Sound.unlock(); Sound.speak(ITEXT, event.currentTarget); });
-  answerBtn.addEventListener('click', showAnswer);
+  answerBtn.addEventListener('click', toggleAnswer);
   $('#nextBtn').addEventListener('click', next);
   $('#againBtn').addEventListener('click', restartGame);
 

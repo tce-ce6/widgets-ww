@@ -24,7 +24,11 @@
         <!-- Fixed 1920x1080 design stage, scaled to fit the window by script.js -->
         <div id="stage">
           <img class="stage-bg" src="assets/svg/bg.svg" alt="">
-          <img class="emblem" src="assets/svg/emblem.svg" alt="">
+          <div class="emblem" id="emblem" aria-hidden="true">
+            <img src="assets/svg/emblem-base.svg" alt="">
+            <img class="emblem__sword emblem__sword--1" src="assets/svg/emblem-sword-1.svg" alt="">
+            <img class="emblem__sword emblem__sword--2" src="assets/svg/emblem-sword-2.svg" alt="">
+          </div>
           <p class="counter" id="exampleCounter"></p>
 
           <div class="itext">

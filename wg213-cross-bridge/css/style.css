@@ -475,6 +475,20 @@ button:disabled {
   pointer-events: none;
 }
 
+/* no planks left in the river: the whirlpool no longer takes words */
+.whirl.is-disabled {
+  cursor: default;
+  pointer-events: none;
+}
+
+.whirl.is-disabled .whirl__label {
+  opacity: .5;
+}
+
+.has-selection .whirl.is-disabled {
+  outline: none;
+}
+
 .whirl__label {
   position: absolute;
   left: 72px;
