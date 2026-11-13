@@ -73,7 +73,7 @@
   const BONES = {
     king: {
       who: 'The King', pronoun: 'he', scene: 'The army awaits',
-      options: ['Will misfortune strike the army?', 'Will misfortune strike the harvest?', 'Will misfortune strike the kiln?'],
+      options: ['Will misfortune strike the military?', 'Will misfortune strike the harvest?', 'Will misfortune strike the kiln?'],
       feeling: 'Fear',
       note1: 'Kings consulted the bones before marching.',
       note2: 'A fear — even a king dreaded defeat.'
@@ -549,7 +549,16 @@
   function showFact(d, btn) {
     $$('.tl__info').forEach((b) => b.classList.toggle('is-active', b === btn));
     const fact = $('#tlFact');
-    fact.innerHTML = `<span><b>${d.name}:</b>${d.fact}</span>`;
+    fact.innerHTML = `<span><b>${d.name}:</b>${d.fact}</span>` +
+      '<button class="tl-fact__close" type="button" aria-label="Close the fact"><img src="assets/svg/close-btn.svg" alt=""></button>';
+    // the cross clears the fact so the names below are easy to drag again
+    $('.tl-fact__close', fact).addEventListener('click', (event) => {
+      event.stopPropagation();
+      Sound.play('tap');
+      fact.hidden = true;
+      $$('.tl__info').forEach((b) => b.classList.remove('is-active'));
+      if (btn && btn.isConnected) btn.focus();
+    });
     fact.hidden = false;
     restart(fact, 'tl-fact');
     announce(`${d.name}: ${d.fact}`);
