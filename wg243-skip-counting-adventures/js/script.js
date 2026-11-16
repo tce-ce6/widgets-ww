@@ -155,14 +155,25 @@
       if (overlapsX && top + m.offsetHeight > h.y - gap) top = h.y - gap - m.offsetHeight;
       top = Math.max(top, T.titleTop + 44); // and below the world's title line
     }
+    // While the character crosses, the counting message keeps clear of its jumps.
+    if (kind === 'good' && S && S.done && T.walkMsgTop != null) top = T.walkMsgTop;
     m.style.top = `${top}px`;
   }
+  // Confetti: the shared Lottie animation (embedded in confetti-data.js), played once above the message.
+  const CONFETTI_SIZE = 620;
   function burst() {
-    if (reduce) return;
+    if (reduce || !window.lottie || !window.CONFETTI_ANIM) return;
     const T = W[world];
     const top = parseFloat($('msg').style.top) || T.msgTop;
-    const c = img('confetti', 'assets/svg/confetti.svg', [722, top - 233, 475, 282.4], L.fx);
-    setTimeout(() => c.remove(), 1400);
+    const c = div('confetti-lottie', L.fx);
+    Object.assign(c.style, { left: `${960 - CONFETTI_SIZE / 2}px`, top: `${top - CONFETTI_SIZE + 150}px`, width: `${CONFETTI_SIZE}px`, height: `${CONFETTI_SIZE}px` });
+    const anim = window.lottie.loadAnimation({
+      container: c, renderer: 'svg', loop: false, autoplay: true,
+      animationData: JSON.parse(JSON.stringify(window.CONFETTI_ANIM)), // lottie changes the data it is given
+    });
+    const done = () => { anim.destroy(); c.remove(); };
+    anim.addEventListener('complete', done);
+    setTimeout(() => { if (c.isConnected) done(); }, 4000); // in case 'complete' never fires
   }
 
   function makeSequence(s) {
@@ -299,16 +310,24 @@
     S.pieces[i].classList.add('lit');
     say(S.seq.slice(0, i + 1).join(', ') + (i < 5 ? ' …' : ''), 'good');
   }
+  // A jump; when the world has a "jumpSrc" (the frog without its ground shadow) it is shown in the air.
+  async function jump(to, dur, lift) {
+    const T = W[world];
+    const art = S.char.querySelector('.char-art');
+    if (T.char.jumpSrc) art.src = T.char.jumpSrc;
+    await tween(S.char, to, dur, lift);
+    if (T.char.jumpSrc) art.src = T.char.src;
+  }
   async function walkFinale() {
     const T = W[world];
     for (let i = 0; i < 6; i++) {
-      if (i > 0) L.hops.children[i - 1].classList.add('lit');
       const [x, y] = T.slots[i];
-      await tween(S.char, [x + T.char.on[0], y + T.char.on[1]], 480, T.char.lift);
+      await jump([x + T.char.on[0], y + T.char.on[1]], 480, T.char.lift);
+      if (i > 0) L.hops.children[i - 1].classList.add('lit'); // the jump arc appears once the jump is made
       await countAlong(i);
       await wait(520);
     }
-    await tween(S.char, T.char.end, 600, T.char.lift + 20);
+    await jump(T.char.end, 600, T.char.lift + 20);
     if (T.char.endSrc) {
       const a = S.char.querySelector('.char-art');
       a.src = T.char.endSrc;
@@ -339,8 +358,8 @@
     L.char.appendChild(ch);
     setPos(ch, M.climbX, T.slots[0][1] - 19 + M.climbDy + 60);
     for (let i = 0; i < 6; i++) {
-      if (i > 0) L.hops.children[i - 1].classList.add('lit');
       await tween(ch, [M.climbX, T.slots[i][1] - 19 + M.climbDy], 480, 0);
+      if (i > 0) L.hops.children[i - 1].classList.add('lit'); // the jump arc appears once the climb is made
       await countAlong(i);
       await wait(520);
     }
@@ -447,6 +466,9 @@
       f[(i + (e.shiftKey ? -1 : 1) + f.length) % f.length].focus();
     }
   });
+
+  // preload the frog's jump art so the swap does not flicker
+  Object.keys(W).forEach((k) => { if (W[k].char && W[k].char.jumpSrc) new Image().src = W[k].char.jumpSrc; });
 
   window.addEventListener('resize', () => { fitStage(); positionTour(); });
   fitStage();

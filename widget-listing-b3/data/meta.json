@@ -200,6 +200,10 @@
       "updatedAt": "2026-10-30T17:36:31+05:30",
       "author": "tce-nitinc"
     },
+    "wg216-blood-group": {
+      "updatedAt": "2026-11-16T10:59:33+05:30",
+      "author": "tce-ashishg"
+    },
     "wg218-ancient-china": {
       "updatedAt": "2026-11-13T18:13:55+05:30",
       "author": "tce-nitinc"
@@ -245,7 +249,7 @@
       "author": "Shyamsunder Hait"
     },
     "wg243-skip-counting-adventures": {
-      "updatedAt": "2026-11-12T16:16:29+05:30",
+      "updatedAt": "2026-11-16T11:59:40+05:30",
       "author": "tce-nitinc"
     },
     "wg246-teeth-order": {
@@ -274,6 +278,22 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-11-16T11:59:40+05:30",
+      "author": "tce-nitinc",
+      "message": "resolved comments form wg243",
+      "widgets": [
+        243
+      ]
+    },
+    {
+      "date": "2026-11-16T10:59:33+05:30",
+      "author": "tce-ashishg",
+      "message": "wg216 completed",
+      "widgets": [
+        216
+      ]
+    },
     {
       "date": "2026-11-13T18:46:10+05:30",
       "author": "tce-nitinc",
@@ -526,23 +546,6 @@
       "message": "resolved ejypt widget bugs",
       "widgets": [
         202
-      ]
-    },
-    {
-      "date": "2026-11-05T16:01:37+05:30",
-      "author": "Shyamsunder Hait",
-      "message": "added wg236",
-      "widgets": [
-        237
-      ]
-    },
-    {
-      "date": "2026-11-05T15:57:57+05:30",
-      "author": "tce-ashishg",
-      "message": "wg233 completed",
-      "widgets": [
-        232,
-        233
       ]
     }
   ]
