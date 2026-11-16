@@ -241,12 +241,12 @@
       "author": "tce-nitinc"
     },
     "wg237-double-agent-words": {
-      "updatedAt": "2026-11-05T16:01:37+05:30",
-      "author": "Shyamsunder Hait"
+      "updatedAt": "2026-11-16T15:52:39+05:30",
+      "author": "tce-nitinc"
     },
     "wg242-picture-stories": {
-      "updatedAt": "2026-11-05T17:27:17+05:30",
-      "author": "Shyamsunder Hait"
+      "updatedAt": "2026-11-16T15:52:39+05:30",
+      "author": "tce-nitinc"
     },
     "wg243-skip-counting-adventures": {
       "updatedAt": "2026-11-16T11:59:40+05:30",
@@ -278,6 +278,15 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-11-16T15:52:39+05:30",
+      "author": "tce-nitinc",
+      "message": "FIXES",
+      "widgets": [
+        237,
+        242
+      ]
+    },
     {
       "date": "2026-11-16T15:14:37+05:30",
       "author": "tce-nitinc",
@@ -530,14 +539,6 @@
       "message": "resolved comments form the wg218",
       "widgets": [
         218
-      ]
-    },
-    {
-      "date": "2026-11-11T11:45:15+05:30",
-      "author": "tce-nitinc",
-      "message": "wg202 resolved river functionality issue",
-      "widgets": [
-        202
       ]
     }
   ]
