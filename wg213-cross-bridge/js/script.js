@@ -190,11 +190,18 @@ if (
     let playToken = 0;
     let playingBtn = null;
 
-    // the browser's voice list arrives late: keep the Hindi voice once it is known
+    // recordings that failed to load once are not tried again, so the voice starts at once
+    const missing = new Set();
+    // the spoken line is kept here: Chrome can drop an utterance that is garbage-collected mid-speech
+    let currentUtterance = null;
+
+    // the browser's voice list arrives late: keep the Hindi voice once it is known.
+    // An on-device voice starts speaking straight away; an online one has to download first.
     let hindiVoice = null;
     const pickVoice = () => {
       try {
-        hindiVoice = window.speechSynthesis.getVoices().find((v) => v.lang && v.lang.toLowerCase().startsWith('hi')) || null;
+        const hindi = window.speechSynthesis.getVoices().filter((v) => v.lang && v.lang.toLowerCase().startsWith('hi'));
+        hindiVoice = hindi.find((v) => v.localService) || hindi[0] || null;
       } catch (e) { hindiVoice = null; }
     };
     if ('speechSynthesis' in window) {
@@ -216,10 +223,11 @@ if (
 
     function tts(text, tok) {
       try {
-        if (!('speechSynthesis' in window)) { done(tok); return; }
-        window.speechSynthesis.cancel();
-        // speaking straight after cancel() drops the line in Chrome: wait a moment
-        window.setTimeout(() => {
+        const synth = window.speechSynthesis;
+        if (!synth) { done(tok); return; }
+        const busy = synth.speaking || synth.pending;
+        if (busy) synth.cancel();
+        const speak = () => {
           if (tok !== playToken) return;
           const u = new SpeechSynthesisUtterance(text);
           u.lang = 'hi-IN';
@@ -228,8 +236,12 @@ if (
           if (hindiVoice) u.voice = hindiVoice;
           u.onend = () => done(tok);
           u.onerror = () => done(tok);
-          window.speechSynthesis.speak(u);
-        }, 60);
+          currentUtterance = u;
+          synth.resume(); // Chrome can be left paused, and then nothing is heard
+          synth.speak(u);
+        };
+        // speaking straight after cancel() drops the line in Chrome: wait a moment only then
+        if (busy) window.setTimeout(speak, 60); else speak();
       } catch (e) { done(tok); }
     }
 
@@ -242,6 +254,8 @@ if (
       halt();
       markBtn(btn);
       const list = [].concat(files);
+      // a recording already known to be missing: go straight to the browser voice
+      if (list.some((f) => missing.has(f))) { tts(text, tok); return; }
       let i = 0;
       const next = () => {
         if (tok !== playToken) return;
@@ -251,7 +265,10 @@ if (
         if (p && p.catch) p.catch(() => { /* reported by the error event, or autoplay was blocked */ });
       };
       player.onended = next;
-      player.onerror = () => { if (tok === playToken) tts(text, tok); };
+      player.onerror = () => {
+        missing.add(list[Math.max(0, i - 1)]);
+        if (tok === playToken) tts(text, tok);
+      };
       next();
     }
 
@@ -366,8 +383,7 @@ if (
       pool.appendChild(p);
     });
 
-    // the two bridge words, one after the other
-    later(() => Sound.say([audioFor(round.a[0]), audioFor(round.b[0])], `${round.a[0]} और ${round.b[0]}`), 400);
+    // no sound plays by itself: a word is heard only when the learner taps a bridge label or a word
   }
 
   // a slot is reserved (data-taken) as soon as a piece starts flying to it
