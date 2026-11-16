@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 33.7 48.85">
+  <!-- Generator: Adobe Illustrator 30.8.2, SVG Export Plug-In . SVG Version: 2.1.4 Build 7)  -->
+  <defs>
+    <style>
+      .st0 {
+        font-family: Roboto-Bold, Roboto;
+        font-size: 19px;
+        font-weight: 700;
+      }
+
+      .st0, .st1 {
+        fill: #fff;
+      }
+
+      .st0, .st2 {
+        isolation: isolate;
+      }
+
+      .st3 {
+        fill: #0c51c4;
+      }
+
+      .st4 {
+        fill: none;
+      }
+
+      .st5 {
+        clip-path: url(#clippath);
+      }
+    </style>
+    <clipPath id="clippath">
+      <rect class="st4" x="1.17" y="1.53" width="30.42" height="45.3"/>
+    </clipPath>
+  </defs>
+  <g id="Group_631">
+    <g id="Group_598">
+      <g class="st5">
+        <g id="Group_415">
+          <path id="Path_310" class="st1" d="M16.38,1.53c8.4,0,15.2,6.81,15.21,15.21,0,6.08-11.67,23.76-15.21,30.09C12.84,40.5,1.17,22.82,1.17,16.74c0-8.4,6.81-15.2,15.21-15.21M24.52,16.74c0-4.54-3.68-8.22-8.22-8.22s-8.22,3.68-8.22,8.22,3.68,8.22,8.22,8.22h0c4.53-.01,8.21-3.69,8.22-8.22"/>
+        </g>
+      </g>
+    </g>
+    <g id="Group_631-2">
+      <circle id="Ellipse_8" class="st3" cx="16.17" cy="16.93" r="13"/>
+    </g>
+    <g id="_1" class="st2">
+      <text class="st0" transform="translate(10.72 22.93)"><tspan x="0" y="0">1</tspan></text>
+    </g>
+  </g>
+</svg>
