@@ -59,7 +59,6 @@
   const viewport = $('#viewport');
   const flower = $('#flower');
   const flies = $('#flies');
-  const feedback = $('#feedback');
   const answerBtn = $('#answerBtn');
   const liveRegion = $('#liveRegion');
 
@@ -203,15 +202,9 @@
   const ANSWER_SHOW = 'उत्तर देखें';
   const ANSWER_HIDE = 'उत्तर छिपाएँ';
 
-  function setFeedback(text, kind) {
-    feedback.hidden = !text;
-    feedback.textContent = text || '';
-    feedback.className = `feedback${kind ? ` is-${kind}` : ''}`;
-    if (text) {
-      // restart the entry animation
-      void feedback.offsetWidth;
-      announce(text);
-    }
+  // No feedback message is shown on screen; screen readers still hear it.
+  function setFeedback(text) {
+    if (text) announce(text);
   }
 
   function renderFound(R) {
