@@ -21,7 +21,8 @@
   const SVG_NS = 'http://www.w3.org/2000/svg';
   // the placed sign covers the board's panel (in the board layer's own coordinates)
   const SIGN_BOX = { x: 0, y: 0, size: 165 };
-  const CONFETTI_BOX = { x: -41, y: -39, w: 246, h: 244 };
+  // the confetti Lottie (512x512, bursting from its centre), centred on the sign
+  const CONFETTI_LOTTIE_BOX = { x: 82.5 - 220, y: 82.5 - 220, size: 440 };
   const PROMPT_FONT_MAX = 28;
   const PROMPT_FONT_MIN = 22;
 
@@ -194,8 +195,38 @@
   }
 
   function clearPlaced() {
-    if (placed) placed.group.remove();
+    if (placed) {
+      if (placed.confetti) placed.confetti.destroy();
+      placed.group.remove();
+    }
     placed = null;
+  }
+
+  /**
+   * The confetti burst behind the new sign: the shared Lottie (js/confetti-lottie-data.js), played once.
+   * It sits in the sign's group, so it moves with the post. (The old confetti.svg picture is no longer used here.)
+   */
+  function confettiFor(group) {
+    if (!window.CONFETTI_LOTTIE) return null;
+    const box = CONFETTI_LOTTIE_BOX;
+    const holder = document.createElementNS(SVG_NS, 'foreignObject');
+    holder.setAttribute('class', 'post-sign__confetti-lottie');
+    holder.setAttribute('x', box.x);
+    holder.setAttribute('y', box.y);
+    holder.setAttribute('width', box.size);
+    holder.setAttribute('height', box.size);
+    const container = document.createElement('div');
+    holder.appendChild(container);
+    group.appendChild(holder);
+    const anim = lottie.loadAnimation({
+      container,
+      renderer: 'svg',
+      loop: false,
+      autoplay: true,
+      animationData: JSON.parse(JSON.stringify(window.CONFETTI_LOTTIE)), // lottie changes the data it is given
+    });
+    anim.addEventListener('complete', () => { holder.style.display = 'none'; });
+    return anim;
   }
 
   function renderOptions(stop) {
@@ -331,10 +362,10 @@
     const board = boardElement(index);
     const group = document.createElementNS(SVG_NS, 'g');
     group.setAttribute('class', 'post-sign');
-    group.appendChild(svgImage('post-sign__confetti', 'assets/svg/confetti.svg', CONFETTI_BOX));
+    const confetti = confettiFor(group);
     group.appendChild(svgImage('post-sign__sign', signs[stop.sign].src, SIGN_BOX));
     board.parentNode.insertBefore(group, board.nextSibling);
-    placed = { stop: index, group };
+    placed = { stop: index, group, confetti };
     trackSign();
     worlds.setAttribute('aria-label', `${stop.desc} The ${signs[stop.sign].name} sign is now on the signpost.`);
   }
