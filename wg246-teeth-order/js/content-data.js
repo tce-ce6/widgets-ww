@@ -58,13 +58,13 @@ window.TEETH_CONTENT = {
     start: [
       { sel: '#startCards .jaw-card', text: 'Choose a jaw to begin.' }, // the cards, since their row has no height of its own
       { sel: '#insightsBtn', text: 'Tap Insights for a quick summary of human teeth.' },
-      { sel: '#helpBtn', text: 'Tap How to use to see these steps again.' },
+      { sel: '#helpBtn', text: 'Tap Help to see these steps again.' },
     ],
     jaw: [
       { sel: '#jawView', text: 'This is the lower jaw. Rotate it to see it in 3D.' },
       { sel: '#tiles', text: 'Drag a tooth into an empty socket. Or tap a tooth, then tap a socket.' },
       { sel: '#tiles .view-btn', text: 'Tap View to see a tooth in 3D.' },
-      { sel: '#feedback', text: 'Correct teeth stay in place. Wrong teeth go back.' },
+      { sel: '#feedback', text: 'Look here to see if you placed the tooth correctly.' },
       { sel: '#counter', text: 'The count goes up to {total} as you place each tooth.' },
       { sel: '#formula', text: 'The formula fills in as you finish each type of tooth.' },
       { sel: '#stageTools', text: 'Show answer fills in the correct teeth, and Hide answer takes them away. Reset jaw clears the jaw.' },
