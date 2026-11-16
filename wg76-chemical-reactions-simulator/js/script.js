@@ -21,19 +21,19 @@ document.addEventListener("DOMContentLoaded", () => {
       tabId: "displacement-reaction",
       reactantGroupId: "displacement-reaction-reactant",
       reactantIds: ["Zn", "CuSO4"],       // 2 required
-      reactionComplete: "A reaction in which a more reactive element displaces a less reactive element from its compound (Zn + CuSO₄ → ZnSO₄ + Cu — solution color changes)."
+      reactionComplete: "A more reactive element displaces a less reactive element from its compound. Zinc is more reactive than copper, so it displaces copper from copper sulfate solution. Zn + CuSO₄ → ZnSO₄ + Cu"
     },
     {
       tabId: "double-displacement-reaction",
       reactantGroupId: "double-displacement-reaction-ractant", // typo in HTML kept
       reactantIds: ["AgNO3", "NaCl"],     // 2 required
-      reactionComplete: "A chemical reaction where two ionic compounds swap their positive (cations) and negative (anions) ions to form two entirely new compounds, often resulting in a solid precipitate, gas, or water. (AgNO₃ + NaCl → AgCl + NaNO₂↓ — solid precipitate forms)."
+      reactionComplete: "Two compounds exchange their ions to form two new compounds. A white precipitate of silver chloride is formed. AgNO₃ + NaCl → AgCl + NaNO₃"
     },
     {
       tabId: "redox-reaction",
       reactantGroupId: "redox-reaction-reactant",
       reactantIds: ["AgNO3", "NaCl"],     // 2 required
-      reactionComplete: "A chemical reaction involving the transfer of electrons between species, where one substance loses electrons (is oxidized) and another gains electrons (is reduced) simultaneously, causing changes in their oxidation states (2Mg + O₂ → 2MgO — magnesium oxidised, oxygen reduced)."
+      reactionComplete: "In a redox reaction, oxidation and reduction take place simultaneously. Here, magnesium loses electrons (gains oxygen) and is oxidised, while oxygen gains electrons and is reduced. 2Mg + O₂ → 2MgO"
     },
   ];
 

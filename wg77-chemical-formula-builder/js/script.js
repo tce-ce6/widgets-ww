@@ -1,643 +1,152 @@
-const periodicTable_plusChange = {
-  H: 1,
-  K: 1,
-  Ca: 2,
-  Fe: 3,
-  Na: 1,
-  Mg: 2,
-  Al: 3,
-  "NH₄": 1,
-};
-const periodicTable_minusChange = {
-  Cl: 1,
-  O: 2,
-  N: 3,
-  "SO₄": 2,
-  OH: 1,
-  Br: 1,
-  S: 2,
-  "NO₃": 1,
-  "CO₃": 2,
-};
-const periodicTable_plusNames = {
-  H: "Hydrogen",
-  K: "Potassium",
-  Ca: "Calcium",
-  Fe: "Iron",
-  Na: "Sodium",
-  Mg: "Magnesium",
-  Al: "Aluminium",
-  "NH₄": "Ammonium",
-};
+const CATIONS=[
+ {id:'H', html:'H', name:'Hydrogen', v:1, col:'#4f9a96'},
+ {id:'K', html:'K', name:'Potassium', v:1, col:'#5b2d7a'},
+ {id:'Ca',html:'Ca',name:'Calcium', v:2, col:'#7a5a3a'},
+ {id:'Fe',html:'Fe',name:'Iron(III)', v:3, col:'#4c5e5a'},
+ {id:'Na',html:'Na',name:'Sodium', v:1, col:'#1f6475'},
+ {id:'Mg',html:'Mg',name:'Magnesium', v:2, col:'#4a5a63'},
+ {id:'Al',html:'Al',name:'Aluminium', v:3, col:'#5c6f6a'},
+ {id:'NH4',html:'NH<sub>4</sub>',name:'Ammonium', v:1, col:'#8a5aa0', poly:true, atoms:'1 N + 4 H'}
+];
+const ANIONS=[
+ {id:'Cl', html:'Cl', name:'Chloride', v:1, col:'#4e8a3a'},
+ {id:'O',  html:'O',  name:'Oxide', v:2, col:'#8a4a3c'},
+ {id:'N',  html:'N',  name:'Nitride', v:3, col:'#7a6a2c'},
+ {id:'SO4',html:'SO<sub>4</sub>',name:'Sulfate', v:2, col:'#6a5a40', poly:true, atoms:'1 S + 4 O'},
+ {id:'OH', html:'OH', name:'Hydroxide', v:1, col:'#3e5a66', poly:true, atoms:'1 O + 1 H'},
+ {id:'Br', html:'Br', name:'Bromide', v:1, col:'#6a4a2e'},
+ {id:'S',  html:'S',  name:'Sulfide', v:2, col:'#7a8a2a'},
+ {id:'NO3',html:'NO<sub>3</sub>',name:'Nitrate', v:1, col:'#9a3a30', poly:true, atoms:'1 N + 3 O'},
+ {id:'CO3',html:'CO<sub>3</sub>',name:'Carbonate', v:2, col:'#1e4a80', poly:true, atoms:'1 C + 3 O'}
+];
+const SPECIAL={'H|O':'Water','H|SO4':'Sulfuric Acid','H|NO3':'Nitric Acid','H|CO3':'Carbonic Acid'};
+const BLOCKED=new Set(['H|N','H|OH','NH4|N','NH4|O']);
+let cat=null, an=null, applied=false, timers=[];
+const later=(ms,fn)=>timers.push(setTimeout(fn,ms));
+const stopAll=()=>{timers.forEach(clearTimeout);timers=[];};
 
-const periodicTable_minusNames = {
-  Cl: "Chloride",
-  O: "Oxide",
-  N: "Nitride",
-  "SO₄": "Sulfate",
-  OH: "Hydroxide",
-  Br: "Bromide",
-  S: "Sulfide",
-  "NO₃": "Nitrate",
-  "CO₃": "Carbonate",
-};
+const $=id=>document.getElementById(id);
+const gcd=(a,b)=>b?gcd(b,a%b):a;
+const chg=(ion,s)=>`${ion.v}${s}`;
+function part(ion,n){ if(n===1) return ion.html; return ion.poly?`(${ion.html})<sub>${n}</sub>`:`${ion.html}<sub>${n}</sub>`; }
+function calc(){ const a=cat.v,b=an.v,g=gcd(a,b);
+  return {a,b,g,fc:b/g,fa:a/g,raw:part(cat,b)+part(an,a),fin:part(cat,b/g)+part(an,a/g)}; }
+const cname=()=>SPECIAL[cat.id+'|'+an.id]||`${cat.name} ${an.name}`;
 
-const cationData = {
-  H: { name: "Hydrogen", charge: 1 },
-  K: { name: "Potassium", charge: 1 },
-  Ca: { name: "Calcium", charge: 2 },
-  Fe: { name: "Iron", charge: 3 },
-  Mg: { name: "Magnesium", charge: 3 },
-  Al: { name: "Aluminium", charge: 3 },
-  "NH₄": { name: "Ammonium", charge: 1 },
-  Na: { name: 'Sodium', charge: 1 }
-};
+function fit(){const s=Math.min(innerWidth/1420,innerHeight/747);$('stage').style.transform=`scale(${s})`;}
+addEventListener('resize',fit);
 
-const anionData = {
-  Cl: { name: "Chloride", charge: 1 },
-  O: { name: "Oxide", charge: 2 },
-  N: { name: "Nitride", charge: 3 },
-  "SO₄": { name: "Sulfate", charge: 2 },
-  OH: { name: "Hydroxide", charge: 1 },
-  Br: { name: "Bromide", charge: 1 },
-  S: { name: "Sulfide", charge: 2 },
-  "NO₃": { name: "Nitrate", charge: 1 },
-  "CO₃": { name: "Carbonate", charge: 2 },
-};
-
-const plusChangeEntries = Object.entries(periodicTable_plusChange); // [["H", 1], ["K", 1]...]
-const minusChangeEntries = Object.entries(periodicTable_minusChange);
-
-// IDs of the container groups in your HTML for Cations
-
-let selectedCation = null; // Stores {symbol, charge}
-let selectedAnion = null;
-
-// Initialization
-function init() {
-  setupInteractions();
-  modalFunctionality();
-
-
-}
-function modalFunctionality() {
-  document.getElementById("ruleModal").style.display = "none";
-  document.getElementById("exampleModal").style.display = "none";
-  let backdrop = document.getElementById("modal-backdrop");
-  if (backdrop) backdrop.style.display = "none";
-
-  let button = document.getElementById("ruleBtn");
-  if (button) {
-    button.addEventListener("click", function () {
-      document.getElementById("ruleModal").style.display = "block";
-      document.getElementById("exampleModal").style.display = "none";
-      let backdropEl = document.getElementById("modal-backdrop");
-      if (backdropEl) backdropEl.style.display = "block";
-    });
-  }
-
-  let btnClose = document.getElementById("btn-close");
-  if (btnClose) {
-    btnClose.addEventListener("click", function () {
-      document.getElementById("ruleModal").style.display = "none";
-      document.getElementById("exampleModal").style.display = "none";
-      let backdropEl = document.getElementById("modal-backdrop");
-      if (backdropEl) backdropEl.style.display = "none";
-    });
-  }
-}
-
-function setupInteractions() {
-  // Select all ion groups by their IDs from your SVG
-  // Note: You should ensure your SVG groups for all ions have consistent IDs
-  // For this example, we'll attach listeners to the specific ones found in your file
-  const cations = ["H", "K", "Ca", "Fe", "Na", "Mg", "Al", "NH₄"];
-  const anions = ["Cl", "O", "N", "SO₄", "OH", "Br", "S", "NO₃", "CO₃"];
-  const cationMap = {
-    "Group 5_2": "H",
-    "Group 85_2": "K",
-    "Group 86_2": "Ca",
-    "Group 87_2": "Fe",
-    "Group 90_2": "Mg",
-    "Group 92_2": "NH₄",
-  };
-  const anionMap = {
-    "Group 73": "Cl",
-    "Group 76": "O",
-    "Group 77": "N",
-    "Group 78": "SO₄",
-  };
-
-  cations.forEach((id) => {
-    const el = document.getElementById(id);
-    if (el) el.onclick = () => selectIon(id, "plus");
+function buildTrays(){
+  const mk=(list,tray,s,kind)=>list.forEach(ion=>{
+    const b=document.createElement('button');
+    b.className='tile'; b.style.setProperty('--c',ion.col); b.dataset.id=ion.id;
+    b.innerHTML=`<b>${ion.html}</b><span>${chg(ion,s)}</span>`;
+    b.onclick=()=>pick(kind,ion); $(tray).appendChild(b);
   });
+  mk(CATIONS,'catTray','+','cat'); mk(ANIONS,'anTray','-','an');
+}
+function pick(kind,ion){
+  if(applied) return;
+  const c=kind==='cat'?ion:cat, a=kind==='an'?ion:an;
+  if(c&&a&&BLOCKED.has(c.id+'|'+a.id)){
+    toast(`${c.html} (${chg(c,'+')}) and ${a.html} (${chg(a,'-')}) do not form a compound here. Pick another ion.`); return;
+  }
+  if(kind==='cat') cat=ion; else an=ion;
+  render();
+}
+let tt;
+function toast(h){const t=$('toast');t.innerHTML='✘ '+h;t.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),2600);}
 
-  anions.forEach((id) => {
-    const el = document.getElementById(id);
-    if (el) el.onclick = () => selectIon(id, "minus");
+const ball=(ion,s,x,y,id)=>`<div class="ball ${ion.poly?'poly':''}" style="--c:${ion.col};${x!=null?`left:${x}px;top:${y}px`:''}"><b${id?` id="${id}"`:''}>${ion.html}</b><span>${chg(ion,s)}</span></div>`;
+
+function chargeRow(){
+  return `<div class="clbl">Charge</div>`+
+    (cat?`<div class="chg c" style="left:80px">${chg(cat,'+')}</div>`:'')+
+    (an?`<div class="chg a" style="left:280px">${chg(an,'-')}</div>`:'');
+}
+function selectionView(){ // before Apply: show the selected ion(s)
+  let h='';
+  if(cat||an) h+=chargeRow();
+  if(cat) h+=ball(cat,'+',85,20)+(cat.poly?`<div class="cap" style="left:50px">(polyatomic ion)</div>`:'');
+  if(an)  h+=ball(an,'-',285,20)+(an.poly?`<div class="cap" style="left:250px">(polyatomic ion)</div>`:'');
+  return h;
+}
+function crossView(r){ // criss-cross animation
+  const svg=`<svg class="cross">
+    <path class="ln" pathLength="100" d="M175,200 L275.6,124.8" stroke="#000"/>
+    <polygon class="hd" points="290,114 281,132 270.2,117.6" style="animation-delay:1.6s"/>
+    <path class="ln" pathLength="100" d="M285,200 L184.4,124.8" stroke="#000" style="animation-delay:1.8s"/>
+    <polygon class="hd" points="170,114 189.8,117.6 179,132" style="animation-delay:3.4s"/></svg>`;
+  return `<div class="show">`+ball(cat,'+',85,20,'symA')+ball(an,'-',285,20,'symB')+
+    chargeRow()+
+    `<div class="cnt" id="cntB" style="left:250px;top:86px;color:#ff2a2a">${r.a}</div>`+
+    `<div class="cnt second" id="cntA" style="left:146px;top:104px;color:#3a46ff">${r.b}</div>`+svg+`<div class="divl" id="divl">÷ ${r.g}</div></div>`;
+}
+function countView(r){ // after Apply: ions in one formula unit
+  let h='<div class="row">';
+  for(let i=0;i<r.fc;i++) h+=ball(cat,'+');
+  for(let i=0;i<r.fa;i++) h+=ball(an,'-');
+  h+=`</div><div class="ratio">${r.fc} ${cat.html}<sup>${cat.v>1?cat.v:''}+</sup> ion${r.fc>1?'s':''} : ${r.fa} ${an.html}<sup>${an.v>1?an.v:''}-</sup> ion${r.fa>1?'s':''}<br>Charges: (+${r.a} × ${r.fc}) + (−${r.b} × ${r.fa}) = 0</div>`;
+  return h;
+}
+function explanation(r){
+  const L=[];
+  [cat,an].forEach(ion=>{ if(ion.poly) L.push(`• ${ion.html} is a group of atoms. It acts as one unit.`); });
+  L.push(`• ${cat.html} gives its charge ${r.a} to ${an.html}.`);
+  L.push(`• ${an.html} gives its charge ${r.b} to ${cat.html}.`);
+  if(r.g>1) L.push(`• Ratio (${r.b}:${r.a}) simplifies down to (${r.fc}:${r.fa}).`);
+  [[cat,r.fc],[an,r.fa]].forEach(([ion,n])=>{ if(!ion.poly) return;
+    L.push(n>1?`• There are ${n} ${ion.html} groups, so put ${ion.html} in brackets.`:`• Only 1 ${ion.html}, so no brackets.`); });
+  if(r.fc===1||r.fa===1) L.push(`• We do not write 1.`);
+  return '<b>Explanation:</b><br>'+L.join('<br>')+`<br><b>Result: ${r.fin}</b>`;
+}
+
+function render(){
+  document.querySelectorAll('#catTray .tile').forEach(b=>{b.classList.toggle('sel',!!cat&&b.dataset.id===cat.id);b.classList.toggle('dim',applied);});
+  document.querySelectorAll('#anTray .tile').forEach(b=>{b.classList.toggle('sel',!!an&&b.dataset.id===an.id);b.classList.toggle('dim',applied);});
+  $('apply').disabled=!(cat&&an)||applied;
+  if(!applied){
+    $('symArea').innerHTML=selectionView();
+    $('bigF').innerHTML=''; $('resR').innerHTML='';
+    $('resL').innerHTML=`<div>${cat&&an?'Tap <b>Apply criss cross method</b>':'Select a cation and an anion'}</div>`;
+  }
+}
+function symHTML(ion,n){
+  if(n===1) return ion.html;
+  return ion.poly?`(${ion.html})<sub class="ns">${n}</sub>`:`${ion.html}<sub class="ns">${n}</sub>`;
+}
+function slide(cnt,sym,n){ // move crossed number down into subscript place
+  const sc=$('stage').getBoundingClientRect().width/1410;
+  const c=cnt.getBoundingClientRect(), t=sym.getBoundingClientRect();
+  cnt.style.animation='none'; cnt.style.opacity='1'; void cnt.offsetWidth;
+  cnt.style.transition='transform 1.1s ease, opacity 1.1s ease';
+  cnt.style.transform=`translate(${(t.right-c.left)/sc}px,${(t.bottom-c.bottom)/sc+8}px) scale(.6)`;
+  if(n===1) cnt.style.opacity='0';
+}
+$('apply').onclick=()=>{
+  if(!(cat&&an)||applied) return;
+  applied=true; render();
+  const r=calc();
+  $('symArea').innerHTML=crossView(r);
+  stopAll();
+  later(4300,()=>{ slide($("cntB"),$("symB"),r.a); slide($("cntA"),$("symA"),r.b); });
+  later(5500,()=>{ $('cntA').style.opacity='0'; $('cntB').style.opacity='0';
+    $('symA').innerHTML=symHTML(cat,r.b); $("symB").innerHTML=symHTML(an,r.a); });
+  let t=5500;
+  if(r.g>1){
+    later(6300,()=>{ $('divl').style.opacity='1'; });
+    later(7500,()=>{ $('symA').innerHTML=symHTML(cat,r.fc); $('symB').innerHTML=symHTML(an,r.fa); $('divl').style.opacity='0'; });
+    t=7500;
+  }
+  later(t+600,()=>{
+    $('bigF').innerHTML=r.fin;
+    $('resL').innerHTML=`<div>Compound name: ${cname()}</div><div class="big">${r.fin}</div><div>(${r.fc}${cat.html} x ${r.fa}${an.html})</div>`;
+    $('resR').innerHTML=explanation(r);
   });
-
-  // Reset button
-  const tryAnother = document.getElementById("try_another_compound");
-  if (tryAnother) tryAnother.onclick = resetForm;
-}
-
-function selectIon(symbol, type) {
-  if (type === "plus") {
-    selectedCation = { symbol, charge: periodicTable_plusChange[symbol] };
-    showCompoundName("setup_cation", symbol, "cation");
-    updateDisplay("1+", selectedCation.charge + "+", "cation");
-  } else {
-    selectedAnion = { symbol, charge: periodicTable_minusChange[symbol] };
-    showCompoundName("setup_anion", symbol, "anion"); // Assuming Symbol_2 is the anion side
-    updateDisplay("1-", selectedAnion.charge + "-", "anion");
-  }
-
-  if (selectedCation && selectedAnion) {
-    showApplyCrissCrossMethod();
-  }
-}
-
-function getCompoundName(cationKey, anionKey) {
-  const cName = periodicTable_plusNames[cationKey];
-  const aName = periodicTable_minusNames[anionKey];
-
-  return `${cName} ${aName}`;
-}
-
-function updateUIName(fullName) {
-  // Assuming you add id="CompoundName" to a text element in your SVG
-  const nameElement = document.getElementById("compound_name");
-  if (nameElement) {
-    const tspan = nameElement.querySelector("tspan") || nameElement;
-    tspan.textContent = `Compound name: ${fullName}`;
-  }
-}
-function showApplyCrissCrossMethod() {
-  const applyButton = document.getElementById("apply_criss_cross_method");
-  if (applyButton) {
-    applyButton.style.pointerEvents = "auto";
-    applyButton.style.cursor = "pointer";
-    applyButton.style.opacity = "1";
-    applyButton.classList.add("blink-animation");
-    applyButton.onclick = () => {
-      calculateFormula();
-      showCrissCrossLines();
-      let try_another_compound = document.getElementById("try_another_compound");
-      if (try_another_compound) {
-        try_another_compound.style.pointerEvents = "auto";
-        try_another_compound.style.cursor = "pointer";
-        try_another_compound.style.opacity = "1";
-      }
-      apply_criss_cross_method = document.getElementById("apply_criss_cross_method");
-      if (apply_criss_cross_method) {
-        apply_criss_cross_method.style.pointerEvents = "none";
-        apply_criss_cross_method.style.cursor = "null";
-        apply_criss_cross_method.style.opacity = "0.5";
-        applyButton.classList.remove("blink-animation");
-      }
-
-
-      swapCharges()
-      setDisabledState();
-    }
-  }
-
-  function swapCharges1() {
-    const group = document.getElementById('setup_cation');
-    if (group) {
-      const child = group.querySelector(
-        `#${CSS.escape(selectedCation.symbol)}`
-      );
-      if (child) {
-        // mark it in some way instead of appending random text
-        child.id = `${child.id}-chosen`;
-      }
-      const tspan = group.querySelector("tspan");
-      if (tspan) {
-        tspan.textContent = periodicTable_minusChange[selectedAnion.symbol] + '-'; // Change to whatever value you want
-      }
-    }
-    const group1 = document.getElementById('setup_anion');
-    if (group1) {
-      const child1 = group1.querySelector(
-        `#${CSS.escape(selectedAnion.symbol)}`
-      );
-      if (child1) {
-        child1.id = `${child1.id}-chosen`;
-      }
-      const tspan1 = group1.querySelector("tspan");
-      if (tspan1) {
-        tspan1.textContent = periodicTable_plusChange[selectedCation.symbol] + '+'; // Change to whatever value you want
-      }
-    }
-  };
-}
-
-function swapCharges() {
-  const update = (containerId, symbol, chargeText) => {
-    const grp = document.getElementById(containerId);
-    if (!grp) return;
-
-    const child = grp.querySelector(`#${CSS.escape(symbol)}`);
-    if (child) {
-      child.id = `${child.id}-chosen`;      // mark the chosen ion
-    }
-
-    const tspan = grp.querySelector('tspan');
-    if (tspan) {
-      // clear any fixed length so the new text can expand
-      const textEl = tspan.parentNode;
-      if (textEl && textEl.hasAttribute('textLength')) {
-        textEl.removeAttribute('textLength');
-      }
-
-      // add a trailing space (or you could set dx) so the ‘+’ isn’t
-      // drawn flush against the right edge
-      tspan.textContent = chargeText + ' ';
-    }
-  };
-
-  if (selectedCation && selectedAnion) {
-    update(
-      'setup_cation',
-      selectedCation.symbol,
-      periodicTable_minusChange[selectedAnion.symbol] + '-'
-    );
-    update(
-      'setup_anion',
-      selectedAnion.symbol,
-      periodicTable_plusChange[selectedCation.symbol] + '+'
-    );
-  }
-}
-
-function loadSVGIntoContainer(svgUrl, containerId, callback) {
-  fetch(svgUrl)
-    .then(response => {
-      if (!response.ok) throw new Error('SVG not found: ' + svgUrl);
-      return response.text();
-    })
-    .then(svgText => {
-      const container = document.getElementById(containerId);
-      if (container) {
-        container.innerHTML = svgText;
-        if (typeof callback === 'function') callback(container);
-      }
-    })
-    .catch(err => console.error(err));
-}
-function showCrissCrossLines() {
-  const line1 = document.getElementById("cross_lines_1");
-  const line2 = document.getElementById("cross_lines_2");
-
-  if (line1) {
-    line1.style.display = "block";
-    line1.classList.remove("visible");
-    line1.style.animation = "none";
-    line1.offsetHeight; /* trigger reflow */
-    line1.style.animation = "";
-  }
-  if (line2) {
-    line2.style.display = "block";
-    line2.classList.remove("visible");
-    line2.style.animation = "none";
-    line2.offsetHeight; /* trigger reflow */
-    line2.style.animation = "";
-  }
-
-  setTimeout(() => {
-    if (line1) line1.classList.add("visible");
-    if (line2) line2.classList.add("visible");
-  }, 100);
-
-  // Animation is 1.5s plus 100ms delay = 1600ms
-  setTimeout(() => {
-    const explanation_box = document.getElementById("compound_explanation_box");
-    if (explanation_box) explanation_box.style.display = "block";
-    if (line1) line1.style.display = "none";
-    if (line2) line2.style.display = "none";
-  }, 2500);
-
-  setTimeout(() => {
-    document.querySelectorAll(".id-one, .id-two").forEach(el => el.style.display = "none");
-    const chargeLabel = document.getElementById("Charge");
-    if (chargeLabel) chargeLabel.style.display = "none";
-  }, 2000);
-}
-function updateDisplay(elementId, text, type) {
-  const el = document.getElementById(elementId);
-  if (!el) return;
-  const tspan = el.querySelector("tspan");
-  if (tspan) {
-    // Handle subscripts for SO4, NH4, etc.
-    if (text.match(/\d/)) {
-      tspan.innerHTML = text; ///formatSubscripts(text);
-    } else {
-      tspan.textContent = text;
-    }
-    el.style.display = "block";
-  }
-}
-function showCompoundName(elementId, text, type) {
-  // const el = document.getElementById(elementId);
-  // if (!el) return;
-  // const img = el.querySelector("img");
-  const sr = "assets/images/Gr_" + text + ".svg";
-  // img.setAttribute("src", sr);
-  loadSVGIntoContainer(sr, elementId, function (container) {
-    console.log("🚀 ~ showCompoundName ~ container:", container)
-
-  });
-}
-
-function formatSubscripts(text) {
-  return text.replace(
-    /(\d+)/g,
-    '<tspan baseline-shift="sub" font-size="16">$1</tspan>',
-  );
-}
-
-function calculateFormula() {
-  let cCharge = selectedCation.charge;
-  let aCharge = selectedAnion.charge;
-
-  // Simplify charges (GCD)
-  const common = gcd(cCharge, aCharge);
-  let cSub = aCharge / common;
-  let aSub = cCharge / common;
-
-  const formula = formatFormula(
-    selectedCation.symbol,
-    cSub,
-    selectedAnion.symbol,
-    aSub,
-  );
-
-  // Update the Formula area in your SVG (id="Formula")
-  const formulaEl = document.querySelector("#compound_formula_display p");
-  if (formulaEl) {
-    formulaEl.innerHTML = formatFormula1(
-      selectedCation.symbol,
-      cSub,
-      selectedAnion.symbol,
-      aSub,
-    );
-    const compound_explanation_box = document.getElementById(
-      "compound_formula_display",
-    );
-    if (compound_explanation_box)
-      compound_explanation_box.style.display = "block";
-    generateExplanation(selectedCation.symbol, selectedAnion.symbol);
-    const finalFormulaElement = document.getElementById("final_formula_text");
-    if (finalFormulaElement) {
-      const tspan =
-        finalFormulaElement.querySelector("tspan") || finalFormulaElement;
-      tspan.innerHTML = `Result: ${formula}`;
-    }
-    result_formula_display = document.getElementById("result_formula_display");
-    if (result_formula_display) {
-      const tspan =
-        result_formula_display.querySelector("tspan") || result_formula_display;
-      tspan.innerHTML = `${formula}`;
-    }
-    let fullName = getCompoundName(selectedCation.symbol, selectedAnion.symbol);
-    updateUIName(fullName);
-  }
-}
-
-function formatFormula1(cSym, cSub, aSym, aSub) {
-  let part1 =
-    cSub > 1 && isPolyatomic(cSym)
-      ? `(${cSym})${cSub}`
-      : `${cSym}${cSub > 1 ? cSub : ""}`;
-  let part2 =
-    aSub > 1 && isPolyatomic(aSym)
-      ? `(${aSym})${aSub}`
-      : `${aSym}${aSub > 1 ? aSub : ""}`;
-
-  // Convert numbers to HTML subscripts
-  return (part1 + part2).replace(
-    /(\d+)/g,
-    '<sub>$1</sub>',
-  );
-}
-function formatFormula(cSym, cSub, aSym, aSub) {
-  let part1 =
-    cSub > 1 && isPolyatomic(cSym)
-      ? `(${cSym})${cSub}`
-      : `${cSym}${cSub > 1 ? cSub : ""}`;
-  let part2 =
-    aSub > 1 && isPolyatomic(aSym)
-      ? `(${aSym})${aSub}`
-      : `${aSym}${aSub > 1 ? aSub : ""}`;
-
-  // Convert numbers to SVG-friendly subscripts
-  return (part1 + part2).replace(
-    /(\d+)/g,
-    '<tspan baseline-shift="sub" font-size="20">$1</tspan>',
-  );
-}
-
-function gcd(a, b) {
-  return b ? gcd(b, a % b) : a;
-}
-function isPolyatomic(sym) {
-  return (
-    sym.length > 2 ||
-    (sym.length === 2 &&
-      sym !== "Ca" &&
-      sym !== "Mg" &&
-      sym !== "Fe" &&
-      sym !== "Cl" &&
-      sym !== "Br")
-  );
-}
-
-function resetForm() {
-  selectedCation = null;
-  selectedAnion = null;
-
-  // Clear loaded SVG containers
-  const setupCation = document.getElementById("setup_cation");
-  const setupAnion = document.getElementById("setup_anion");
-  if (setupCation) setupCation.innerHTML = '';
-  if (setupAnion) setupAnion.innerHTML = '';
-
-  // Hide/Show elements as per initial state
-  const elementsToHide = [
-    "1+", "1-", "compound_formula_display", "compound_explanation_box",
-    "compound_formula_display1", "cross_lines_1", "cross_lines_2"
-  ];
-  elementsToHide.forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.style.display = "none";
-  });
-
-  const chargeLabel = document.getElementById("Charge");
-  if (chargeLabel) chargeLabel.style.display = "block";
-
-  // Reset button states
-  const applyBtn = document.getElementById("apply_criss_cross_method");
-  if (applyBtn) {
-    applyBtn.style.pointerEvents = "none";
-    applyBtn.style.cursor = "default";
-    applyBtn.style.opacity = "0.5";
-    applyBtn.classList.remove("blink-animation");
-  }
-
-  const tryAnother = document.getElementById("try_another_compound");
-  if (tryAnother) {
-    tryAnother.style.pointerEvents = "none";
-    tryAnother.style.cursor = "default";
-    tryAnother.style.opacity = "0.5";
-  }
-
-  // Re-enable ion selection
-  const cations = ["H", "K", "Ca", "Fe", "Na", "Mg", "Al", "NH₄"];
-  const anions = ["Cl", "O", "N", "SO₄", "OH", "Br", "S", "NO₃", "CO₃"];
-  [...cations, ...anions].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) {
-      el.style.pointerEvents = "auto";
-      el.style.cursor = "pointer";
-      el.style.opacity = "1";
-    }
-  });
-
-  // Clear formula and result text
-  const formulaEl = document.querySelector("#compound_formula_display p");
-  if (formulaEl) formulaEl.innerHTML = "";
-
-  const nameEl = document.getElementById("compound_name");
-  if (nameEl) {
-    const tspan = nameEl.querySelector("tspan") || nameEl;
-    tspan.textContent = "Compound name: ";
-  }
-
-  const resultEl = document.getElementById("result_formula_display");
-  if (resultEl) {
-    const tspan = resultEl.querySelector("tspan") || resultEl;
-    tspan.textContent = "";
-  }
-
-  const finalFormulaText = document.getElementById("final_formula_text");
-  if (finalFormulaText) {
-    const tspan = finalFormulaText.querySelector("tspan") || finalFormulaText;
-    tspan.textContent = "Result: ";
-  }
-
-  const crossGroup = document.getElementById("(1K x 1NO3)");
-  if (crossGroup) {
-    const tspan = crossGroup.querySelector("tspan");
-    if (tspan) tspan.textContent = "";
-  }
-}
-function generateExplanation(cKey, aKey) {
-  const c = cationData[cKey];
-  const a = anionData[aKey];
-
-  // Naming Rule: Cation + Anion
-  const compoundName = `${c.name} ${a.name}`;
-
-  // Explanation Rule: Cross charges
-  const line1 = `• Cross ${cKey}(${c.charge}+) charge to ${aKey} → ${c.charge} ${aKey}`;
-  const line2 = `• Cross ${aKey}(${a.charge}-) charge to ${cKey} → ${a.charge} ${cKey}`;
-
-  // Simple Result Logic (Criss-Cross)
-  // Note: In real chemistry, you'd simplify Mg2O2 to MgO
-  const result = `${cKey}${a.charge === 1 ? "" : a.charge}${aKey}${c.charge === 1 ? "" : c.charge}`;
-
-  // Update the UI
-  updateUI(compoundName, line1, line2, result);
-  updateCrossVisual(cKey, aKey, c.charge, a.charge);
-}
-function updateUI(name, exp1, exp2, formula) {
-  // 1. Show Compound Name (e.g., Potassium Nitrate)
-  // 2. Show Explanation lines
-  exp_line_1 = document.getElementById("exp_line_1");
-  if (exp_line_1) {
-    const tspan = exp_line_1.querySelector("tspan") || exp_line_1;
-    tspan.textContent = exp1;
-  }
-  exp_line_2 = document.getElementById("exp_line_2");
-  if (exp_line_2) {
-    const tspan = exp_line_2.querySelector("tspan") || exp_line_2;
-    tspan.textContent = exp2;
-  }
-  // 3. Show Final Formula (e.g., KNO3)
-}
-function updateCrossVisual(cKey, aKey, cSub, aSub) {
-  console.log("🚀 ~ updateCrossVisual ~ cKey, aKey, cSub, aSub:", cKey, aKey, cSub, aSub)
-  const group = document.getElementById("(1K x 1NO3)"); // Target the group
-  if (!group) return;
-  const tspans = group.querySelector("tspan");
-  tspans.innerHTML = `(${cSub}${cKey} x ${aSub}${aKey})`;
-
-}
-
-function setDisabledState() {
-  const cations = ["H", "K", "Ca", "Fe", "Na", "Mg", "Al", "NH₄"];
-  const anions = ["Cl", "O", "N", "SO₄", "OH", "Br", "S", "NO₃", "CO₃"];
-  for (const id of cations) {
-    const el = document.getElementById(id);
-    if (el) {
-      el.style.pointerEvents = "none";
-      el.style.cursor = "not-allowed";
-      el.style.opacity = "0.5";
-    }
-  }
-  for (const id of anions) {
-    const el = document.getElementById(id);
-    if (el) {
-      el.style.pointerEvents = "none";
-      el.style.cursor = "not-allowed";
-      el.style.opacity = "0.5";
-    }
-  }
-
-}
-document.addEventListener("DOMContentLoaded", () => {
-  const modal = document.getElementById("ruleModal");
-  const closeBtn = document.querySelector(".close-btn");
-  const ruleButton = document.getElementById("rules"); // Your SVG Rule button
-  const backdrop = document.getElementById("modal-backdrop");
-
-  if (ruleButton && modal) {
-    ruleButton.style.cursor = "pointer";
-    ruleButton.onclick = () => {
-      modal.style.display = "block";
-      if (backdrop) backdrop.style.display = "block";
-    };
-  }
-
-  // Close button logic
-  if (closeBtn && modal) {
-    closeBtn.onclick = () => {
-      modal.style.display = "none";
-      if (backdrop) backdrop.style.display = "none";
-    };
-  }
-
-  // Click outside to close
-  window.onclick = (event) => {
-    if (event.target == modal) {
-      if (modal) modal.style.display = "none";
-      if (backdrop) backdrop.style.display = "none";
-    }
-  };
-});
-window.onload = init;
-window.addEventListener("load", () => {
-  const cationEl = document.getElementById("moving-cation-charge");
-  const anionEl = document.getElementById("moving-anion-charge");
-
-  console.log("moving-cation-charge exists?", !!cationEl);
-  console.log("moving-anion-charge exists?", !!anionEl);
-
-  if (!cationEl) {
-    console.warn("Add this to your SVG:\n",
-      '<text id="moving-cation-charge" class="charge-moving" x="280" y="520" display="none"></text>');
-  }
-});
+};
+$('tryBtn').onclick=()=>{stopAll();cat=null;an=null;applied=false;render();};
+$('rules').onclick=()=>$('modal').classList.add('open');
+$('close').onclick=()=>$('modal').classList.remove('open');
+$('modal').onclick=e=>{ if(e.target===$('modal')) $('modal').classList.remove('open'); };
+addEventListener('keydown',e=>{ if(e.key==='Escape') $('modal').classList.remove('open'); });
+buildTrays(); fit(); render();
