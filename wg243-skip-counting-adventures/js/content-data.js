@@ -20,7 +20,9 @@ window.SKIP_CONTENT = {
       slots: [[657.9, 785.5], [789.9, 763.5], [931.7, 759.5], [1061.9, 772.5], [1197.9, 785.5], [1333.9, 790.5]],
       pile: [[164.2, 754.9], [132, 821.3], [260.3, 799.4], [344.1, 857.2], [220.8, 885.5]],
       arcFrom: [0, -32], arcCtrl: [0, -70], // the jump arcs go over the stones
-      char: { src: 'assets/svg/frog.svg', w: 128.6, h: 145, start: [463.3, 787.2], on: [0, 8], end: [1490, 763], lift: 70 },
+      // jumpSrc: the frog without its ground shadow, shown while it is in the air
+      char: { src: 'assets/svg/frog.svg', jumpSrc: 'assets/svg/frog-jump.svg', w: 128.6, h: 145, start: [463.3, 787.2], on: [0, 8], end: [1490, 763], lift: 70 },
+      walkMsgTop: 456, // while the frog hops, the counting message sits above its highest jump
       goalStar: [1450.3, 512.6],
     },
     train: {
@@ -57,6 +59,7 @@ window.SKIP_CONTENT = {
       arcFrom: [0, -40], arcCtrl: [0, -70],
       char: { src: 'assets/svg/astronaut.svg', w: 131.9, h: 152.4, start: [339, 526], on: [0, -36], end: [1597.3, 529.4], lift: 60,
         endSrc: 'assets/svg/astronaut-moon.svg', endW: 185.4, endH: 194.3 },
+      walkMsgTop: 745, // while the astronaut floats, the counting message sits below the planets
       goalStar: [1696.8, 259.1, 58.2, 55.6],
     },
     jungle: {

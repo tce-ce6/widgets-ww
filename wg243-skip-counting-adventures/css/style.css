@@ -304,7 +304,7 @@ p {
   width: 218px;
   height: 70px;
   color: #900000;
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 500;
   line-height: 70px;
   text-align: center;
@@ -551,6 +551,12 @@ p {
 
 .confetti {
   animation: confetti 1.4s ease-out both;
+  pointer-events: none;
+}
+
+/* the Lottie confetti burst */
+.layer > .confetti-lottie {
+  position: absolute;
   pointer-events: none;
 }
 
