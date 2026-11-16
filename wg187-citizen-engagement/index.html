@@ -23,15 +23,33 @@
 
           <!-- ============ INTRO SCREEN ============ -->
           <section id="screen-intro" class="screen is-active" aria-label="Introduction">
-            <p class="itext itext--intro">These are six tools every citizen has. For each problem, sort them from least to
-              most effective.</p>
+            <p class="itext itext--intro">These are six tools every citizen has. Read what HIGH, MEDIUM and LOW mean &mdash; then tap Start.</p>
             <div class="tool-cards" id="toolCards"></div>
+
+            <!-- what each rating means (from the review sheet) -->
+            <table class="ratings" aria-labelledby="ratingsTitle">
+              <caption class="ratings__title" id="ratingsTitle">Rating Definitions</caption>
+              <tbody>
+                <tr class="ratings__row ratings__row--high">
+                  <th scope="row">HIGH</th>
+                  <td>Can directly solve or significantly move the problem forward.</td>
+                </tr>
+                <tr class="ratings__row ratings__row--medium">
+                  <th scope="row">MEDIUM</th>
+                  <td>Helps but has limits. Cannot solve the problem alone.</td>
+                </tr>
+                <tr class="ratings__row ratings__row--low">
+                  <th scope="row">LOW</th>
+                  <td>Has little to no impact on this problem.</td>
+                </tr>
+              </tbody>
+            </table>
             <button class="pill-btn pill-btn--start" id="startBtn" type="button">Start</button>
           </section>
 
           <!-- ============ PROBLEM SCREEN ============ -->
           <section id="screen-problem" class="screen" aria-label="Sort the tools">
-            <p class="itext itext--problem">Sort the tools from least effective to most effective for this problem.</p>
+            <p class="itext itext--problem">Drag each tool into the right box for this problem.</p>
             <p class="counter" id="counter" aria-live="polite">00 of 12</p>
 
             <div class="question" role="group" aria-label="Problem">
@@ -42,7 +60,7 @@
             <div class="boxes" id="boxes"></div>
 
             <div class="feedback" id="feedback" role="status" aria-live="polite">
-              <h4 class="feedback__title">Feedback</h4>
+              <h4 class="feedback__title">Here's Why</h4>
               <p class="feedback__text" id="feedbackText"></p>
             </div>
 
