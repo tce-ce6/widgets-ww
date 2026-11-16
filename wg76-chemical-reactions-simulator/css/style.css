@@ -447,4 +447,5 @@ svg * {
   line-height: 1.2;
   color: #000;
   font-weight: 500;
+  white-space: pre-line;
 }

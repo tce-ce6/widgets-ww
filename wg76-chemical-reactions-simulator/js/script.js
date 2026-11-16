@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
       tabId: "combination-reaction",
       reactantGroupId: "combination-reaction-reactant",
       reactantIds: ["h2", "o2"],
-      reactionComplete: "A reaction in which two or more substances combine to form a single product (H₂ + O₂ → H₂O — shows molecules joining with animation)."          // 2 required
+      reactionComplete: "A reaction in which two or more substances combine to form a single product </br> (H₂ + O₂ → 2H₂O — shows molecules joining with animation)."          // 2 required
     },
     {
       tabId: "decomposition-reaction",
@@ -21,13 +21,13 @@ document.addEventListener("DOMContentLoaded", () => {
       tabId: "displacement-reaction",
       reactantGroupId: "displacement-reaction-reactant",
       reactantIds: ["Zn", "CuSO4"],       // 2 required
-      reactionComplete: "A more reactive element displaces a less reactive element from its compound. Zinc is more reactive than copper, so it displaces copper from copper sulfate solution. Zn + CuSO₄ → ZnSO₄ + Cu"
+      reactionComplete: "A more reactive element displaces a less reactive element from its compound. Zinc is more reactive than copper, so it displaces copper from copper sulfate solution.</br> Zn + CuSO₄ → ZnSO₄ + Cu"
     },
     {
       tabId: "double-displacement-reaction",
       reactantGroupId: "double-displacement-reaction-ractant", // typo in HTML kept
       reactantIds: ["AgNO3", "NaCl"],     // 2 required
-      reactionComplete: "Two compounds exchange their ions to form two new compounds. A white precipitate of silver chloride is formed. AgNO₃ + NaCl → AgCl + NaNO₃"
+      reactionComplete: "Two compounds exchange their ions to form two new compounds. A white precipitate of silver chloride is formed. AgNO₃ + NaCl → AgCl + NaNO₂"
     },
     {
       tabId: "redox-reaction",
@@ -376,7 +376,8 @@ document.addEventListener("DOMContentLoaded", () => {
         if (answerTabText && selectedTabId) {
           const config = reactionConfig.find((c) => c.tabId === selectedTabId);
           if (config && config.reactionComplete) {
-            answerTabText.textContent = config.reactionComplete;
+            // Turn any <br>, <br/> or </br> in the text into a real line break
+            answerTabText.textContent = config.reactionComplete.replace(/\s*<\/?br\s*\/?>\s*/gi, "\n");
           }
         }
       }
