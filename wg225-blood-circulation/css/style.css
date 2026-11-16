@@ -1,0 +1,694 @@
+/* ==========================================================================
+   wg225 — Blood Circulation
+
+   Everything sits on one fixed 1920x1080 SVG canvas (#master-svg) that scales
+   to fit the page. HTML inside its <foreignObject>s uses 1 CSS px = 1 SVG
+   unit, so the px sizes below are in canvas units, not screen pixels.
+   Colours and type are taken from assets/images/layout.svg.
+   ========================================================================== */
+
+:root {
+  --cyan: #23d1e3;        /* page background */
+  --magenta: #a0097c;     /* title bar */
+  --flag: #2c47b6;        /* flag buttons */
+  --pink: #ff2c68;        /* Start again */
+  --orange: #f7901e;      /* Insights */
+  --navy: #092188;        /* instruction text */
+  --blue: #0c51c4;        /* blood that needs oxygen */
+  --red: #ff0000;         /* blood full of oxygen */
+  --ok: #0b8d06;
+  --bad: #ff0101;
+  --bad-bg: #fffdcd;
+  --focus: #6e45d0;       /* picked flag / drop points / hint glow */
+  --warn: #ff7a00;        /* wrong place flash */
+  --ink: #1c2740;
+}
+
+* {
+  box-sizing: border-box
+}
+
+.hidden {
+  display: none !important
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Page shell (same structure as the other widgets)                        */
+/* ---------------------------------------------------------------------- */
+
+#circ-widget {
+  margin: 0;
+  overflow: hidden;
+}
+
+#circ-widget .container {
+  border: none;
+  height: 100vh;
+  width: 100vw;
+  position: relative;
+  user-select: none !important;
+}
+
+#circ-widget .container::after {
+  content: "";
+  background-image: url("../assets/bg.svg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+#circ-widget .mainContainerOuter {
+  background: transparent !important;
+}
+
+#circ-widget .wdgetTitle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  left: 0;
+  top: 0;
+  z-index: 2;
+}
+
+#circ-widget .wdgetTitle h2 {
+  font-size: 25px;
+  font-weight: 500;
+  text-align: left;
+  background: var(--magenta);
+  padding: 8px 40px;
+  color: #fff;
+  border-radius: 0 0 20px 20px;
+  white-space: nowrap;
+}
+
+#circ-widget .versionText {
+  position: absolute;
+  right: 20px;
+  top: 10px !important;
+  font-size: 12px;
+  color: rgb(0 0 0 / 25%);
+}
+
+#circ-widget .svg-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+#circ-widget #master-svg {
+  width: 100% !important;
+  height: 100%;
+  display: block;
+}
+
+/* global_style.css sets p { font-size: 16px; color: #494949 } — undo here.
+   :where() keeps this at zero specificity so .fb-msg etc. still set colours. */
+:where(#master-svg, .modal-layer) p {
+  font-size: inherit;
+  color: inherit;
+  margin: 0;
+}
+
+/* ---------------------------------------------------------------------- */
+/* SVG text and buttons                                                    */
+/* ---------------------------------------------------------------------- */
+
+.intro-text {
+  font-family: "Roboto", sans-serif;
+  font-weight: 700;
+  font-size: 26px;
+  fill: #000;
+}
+
+.svg-btn {
+  cursor: pointer;
+  pointer-events: bounding-box;
+}
+
+.svg-btn:hover {
+  filter: brightness(1.08);
+}
+
+.svg-btn:focus {
+  outline: none;
+}
+
+.svg-btn:focus-visible {
+  outline: 4px solid var(--focus);
+  outline-offset: 4px;
+}
+
+.btn-label-35 {
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  font-size: 35px;
+  fill: #fff;
+  pointer-events: none;
+}
+
+/* Chamber names beside the heart */
+.chamber-name {
+  opacity: 0;
+  transition: opacity .5s;
+  pointer-events: none;
+}
+
+.chamber-name.shown {
+  opacity: 1;
+}
+
+.cname {
+  font-family: "Roboto", sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  fill: #000;
+  stroke: #fff;
+  stroke-width: 5px;
+  stroke-linejoin: round;
+  paint-order: stroke;
+}
+
+.leader {
+  stroke: #55607d;
+  stroke-width: 2.5;
+  stroke-dasharray: 5 4;
+  stroke-linecap: round;
+}
+
+/* Tap / drop areas */
+.spot {
+  cursor: pointer;
+}
+
+.spot:focus {
+  outline: none;
+}
+
+.spot-shape {
+  fill: transparent;
+  stroke: transparent;
+  stroke-width: 5;
+  transition: stroke .2s;
+}
+
+.spot:hover.spot-shape,
+.spot:hover .spot-shape {
+  stroke: var(--focus);
+  stroke-opacity: .55;
+}
+
+.spot:focus-visible.spot-shape,
+.spot:focus-visible .spot-shape,
+.drop-target.spot-shape,
+.drop-target .spot-shape {
+  stroke: var(--focus) !important;
+  stroke-opacity: 1 !important;
+  stroke-width: 6 !important;
+}
+
+.glow.spot-shape,
+.glow .spot-shape {
+  stroke: var(--focus) !important;
+  stroke-width: 6 !important;
+  stroke-dasharray: 12 8;
+  animation: glow 1.2s ease-in-out infinite;
+}
+
+@keyframes glow {
+  50% { stroke-opacity: .35; }
+}
+
+.nope.spot-shape,
+.nope .spot-shape {
+  stroke: var(--warn) !important;
+  stroke-opacity: 1 !important;
+  stroke-width: 7 !important;
+}
+
+.lit.spot-shape,
+.lit .spot-shape {
+  stroke: var(--ink) !important;
+  stroke-opacity: 1 !important;
+  stroke-width: 5 !important;
+}
+
+.flowing .spot {
+  cursor: default;
+}
+
+/* Drop points */
+.dp {
+  fill: none;
+  stroke: transparent;
+  stroke-width: 3;
+  stroke-dasharray: 5 4;
+  pointer-events: none;
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+}
+
+.choosing .dp {
+  stroke: var(--focus);
+  animation: dpPulse 1.2s ease-in-out infinite;
+}
+
+.dp.gone {
+  display: none;
+}
+
+@keyframes dpPulse {
+  50% { transform: scale(1.25); }
+}
+
+/* Numbered pins */
+.num-pin {
+  pointer-events: none;
+}
+
+.num-pin-inner {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  transition: transform .25s;
+  animation: pop .45s ease-out;
+}
+
+.num-pin.lit .num-pin-inner {
+  transform: scale(1.3);
+}
+
+@keyframes pop {
+  0% { transform: scale(.3); }
+  70% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+.num-pin text {
+  font-family: "Roboto", sans-serif;
+  font-weight: 700;
+  font-size: 19px;
+  fill: #fff;
+}
+
+/* Lottie */
+#flow-layer {
+  pointer-events: none;
+}
+
+.flow-box {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.lottie-box {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.lottie-box svg {
+  display: block;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Instruction line                                                        */
+/* ---------------------------------------------------------------------- */
+
+.instr {
+  width: 920px;
+  height: 84px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-family: "Roboto", sans-serif;
+  font-style: italic;
+  font-size: 26px;
+  line-height: 32px;
+  color: var(--navy);
+}
+
+/* ---------------------------------------------------------------------- */
+/* Flag tray                                                               */
+/* ---------------------------------------------------------------------- */
+
+.tray {
+  width: 934px;
+  height: 276px;
+  padding: 6px;
+  display: grid;
+  grid-template-columns: 452px 452px;
+  grid-auto-rows: 78px;
+  column-gap: 18px;
+  row-gap: 15px;
+  align-content: start;
+  font-family: "Roboto", sans-serif;
+}
+
+.flag {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  width: 452px;
+  height: 78px;
+  padding: 0 20px 0 26px;
+  border: 0;
+  border-radius: 11px;
+  background: var(--flag);
+  color: #fff;
+  font: 700 30px/1.1 "Roboto", sans-serif;
+  text-align: left;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: transform .15s, box-shadow .15s;
+}
+
+.flag svg {
+  width: 30px;
+  height: 43px;
+  flex: none;
+  pointer-events: none;
+}
+
+.flag:hover {
+  filter: brightness(1.12);
+}
+
+.flag:focus {
+  outline: none;
+}
+
+.flag:focus-visible {
+  box-shadow: 0 0 0 5px #fff, 0 0 0 9px var(--focus);
+}
+
+.flag[aria-pressed="true"] {
+  box-shadow: 0 0 0 5px #fff, 0 0 0 10px var(--focus);
+  transform: translateY(-3px);
+}
+
+.flag.lifting {
+  opacity: .35;
+}
+
+.tray-done {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  padding-top: 20px;
+  color: var(--ink);
+  font: 700 28px/1.2 "Roboto", sans-serif;
+}
+
+.tray-done .row {
+  display: flex;
+  gap: 18px;
+}
+
+.pill {
+  min-width: 220px;
+  height: 66px;
+  padding: 0 34px;
+  border: 0;
+  border-radius: 33px;
+  background: var(--flag);
+  color: #fff;
+  font: 500 32px/1 "Roboto", sans-serif;
+  cursor: pointer;
+}
+
+.pill:hover {
+  filter: brightness(1.12);
+}
+
+.pill:focus {
+  outline: none;
+}
+
+.pill:focus-visible {
+  box-shadow: 0 0 0 4px #fff, 0 0 0 8px var(--focus);
+}
+
+/* Drag ghost (lives in <body>, screen pixels; sized by --canvas-scale) */
+.drag-ghost {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 100;
+  margin: 0;
+  pointer-events: none;
+  transform-origin: 0 0;
+  box-shadow: 0 10px 24px rgba(20, 30, 60, .3);
+  cursor: grabbing;
+}
+
+body.dragging,
+body.dragging * {
+  cursor: grabbing !important;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Feedback                                                                */
+/* ---------------------------------------------------------------------- */
+
+#feedback-layer {
+  pointer-events: none;
+}
+
+.feedback {
+  width: 920px;
+  height: 176px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 2px;
+  font-family: "Roboto", sans-serif;
+  font-size: 26px;
+  line-height: 32px;
+}
+
+.fb-msg {
+  font-weight: 700;
+  color: var(--ok);
+  text-align: center;
+}
+
+.fb-box {
+  width: 885px;
+  background: #fff;
+  border-radius: 16px;
+  padding: 12px 24px;
+  color: #000;
+}
+
+.fb-box .fb-title {
+  font-weight: 700;
+}
+
+.fb-bad {
+  width: 885px;
+  background: var(--bad-bg);
+  border-radius: 16px;
+  padding: 12px 24px;
+  color: var(--bad);
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 30px;
+  text-align: center;
+}
+
+.fb-bad .fb-hint {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+#fb-connector {
+  stroke: #fff;
+  stroke-width: 2;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Progress track                                                          */
+/* ---------------------------------------------------------------------- */
+
+.tnum {
+  font-family: "Roboto", sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  fill: #fff;
+}
+
+.tname {
+  font-family: "Roboto", sans-serif;
+  font-size: 20px;
+  fill: #000;
+}
+
+.tnode-empty {
+  fill: #fff;
+}
+
+.tnode-ring {
+  fill: none;
+  stroke: #9a9999;
+  stroke-width: 3;
+  stroke-dasharray: 5 5;
+}
+
+.tnode {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  transition: transform .25s;
+}
+
+.tnode.active {
+  transform: scale(1.18);
+}
+
+/* ---------------------------------------------------------------------- */
+/* Insights pop-up (full-screen backdrop, canvas-sized stage)              */
+/* ---------------------------------------------------------------------- */
+
+.modal-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(0, 0, 0, .65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.modal-stage {
+  flex-shrink: 0;
+  position: relative;
+  width: 1920px;
+  height: 1080px;
+  /* zoom (not transform: scale) — a scaled transform layer left a dark
+     artefact around the panel's overhanging close button */
+  zoom: var(--canvas-scale, 1);
+  font-family: "Roboto", sans-serif;
+}
+
+.ins-panel {
+  position: absolute;
+  left: 374px;
+  top: 205px;
+  width: 1491px;
+  height: 823px;
+  background: #fff;
+  border: 6px solid #e2a500;
+  border-radius: 16px;
+  padding: 40px 28px 30px 45px;
+  overflow: visible;
+}
+
+.ins-path {
+  margin: 0 0 20px;
+  padding: 0 20px;
+  height: 93px;
+  display: flex;
+  align-items: center;
+  border-radius: 15px;
+  background: rgba(247, 144, 30, .2);
+  font-weight: 700;
+  font-size: 34px;
+  color: #000;
+}
+
+.ins-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ins-list li {
+  position: relative;
+  padding-left: 33px;
+  margin-bottom: 36px;
+  font-size: 34px;
+  line-height: 44px;
+  color: #000;
+}
+
+.ins-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 17px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--orange);
+}
+
+.ins-blue {
+  color: var(--blue);
+  font-weight: 700;
+}
+
+.ins-red {
+  color: var(--red);
+  font-weight: 700;
+}
+
+/* Green close button on the panel's top-right corner (layout.svg #Group_768) */
+.ins-close {
+  position: absolute;
+  left: 1433px;
+  top: -47px;
+  width: 88px;
+  height: 88px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+.ins-close svg {
+  width: 88px;
+  height: 88px;
+  display: block;
+}
+
+.ins-close:focus {
+  outline: none;
+}
+
+.ins-close:focus-visible {
+  box-shadow: 0 0 0 4px #fff, 0 0 0 8px var(--focus);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}
