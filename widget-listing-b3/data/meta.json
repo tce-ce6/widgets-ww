@@ -237,7 +237,7 @@
       "author": "tce-ashishg"
     },
     "wg236-road-signs": {
-      "updatedAt": "2026-11-13T18:46:10+05:30",
+      "updatedAt": "2026-11-16T15:14:37+05:30",
       "author": "tce-nitinc"
     },
     "wg237-double-agent-words": {
@@ -278,6 +278,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-11-16T15:14:37+05:30",
+      "author": "tce-nitinc",
+      "message": "resolved bugs form 236",
+      "widgets": [
+        236
+      ]
+    },
     {
       "date": "2026-11-16T14:41:50+05:30",
       "author": "tce-nitinc",
@@ -530,15 +538,6 @@
       "message": "wg202 resolved river functionality issue",
       "widgets": [
         202
-      ]
-    },
-    {
-      "date": "2026-11-11T10:58:58+05:30",
-      "author": "tce-nitinc",
-      "message": "resolved the comments of wg218",
-      "widgets": [
-        202,
-        218
       ]
     }
   ]
