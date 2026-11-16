@@ -241,7 +241,7 @@
       "author": "tce-nitinc"
     },
     "wg237-double-agent-words": {
-      "updatedAt": "2026-11-16T15:52:39+05:30",
+      "updatedAt": "2026-11-16T17:31:47+05:30",
       "author": "tce-nitinc"
     },
     "wg242-picture-stories": {
@@ -278,6 +278,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-11-16T17:31:47+05:30",
+      "author": "tce-nitinc",
+      "message": "wg237 fixes",
+      "widgets": [
+        237
+      ]
+    },
     {
       "date": "2026-11-16T16:34:10+05:30",
       "author": "tce-nitinc",
@@ -532,15 +540,6 @@
         208,
         212,
         219
-      ]
-    },
-    {
-      "date": "2026-11-11T14:49:17+05:30",
-      "author": "tce-nitinc",
-      "message": "resolved the bugs",
-      "widgets": [
-        226,
-        236
       ]
     }
   ]
