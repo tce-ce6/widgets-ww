@@ -2,7 +2,7 @@
 window.ROAD_SIGNS_CONTENT = {
   wrongText: 'That is Incorrect! Try again!',
   nextText: 'Ride to the next stop',
-  lastText: 'See the whole road',
+  lastText: 'See all Road Signs',
 
   /* Order here is the order of the cards on the end screen. */
   signs: {

@@ -250,6 +250,7 @@ button:disabled {
 }
 
 .plank--label {
+  cursor: pointer;
   position: absolute;
   left: 156px;
   top: 111px;
@@ -259,9 +260,12 @@ button:disabled {
   font-size: 50px;
 }
 
+/* the slots box covers the whole bridge: let taps through to the label plank
+   (taps anywhere else still reach the bridge, which places the selected word) */
 .slots {
   position: absolute;
   inset: 0;
+  pointer-events: none;
 }
 
 .slot {
@@ -340,12 +344,6 @@ button:disabled {
 .bridge.is-over,
 .whirl.is-over {
   filter: drop-shadow(0 0 14px #ff2b2b) drop-shadow(0 0 4px #ff2b2b);
-}
-
-.has-selection .bridge,
-.has-selection .whirl {
-  outline: 4px dashed rgb(0 31 116 / 45%);
-  outline-offset: 4px;
 }
 
 /* ---------- riders ---------- */
@@ -483,10 +481,6 @@ button:disabled {
 
 .whirl.is-disabled .whirl__label {
   opacity: .5;
-}
-
-.has-selection .whirl.is-disabled {
-  outline: none;
 }
 
 .whirl__label {

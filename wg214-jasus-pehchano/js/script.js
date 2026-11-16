@@ -225,9 +225,6 @@
       img.alt = '';
       q.appendChild(img);
     });
-    const count = $('#queueCount');
-    count.hidden = !state.queue.length;
-    count.textContent = `आगे: ${state.queue.length}`;
   }
 
   function addMember(k, word) {
