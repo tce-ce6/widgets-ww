@@ -310,11 +310,12 @@ ul {
   transform: translateY(-4px);
 }
 
-.jaw-card--adult {
+/* child's jaw on the left, adult's on the right */
+.jaw-card--child {
   left: 360px;
 }
 
-.jaw-card--child {
+.jaw-card--adult {
   left: 1043px;
 }
 
@@ -601,16 +602,6 @@ ul {
 
 .panel-title--types {
   top: 127px;
-}
-
-.panel-tip {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 168px;
-  color: var(--ink);
-  font-size: 25px;
-  text-align: center;
 }
 
 .tiles {

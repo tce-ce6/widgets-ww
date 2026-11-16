@@ -25,15 +25,16 @@
           <section id="screen-start" class="screen is-active" aria-label="Choose a jaw">
             <p class="start-cue screen-title" tabindex="-1">Choose a jaw to begin.</p>
             <div class="jaw-cards" id="startCards">
-              <button class="jaw-card jaw-card--adult" type="button" data-jaw="adult">
-                <span class="jaw-card__pic"><img id="previewAdult" alt=""></span>
-                <span class="jaw-card__title">Adult lower jaw</span>
-                <span class="jaw-card__sub">Full set of permanent teeth, after about<br>17 to 20 years</span>
-              </button>
+              <!-- child's jaw first (left), adult's second (right) -->
               <button class="jaw-card jaw-card--child" type="button" data-jaw="child">
                 <span class="jaw-card__pic"><img id="previewChild" alt=""></span>
                 <span class="jaw-card__title">Child’s lower jaw</span>
                 <span class="jaw-card__sub">Full set of milk teeth,<br>from about 2 years</span>
+              </button>
+              <button class="jaw-card jaw-card--adult" type="button" data-jaw="adult">
+                <span class="jaw-card__pic"><img id="previewAdult" alt=""></span>
+                <span class="jaw-card__title">Adult lower jaw</span>
+                <span class="jaw-card__sub">Full set of permanent teeth, after about<br>17 to 20 years</span>
               </button>
             </div>
           </section>
@@ -59,7 +60,6 @@
                 <p class="fb-text">Drag a tooth into an empty socket.</p>
               </div>
               <h3 class="panel-title panel-title--types">Tooth types</h3>
-              <p class="panel-tip">Drag a tooth into an empty socket. Or tap a tooth, then tap a socket.</p>
               <div class="tiles" id="tiles"></div>
             </div>
 
