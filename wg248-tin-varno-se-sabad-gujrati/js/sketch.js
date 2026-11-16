@@ -99,13 +99,20 @@ function loadInitialLottie(wordObj) {
         path: animationPath
     });
 
-    // 4. Go to frame 0 immediately upon loading to show the initial state (the image)
+    // 4. Size/position it (hidden meanwhile, so no jump is visible), then show frame 0.
     const anim = currentLottieInstance;
+    container.style.visibility = 'hidden';
     anim.addEventListener('DOMLoaded', () => {
-        requestAnimationFrame(() => {
+        requestAnimationFrame(async () => {
             if (anim !== currentLottieInstance) return;
-            fitLottieToSafeArea(anim);
-            anim.goToAndStop(0, true);
+            try {
+                await fitLottieToSafeArea(anim);
+            } catch (e) {
+                console.warn('Could not fit puzzle animation:', e);
+            }
+            if (anim !== currentLottieInstance) return;
+            if (anim.isPaused) anim.goToAndStop(0, true);
+            container.style.visibility = '';
         });
     });
 }
@@ -188,26 +195,192 @@ function measureLottieBounds(anim, svg) {
     return box.x2 > box.x1 && box.y2 > box.y1 ? box : null;
 }
 
-/** Scales/shifts #lottie-wrapper so the whole animation stays inside the safe area. */
-function fitLottieToSafeArea(anim) {
+// How much of the safe area the finished picture should fill (1 = touch the edges).
+const LOTTIE_FILL = 0.95;
+// Final size multiplier: 0.82 gives roughly 1.2-1.3x the original puzzle size
+// (1 = the largest size that still fits the free area).
+const LOTTIE_SIZE = 0.82;
+let lottieFitRun = 0;
+// How far the scattered pieces may reach past the safe area (as a fraction of
+// its size) before the picture is shrunk to pull them in. Anything past the
+// edge is clipped, so it can never cover text or buttons.
+const LOTTIE_SCATTER_OVERFLOW = 0.12;
+
+/**
+ * The puzzle PNGs have wide transparent margins, so element boxes are much
+ * bigger than what is actually drawn. This finds the visible (non-transparent)
+ * part of an image, as fractions of its width/height. Cached per image.
+ */
+const alphaBoxCache = new Map();
+function getAlphaBox(href) {
+    if (alphaBoxCache.has(href)) return alphaBoxCache.get(href);
+    const p = new Promise(resolve => {
+        const img = new Image();
+        img.onload = () => {
+            try {
+                const scale = Math.min(1, 256 / Math.max(img.naturalWidth, img.naturalHeight));
+                const w = Math.max(1, Math.round(img.naturalWidth * scale));
+                const h = Math.max(1, Math.round(img.naturalHeight * scale));
+                const c = document.createElement('canvas');
+                c.width = w; c.height = h;
+                const ctx = c.getContext('2d');
+                ctx.drawImage(img, 0, 0, w, h);
+                const data = ctx.getImageData(0, 0, w, h).data;
+                let x1 = w, y1 = h, x2 = -1, y2 = -1;
+                for (let y = 0; y < h; y++) {
+                    for (let x = 0; x < w; x++) {
+                        if (data[(y * w + x) * 4 + 3] > 16) {
+                            if (x < x1) x1 = x; if (x > x2) x2 = x;
+                            if (y < y1) y1 = y; if (y > y2) y2 = y;
+                        }
+                    }
+                }
+                resolve(x2 < 0 ? null : { fx1: x1 / w, fy1: y1 / h, fx2: (x2 + 1) / w, fy2: (y2 + 1) / h });
+            } catch (e) {
+                resolve({ fx1: 0, fy1: 0, fx2: 1, fy2: 1 }); // can't read pixels: use the full image
+            }
+        };
+        img.onerror = () => resolve({ fx1: 0, fy1: 0, fx2: 1, fy2: 1 });
+        img.src = href;
+    });
+    alphaBoxCache.set(href, p);
+    return p;
+}
+
+/**
+ * Snapshot (synchronous) of every image drawn at the current frame: its
+ * source and the matrix from image space to main-SVG viewBox units.
+ */
+function snapshotImages(svg) {
+    const lottieSvg = document.querySelector('#' + LOTTIE_CONTAINER_ID + ' > svg');
+    if (!lottieSvg) return [];
+    const toVB = svg.getScreenCTM().inverse();
+    const shots = [];
+    for (const img of lottieSvg.querySelectorAll('image')) {
+        const r = img.getBoundingClientRect();
+        if (!r.width || !r.height) continue; // layer hidden at this frame
+        const href = img.getAttribute('href') || img.getAttributeNS('http://www.w3.org/1999/xlink', 'href');
+        const m = img.getScreenCTM();
+        // Lottie writes sizes like "553px", so parseFloat (not +) is needed.
+        const w = parseFloat(img.getAttribute('width')), h = parseFloat(img.getAttribute('height'));
+        if (!href || !m || !w || !h) continue;
+        shots.push({
+            href, w, h,
+            x: parseFloat(img.getAttribute('x')) || 0, y: parseFloat(img.getAttribute('y')) || 0,
+            m: toVB.multiply(m)
+        });
+    }
+    return shots;
+}
+
+/** Visible-pixel bounds (viewBox units) of a snapshot. */
+async function snapshotBounds(shots, svg) {
+    const pt = svg.createSVGPoint();
+    let box = null;
+    for (const s of shots) {
+        const a = await getAlphaBox(s.href);
+        if (!a) continue;
+        [[a.fx1, a.fy1], [a.fx2, a.fy1], [a.fx1, a.fy2], [a.fx2, a.fy2]].forEach(([fx, fy]) => {
+            pt.x = s.x + fx * s.w; pt.y = s.y + fy * s.h;
+            const p = pt.matrixTransform(s.m);
+            box = unionBox(box, { x1: p.x, y1: p.y, x2: p.x, y2: p.y });
+        });
+    }
+    return box;
+}
+
+const unionBox = (a, b) => !a ? b : !b ? a
+    : { x1: Math.min(a.x1, b.x1), y1: Math.min(a.y1, b.y1), x2: Math.max(a.x2, b.x2), y2: Math.max(a.y2, b.y2) };
+
+/**
+ * Measures (untransformed) the finished picture at the last frame, and
+ * everything drawn across the whole timeline (scattered pieces included).
+ * All frames are captured synchronously first, so nothing else can move
+ * the animation in between.
+ */
+async function measurePuzzle(anim, svg) {
+    const last = Math.max(0, Math.floor(anim.totalFrames) - 1);
+    const samples = 16;
+    anim.goToAndStop(last, true);
+    const finalShots = snapshotImages(svg);
+    const allShots = [finalShots];
+    for (let i = 0; i < samples; i++) {
+        anim.goToAndStop(Math.round((last * i) / samples), true);
+        allShots.push(snapshotImages(svg));
+    }
+    const final = await snapshotBounds(finalShots, svg);
+    let all = null;
+    for (const shots of allShots) all = unionBox(all, await snapshotBounds(shots, svg));
+    return { final, all };
+}
+
+/** Clips the Lottie's foreignObject to the safe area, so nothing it draws
+ *  (scattered pieces, the "done" effect) can ever cover text or buttons. */
+function clipLottieToSafeArea(svg, wrapper, safe) {
+    const fo = wrapper.closest('foreignObject');
+    if (!fo) return;
+    let clip = document.getElementById('lottie-safe-clip');
+    if (!clip) {
+        const NS = 'http://www.w3.org/2000/svg';
+        let defs = svg.querySelector('defs');
+        if (!defs) { defs = document.createElementNS(NS, 'defs'); svg.insertBefore(defs, svg.firstChild); }
+        clip = document.createElementNS(NS, 'clipPath');
+        clip.setAttribute('id', 'lottie-safe-clip');
+        clip.setAttribute('clipPathUnits', 'userSpaceOnUse');
+        clip.appendChild(document.createElementNS(NS, 'rect'));
+        defs.appendChild(clip);
+    }
+    // The clipPath is applied in the foreignObject's user space, which is the viewBox space here.
+    const rect = clip.firstChild;
+    rect.setAttribute('x', safe.x1);
+    rect.setAttribute('y', safe.y1);
+    rect.setAttribute('width', safe.x2 - safe.x1);
+    rect.setAttribute('height', safe.y2 - safe.y1);
+    fo.setAttribute('clip-path', 'url(#lottie-safe-clip)');
+}
+
+/**
+ * Scales/shifts #lottie-wrapper so the finished picture is as big as possible
+ * inside the safe area (centred), and clips the animation to that area.
+ */
+async function fitLottieToSafeArea(anim) {
     const svg = getMainSvg();
     const wrapper = document.getElementById(LOTTIE_CONTAINER_ID);
     if (!svg || !wrapper || !anim) return;
 
+    const run = ++lottieFitRun; // a newer fit (new word / resize) supersedes this one
     wrapper.style.transform = 'none';
-    const box = measureLottieBounds(anim, svg);
-    if (!box) return;
     const safe = getLottieSafeArea(svg);
+    clipLottieToSafeArea(svg, wrapper, safe);
+
+    const m = await measurePuzzle(anim, svg);
+    if (anim !== currentLottieInstance || run !== lottieFitRun) return;
+    const box = m.final || measureLottieBounds(anim, svg);
+    if (!box) return;
 
     const bw = box.x2 - box.x1, bh = box.y2 - box.y1;
     const sw = safe.x2 - safe.x1, sh = safe.y2 - safe.y1;
-    const k = Math.min(1, sw / bw, sh / bh);
 
-    // Keep the puzzle as close to its designed spot as possible, clamped into the safe area.
-    const clamp = (v, lo, hi) => Math.min(Math.max(v, lo), hi);
-    const cx = (box.x1 + box.x2) / 2, cy = (box.y1 + box.y2) / 2;
-    const left = clamp(cx - (bw * k) / 2, safe.x1, safe.x2 - bw * k);
-    const top = clamp(cy - (bh * k) / 2, safe.y1, safe.y2 - bh * k);
+    // As big as possible for the finished picture...
+    let k = Math.min(sw / bw, sh / bh) * LOTTIE_FILL;
+
+    // ...but not so big that the scattered pieces fly far past the safe area.
+    // Measured relative to the finished picture's centre, which is what gets centred.
+    if (m.all) {
+        const cx = (box.x1 + box.x2) / 2, cy = (box.y1 + box.y2) / 2;
+        const reachX = Math.max(cx - m.all.x1, m.all.x2 - cx);
+        const reachY = Math.max(cy - m.all.y1, m.all.y2 - cy);
+        const allowX = (sw / 2) * (1 + LOTTIE_SCATTER_OVERFLOW);
+        const allowY = (sh / 2) * (1 + LOTTIE_SCATTER_OVERFLOW);
+        k = Math.min(k, allowX / reachX, allowY / reachY);
+    }
+
+    // Overall size of the puzzle (1 = largest that fits; lower = smaller).
+    k *= LOTTIE_SIZE;
+
+    // Centre the finished picture in the safe area.
+    const left = safe.x1 + (sw - bw * k) / 2;
+    const top = safe.y1 + (sh - bh * k) / 2;
 
     // Wrapper-local px == viewBox units (foreignObject is unscaled).
     const tx = (left - LOTTIE_FO_ORIGIN.x) - k * (box.x1 - LOTTIE_FO_ORIGIN.x);
@@ -221,12 +394,14 @@ function fitLottieToSafeArea(anim) {
 let lottieResizeTimer = null;
 window.addEventListener('resize', () => {
     clearTimeout(lottieResizeTimer);
-    lottieResizeTimer = setTimeout(() => {
+    lottieResizeTimer = setTimeout(async () => {
         const anim = currentLottieInstance;
         if (!anim || !anim.isLoaded) return;
         const frame = anim.currentFrame;
         const wasPlaying = !anim.isPaused;
-        fitLottieToSafeArea(anim);
+        if (wasPlaying) anim.pause();
+        await fitLottieToSafeArea(anim);
+        if (anim !== currentLottieInstance) return;
         if (wasPlaying) anim.goToAndPlay(frame, true);
         else anim.goToAndStop(frame, true);
     }, 150);

@@ -228,6 +228,8 @@ svg * {
 #final-image-container {
   /* background-color: #fff;
   border-radius: 30px; */
+  width: 100%;       /* fill the 594x416 foreignObject so every picture */
+  height: 100%;      /* gets exactly the same box */
   display: none;     /* initially hidden */
   transform: scale(0.3);
   opacity: 0;
