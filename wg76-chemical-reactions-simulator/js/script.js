@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
       tabId: "combination-reaction",
       reactantGroupId: "combination-reaction-reactant",
       reactantIds: ["h2", "o2"],
-      reactionComplete: "A reaction in which two or more substances combine to form a single product </br> (H₂ + O₂ → 2H₂O — shows molecules joining with animation)."          // 2 required
+      reactionComplete: "A reaction in which two or more substances combine to form a single product </br> (2H₂ + O₂ → 2H₂O — shows molecules joining with animation)."          // 2 required
     },
     {
       tabId: "decomposition-reaction",
@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
       tabId: "double-displacement-reaction",
       reactantGroupId: "double-displacement-reaction-ractant", // typo in HTML kept
       reactantIds: ["AgNO3", "NaCl"],     // 2 required
-      reactionComplete: "Two compounds exchange their ions to form two new compounds. A white precipitate of silver chloride is formed. AgNO₃ + NaCl → AgCl + NaNO₂"
+      reactionComplete: "Two compounds exchange their ions to form two new compounds. A white precipitate of silver chloride is formed. AgNO₃ + NaCl → AgCl + NaNO₃"
     },
     {
       tabId: "redox-reaction",
