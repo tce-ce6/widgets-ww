@@ -157,31 +157,31 @@
     notice: [
       {
         title: 'Look closely',
-        text: 'Look at everything in the picture. Some things in it make you ask a question.',
+        text: 'Check every part of the picture, from top to bottom. What do you want to know more about?',
         target: () => box('#picture'),
         anim: null,
       },
       {
         title: 'Tap what makes you wonder',
-        text: 'Tap four things in the picture that make you ask a question. A yellow ring marks each one you find.',
+        text: 'Pick four things. A yellow border appears around each thing you tap.',
         target: () => box('#picture'),
         anim: (tok) => tapLoop(tok, () => [neutralPoint()]),
       },
       {
-        title: 'Fill the four boxes',
-        text: 'Each thing you find fills the next box with its name and its question.',
-        target: () => boxAll('#slots'),
-        anim: (tok) => popLoop(tok, () => $$('#slots .slot')),
-      },
-      {
         title: 'Not everything counts',
-        text: 'Some things are just part of the background. If you tap one, a message asks you to try something else.',
+        text: 'Some things won’t get a border. If you tap one of them, a message asks you to try something else.',
         target: () => box('#picture'),
         anim: null,
       },
       {
+        title: 'Watch the boxes fill',
+        text: 'Each thing with a yellow border fills a box. The box shows what you tapped and a question about it.',
+        target: () => boxAll('#slots'),
+        anim: (tok) => popLoop(tok, () => $$('#slots .slot')),
+      },
+      {
         title: 'Move on',
-        text: 'When you have found all four, tap <b>Next</b>. Tap <b>All pictures</b> to choose a different picture.',
+        text: 'When all four boxes are full, tap <b>Next</b>.',
         target: () => boxAll('.nav'),
         anim: tapNext,
       },
@@ -190,35 +190,65 @@
     outline: [
       {
         title: 'Two outlines',
-        text: 'Each outline lists a beginning, a problem, a turning point and an ending. Read both.',
+        text: 'Each outline has a beginning, a middle and an ending. The middle has two parts: the problem and the turning point. Read both outlines.',
         target: () => boxAll('#cards'),
         anim: popCards,
       },
       {
         title: 'Check the picture',
-        text: 'Look back at the picture. Does each outline use the details you found?',
+        text: 'Does each outline use the four details you found?',
         target: () => box('#picture'),
         anim: null,
       },
       {
         title: 'Tap the better outline',
-        text: 'Tap <b>A</b> or <b>B</b>. If it isn\'t the right one, you get a hint and can try again.',
+        text: 'Pick <b>A</b> or <b>B</b>. If your choice isn’t the better one, you get a hint and can try again.',
         target: () => boxAll('#cards'),
         anim: tapCards,
       },
       {
         title: 'Move on',
-        text: 'When you find the right outline, every card shows a tag saying what works or what is wrong. Then tap <b>Build the story</b>.',
+        text: 'When you pick the better outline, both outlines get a tag and a note below explains the answer. Then tap <b>Build the story</b>.',
         target: () => boxAll('.nav'),
         anim: tapNext,
       },
     ],
 
-    build: [
+    // Beginning, Middle: the problem and Middle: the turning point
+    build: buildSteps('Next part'),
+
+    // the last part of the story
+    ending: buildSteps('Pick a title'),
+
+    title: [
+      {
+        title: 'Three titles',
+        text: 'Read all three titles. Which one fits your story and makes you want to read it?',
+        target: () => boxAll('#cards'),
+        anim: popCards,
+      },
+      {
+        title: 'Tap the best title',
+        text: 'Pick <b>A</b>, <b>B</b> or <b>C</b>. If your choice isn’t the best one, you get a hint and can try again.',
+        target: () => boxAll('#cards'),
+        anim: tapCards,
+      },
+      {
+        title: 'Read your story',
+        text: 'When you pick the best title, all three titles get a tag and a note below explains the answer. Then tap <b>Read your story</b> to see the whole story you built.',
+        target: () => boxAll('.nav'),
+        anim: tapNext,
+      },
+    ],
+  };
+
+  /** The four steps for building one part of the story; only the name of the next button changes. */
+  function buildSteps(nextName) {
+    return [
       {
         title: 'Follow your outline',
-        text: 'This line from your outline says what happens in this part. There are four parts to build.',
-        target: () => union([textBox('#stepLine'), box('#partPill')]),
+        text: 'The line at the top comes from the outline you picked. It says what happens in this part of your story. You’ll build the story in four parts.',
+        target: () => textBox('#stepLine'),
         anim: null,
       },
       {
@@ -228,40 +258,19 @@
         anim: popCards,
       },
       {
-        title: 'Tap the stronger version',
-        text: 'Tap <b>A</b> or <b>B</b>. If it isn\'t the right one, you get a hint and can try again.',
+        title: 'Tap the better version',
+        text: 'Pick <b>A</b> or <b>B</b>. If your choice isn’t the better one, you get a hint and can try again.',
         target: () => boxAll('#cards'),
         anim: tapCards,
       },
       {
         title: 'Move on',
-        text: 'When you find the right version, every card shows a tag. Then tap the button to go to the next part. <b>Back</b> takes you to the part before.',
+        text: `When you pick the better version, both versions get a tag and a note below explains the answer. Then tap <b>${nextName}</b>. <b>Back</b> takes you to the screen before.`,
         target: () => boxAll('.nav'),
         anim: tapNext,
       },
-    ],
-
-    title: [
-      {
-        title: 'Three titles',
-        text: 'Read all three titles. A good title makes the reader curious.',
-        target: () => boxAll('#cards'),
-        anim: popCards,
-      },
-      {
-        title: 'Tap the best title',
-        text: 'Tap <b>A</b>, <b>B</b> or <b>C</b>. If it isn\'t the right one, you get a hint and can try again.',
-        target: () => boxAll('#cards'),
-        anim: tapCards,
-      },
-      {
-        title: 'Read your story',
-        text: 'When you find the best title, tap <b>Read your story</b> to see the whole story you built.',
-        target: () => boxAll('.nav'),
-        anim: tapNext,
-      },
-    ],
-  };
+    ];
+  }
 
   /* ---------- card placement and rendering ---------- */
 
@@ -316,7 +325,7 @@
     $('#tourTitle').textContent = step.title;
     $('#tourText').innerHTML = step.text;
     $('#tourBack').hidden = index === 0;
-    $('#tourNext').textContent = index === steps.length - 1 ? 'Start playing' : 'Next';
+    $('#tourNext').textContent = index === steps.length - 1 ? 'Done' : 'Next';
     $('#tourDots').innerHTML = steps.map((_, k) => `<i class="${k === index ? 'on' : ''}"></i>`).join('');
     card.classList.remove('enter');
     void card.offsetWidth;
@@ -326,7 +335,10 @@
   }
 
   function open() {
-    steps = STEPS[stepScreen.dataset.step];
+    const step = stepScreen.dataset.step;
+    // the fourth part (the ending) moves on to the title, so its last step names a different button
+    const key = step === 'build' && stepScreen.dataset.part === '3' ? 'ending' : step;
+    steps = STEPS[key];
     if (!steps) return;
     opener = document.activeElement;
     tour.classList.add('is-open', 'no-anim');
