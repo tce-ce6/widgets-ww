@@ -27,10 +27,6 @@
             <img class="cover-book" src="assets/svg/cover-book.svg" alt="A closed book titled Picture Stories">
             <p class="cover-line">Look closely. Plan smart. Build a story.</p>
             <button class="cover-start" id="startBtn" type="button">Start</button>
-            <button class="help-btn help-btn--start js-help" type="button">
-              <img src="assets/svg/help-icon.svg" alt="">
-              <span>Help</span>
-            </button>
           </section>
 
           <!-- ============ PICTURE MENU ============ -->
@@ -61,11 +57,10 @@
             </div>
 
             <div class="slots" id="slots"></div>
-            <p class="part-pill" id="partPill"></p>
             <div class="cards" id="cards"></div>
             <p class="feedback" id="feedback" aria-live="polite" hidden></p>
 
-            <button class="home-btn" id="homeBtn" type="button" aria-label="Back to the start screen">
+            <button class="home-btn js-home" id="homeBtn" type="button" aria-label="Home: all pictures">
               <img src="assets/svg/home-icon.svg" alt="">
             </button>
             <button class="help-btn help-btn--step" id="tourBtn" type="button">
@@ -87,7 +82,10 @@
             <p class="read-line">Here's the story you built.</p>
             <div class="read-box" id="readBox"></div>
             <h3 class="ribbon ribbon--read" id="readTitle" tabindex="-1"></h3>
-            <button class="pill pill--yellow read-next" id="readNext" type="button"></button>
+            <button class="pill pill--yellow read-next" id="readNext" type="button" hidden></button>
+            <button class="home-btn js-home" type="button" aria-label="Home: all pictures">
+              <img src="assets/svg/home-icon.svg" alt="">
+            </button>
           </section>
 
           <!-- ============ COMPLETION ============ -->
@@ -96,6 +94,9 @@
             <p class="line line--done">For each picture, you noticed the details, picked the outline that fitted, chose the strongest version of each part and gave the story a title.</p>
             <div class="picture-grid picture-grid--done" id="doneGrid"></div>
             <button class="pill pill--yellow done-again" id="againBtn" type="button">Back to the start</button>
+            <button class="home-btn js-home" type="button" aria-label="Home: all pictures">
+              <img src="assets/svg/home-icon.svg" alt="">
+            </button>
           </section>
         </div>
       </div>

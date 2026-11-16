@@ -768,7 +768,7 @@
 
   /* ---- Screens 9-10: the Historian's Curio Shop ---- */
 
-  const ORACLE = { heat: 0, read: new Set(), current: null, stage: 1 };
+  const ORACLE = { heat: 0, read: new Set(), current: null, stage: 1, answered: null };
   const ember = $('#ember');
   const ITEXT_HEAT = 'Drag along the line to increase the heat intensity. The hotter it burns, the more shells break.<br>Tap any cracked shell to read it.';
 
@@ -916,6 +916,7 @@
         $$('.opt', opts2).forEach((x) => { x.disabled = true; x.classList.remove('is-err'); });
         btn.classList.add('is-ok');
         boneFeedback(b.note2, true);
+        ORACLE.answered = ORACLE.current; // both answers are right: this bone counts as read
         later(() => finishBone(ORACLE.current), 2600);
       }));
     });
@@ -925,6 +926,7 @@
   }
 
   function finishBone(key) {
+    ORACLE.answered = null;
     ORACLE.read.add(key);
     const bone = $(`.bone[data-bone="${key}"]`);
     bone.classList.add('is-read');
@@ -942,6 +944,15 @@
   }
 
   function closeBone() {
+    // Closed (Escape) after the right answers but before the panel closes itself:
+    // still mark the bone as read, so the activity can always be completed.
+    if (ORACLE.answered && ORACLE.answered === ORACLE.current) {
+      const key = ORACLE.answered;
+      ORACLE.answered = null;
+      finishBone(key);
+      return;
+    }
+    ORACLE.answered = null;
     clearTimers();
     boneModal.hidden = true;
     document.body.classList.remove('has-modal');
@@ -963,7 +974,6 @@
         if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); open(); }
       });
     });
-    $('#boneClose').addEventListener('click', () => { Sound.play('tap'); closeBone(); });
     $('#oracleReset').addEventListener('click', () => { Sound.play('tap'); resetOracle(); });
     enterHooks.oracle = () => { if (state.done.has(3) || ORACLE.heat === 0) resetOracle(); };
   }
@@ -1161,4 +1171,10 @@
   fitStage();
   window.addEventListener('resize', fitStage);
   goTo('intro');
+
+  // Read-only answers for the how-to-play tour (how-to-play.js), so its hand demo drags a real piece to its real place.
+  window.chinaHowTo = {
+    cityItem: (name) => CITY.find((x) => x.name === name),
+    goodsTo: (key) => (GOODS.find((x) => x.key === key) || {}).to
+  };
 }());

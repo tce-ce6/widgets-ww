@@ -303,13 +303,16 @@
     this.radius = box.getSize(new THREE.Vector3()).length() / 2;
 
     if (extra.labels !== false) {
-      const midZ = L.zEnd * 0.55;
-      const lineGeo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0, 0.25, L.W / 2 + 2), new THREE.Vector3(0, 0.25, midZ)]);
+      // the midline runs the full length of the jaw (review): from just under its label,
+      // below "Back of mouth", down between the front teeth to just above "Front of mouth"
+      const midLabelZ = L.zEnd - 3; // level with the tips of the jaw; "Back of mouth" sits well above it
+      const backLabelZ = L.zEnd - (jaw === 'child' ? 11 : 16); // a little lower on the child's jaw, clear of its title
+      const lineGeo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0, 0.25, L.W / 2 + 2), new THREE.Vector3(0, 0.25, midLabelZ + 3)]);
       const line = new THREE.Line(lineGeo, new THREE.LineDashedMaterial({ color: 0x51636e, dashSize: 1.4, gapSize: 1.2 }));
       line.computeLineDistances(); scene.add(line);
       this.addLabel('Front of mouth', new THREE.Vector3(0, 0, L.W / 2 + 7));
-      this.addLabel('Midline', new THREE.Vector3(0, 0, midZ - 3));
-      this.addLabel('Back of mouth', new THREE.Vector3(0, 0, L.zEnd - 4));
+      this.addLabel('Midline', new THREE.Vector3(0, 0, midLabelZ));
+      this.addLabel('Back of mouth', new THREE.Vector3(0, 0, backLabelZ));
     }
 
     ['L', 'R'].forEach((side) => {

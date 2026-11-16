@@ -97,7 +97,7 @@
       "author": "tce-ashishg"
     },
     "wg187-citizen-engagement": {
-      "updatedAt": "2026-10-22T15:20:08+05:30",
+      "updatedAt": "2026-11-16T16:15:39+05:30",
       "author": "tce-nitinc"
     },
     "wg188-feed-the-animals": {
@@ -177,7 +177,7 @@
       "author": "Shyamsunder Hait"
     },
     "wg210-fool-khilao": {
-      "updatedAt": "2026-11-13T12:02:13+05:30",
+      "updatedAt": "2026-11-16T14:41:50+05:30",
       "author": "tce-nitinc"
     },
     "wg211-railgadi-banao": {
@@ -189,7 +189,7 @@
       "author": "tce-ashishg"
     },
     "wg213-cross-bridge": {
-      "updatedAt": "2026-11-13T18:13:55+05:30",
+      "updatedAt": "2026-11-16T14:41:50+05:30",
       "author": "tce-nitinc"
     },
     "wg214-jasus-pehchano": {
@@ -205,7 +205,7 @@
       "author": "tce-ashishg"
     },
     "wg218-ancient-china": {
-      "updatedAt": "2026-11-13T18:13:55+05:30",
+      "updatedAt": "2026-11-16T14:08:04+05:30",
       "author": "tce-nitinc"
     },
     "wg219-sabdo-me-vayanjan-ki-khoj-gujrati": {
@@ -237,23 +237,23 @@
       "author": "tce-ashishg"
     },
     "wg236-road-signs": {
-      "updatedAt": "2026-11-13T18:46:10+05:30",
+      "updatedAt": "2026-11-16T15:14:37+05:30",
       "author": "tce-nitinc"
     },
     "wg237-double-agent-words": {
-      "updatedAt": "2026-11-05T16:01:37+05:30",
-      "author": "Shyamsunder Hait"
+      "updatedAt": "2026-11-16T17:31:47+05:30",
+      "author": "tce-nitinc"
     },
     "wg242-picture-stories": {
-      "updatedAt": "2026-11-05T17:27:17+05:30",
-      "author": "Shyamsunder Hait"
+      "updatedAt": "2026-11-16T16:15:39+05:30",
+      "author": "tce-nitinc"
     },
     "wg243-skip-counting-adventures": {
-      "updatedAt": "2026-11-16T11:59:40+05:30",
+      "updatedAt": "2026-11-16T16:15:39+05:30",
       "author": "tce-nitinc"
     },
     "wg246-teeth-order": {
-      "updatedAt": "2026-11-11T17:46:05+05:30",
+      "updatedAt": "2026-11-16T16:34:10+05:30",
       "author": "tce-nitinc"
     },
     "wg247-do-varno-se-sabad-gujrati": {
@@ -261,11 +261,11 @@
       "author": "tce-ashishg"
     },
     "wg248-tin-varno-se-sabad-gujrati": {
-      "updatedAt": "2026-11-13T17:42:52+05:30",
+      "updatedAt": "2026-11-16T13:07:47+05:30",
       "author": "tce-ashishg"
     },
     "wg250-varno-se-sabad-banaye-gujrati": {
-      "updatedAt": "2026-11-13T17:42:52+05:30",
+      "updatedAt": "2026-11-16T12:53:03+05:30",
       "author": "tce-ashishg"
     },
     "wg31-world-war": {
@@ -278,6 +278,83 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-11-16T17:31:47+05:30",
+      "author": "tce-nitinc",
+      "message": "wg237 fixes",
+      "widgets": [
+        237
+      ]
+    },
+    {
+      "date": "2026-11-16T16:34:10+05:30",
+      "author": "tce-nitinc",
+      "message": "wg246",
+      "widgets": [
+        246
+      ]
+    },
+    {
+      "date": "2026-11-16T16:15:39+05:30",
+      "author": "tce-nitinc",
+      "message": "wg 187 fixes",
+      "widgets": [
+        187,
+        242,
+        243
+      ]
+    },
+    {
+      "date": "2026-11-16T15:52:39+05:30",
+      "author": "tce-nitinc",
+      "message": "FIXES",
+      "widgets": [
+        237,
+        242
+      ]
+    },
+    {
+      "date": "2026-11-16T15:14:37+05:30",
+      "author": "tce-nitinc",
+      "message": "resolved bugs form 236",
+      "widgets": [
+        236
+      ]
+    },
+    {
+      "date": "2026-11-16T14:41:50+05:30",
+      "author": "tce-nitinc",
+      "message": "fixes",
+      "widgets": [
+        210,
+        213
+      ]
+    },
+    {
+      "date": "2026-11-16T14:08:04+05:30",
+      "author": "tce-nitinc",
+      "message": "resolved wg218 fixes",
+      "widgets": [
+        218
+      ]
+    },
+    {
+      "date": "2026-11-16T13:07:47+05:30",
+      "author": "tce-ashishg",
+      "message": "wg248 updated",
+      "widgets": [
+        248
+      ]
+    },
+    {
+      "date": "2026-11-16T12:53:03+05:30",
+      "author": "tce-ashishg",
+      "message": "wg248 issue resolved",
+      "widgets": [
+        248,
+        250
+      ]
+    },
     {
       "date": "2026-11-16T11:59:40+05:30",
       "author": "tce-nitinc",
@@ -463,89 +540,6 @@
         208,
         212,
         219
-      ]
-    },
-    {
-      "date": "2026-11-11T14:49:17+05:30",
-      "author": "tce-nitinc",
-      "message": "resolved the bugs",
-      "widgets": [
-        226,
-        236
-      ]
-    },
-    {
-      "date": "2026-11-11T12:33:53+05:30",
-      "author": "tce-nitinc",
-      "message": "resolved the comments of wg205",
-      "widgets": [
-        205
-      ]
-    },
-    {
-      "date": "2026-11-11T12:06:11+05:30",
-      "author": "tce-nitinc",
-      "message": "resolved comments form the wg218",
-      "widgets": [
-        218
-      ]
-    },
-    {
-      "date": "2026-11-11T11:45:15+05:30",
-      "author": "tce-nitinc",
-      "message": "wg202 resolved river functionality issue",
-      "widgets": [
-        202
-      ]
-    },
-    {
-      "date": "2026-11-11T10:58:58+05:30",
-      "author": "tce-nitinc",
-      "message": "resolved the comments of wg218",
-      "widgets": [
-        202,
-        218
-      ]
-    },
-    {
-      "date": "2026-11-05T18:27:27+05:30",
-      "author": "tce-ashishg",
-      "message": "thumb nail image added",
-      "widgets": [
-        181,
-        188,
-        190,
-        194,
-        195,
-        196,
-        207,
-        208,
-        212,
-        219
-      ]
-    },
-    {
-      "date": "2026-11-05T17:27:17+05:30",
-      "author": "Shyamsunder Hait",
-      "message": "added the 242 widget",
-      "widgets": [
-        242
-      ]
-    },
-    {
-      "date": "2026-11-05T17:23:03+05:30",
-      "author": "tce-ashishg",
-      "message": "wg231 completed",
-      "widgets": [
-        231
-      ]
-    },
-    {
-      "date": "2026-11-05T16:24:10+05:30",
-      "author": "tce-nitinc",
-      "message": "resolved ejypt widget bugs",
-      "widgets": [
-        202
       ]
     }
   ]

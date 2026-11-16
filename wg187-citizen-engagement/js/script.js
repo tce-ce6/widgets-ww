@@ -123,7 +123,8 @@ document.addEventListener('DOMContentLoaded', () => {
      ========================================================================== */
 
   const state = {
-    index: 0,
+    index: 0, // position in this round's order
+    order: PROBLEMS.map((_, i) => i), // the problems, reshuffled every time a round starts
     placed: {}, // tool key -> level it was placed in
     selected: null, // tool picked by tapping, waiting for a box
     completed: new Set(), // problems whose six tools were all placed
@@ -185,8 +186,20 @@ document.addEventListener('DOMContentLoaded', () => {
     Object.keys(chipEls).forEach((k) => chipEls[k].classList.remove('is-selected'));
   };
 
+  const currentProblem = () => PROBLEMS[state.order[state.index]];
+
+  // A new random order of the problems for each round
+  const shuffleProblems = () => {
+    const order = PROBLEMS.map((_, i) => i);
+    for (let i = order.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [order[i], order[j]] = [order[j], order[i]];
+    }
+    state.order = order;
+  };
+
   const loadProblem = () => {
-    const problem = PROBLEMS[state.index];
+    const problem = currentProblem();
     state.placed = {};
     clearSelection();
     clearFeedback();
@@ -233,7 +246,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const placeTool = (key, level) => {
     if (state.placed[key]) return;
-    const problem = PROBLEMS[state.index];
+    const problem = currentProblem();
     const [correct, why] = problem.tools[key];
     const tool = toolByKey[key];
     showFeedback(`${tool.name} — ${why}`);
@@ -348,7 +361,8 @@ document.addEventListener('DOMContentLoaded', () => {
     ['low', 'medium', 'high'].forEach((lv) => head.appendChild(el('div', `h-${lv}`, LEVEL_LABEL[lv])));
     holder.appendChild(head);
 
-    PROBLEMS.slice(page * PER_SUMMARY_PAGE, (page + 1) * PER_SUMMARY_PAGE).forEach((problem) => {
+    // the summary lists the problems in the order they were played this round
+    state.order.slice(page * PER_SUMMARY_PAGE, (page + 1) * PER_SUMMARY_PAGE).map((i) => PROBLEMS[i]).forEach((problem) => {
       const row = el('div', 'summary__row');
       const label = el('div', 'summary__problem');
       label.appendChild(iconImg(toolByKey[problem.icon]));
@@ -390,6 +404,7 @@ document.addEventListener('DOMContentLoaded', () => {
   $('startBtn').addEventListener('click', () => {
     state.index = 0;
     state.completed = new Set();
+    shuffleProblems();
     showScreen('problem');
     loadProblem();
   });
@@ -451,7 +466,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (screens.problem.classList.contains('is-active')) {
       if ($('nextBtn').disabled) {
-        const problem = PROBLEMS[state.index];
+        const problem = currentProblem();
         TOOLS.forEach((t) => placeTool(t.key, problem.tools[t.key][0]));
         return `problem ${state.index + 1}: sorted`;
       }
