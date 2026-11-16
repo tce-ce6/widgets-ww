@@ -135,12 +135,6 @@
         anim: (tok) => popLoop(tok, () => $$('#rows .target')),
       },
       {
-        title: 'Noun or verb?',
-        text: 'A <b>noun</b> names a person, place, animal or thing. It often comes after a, an, the, my or her, or a describing word. A <b>verb</b> tells us what someone or something does. It often comes after to, will, can or might, or begins an instruction.',
-        target: () => boxAll('#rows .sentence'),
-        anim: null,
-      },
-      {
         title: 'Tap Noun or Verb',
         text: 'Tap <b>Noun</b> or <b>Verb</b> beside each sentence. You can change your choice until you tap Check.',
         target: () => boxAll('#rows .job'),
