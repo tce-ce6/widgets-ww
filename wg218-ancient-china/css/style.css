@@ -1110,6 +1110,19 @@ button:focus-visible,
   animation: screen-in .5s ease both;
 }
 
+/* Stage 4 (mould assembled) sits a little lower in its frame */
+.bronze__stage[src$="bronze-4.png"] {
+  top: -0.5%;
+}
+
+/* Stage 3 (carve patterns) fills the frame exactly */
+.bronze__stage[src$="bronze-3.png"] {
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
 .bronze__caption {
   position: absolute;
   left: 68px;
@@ -1505,26 +1518,6 @@ button:focus-visible,
   top: 848px;
 }
 
-.close-btn {
-  position: absolute;
-  left: 1465px;
-  top: 171px;
-  width: 88px;
-  height: 88px;
-  border-radius: 50%;
-  transition: top .4s ease;
-}
-
-.close-btn img {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
-.bone-modal.is-stage2 .close-btn {
-  top: 65px;
-}
-
 /* ==========================================================================
    SCREEN 11: JOURNEY OF THE SILK
    ========================================================================== */
@@ -1850,3 +1843,103 @@ button:focus-visible,
 .ribbon--summary {
   top: 144px;
 }
+
+/* ==========================================================================
+   How to play tour (same as wg202, in this widget's colours)
+   ========================================================================== */
+.how-btn {
+  position: absolute;
+  left: 61px;
+  top: 953px;
+  z-index: 7;
+  width: 180px;
+  height: 70px;
+  padding: 0;
+  background: none;
+  border: 0;
+  border-radius: 35px;
+  cursor: pointer;
+}
+
+#screen-city .how-btn {
+  top: 956px;
+}
+
+.how-btn:hover { filter: brightness(1.06); }
+.how-btn img { display: block; width: 180px; height: 70px; }
+
+.tour { position: fixed; inset: 0; z-index: 300; display: none; font-family: "Roboto", "Segoe UI", Arial, sans-serif; }
+.tour.is-open { display: block; animation: tour-in .3s ease both; }
+@keyframes tour-in { from { opacity: 0; } to { opacity: 1; } }
+.tour-spot {
+  position: fixed; border-radius: 14px; pointer-events: none;
+  box-shadow: 0 0 0 200vmax rgba(24, 8, 4, .78);
+  outline: 3px solid var(--gold); outline-offset: 3px;
+  transition: left .45s cubic-bezier(.4, 0, .2, 1), top .45s cubic-bezier(.4, 0, .2, 1),
+              width .45s cubic-bezier(.4, 0, .2, 1), height .45s cubic-bezier(.4, 0, .2, 1);
+}
+.tour-spot[hidden] { display: none; }
+.tour.no-anim .tour-spot, .tour.no-anim .tour-card { transition: none; }
+.tour-demo { position: fixed; inset: 0; pointer-events: none; z-index: 2; }
+
+.tour-card {
+  position: fixed; z-index: 3; width: min(400px, calc(100vw - 24px));
+  background: #fff2e1; color: var(--ink);
+  border: 3px solid #ad5b26; border-radius: 18px;
+  padding: 18px 22px 16px; box-shadow: 0 18px 40px rgba(0, 0, 0, .5);
+  transition: left .45s cubic-bezier(.4, 0, .2, 1), top .45s cubic-bezier(.4, 0, .2, 1);
+}
+.tour-count { font-size: 13px; font-weight: 700; color: #ad5b26; }
+.tour-card h2 { margin: 4px 0 6px; font-size: 24px; line-height: 1.25; color: var(--red-deep); }
+.tour-card p { margin: 0; font-size: 16px; line-height: 1.5; }
+.tour-card p b { color: var(--red-deep); }
+.tour-card.enter .tour-count, .tour-card.enter h2, .tour-card.enter p { animation: tour-rise .45s ease both; }
+.tour-card.enter h2 { animation-delay: .07s; }
+.tour-card.enter p { animation-delay: .15s; }
+@keyframes tour-rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.tour-skip {
+  position: absolute; top: -11px; right: -11px;
+  width: 38px; height: 38px; padding: 0; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--red); color: #fff; border: 3px solid #fff2e1;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, .4); cursor: pointer;
+  font-size: 26px; line-height: 1;
+}
+.tour-skip span { display: block; margin-top: -2px; }
+.tour-skip:hover { filter: brightness(1.12); }
+.tour-nav { display: flex; align-items: center; justify-content: space-between; margin-top: 16px; gap: 10px; }
+.tour-dots { display: flex; gap: 5px; }
+.tour-dots i { width: 8px; height: 8px; border-radius: 50%; background: #d9c3a5; transition: background .2s, width .2s; }
+.tour-dots i.on { background: var(--red-deep); width: 20px; border-radius: 4px; }
+.tour-btns { display: flex; gap: 8px; }
+.tour-btn {
+  font-family: inherit; font-size: 15px; font-weight: 700; padding: 9px 18px; border-radius: 20px; cursor: pointer;
+  background: var(--red); color: #fff; border: 2px solid var(--red);
+}
+.tour-btn--ghost { background: transparent; color: var(--red); }
+.tour-btn[hidden] { display: none; }
+.tour :focus-visible { outline: 3px solid #1a73e8; outline-offset: 2px; }
+
+/* animated hand and what it carries */
+.tour-hand { position: fixed; z-index: 5; width: 0; height: 0; }
+.tour-hand svg { position: absolute; left: -8px; top: -4px; filter: drop-shadow(0 3px 3px rgba(0, 0, 0, .45)); transition: transform .15s; }
+.tour-hand.is-press svg { transform: scale(.85); }
+.tour-ripple {
+  position: fixed; z-index: 4; width: 14px; height: 14px; margin: -7px 0 0 -7px; border-radius: 50%;
+  border: 3px solid var(--gold); animation: tour-ripple .7s ease-out forwards;
+}
+@keyframes tour-ripple { to { transform: scale(4); opacity: 0; } }
+.tour-ghost {
+  position: fixed; z-index: 4; transform: translate(-50%, -50%);
+  display: flex; align-items: center; justify-content: center; text-align: center;
+  background: #fff; border: 2px solid var(--red-deep); border-radius: 20px;
+  color: #000; font-weight: 700; line-height: 1.15; padding: 0 12px; white-space: nowrap;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, .4); opacity: .95;
+}
+.tour-ghost.is-card { background: rgba(255, 242, 225, .55); border-style: dashed; }
+.tour-ghost.is-settle { animation: tour-settle .4s ease both; }
+@keyframes tour-settle { 50% { transform: translate(-50%, -50%) scale(1.08); } }
+.tour-lift { opacity: .45; }
+.tour-pop { animation: tour-pop .5s ease both; }
+@keyframes tour-pop { 40% { transform: scale(1.1); } }
+.bone.tour-pop, .zone.tour-pop { animation: none; }
