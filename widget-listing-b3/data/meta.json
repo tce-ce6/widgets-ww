@@ -177,7 +177,7 @@
       "author": "Shyamsunder Hait"
     },
     "wg210-fool-khilao": {
-      "updatedAt": "2026-11-13T12:02:13+05:30",
+      "updatedAt": "2026-11-16T14:41:50+05:30",
       "author": "tce-nitinc"
     },
     "wg211-railgadi-banao": {
@@ -189,7 +189,7 @@
       "author": "tce-ashishg"
     },
     "wg213-cross-bridge": {
-      "updatedAt": "2026-11-13T18:13:55+05:30",
+      "updatedAt": "2026-11-16T14:41:50+05:30",
       "author": "tce-nitinc"
     },
     "wg214-jasus-pehchano": {
@@ -278,6 +278,15 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-11-16T14:41:50+05:30",
+      "author": "tce-nitinc",
+      "message": "fixes",
+      "widgets": [
+        210,
+        213
+      ]
+    },
     {
       "date": "2026-11-16T14:08:04+05:30",
       "author": "tce-nitinc",
@@ -530,23 +539,6 @@
       "widgets": [
         202,
         218
-      ]
-    },
-    {
-      "date": "2026-11-05T18:27:27+05:30",
-      "author": "tce-ashishg",
-      "message": "thumb nail image added",
-      "widgets": [
-        181,
-        188,
-        190,
-        194,
-        195,
-        196,
-        207,
-        208,
-        212,
-        219
       ]
     }
   ]
