@@ -26,7 +26,6 @@
   const zonesBox = $('zones');
   const slotsBox = $('slots');
   const cardsBox = $('cards');
-  const partPill = $('partPill');
   const feedback = $('feedback');
   const backBtn = $('backBtn');
   const nextBtn = $('nextBtn');
@@ -154,6 +153,7 @@
 
   function setStep(step, heading, line, italic) {
     stepScreen.dataset.step = step;
+    delete stepScreen.dataset.part; // set again by showPart (the how-to-play tour reads it)
     stepHeading.textContent = heading;
     stepLine.className = `line${italic ? ' line--italic' : ''}`;
     stepLine.textContent = line;
@@ -161,8 +161,10 @@
     showScreen('step', stepHeading);
   }
 
+  /** A null backLabel hides the Back button (the first step has none: Home goes to all pictures). */
   function setNav(backLabel, onBack, nextLabel, onNext, nextEnabled) {
-    backBtn.textContent = backLabel;
+    backBtn.hidden = !backLabel;
+    backBtn.textContent = backLabel || '';
     backBtn.onclick = onBack;
     nextBtn.textContent = nextLabel;
     nextBtn.onclick = onNext;
@@ -251,7 +253,7 @@
 
   function showNotice() {
     setStep('notice', 'What makes you wonder?', 'Tap four things in the picture that make you ask a question.', true);
-    setNav('All pictures', showMenu, 'Next', showOutline, false);
+    setNav(null, null, 'Next', showOutline, false);
     renderNoticeState();
   }
 
@@ -328,7 +330,7 @@
     const outline = story.data.outline.find((option) => option.correct);
     setStep('build', 'Which version works better?', '');
     stepLine.append(el('b', '', `${PART_LABELS[index]}: `), outline.parts[index]);
-    partPill.textContent = `Part ${index + 1} of ${PART_LABELS.length}`;
+    stepScreen.dataset.part = index;
     const isLast = index === PART_LABELS.length - 1;
     setNav(
       'Back',
@@ -356,13 +358,18 @@
     $('readTitle').textContent = story.data.titles.find((option) => option.correct).text;
     const box = $('readBox');
     box.textContent = '';
+    // each part's label sits outside the box, as a pointer beside its paragraph
     story.data.parts.forEach((options, index) => {
-      box.append(el('h4', '', PART_LABELS[index]), el('p', '', options.find((option) => option.correct).text));
+      const part = el('div', 'read-part');
+      part.append(el('h4', 'read-tag', PART_LABELS[index]), el('p', '', options.find((option) => option.correct).text));
+      box.append(part);
     });
+    // Home goes back to all pictures; the button here only appears once every story is built
     const allDone = completed.size === STORIES.length;
     const next = $('readNext');
-    next.textContent = allDone ? 'Finish' : 'All pictures';
-    next.onclick = allDone ? showDone : showMenu;
+    next.hidden = !allDone;
+    next.textContent = 'Finish';
+    next.onclick = showDone;
     showScreen('read', $('readTitle'));
   }
 
@@ -386,7 +393,8 @@
   /* ---------- wiring ---------- */
 
   $('startBtn').addEventListener('click', showMenu);
-  $('homeBtn').addEventListener('click', showStart);
+  // Home, on every page after the start, goes to all the pictures and the task
+  document.querySelectorAll('.js-home').forEach((button) => button.addEventListener('click', showMenu));
   $('againBtn').addEventListener('click', () => {
     completed.clear();
     showStart();

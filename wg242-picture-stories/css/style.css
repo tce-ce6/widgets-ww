@@ -561,26 +561,6 @@ ol {
 }
 
 /* ---------- choice cards ---------- */
-.part-pill {
-  display: none;
-  position: absolute;
-  left: 873px;
-  top: 469px;
-  width: 196px;
-  height: 60px;
-  border-radius: 30px;
-  background: rgba(74, 18, 17, 0.6);
-  font-size: 28px;
-  font-weight: 500;
-  line-height: 60px;
-  text-align: center;
-  color: var(--peach);
-}
-
-[data-step="build"] .part-pill {
-  display: block;
-}
-
 .cards {
   display: none;
 }
@@ -1127,4 +1107,92 @@ body.has-modal #modal-layer {
   40% {
     transform: scale(1.04);
   }
+}
+
+/* ==========================================================================
+   Step layout (review): the picture sits right under the title, then the
+   ribbon and its line, then the options, so the line reads straight into them.
+   ========================================================================== */
+#screen-step .picture {
+  top: 70px;
+}
+
+#screen-step .ribbon {
+  top: 346px;
+}
+
+#screen-step .line {
+  top: 410px;
+}
+
+/* the big tap-the-picture step */
+#screen-step[data-step="notice"] .ribbon {
+  top: 652px;
+}
+
+#screen-step[data-step="notice"] .line {
+  top: 716px;
+}
+
+#screen-step[data-step="notice"] .slot {
+  top: 774px;
+}
+
+#screen-step[data-step="outline"] .card {
+  top: 500px;
+  height: 440px;
+}
+
+#screen-step[data-step="build"] .card {
+  top: 520px;
+}
+
+#screen-step[data-step="build"] .feedback {
+  top: 850px;
+}
+
+#screen-step[data-step="title"] .card {
+  top: 520px;
+}
+
+#screen-step[data-step="title"] .feedback {
+  top: 760px;
+}
+
+/* ==========================================================================
+   Finished story (review): the part names are pointers beside the box, so the
+   story itself reads without breaks.
+   ========================================================================== */
+.read-box {
+  left: 330px;
+  width: 1411px;
+}
+
+.read-part {
+  position: relative;
+}
+
+.read-part + .read-part {
+  margin-top: 30px;
+}
+
+.read-box .read-part p {
+  margin: 0;
+}
+
+.read-box .read-tag {
+  position: absolute;
+  /* box padding (54) + border (4) + a 26px gap to the box's left edge */
+  right: calc(100% + 84px);
+  top: -6px;
+  width: 248px;
+  margin: 0;
+  padding: 8px 30px 8px 16px;
+  font-size: 22px;
+  line-height: 26px;
+  font-weight: 700;
+  color: var(--maroon);
+  background: var(--peach);
+  clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 50%, calc(100% - 20px) 100%, 0 100%);
+  border-radius: 6px 0 0 6px;
 }

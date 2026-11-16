@@ -485,7 +485,7 @@ window.PICTURE_STORIES = [
           "text": "We knelt down beside him. ‘What's your name?’ asked Meera Didi. ‘Chintu,’ he sobbed. The balloon seller remembered selling him the red balloon. ‘His mother was wearing a yellow sari,’ he said. But there were hundreds of people at the mela. How could we find one yellow sari?",
           "tag": "Correct",
           "correct": true,
-          "feedback": "Chintu's few words and the huge crowd show us how hard the problem is."
+          "feedback": "It keeps the problem going. Chintu can only sob his name, and the one clue is a yellow sari in a huge crowd."
         }
       ],
       [

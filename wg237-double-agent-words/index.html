@@ -67,7 +67,8 @@
             <button class="pill again-btn" id="againBtn" type="button">Play again</button>
           </section>
 
-          <button class="pill help-btn" id="helpBtn" type="button">
+          <!-- Help opens a how-to-play tour for the screen on show; not shown on the briefing (home) screen -->
+          <button class="pill help-btn" id="helpBtn" type="button" hidden>
             <img class="help-icon" src="assets/svg/help-icon.svg" alt="">
             <span>Help</span>
           </button>
@@ -76,36 +77,25 @@
 
       <!-- Popups sit above the full-window backdrop, on a stage scaled like the main one -->
       <div id="modal-layer">
-        <div id="modal-stage">
-          <div class="help-card" id="helpCard" role="dialog" aria-modal="true" aria-labelledby="helpTitle" hidden>
-            <img class="help-agent" src="assets/svg/agent-question.svg" alt="">
-            <h3 class="help-title" id="helpTitle">How to play</h3>
-            <ol class="help-steps">
-              <li>Read both sentences for the case.</li>
-              <li>Tap Noun or Verb beside each sentence. You can change your choice until you tap Check.</li>
-              <li>Tap Check to see the correct answers and why they are correct.</li>
-              <li>You unmask an agent when you label both sentences correctly.</li>
-            </ol>
-            <div class="help-clues">
-              <div class="help-clue help-clue--noun">
-                <h4>Noun clues</h4>
-                <ul>
-                  <li>Names a person, place, animal or thing</li>
-                  <li>Often comes after a, an, the, my or her</li>
-                  <li>Often comes after a describing word, like big or blue</li>
-                </ul>
-              </div>
-              <div class="help-clue help-clue--verb">
-                <h4>Verb clues</h4>
-                <ul>
-                  <li>Tells us what someone or something does</li>
-                  <li>Often comes after to, will, can or might</li>
-                  <li>Often begins an instruction</li>
-                </ul>
-              </div>
-            </div>
-            <button class="pill help-close" id="helpClose" type="button">Close</button>
-          </div>
+        <div id="modal-stage"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- How-to-play tour (shown over the stage; positioned in viewport coordinates) -->
+  <div id="tour" class="tour" aria-hidden="true">
+    <div id="tourSpot" class="tour-spot"></div>
+    <div id="tourDemo" class="tour-demo"></div>
+    <div id="tourCard" class="tour-card" role="dialog" aria-modal="true" aria-labelledby="tourTitle">
+      <button id="tourSkip" class="tour-skip" type="button" aria-label="Close how to play"><span aria-hidden="true">&times;</span></button>
+      <div id="tourCount" class="tour-count"></div>
+      <h2 id="tourTitle"></h2>
+      <p id="tourText"></p>
+      <div class="tour-nav">
+        <div id="tourDots" class="tour-dots"></div>
+        <div class="tour-btns">
+          <button id="tourBack" class="tour-btn tour-btn--ghost" type="button">Back</button>
+          <button id="tourNext" class="tour-btn" type="button">Next</button>
         </div>
       </div>
     </div>
@@ -115,6 +105,7 @@
   <script src="./js/anim-data.js"></script>
   <script src="./js/content-data.js"></script>
   <script src="./js/script.js"></script>
+  <script src="./js/how-to-play.js"></script>
 </body>
 
 </html>

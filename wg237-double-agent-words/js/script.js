@@ -27,7 +27,6 @@
   const rowsBox = $('rows');
   const mainBtn = $('mainBtn');
   const status = $('status');
-  const helpCard = $('helpCard');
 
   const paper = window.ANIM_DATA.layers.find((layer) => layer.nm === PAPER_LAYER).ks;
 
@@ -39,7 +38,6 @@
   let picks = [];
   let checked = false;
   let busy = false;
-  let helpReturn = null;
 
   /** Fits the fixed 1920x1080 stage (and the popup stage) inside the window, centred. */
   function fitStage() {
@@ -54,6 +52,8 @@
   function goTo(id) {
     document.querySelectorAll('.screen.is-active').forEach((screen) => screen.classList.remove('is-active'));
     $(`screen-${id}`).classList.add('is-active');
+    // no Help on the briefing (home) screen
+    $('helpBtn').hidden = id === 'start';
   }
 
   const el = (tag, className, text) => {
@@ -318,35 +318,13 @@
     $('startBtn').focus({ preventScroll: true });
   }
 
-  /* ---------- help ---------- */
-
-  function openHelp() {
-    helpReturn = document.activeElement;
-    helpCard.hidden = false;
-    document.body.classList.add('has-modal');
-    stage.inert = true;
-    $('helpClose').focus({ preventScroll: true });
-  }
-
-  function closeHelp() {
-    helpCard.hidden = true;
-    document.body.classList.remove('has-modal');
-    stage.inert = false;
-    if (helpReturn && helpReturn !== document.body) helpReturn.focus({ preventScroll: true });
-  }
+  /* Help: the how-to-play tour (js/how-to-play.js) opens from #helpBtn. It waits while the paper is moving. */
+  window.doubleAgentHowTo = { isBusy: () => busy };
 
   $('startBtn').addEventListener('click', startGame);
   mainBtn.addEventListener('click', onMainButton);
   $('againBtn').addEventListener('click', backToBriefing);
-  $('helpBtn').addEventListener('click', openHelp);
-  $('helpClose').addEventListener('click', closeHelp);
   window.addEventListener('resize', fitStage);
-  document.addEventListener('keydown', (event) => {
-    if (helpCard.hidden) return;
-    if (event.key === 'Escape') closeHelp();
-    // Close is the popup's only control, so Tab stays on it.
-    if (event.key === 'Tab') event.preventDefault();
-  });
 
   fitStage();
 
