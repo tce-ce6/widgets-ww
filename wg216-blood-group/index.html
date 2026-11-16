@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>What is the blood group?</title>
+
+  <link rel="stylesheet" href="./css/global_style.css">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body id="blood-widget">
+  <div class="container">
+    <div class="mainContainerOuter">
+      <div class="wdgetTitle">
+        <h2>What is the blood group?</h2>
+        <span id="versionId" class="versionText">b4_wg216_261116_01</span>
+      </div>
+      <div class="svg-container" id="svg-container">
+        <!-- Master canvas: 1920 x 1080, same coordinate space as assets/images/layout.svg.
+             Background = assets/bg.svg (container), title = .wdgetTitle above.
+             The bench scene (tube, dropper, bottles, wells) is the Lottie in #scene-layer. -->
+        <svg id="master-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+          <defs>
+            <clipPath id="insights-clip">
+              <rect x="40" y="971" width="251" height="70" />
+            </clipPath>
+          </defs>
+
+          <!-- Instruction line (layout.svg #i-text) -->
+          <text id="i-text" x="960" y="131" text-anchor="middle" aria-live="polite"></text>
+
+          <!-- Bench scene. Lottie comp is 1290x1000; its bench base lines up with
+               layout.svg's activity panel (x 616, y 585) at this offset. -->
+          <foreignObject id="scene-layer" x="309.5" y="-25.5" width="1290" height="1000">
+            <div xmlns="http://www.w3.org/1999/xhtml" class="lottie-box" id="lottie-scene" role="img"
+              aria-label="Lab bench with a blood sample tube, a dropper, Anti-A, Anti-B and Anti-D reagent bottles and a tile with three wells"></div>
+          </foreignObject>
+
+          <!-- Smooth-red overlays for wells with no reaction (210x210 Lottie, centred on each well) -->
+          <foreignObject class="well-fx" id="well-fx-a" x="676.5" y="665.5" width="210" height="210">
+            <div xmlns="http://www.w3.org/1999/xhtml" class="lottie-box"></div>
+          </foreignObject>
+          <foreignObject class="well-fx" id="well-fx-b" x="997.5" y="663.5" width="210" height="210">
+            <div xmlns="http://www.w3.org/1999/xhtml" class="lottie-box"></div>
+          </foreignObject>
+          <foreignObject class="well-fx" id="well-fx-d" x="1318.5" y="663.5" width="210" height="210">
+            <div xmlns="http://www.w3.org/1999/xhtml" class="lottie-box"></div>
+          </foreignObject>
+
+          <!-- Question panels (plain HTML, 1 CSS px = 1 SVG unit) -->
+          <foreignObject id="panel-layer" x="0" y="0" width="1920" height="1080">
+            <div xmlns="http://www.w3.org/1999/xhtml" id="panel" class="panel-host"></div>
+          </foreignObject>
+
+          <!-- Main action button: "Add blood sample" / "Add reagents" (layout.svg #Button) -->
+          <g id="btn-action" class="svg-btn" role="button" tabindex="0">
+            <path fill="#bd1444"
+              d="M770.77,954h235.05c21.64,0,39.17,20.82,39.17,46.5s-17.54,46.5-39.17,46.5h-235.05c-21.64,0-39.17-20.82-39.17-46.5s17.54-46.5,39.17-46.5Z" />
+            <text class="svg-btn-label" x="888.3" y="1012" text-anchor="middle">Add blood sample</text>
+          </g>
+
+          <!-- "Test another sample" (layout.svg #button) -->
+          <g id="btn-new" class="svg-btn" role="button" tabindex="0" aria-label="Test another sample">
+            <path fill="#6e2484"
+              d="M1119.5,954h319c25.68,0,46.5,20.82,46.5,46.5s-20.82,46.5-46.5,46.5h-319c-25.68,0-46.5-20.82-46.5-46.5s20.82-46.5,46.5-46.5Z" />
+            <text class="svg-btn-label" x="1279" y="1012" text-anchor="middle">Test another sample</text>
+          </g>
+
+          <!-- "Insights" (layout.svg #insight_button) -->
+          <g id="btn-insights" class="svg-btn" role="button" tabindex="0" aria-label="Insights">
+            <g clip-path="url(#insights-clip)">
+              <path fill="#927e03" d="M75,971h181c19.33,0,35,15.67,35,35s-15.67,35-35,35H75c-19.33,0-35-15.67-35-35s15.67-35,35-35" />
+              <text class="svg-btn-label" x="124.429" y="1016">Insights</text>
+              <path fill="#010101" d="M86.09,978.05c8.94-.07,16.85,5.78,19.39,14.35,2.01,6.31.67,13.22-3.55,18.32-.22.29-.22.43.05.66.35.28.6.74.98.91s.83-.22,1.27-.3c1.55-.4,3.2.07,4.31,1.22,3.76,3.76,7.57,7.47,11.37,11.2,1.55,1.37,2.14,3.52,1.53,5.49-.54,2.03-2.22,3.56-4.29,3.89-1.81.45-3.72-.11-5.01-1.45-3.95-3.9-7.93-7.77-11.87-11.69-.99-1.1-1.3-2.66-.81-4.06.1-.41.25-.8.47-1.16.11-.14.09-.34-.05-.45,0,0-.02-.01-.03-.02-.34-.31-.63-.82-1.02-.92-.41-.11-.75.44-1.13.69-6.82,4.38-13.96,4.96-21.16,1.24-6.38-3.3-9.92-8.8-10.61-15.95-.99-10.76,6.7-20.39,17.42-21.8.91-.11,1.83-.17,2.75-.17" />
+              <path fill="#f4df21" d="M101.48,998.1c.08,8.51-6.75,15.47-15.26,15.55s-15.47-6.75-15.55-15.26,6.75-15.47,15.26-15.55h.45c8.36.1,15.08,6.9,15.1,15.26" />
+              <path fill="#fff" d="M96.19,995.96c-.65,0-1.23-.43-1.44-1.05-1.18-3.06-3.92-5.25-7.16-5.73-1.31-.23-2.64-.2-3.94.08-.27.08-.55.11-.83.1-.65-.09-1.16-.62-1.24-1.28-.05-.69.38-1.33,1.04-1.54.67-.2,1.36-.33,2.06-.39,5.53-.62,10.79,2.52,12.86,7.68.36.73.06,1.62-.67,1.98-.21.11-.45.16-.69.15" />
+              <path fill="#fff" d="M75.2,996.27c.81-.02,1.49.62,1.51,1.44v.16c.01,1.59.4,3.16,1.11,4.58.47.95,1.12,1.8,1.93,2.49.68.44.87,1.35.43,2.03-.04.06-.08.12-.13.17-.58.65-1.58.7-2.23.12-.04-.03-.07-.06-.1-.1-2.18-1.98-3.56-4.67-3.9-7.59-.07-.6-.11-1.21-.1-1.81,0-.81.64-1.47,1.45-1.48h.03" />
+            </g>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pop-ups: "Show answer" and "Insights". The backdrop covers the whole
+       screen; the 1920x1080 stage inside is scaled to match the canvas
+       (--canvas-scale, set in script.js) so the pop-up keeps its canvas sizes. -->
+  <div id="modal-layer" class="modal-layer hidden">
+    <div class="modal-back" id="modal-back">
+      <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <h2 id="modal-title"></h2>
+        <div class="modal-body" id="modal-body"></div>
+        <div class="actions"><button type="button" class="primary" id="modal-close">Close</button></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./js/lottie.js"></script>
+  <script src="./js/lottie-data.js"></script>
+  <script src="./js/script.js"></script>
+</body>
+
+</html>
