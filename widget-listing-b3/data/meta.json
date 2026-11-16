@@ -216,6 +216,10 @@
       "updatedAt": "2026-10-19T10:58:01+05:30",
       "author": "tce-nitinc"
     },
+    "wg225-blood-circulation": {
+      "updatedAt": "2026-11-16T19:14:47+05:30",
+      "author": "tce-ashishg"
+    },
     "wg226-temple-architecture": {
       "updatedAt": "2026-11-11T14:49:17+05:30",
       "author": "tce-nitinc"
@@ -278,6 +282,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-11-16T19:14:47+05:30",
+      "author": "tce-ashishg",
+      "message": "wg225 completed",
+      "widgets": [
+        225
+      ]
+    },
     {
       "date": "2026-11-16T17:54:20+05:30",
       "author": "tce-ashishg",
@@ -527,14 +539,6 @@
       "date": "2026-11-11T17:46:05+05:30",
       "author": "tce-nitinc",
       "message": "wg246",
-      "widgets": [
-        246
-      ]
-    },
-    {
-      "date": "2026-11-11T16:08:19+05:30",
-      "author": "tce-nitinc",
-      "message": "added wg-246",
       "widgets": [
         246
       ]
