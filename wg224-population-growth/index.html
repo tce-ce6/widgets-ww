@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>&ZeroWidthSpace;Population Growth with Unlimited and Limited Resources&ZeroWidthSpace;</title>
+
+  <link rel="stylesheet" href="./css/global_style.css">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body id="population-growth-widget">
+  <div class="container">
+    <div class="mainContainerOuter">
+      <!-- title (outside the scaled stage, same as previous widgets); its z-index keeps it
+           above #modal-layer, so it stays bright over the modal backdrop -->
+      <div class="wdgetTitle">
+        <h2>&ZeroWidthSpace;Population Growth with Unlimited and Limited Resources&ZeroWidthSpace;</h2>
+        <span id="versionId" class="versionText">b4_wg224_261117_01</span>
+      </div>
+      <div id="viewport">
+        <!-- Fixed 1920x1080 design stage, scaled to fit the window by script.js -->
+        <div id="stage">
+
+          <!-- ============ OPENING: CHOOSE A RESOURCE CONDITION ============ -->
+          <section id="screen-start" class="screen is-active" aria-label="Choose a resource condition">
+            <p class="itext itext--start">Choose a type of resource condition to explore how a population grows.</p>
+
+            <div class="mode-card mode-card--exp">
+              <h3 class="mode-card__name">Unlimited Resources</h3>
+              <p class="mode-card__eq">dN/dt = rN</p>
+              <p class="mode-card__desc">Food and space never run out.<br>The population keeps growing without any ceiling.</p>
+              <button class="explore-btn" id="goExp" type="button" aria-label="Explore unlimited resources">Explore this</button>
+            </div>
+            <img class="mode-icon mode-icon--exp" src="assets/svg/unlimited-icon.svg" alt="">
+
+            <div class="mode-card mode-card--log">
+              <h3 class="mode-card__name">Limited Resources</h3>
+              <p class="mode-card__eq">dN/dt = rN(K&minus;N)/K</p>
+              <p class="mode-card__desc">The habitat can only support a fixed number.<br>Growth slows as the population fills up.</p>
+              <button class="explore-btn" id="goLog" type="button" aria-label="Explore limited resources">Explore this</button>
+            </div>
+            <img class="mode-icon mode-icon--log" src="assets/svg/limited-icon.svg" alt="">
+          </section>
+
+          <!-- ============ UNLIMITED RESOURCES (EXPONENTIAL) ============ -->
+          <section id="screen-exp" class="screen sim sim--exp" aria-label="Unlimited resources">
+            <p class="itext itext--sim" id="expInstr" aria-live="polite"></p>
+
+            <div class="inputs" id="expInputs">
+              <span class="inputs__tab">Unlimited Resources</span>
+              <div class="field field--n">
+                <p class="field__name">N<sub>0</sub> &mdash; Starting population</p>
+                <p class="field__desc">How many individuals are there at the beginning?</p>
+                <div class="num">
+                  <input class="num__input" id="expN" type="text" inputmode="numeric" autocomplete="off" placeholder="e.g 10" aria-label="N0, starting population">
+                  <span class="num__spin">
+                    <button class="num__btn num__btn--up" type="button" data-input="expN" data-dir="1" aria-label="Increase N0"></button>
+                    <button class="num__btn num__btn--down" type="button" data-input="expN" data-dir="-1" aria-label="Decrease N0"></button>
+                  </span>
+                </div>
+                <p class="field__hint">Any whole number, at least 1</p>
+              </div>
+              <div class="field field--r">
+                <p class="field__name">r &mdash; Growth rate</p>
+                <p class="field__desc">How fast can the population grow<br>when resources are unlimited?</p>
+                <div class="num">
+                  <input class="num__input" id="expR" type="text" inputmode="decimal" autocomplete="off" placeholder="e.g 0.5" aria-label="r, growth rate">
+                  <span class="num__spin">
+                    <button class="num__btn num__btn--up" type="button" data-input="expR" data-dir="1" aria-label="Increase r"></button>
+                    <button class="num__btn num__btn--down" type="button" data-input="expR" data-dir="-1" aria-label="Decrease r"></button>
+                  </span>
+                </div>
+                <p class="field__hint">Between 0.01 and 2</p>
+              </div>
+              <p class="chip chip--top" id="expErrTop" role="alert" hidden></p>
+              <p class="chip chip--bottom" id="expErrBottom" role="alert" hidden></p>
+              <p class="chip chip--bottom" id="expLock" hidden>Numbers are locked while stepping. Tap Reset to change them.</p>
+              <button class="pill-btn pill-btn--plot" id="expPlot" type="button" disabled>Plot graph</button>
+            </div>
+
+            <div class="graph is-idle" id="expGraph">
+              <svg class="graph__svg" id="expChart" viewBox="793 188 1032 580" role="img" aria-label="Graph of population density against time"></svg>
+            </div>
+
+            <p class="eq-box" id="expEq" hidden>dN/dt = rN</p>
+            <div class="calc" id="expCalc" hidden>
+              <p class="calc__eq">dN/dt = rN</p>
+              <p class="calc__how">How this year&rsquo;s value is calculated: N<sub>t+1</sub> = N<sub>t</sub> + r &times; N<sub>t</sub></p>
+              <p class="calc__year" id="expCalcYear"></p>
+              <p class="calc__sum" id="expCalcSum"></p>
+            </div>
+
+            <div class="steps" id="expSteps">
+              <button class="pill-btn pill-btn--next" id="expNext" type="button" disabled>Next year</button>
+              <button class="pill-btn pill-btn--skip" id="expSkip" type="button" disabled>Skip 5 years</button>
+              <button class="pill-btn pill-btn--reset" id="expReset" type="button" disabled>Reset</button>
+            </div>
+          </section>
+
+          <!-- ============ LIMITED RESOURCES (LOGISTIC) ============ -->
+          <section id="screen-log" class="screen sim sim--log" aria-label="Limited resources">
+            <p class="itext itext--sim" id="logInstr" aria-live="polite"></p>
+
+            <div class="inputs" id="logInputs">
+              <span class="inputs__tab">Limited Resources</span>
+              <div class="field field--n">
+                <p class="field__name">N<sub>0</sub> &mdash; Starting population</p>
+                <p class="field__desc">How many individuals are there at the beginning?</p>
+                <div class="num">
+                  <input class="num__input" id="logN" type="text" inputmode="numeric" autocomplete="off" placeholder="e.g 10" aria-label="N0, starting population">
+                  <span class="num__spin">
+                    <button class="num__btn num__btn--up" type="button" data-input="logN" data-dir="1" aria-label="Increase N0"></button>
+                    <button class="num__btn num__btn--down" type="button" data-input="logN" data-dir="-1" aria-label="Decrease N0"></button>
+                  </span>
+                </div>
+                <p class="field__hint">At least 1, and less than K</p>
+              </div>
+              <div class="field field--r">
+                <p class="field__name">r &mdash; Growth rate</p>
+                <p class="field__desc">How fast can the population grow<br>when resources are unlimited?</p>
+                <div class="num">
+                  <input class="num__input" id="logR" type="text" inputmode="decimal" autocomplete="off" placeholder="e.g 0.4" aria-label="r, growth rate">
+                  <span class="num__spin">
+                    <button class="num__btn num__btn--up" type="button" data-input="logR" data-dir="1" aria-label="Increase r"></button>
+                    <button class="num__btn num__btn--down" type="button" data-input="logR" data-dir="-1" aria-label="Decrease r"></button>
+                  </span>
+                </div>
+                <p class="field__hint">Between 0.01 and 2</p>
+              </div>
+              <div class="field field--k">
+                <p class="field__name">K &mdash; Carrying capacity</p>
+                <p class="field__desc">The maximum population the habitat can support.</p>
+                <div class="num">
+                  <input class="num__input" id="logK" type="text" inputmode="numeric" autocomplete="off" placeholder="e.g 200" aria-label="K, carrying capacity">
+                  <span class="num__spin">
+                    <button class="num__btn num__btn--up" type="button" data-input="logK" data-dir="1" aria-label="Increase K"></button>
+                    <button class="num__btn num__btn--down" type="button" data-input="logK" data-dir="-1" aria-label="Decrease K"></button>
+                  </span>
+                </div>
+                <p class="field__hint">Between 20 and 5000; must be greater than N<sub>0</sub></p>
+              </div>
+              <p class="chip chip--top" id="logErrTop" role="alert" hidden></p>
+              <p class="chip chip--bottom" id="logErrBottom" role="alert" hidden></p>
+              <p class="chip chip--bottom" id="logLock" hidden>Numbers are locked while stepping. Tap Reset to change them.</p>
+              <button class="pill-btn pill-btn--plot" id="logPlot" type="button" disabled>Plot graph</button>
+            </div>
+
+            <div class="graph is-idle" id="logGraph">
+              <svg class="graph__svg" id="logChart" viewBox="793 188 1032 580" role="img" aria-label="Graph of population density against time"></svg>
+            </div>
+
+            <p class="eq-box" id="logEq" hidden>dN/dt = rN(K&minus;N)/K</p>
+            <div class="calc" id="logCalc" hidden>
+              <p class="calc__eq">dN/dt = rN(K&minus;N)/K</p>
+              <p class="calc__how">How this year&rsquo;s value is calculated: N<sub>t+1</sub> = N<sub>t</sub> + r &times; N<sub>t</sub> &times; (K&minus;N<sub>t</sub>)/K</p>
+              <p class="calc__year" id="logCalcYear"></p>
+              <p class="calc__sum" id="logCalcSum"></p>
+            </div>
+
+            <div class="steps" id="logSteps">
+              <button class="pill-btn pill-btn--next" id="logNext" type="button" disabled>Next year</button>
+              <button class="pill-btn pill-btn--skip" id="logSkip" type="button" disabled>Skip 5 years</button>
+              <button class="pill-btn pill-btn--reset" id="logReset" type="button" disabled>Reset</button>
+            </div>
+          </section>
+
+          <!-- ============ ALWAYS ON SCREEN ============ -->
+          <button class="home-btn" id="homeBtn" type="button" aria-label="Home" hidden>
+            <img src="assets/svg/home-icon.svg" alt="">
+          </button>
+          <button class="insights-btn" id="insightsBtn" type="button">
+            <img src="assets/svg/insights-icon.svg" alt=""><span>Insights</span>
+          </button>
+          <button class="help-btn" id="helpBtn" type="button">
+            <span class="help-btn__q" aria-hidden="true">?</span><span>How to use</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Modals live in their own scaled layer above the body::before backdrop,
+           so the dark backdrop can cover the whole viewport, not just the stage. -->
+      <div id="modal-layer">
+        <div id="modal-stage">
+          <!-- ============ INSIGHTS ============ -->
+          <div class="modal" id="insightsModal" hidden>
+            <div class="insights-card" role="dialog" aria-modal="true" aria-label="Insights">
+              <ul class="insights-list" id="insightsList"></ul>
+            </div>
+            <button class="close-btn" id="insightsClose" type="button" aria-label="Close insights">
+              <img src="assets/svg/close-btn.svg" alt="">
+            </button>
+          </div>
+
+          <!-- ============ HOW TO USE ============ -->
+          <div class="tour" id="tour" hidden>
+            <div class="tour-spot" id="tourSpot"></div>
+            <div class="tour-card" id="tourCard" role="dialog" aria-modal="true" aria-labelledby="tourTitle" aria-describedby="tourText">
+              <button class="tour-close" id="tourSkip" type="button" aria-label="Close how to use"><img src="assets/svg/close-btn.svg" alt=""></button>
+              <p class="tour-step" id="tourStep"></p>
+              <h3 class="tour-title" id="tourTitle"></h3>
+              <p class="tour-text" id="tourText"></p>
+              <div class="tour-row">
+                <button class="pill-btn tour-prev" id="tourPrev" type="button">Back</button>
+                <button class="pill-btn tour-next" id="tourNext" type="button">Next</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./js/content-data.js"></script>
+  <script src="./js/script.js"></script>
+</body>
+
+</html>
