@@ -14,6 +14,13 @@ const PALETTE=[
   {key:"rose",   fill:"#c76b8e",lo:"#e29ab4",hi:"#9c4767",label:"Rose"},
 ];
 
+// Canvas (viewBox 0 0 560 511, same shape as the stage so it fills it).
+// Gears are kept inside BOUNDS: the top band is under the question, the
+// bottom band is under the status line and the Help / Insights buttons.
+const VB_W=560, VB_H=511;
+const BOUNDS={x0:6, y0:50, x1:VB_W-6, y1:VB_H-46};
+const LABEL_GAP=4;              // min space between speed labels
+
 // ---------- state ----------
 let gears=[];        // {id,teeth,x,y,colorIdx,angle(deg),omega(rad/s)}
 let edges=[];        // {a,b,type:'mesh'|'compound',angle(rad, a->b)}
@@ -94,6 +101,32 @@ function relayout(startId){
   }
 }
 
+// Keep every gear train fully on the canvas. Snapping and teeth changes move
+// whole trains (relayout), which could push gears past the edge.
+function keepInBounds(){
+  const done=new Set();
+  for(const g of gears){
+    if(done.has(g.id)) continue;
+    const comp=[...componentOf(g.id)].map(byId);
+    comp.forEach(c=>done.add(c.id));
+    let l=Infinity,t=Infinity,r=-Infinity,b=-Infinity;
+    for(const c of comp){
+      l=Math.min(l,c.x-outerR(c)); r=Math.max(r,c.x+outerR(c));
+      t=Math.min(t,c.y-outerR(c)); b=Math.max(b,c.y+outerR(c));
+    }
+    let dx=0,dy=0;
+    const bw=BOUNDS.x1-BOUNDS.x0, bh=BOUNDS.y1-BOUNDS.y0;
+    // too big to fit: centre it; otherwise nudge back inside
+    if(r-l>bw) dx=(BOUNDS.x0+bw/2)-(l+r)/2;
+    else if(l<BOUNDS.x0) dx=BOUNDS.x0-l;
+    else if(r>BOUNDS.x1) dx=BOUNDS.x1-r;
+    if(b-t>bh) dy=(BOUNDS.y0+bh/2)-(t+b)/2;
+    else if(t<BOUNDS.y0) dy=BOUNDS.y0-t;
+    else if(b>BOUNDS.y1) dy=BOUNDS.y1-b;
+    if(dx||dy) comp.forEach(c=>{c.x+=dx;c.y+=dy;});
+  }
+}
+
 // ---------- physics: assign angular velocities ----------
 function computeSpeeds(){
   gears.forEach(g=>g.omega=0);
@@ -159,6 +192,44 @@ function speedInfo(g){
   return {mult,cw,spinning:Math.abs(g.omega)>1e-6};
 }
 
+// Speed labels, drawn so they never sit on top of each other:
+// - gears stacked on one axle (compound) always turn at the same speed, so
+//   they share ONE label (the first one, i.e. the largest gear's);
+// - a label that would overlap one already placed moves down below it.
+function drawSpeedLabels(labels){
+  const H=22;
+  const seen=new Set(), placed=[];
+  for(const l of labels){
+    if(seen.has(l.key)) continue;
+    seen.add(l.key);
+    placed.push(l);
+  }
+  placed.sort((a,b)=>a.y-b.y||a.x-b.x);
+  const done=[];
+  for(const l of placed){
+    let moved=true;
+    while(moved){
+      moved=false;
+      for(const o of done){
+        if(Math.abs(l.x-o.x)<(l.w+o.w)/2+LABEL_GAP && Math.abs(l.y-o.y)<H+LABEL_GAP){
+          l.y=o.y+H+LABEL_GAP; moved=true;
+        }
+      }
+    }
+    done.push(l);
+  }
+  for(const l of done){
+    const bg=makeEl("g",{transform:`translate(${l.x.toFixed(1)} ${l.y.toFixed(1)})`,"pointer-events":"none"});
+    bg.appendChild(makeEl("rect",{x:(-l.w/2).toFixed(1),y:-12,width:l.w.toFixed(1),height:H,rx:6,
+      fill:l.fastest?"var(--signal)":"#15232c"}));
+    const t=makeEl("text",{x:0,y:3,"text-anchor":"middle",
+      "font-family":"var(--mono)","font-size":"12.5","font-weight":"600",fill:"#fff"});
+    t.textContent=l.txt;
+    bg.appendChild(t);
+    layer.appendChild(bg);
+  }
+}
+
 function render(){
   spinRefs.clear();
   layer.replaceChildren();
@@ -179,6 +250,7 @@ function render(){
   const maxMult=Math.max(0,...speeds.filter(s=>s.spinning).map(s=>s.mult));
   // smaller gears drawn on top so compound inner gear is selectable
   const order=[...gears].sort((a,b)=>outerR(b)-outerR(a));
+  const labels=[];
 
   for(const g of order){
     const col=PALETTE[g.colorIdx];
@@ -227,22 +299,17 @@ function render(){
       grp.appendChild(makeEl("circle",{r:Math.max(6,pitchR(g)*0.12)-2.5,fill:"var(--amber)"}));
     }
 
-    // speed readout
+    // speed readout: collected here, drawn after all gears (see below)
     if(showSpeed && s.spinning){
-      const bg=makeEl("g",{transform:`translate(0 ${(outerR(g)+18).toFixed(1)})`});
       const txt=`${s.cw?"↻":"↺"} ${s.mult.toFixed(2)}×`;
-      const w=txt.length*7.4+14;
-      bg.appendChild(makeEl("rect",{x:(-w/2).toFixed(1),y:-12,width:w.toFixed(1),height:22,rx:6,
-        fill:isFastest?"var(--signal)":"#15232c"}));
-      const t=makeEl("text",{x:0,y:3,"text-anchor":"middle",
-        "font-family":"var(--mono)","font-size":"12.5","font-weight":"600",fill:"#fff"});
-      t.textContent=txt;
-      bg.appendChild(t);
-      grp.appendChild(bg);
+      labels.push({key:`${g.x.toFixed(1)},${g.y.toFixed(1)}`, x:g.x, y:g.y+outerR(g)+18,
+        txt, w:txt.length*7.4+14, fastest:isFastest});
     }
 
     layer.appendChild(grp);
   }
+
+  drawSpeedLabels(labels);
 
   // driver direction buttons near the driver gear
   if(driverId&&byId(driverId)&&!running){
@@ -347,19 +414,20 @@ function setTeeth(n){
   n=Math.max(6,Math.min(60,n||g.teeth));
   g.teeth=n;
   if(componentOf(g.id).size>1) relayout(g.id);
+  keepInBounds();
   afterChange(g.id);
 }
 
 // ---------- actions ----------
 function freeSpot(r){
   for(let tries=0;tries<160;tries++){
-    const x=80+Math.random()*740, y=80+Math.random()*460;
-    if(x-r<10||x+r>890||y-r<10||y+r>610) continue;
+    const x=BOUNDS.x0+r+Math.random()*(BOUNDS.x1-BOUNDS.x0-2*r);
+    const y=BOUNDS.y0+r+Math.random()*(BOUNDS.y1-BOUNDS.y0-2*r);
     let ok=true;
     for(const g of gears){ if(Math.hypot(x-g.x,y-g.y)<outerR(g)+r+18){ok=false;break;} }
     if(ok) return {x,y};
   }
-  return {x:140+gears.length*8,y:140};
+  return {x:BOUNDS.x0+r+gears.length*8, y:BOUNDS.y0+r+gears.length*8};
 }
 function addGear(){
   if(running) return;
@@ -424,6 +492,7 @@ function applySnap(g,snap){
     edges.push({a:t.id,b:g.id,type:"mesh",angle:ang});
   }
   relayout(t.id);
+  keepInBounds();
 }
 
 // ---------- pointer interaction ----------
@@ -452,8 +521,17 @@ svg.addEventListener("pointerdown",e=>{
 svg.addEventListener("pointermove",e=>{
   if(!drag) return;
   const p=toSvg(e);
-  const dx=p.x-drag.ox, dy=p.y-drag.oy;
+  let dx=p.x-drag.ox, dy=p.y-drag.oy;
   if(Math.abs(dx)>3||Math.abs(dy)>3) drag.moved=true;
+  // Never let the dragged gear(s) leave the gear area: stop at its edges.
+  let l=Infinity,t=Infinity,r=-Infinity,b=-Infinity;
+  for(const id of drag.members){
+    const g=byId(id),s=drag.startPos[id],R=outerR(g);
+    l=Math.min(l,s.x-R); r=Math.max(r,s.x+R);
+    t=Math.min(t,s.y-R); b=Math.max(b,s.y+R);
+  }
+  dx=Math.min(Math.max(dx,BOUNDS.x0-l),BOUNDS.x1-r);
+  dy=Math.min(Math.max(dy,BOUNDS.y0-t),BOUNDS.y1-b);
   for(const id of drag.members){
     const g=byId(id),s=drag.startPos[id];
     g.x=s.x+dx; g.y=s.y+dy;
@@ -492,6 +570,7 @@ svg.addEventListener("pointerup",e=>{
     if(snap) applySnap(g,snap);
   }
   drag=null;
+  keepInBounds();
   render();
 });
 svg.addEventListener("pointercancel",()=>{drag=null;render();});
@@ -543,14 +622,30 @@ const insightPopup=document.getElementById("insight-popup");
 document.getElementById("help-btn").addEventListener("click",()=>{
   helpPopup.style.display="block";
 });
+// Insights: the gears animation (gears.json) plays while the panel is open.
+let insightAnim=null;
+function playInsightAnim(){
+  if(!window.lottie||!window.INSIGHT_ANIM) return;
+  if(!insightAnim){
+    insightAnim=lottie.loadAnimation({
+      container:document.getElementById("insight-anim"),
+      renderer:"svg",loop:true,autoplay:true,
+      animationData:JSON.parse(JSON.stringify(window.INSIGHT_ANIM))
+    });
+  }else{
+    insightAnim.goToAndPlay(0,true);
+  }
+}
 document.getElementById("insight-btn").addEventListener("click",()=>{
   insightPopup.style.display="block";
+  playInsightAnim();
 });
 helpPopup.querySelector(".close-btn").addEventListener("click",()=>{
   helpPopup.style.display="none";
 });
 insightPopup.querySelector(".close-btn").addEventListener("click",()=>{
   insightPopup.style.display="none";
+  if(insightAnim) insightAnim.pause();
 });
 document.getElementById("speedToggle").addEventListener("click",function(){
   showSpeed=!showSpeed;
