@@ -30,24 +30,24 @@
             <section class="ratings" aria-labelledby="ratingsTitle">
               <h4 class="ratings__tab" id="ratingsTitle">
                 <svg class="ratings__icon" viewBox="0 0 28 24" aria-hidden="true">
-                  <rect x="1" y="12" width="6" height="11" rx="1.5" fill="#6ee7a8"/>
-                  <rect x="11" y="5" width="6" height="18" rx="1.5" fill="#ffd54a"/>
-                  <rect x="21" y="1" width="6" height="22" rx="1.5" fill="#ff8a8a"/>
+                  <rect x="1" y="12" width="6" height="11" rx="1.5" fill="#fbcbd3"/>
+                  <rect x="11" y="5" width="6" height="18" rx="1.5" fill="#fbe79a"/>
+                  <rect x="21" y="1" width="6" height="22" rx="1.5" fill="#b8f0cf"/>
                 </svg>
                 Rating Definitions
               </h4>
               <dl class="ratings__list">
-                <div class="ratings__row ratings__row--high">
-                  <dt>HIGH</dt>
-                  <dd>Can directly solve or significantly move the problem forward.</dd>
+                <div class="ratings__row ratings__row--low">
+                  <dt>LOW</dt>
+                  <dd>Has little to no impact on this problem.</dd>
                 </div>
                 <div class="ratings__row ratings__row--medium">
                   <dt>MEDIUM</dt>
                   <dd>Helps but has limits. Cannot solve the problem alone.</dd>
                 </div>
-                <div class="ratings__row ratings__row--low">
-                  <dt>LOW</dt>
-                  <dd>Has little to no impact on this problem.</dd>
+                <div class="ratings__row ratings__row--high">
+                  <dt>HIGH</dt>
+                  <dd>Can directly solve or significantly move the problem forward.</dd>
                 </div>
               </dl>
             </section>
@@ -113,8 +113,28 @@
     </div>
   </div>
 
+  <!-- How to play tour (shown over the stage; positioned in viewport coordinates) -->
+  <div id="tour" class="tour" aria-hidden="true">
+    <div id="tourSpot" class="tour-spot"></div>
+    <div id="tourDemo" class="tour-demo"></div>
+    <div id="tourCard" class="tour-card" role="dialog" aria-modal="true" aria-labelledby="tourTitle">
+      <button id="tourSkip" class="tour-skip" type="button" aria-label="Close how to play"><span aria-hidden="true">&times;</span></button>
+      <div id="tourCount" class="tour-count"></div>
+      <h2 id="tourTitle"></h2>
+      <p id="tourText"></p>
+      <div class="tour-nav">
+        <div id="tourDots" class="tour-dots"></div>
+        <div class="tour-btns">
+          <button id="tourBack" class="tour-btn tour-btn--ghost" type="button">Back</button>
+          <button id="tourNext" class="tour-btn" type="button">Next</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="./js/content-data.js"></script>
   <script src="./js/script.js"></script>
+  <script src="./js/how-to-play.js"></script>
 </body>
 
 </html>
