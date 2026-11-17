@@ -1414,3 +1414,80 @@ button:focus-visible {
     transition: none;
   }
 }
+
+/* ==========================================================================
+   Review (global): the stop card should not need a scroll bar once the
+   Quick look feedback opens, so its text and spacing are a little tighter.
+   ========================================================================== */
+.card-body {
+  margin-bottom: 10px;
+  font-size: 21px;
+  line-height: 28px;
+}
+
+.card-title {
+  font-size: 36px;
+  line-height: 42px;
+}
+
+.card-sub {
+  margin-bottom: 8px;
+  font-size: 20px;
+}
+
+.card-itext {
+  margin-bottom: 6px;
+  font-size: 22px;
+  line-height: 28px;
+}
+
+.card-step {
+  font-size: 24px;
+}
+
+.card-link {
+  margin-bottom: 10px;
+}
+
+.card-box {
+  margin-bottom: 12px;
+  padding: 10px 18px 12px;
+}
+
+.card-box h5 {
+  font-size: 24px;
+}
+
+.quiz-q {
+  margin-bottom: 8px;
+  font-size: 21px;
+  line-height: 27px;
+}
+
+.quiz-opt {
+  min-height: 40px;
+  margin-bottom: 8px;
+  padding: 4px 12px;
+  font-size: 21px;
+}
+
+.quiz-fb {
+  margin: 2px 0 4px;
+  font-size: 22px;
+  line-height: 28px;
+}
+
+.quiz-expl {
+  font-size: 21px;
+  line-height: 27px;
+}
+
+/* the text inside info boxes (e.g. "You have reached the centre") matches the stop text */
+.card-box {
+  font-size: 21px;
+  line-height: 27px;
+}
+
+.card-scroll > :last-child {
+  margin-bottom: 0;
+}

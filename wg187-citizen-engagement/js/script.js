@@ -16,8 +16,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Card positions on the 1920x1080 stage, as in the XD design.
   const INTRO_SLOTS = [
-    { left: 138, top: 241 }, { left: 688, top: 241 }, { left: 1238, top: 241 },
-    { left: 138, top: 471 }, { left: 688, top: 471 }, { left: 1238, top: 471 },
+    { left: 138, top: 205 }, { left: 688, top: 205 }, { left: 1238, top: 205 },
+    { left: 138, top: 435 }, { left: 688, top: 435 }, { left: 1238, top: 435 },
   ];
   const TRAY_TOPS = [264, 373, 483, 592, 702, 812];
   const SLOTS_PER_BOX = 4;
@@ -372,7 +372,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const names = TOOLS.filter((t) => problem.tools[t.key][0] === lv).map((t) => t.name);
         const cell = el('div', `summary__cell ${lv}`);
         if (names.length) cell.textContent = names.join(', ');
-        else { cell.classList.add('is-empty'); cell.textContent = '–'; }
+        else { cell.classList.add('is-empty'); cell.textContent = 'None'; }
         row.appendChild(cell);
       });
       holder.appendChild(row);

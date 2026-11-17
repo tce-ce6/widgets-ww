@@ -65,7 +65,7 @@ window.STOPS = [
     replay: 'Watch the walk again',
     q: 'Walking around a sacred centre is older than temples. Where else did people do this?',
     options: ['Around stupas', 'Around the gopuram', 'Around the Nandi pavilion'],
-    expl: 'Worshippers walked around stupas like the one at Sanchi, and monks walked around the stupa in Ellora’s Cave no. 10.' },
+    expl: 'Worshippers walked around stupas, and monks walked around the stupa in Ellora’s Cave no. 10.' },
   { id: 'garbha', name: 'Garbhagṛiha', sub: 'The innermost chamber.',
     body: 'You have reached the garbhagṛiha, where the mūrti (image) of the deity is kept. This is the heart of the temple, and the end of your journey inward.',
     arrival: ['You have reached the centre', 'Temple worship can be understood as a journey from the outer world, left behind at the gateway, to the inner world waiting in the garbhagṛiha. It mirrors our own spiritual journey.'],

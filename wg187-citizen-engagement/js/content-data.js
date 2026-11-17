@@ -1,4 +1,4 @@
-// Content for "What Would You Do? - Citizen Engagement Explorer" (from en_ps_07_wg_187.docx).
+// Content for "What Would You Do? - Citizen Engagement Explorer" (from en_ps_07_wg_187.docx, updated storyboard).
 window.TOOLS = [
   {
     "key": "rti",
@@ -56,27 +56,27 @@ window.PROBLEMS = [
     "tools": {
       "rti": [
         "high",
-        "Government must legally share how the money was spent."
+        "Government is legally bound to share records of public spending."
       ],
       "grievance": [
-        "medium",
-        "A complaint is registered but does not get you the spending records."
+        "low",
+        "This tool is for personal service complaints, not for tracing public funds."
       ],
       "rep": [
         "medium",
-        "MLA can ask questions but cannot get the official records for you."
+        "An MLA can raise the question, but a response depends on political will and assembly procedures."
       ],
       "media": [
-        "medium",
-        "Media can create pressure but the actual figures may still not come out."
+        "high",
+        "Reporting on missing public funds creates public pressure on the government to explain."
       ],
       "civil": [
         "low",
-        "Groups work on community issues, not tracking government funds."
+        "Community groups work on local mobilisation, not government financial records."
       ],
       "vote": [
         "low",
-        "Voting picks leaders, not finds out where money went."
+        "Voting decides future leadership, not accountability for past spending."
       ]
     }
   },
@@ -87,11 +87,11 @@ window.PROBLEMS = [
     "tools": {
       "rti": [
         "medium",
-        "RTI can get your official meter records but cannot correct the bill itself."
+        "Official meter records can be accessed but RTI cannot correct the bill itself."
       ],
       "grievance": [
         "high",
-        "A formal complaint starts the correction process for your bill."
+        "Filing a formal complaint directly with the electricity department triggers an official investigation into the billing error."
       ],
       "rep": [
         "low",
@@ -99,15 +99,15 @@ window.PROBLEMS = [
       ],
       "media": [
         "low",
-        "One wrong bill is not a news story."
+        "A billing error affecting one household is not a story that media will cover."
       ],
       "civil": [
         "low",
-        "Groups work on community issues, not individual billing errors."
+        "Community groups work on shared local problems, not individual billing errors."
       ],
       "vote": [
         "low",
-        "Voting picks leaders, not fixes individual service errors."
+        "Voting decides future leadership, not individual service errors."
       ]
     }
   },
@@ -118,58 +118,58 @@ window.PROBLEMS = [
     "tools": {
       "rti": [
         "medium",
-        "RTI can find out why construction has not started but cannot move the work."
+        "RTI can reveal why construction has stalled but knowing the reason alone does not get the work started."
       ],
       "grievance": [
         "low",
-        "No service exists yet to file a complaint about."
+        "Grievance handles complaints about a running service. Construction that has not started is not a running service."
       ],
       "rep": [
         "high",
-        "MLA can push the Public Works Department to start the allocated work."
+        "An MLA can directly push the concerned department to use the allocated funds and start the work."
       ],
       "media": [
-        "high",
-        "Public exposure of unused allocated funds puts pressure to start construction."
+        "medium",
+        "Reporting on unused funds creates pressure but cannot directly start construction."
       ],
       "civil": [
         "low",
-        "A group can petition but cannot start government construction."
+        "A community group can petition but has no authority to order a government department to begin construction."
       ],
       "vote": [
         "low",
-        "Allocated funds need action now, not after elections."
+        "The funds are already approved. This needs action now, not after elections."
       ]
     }
   },
   {
     "icon": "media",
-    "short": "Hospital turning patients",
+    "short": "Hospital turning patients away",
     "text": "Government hospital turning away patients at night.",
     "tools": {
       "rti": [
-        "medium",
-        "RTI can get hospital records later but cannot help patients right now."
+        "low",
+        "RTI works on a week's long timeline. It cannot help patients who need care tonight."
       ],
       "grievance": [
         "medium",
-        "Formal process is too slow for an emergency."
+        "A formal complaint creates an official record, but the grievance process is too slow for a medical emergency."
       ],
       "rep": [
         "high",
-        "MLA can call the hospital authority directly and force immediate action."
+        "An MLA can directly call the hospital authority and demand immediate action."
       ],
       "media": [
         "high",
-        "Public exposure forces the hospital to act immediately."
+        "Public exposure of a hospital turning away patients at night creates immediate pressure on authorities to act."
       ],
       "civil": [
         "medium",
-        "A group takes time to mobilise. Patients need help right now."
+        "A community group can apply pressure, but mobilising people takes time in an emergency."
       ],
       "vote": [
         "low",
-        "Voting happens once in five years. This needs action now."
+        "Voting happens once in five years. A medical emergency needs action tonight."
       ]
     }
   },
@@ -180,27 +180,27 @@ window.PROBLEMS = [
     "tools": {
       "rti": [
         "low",
-        "No government scheme exists, so there is nothing to RTI about."
+        "No government scheme exists here so there are no records to request."
       ],
       "grievance": [
         "low",
-        "No scheme exists, so there is nothing to complain about."
+        "No service has been set up so there is nothing to file a complaint about."
       ],
       "rep": [
         "high",
-        "MLA can direct local resources and push for emergency relief immediately."
+        "An MLA can directly redirect local resources and activate emergency relief for the elderly."
       ],
       "media": [
         "medium",
-        "Coverage can highlight the issue but cannot provide daily help."
+        "Coverage can bring the issue to public attention but cannot deliver food and medicine daily."
       ],
       "civil": [
         "high",
-        "Community groups can organise daily food and medicine delivery for the elderly."
+        "Community organisations can set up daily food and medicine delivery immediately without waiting for government action."
       ],
       "vote": [
         "low",
-        "Daily help for the elderly cannot wait for elections."
+        "Elderly people need daily support now. Voting changes leadership, not daily care."
       ]
     }
   },
@@ -211,27 +211,27 @@ window.PROBLEMS = [
     "tools": {
       "rti": [
         "low",
-        "Data on one issue will not fix years of neglect across many problems."
+        "Records from one department cannot fix years of neglect across multiple services."
       ],
       "grievance": [
         "low",
-        "One complaint cannot fix multiple problems at once."
+        "A single complaint cannot address systemic neglect across an entire area."
       ],
       "rep": [
-        "low",
-        "Years of inaction show the current leader is not working."
+        "medium",
+        "An MLA can be approached but years of inaction suggest little will change."
       ],
       "media": [
         "medium",
-        "Coverage helps but one story cannot fix years of neglect."
+        "Coverage can highlight years of neglect but cannot remove or replace the elected leadership."
       ],
       "civil": [
         "medium",
-        "A group can campaign but cannot change who governs the area."
+        "An organised campaign can apply sustained pressure but cannot remove or replace the elected leadership."
       ],
       "vote": [
         "high",
-        "Choose better leaders who will fix the roads, water, and schools."
+        "Years of neglect means the leader has failed. Only the vote can bring in a leader who will act."
       ]
     }
   },
@@ -242,27 +242,27 @@ window.PROBLEMS = [
     "tools": {
       "rti": [
         "medium",
-        "RTI can get land records to prove the families' right to stay."
+        "Official land and tenancy records help establish the families' right to stay but cannot stop the eviction."
       ],
       "grievance": [
         "high",
-        "A formal complaint to the housing authority can legally stop the eviction."
+        "A formal complaint to the housing authority can initiate direct action against the illegal eviction."
       ],
       "rep": [
-        "medium",
-        "MLA can intervene but legal action through proper channels is faster."
+        "high",
+        "An MLA can directly intervene with the housing authority to stop the eviction."
       ],
       "media": [
         "medium",
-        "Coverage can create pressure but cannot stop an eviction legally."
+        "Public attention can shame the landlord but cannot legally stop the eviction."
       ],
       "civil": [
         "high",
-        "NGOs can provide legal aid and support families through the process."
+        "NGOs and legal aid groups can support families and fight the illegal eviction."
       ],
       "vote": [
         "low",
-        "Families need protection now, not after elections."
+        "Families need legal protection now, not after elections."
       ]
     }
   },
@@ -273,27 +273,27 @@ window.PROBLEMS = [
     "tools": {
       "rti": [
         "medium",
-        "RTI can expose stock records later but families lose rations today."
+        "Stock records can expose the diversion but getting them takes time while families go hungry."
       ],
       "grievance": [
         "medium",
-        "A complaint takes time while families continue to go hungry."
+        "A formal complaint starts an inquiry, but the shop continues operating while the investigation proceeds."
       ],
       "rep": [
-        "medium",
-        "Leader might warn but corruption often ignores quiet warnings."
+        "high",
+        "An MLA can directly pressure the food department to act against the corrupt shop."
       ],
       "media": [
         "high",
-        "Video evidence creates public pressure and forces immediate action."
+        "Video evidence of ration diversion made public creates strong pressure on authorities to act."
       ],
       "civil": [
         "medium",
-        "A protest helps but cannot shut the shop officially."
+        "A community protest creates pressure, but the shop can only be officially stopped by the authorities."
       ],
       "vote": [
         "low",
-        "Right to food is a daily need, not an election issue."
+        "Families losing rations need action today, not after elections."
       ]
     }
   },
@@ -304,58 +304,58 @@ window.PROBLEMS = [
     "tools": {
       "rti": [
         "low",
-        "Data will not make a leader accessible to residents."
+        "RTI gets government records. It cannot make an elected leader meet resident."
       ],
       "grievance": [
         "low",
-        "No government complaint box exists for an inaccessible leader."
+        "There is no grievance system for reporting an unresponsive elected leader."
       ],
       "rep": [
         "low",
-        "The leader is the representative. Approaching them again will not help."
+        "The leader is the problem. Approaching the same person again will not help."
       ],
       "media": [
         "medium",
-        "Coverage can shame the leader but cannot force them to meet residents."
+        "Coverage can embarrass the leader and create pressure to meet residents but does not guarantee action."
       ],
       "civil": [
         "high",
-        "Community groups can organise their own forums and raise issues collectively."
+        "Community groups can organise their own forums and give residents a platform to raise issues."
       ],
       "vote": [
         "high",
-        "Replace the inaccessible leader with someone who serves residents directly."
+        "A leader who has not met residents in three years has failed. The vote can replace them."
       ]
     }
   },
   {
     "icon": "media",
     "short": "Contaminated water supply",
-    "text": "Drinking water supply to the area is contaminated. Government test confirms it but no action taken.",
+    "text": "Drinking water supply contaminated. Government test confirms it but no action taken.",
     "tools": {
       "rti": [
         "medium",
-        "Test results are already confirmed. RTI will not add new information."
+        "The test results are already confirmed. RTI cannot add new information to what is already known."
       ],
       "grievance": [
         "high",
-        "A formal complaint with the test results forces the water authority to act."
+        "A formal complaint filed with the confirmed test results puts official pressure on the water authority to act."
       ],
       "rep": [
-        "medium",
-        "MLA can apply pressure but the water authority handles technical action."
+        "high",
+        "An MLA can directly escalate the matter to the minister and push the water department to act."
       ],
       "media": [
         "high",
-        "Public exposure of confirmed contamination forces immediate government response."
+        "Confirmed government data on contamination reported publicly creates strong pressure on authorities to act."
       ],
       "civil": [
         "medium",
-        "A group can organise awareness but cannot fix the water supply."
+        "Community pressure can push authorities to act but cannot directly repair the water supply."
       ],
       "vote": [
         "low",
-        "Contaminated water needs action today, not after elections."
+        "Contaminated water is a health emergency. It cannot wait for an election cycle."
       ]
     }
   },
@@ -366,27 +366,27 @@ window.PROBLEMS = [
     "tools": {
       "rti": [
         "low",
-        "Past records will not get the garbage removed today."
+        "Past records cannot get the garbage collected today."
       ],
       "grievance": [
         "high",
-        "A formal complaint forces the sanitation department to send a truck."
+        "A formal complaint to the sanitation department triggers immediate action to send the truck."
       ],
       "rep": [
-        "medium",
-        "A councillor can follow up but this is a direct service failure, not a policy issue."
+        "high",
+        "A local councillor can directly call the sanitation department and get the truck sent."
       ],
       "media": [
         "low",
-        "Media coverage cannot force the garbage truck to arrive today."
+        "A missing garbage truck in one area is unlikely to be a story that media will cover."
       ],
       "civil": [
         "high",
-        "Collective pressure from organised residents forces the municipality to act."
+        "Organised residents raising the issue together put strong pressure on the municipality to act quickly."
       ],
       "vote": [
         "low",
-        "Garbage on the street needs action today, not after elections."
+        "Waste piling up needs action today, not after elections."
       ]
     }
   },
@@ -397,27 +397,27 @@ window.PROBLEMS = [
     "tools": {
       "rti": [
         "low",
-        "No government programme exists to seek information about."
+        "No government programme exists here so there are no records to request."
       ],
       "grievance": [
         "low",
-        "No scheme means nothing to complain about."
+        "No service exists so there is nothing to complain about."
       ],
       "rep": [
         "medium",
-        "MLA can propose a programme but that takes time."
+        "An MLA can push for a programme but setting one up takes considerable time."
       ],
       "media": [
         "medium",
-        "Coverage raises awareness but cannot tutor children daily."
+        "Coverage raises awareness but cannot bring children back to school or provide daily support."
       ],
       "civil": [
         "high",
-        "Community groups can run study sessions and bring dropouts back to learning."
+        "Community organisations can locate dropout children and support them back into learning."
       ],
       "vote": [
         "low",
-        "Children need help today, not after elections."
+        "Children need help now, not after elections."
       ]
     }
   }
