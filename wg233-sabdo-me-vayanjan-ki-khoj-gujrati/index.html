@@ -16,7 +16,7 @@
     <div class="mainContainerOuter">
       <div class="wdgetTitle">
         <h2>શ્ર, ક્ષ, જ્ઞ ગોઠવો</h2>
-        <span id="versionId" class="versionText">b4_wg233_261105_1</span>
+        <span id="versionId" class="versionText">b4_wg233_261117_01</span>
       </div>
       <div class="svg-container" id="svg-container">
         <svg id="stage" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1920 1080">
@@ -117,8 +117,29 @@
     </div>
   </div>
 
+
+  <!-- How to play tour (opened by the મદદ button) -->
+  <div id="tour" class="tour" aria-hidden="true">
+    <div id="tourSpot" class="tour-spot"></div>
+    <div id="tourDemo" class="tour-demo"></div>
+    <div id="tourCard" class="tour-card" role="dialog" aria-modal="true" aria-labelledby="tourTitle">
+      <button id="tourSkip" class="tour-skip" type="button" aria-label="બંધ કરો"><span aria-hidden="true">&times;</span></button>
+      <div id="tourCount" class="tour-count"></div>
+      <h2 id="tourTitle"></h2>
+      <p id="tourText"></p>
+      <div class="tour-nav">
+        <div id="tourDots" class="tour-dots"></div>
+        <div class="tour-btns">
+          <button id="tourBack" class="tour-btn tour-btn--ghost" type="button">પાછળ</button>
+          <button id="tourNext" class="tour-btn" type="button">આગળ</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="./js/lottie.min.js"></script>
   <script src="./js/script.js"></script>
+  <script src="./js/how-to-play.js"></script>
 </body>
 
 </html>

@@ -85,27 +85,57 @@
   const btnActionLabel = btnAction.querySelector('text');
   const btnNew = document.getElementById('btn-new');
 
-  // Size the main action button to its label with the same side padding as
-  // "Test another sample" (measured from that button), keeping its right
-  // edge where the design has it so the gap between the two stays the same.
-  const ACTION_RIGHT = 1045, BTN_TOP = 954, BTN_H = 93;
-  function fitActionButton() {
-    const newPath = btnNew.querySelector('path'), newLabel = btnNew.querySelector('text');
-    const pathEl = btnAction.querySelector('path');
-    let pad = 40;
+  const btnNewLabel = btnNew.querySelector('text');
+
+  // Bottom bar layout. Every button is sized to its label with the same side
+  // padding the design gives "Test another sample" (its 412-wide pill), and
+  // the visible buttons are centred on the canvas with the design's 28 gap.
+  //   Lab work:  [Add blood sample / Add reagents]  [Reset]
+  //   Questions:            [Test another sample]
+  const BTN_TOP = 954, BTN_H = 93, BTN_GAP = 28, CENTER_X = 960;
+  const DESIGN_NEW_W = 412;
+  let btnPad = null;
+
+  function pillPath(x, w) {
+    const r = BTN_H / 2;
+    return `M${x + r},${BTN_TOP}h${w - 2 * r}a${r},${r} 0 0 1 0,${BTN_H}h${-(w - 2 * r)}a${r},${r} 0 0 1 0,${-BTN_H}Z`;
+  }
+
+  function placeButton(btn, label, x, w) {
+    btn.querySelector('path').setAttribute('d', pillPath(x, w));
+    label.setAttribute('x', x + w / 2);
+  }
+
+  function layoutBar(showAction) {
+    btnNewLabel.textContent = showAction ? 'Reset' : 'Test another sample';
+    btnNew.setAttribute('aria-label', btnNewLabel.textContent);
     try {
-      pad = (newPath.getBBox().width - newLabel.getComputedTextLength()) / 2;
-      const textLen = btnActionLabel.getComputedTextLength();
-      if (!textLen || !isFinite(pad)) return; // hidden / not laid out yet
-      const w = textLen + 2 * pad;
-      const x = ACTION_RIGHT - w, r = BTN_H / 2;
-      pathEl.setAttribute('d',
-        `M${x + r},${BTN_TOP}h${w - 2 * r}a${r},${r} 0 0 1 0,${BTN_H}h${-(w - 2 * r)}a${r},${r} 0 0 1 0,${-BTN_H}Z`);
-      btnActionLabel.setAttribute('x', x + w / 2);
-    } catch (e) { /* not rendered yet (e.g. hidden): keep the design's shape */ }
+      // Padding: measured once, from the design's "Test another sample" pill.
+      if (btnPad == null) {
+        const saved = btnNewLabel.textContent;
+        btnNewLabel.textContent = 'Test another sample';
+        const len = btnNewLabel.getComputedTextLength();
+        btnNewLabel.textContent = saved;
+        if (!len) return; // not laid out yet; fonts.ready will call again
+        btnPad = (DESIGN_NEW_W - len) / 2;
+      }
+      const wNew = btnNewLabel.getComputedTextLength() + 2 * btnPad;
+      if (!showAction) {
+        placeButton(btnNew, btnNewLabel, CENTER_X - wNew / 2, wNew);
+        return;
+      }
+      const lenAction = btnActionLabel.getComputedTextLength();
+      if (!lenAction) return;
+      const wAction = lenAction + 2 * btnPad;
+      const left = CENTER_X - (wAction + BTN_GAP + wNew) / 2;
+      placeButton(btnAction, btnActionLabel, left, wAction);
+      placeButton(btnNew, btnNewLabel, left + wAction + BTN_GAP, wNew);
+    } catch (e) { /* not rendered yet: keep the design's shapes */ }
   }
   // Fonts can load after first paint and change the text width.
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => fitActionButton());
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(() => { btnPad = null; layoutBar(S.phase < 2); });
+  }
   const btnInsights = document.getElementById('btn-insights');
   const modalLayer = document.getElementById('modal-layer');
   const modalBack = document.getElementById('modal-back');
@@ -270,13 +300,10 @@
   function refreshBar() {
     const showAction = S.phase < 2;
     btnAction.classList.toggle('hidden', !showAction);
-    // With the action button gone, centre "Test another sample" (its centre is x 1279; canvas centre is 960).
-    if (showAction) btnNew.removeAttribute('transform');
-    else btnNew.setAttribute('transform', 'translate(-319 0)');
     btnAction.classList.toggle('is-disabled', !!S.busy);
     btnAction.setAttribute('aria-disabled', S.busy ? 'true' : 'false');
     btnActionLabel.textContent = S.blood ? 'Add reagents' : 'Add blood sample';
-    fitActionButton();
+    layoutBar(showAction);
     btnAction.setAttribute('aria-label', btnActionLabel.textContent);
     if (S.busy) return;
     if (!S.blood) setMsg("Start by placing one drop of the patient's blood in each well.");
