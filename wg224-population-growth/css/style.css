@@ -1,0 +1,1090 @@
+/* ==========================================================================
+   Population Growth with Unlimited and Limited Resources (wg224)
+   Layout is authored on a fixed 1920x1080 stage (matching the XD) and scaled
+   to the window by script.js, so it always fits one screen.
+   ========================================================================== */
+
+:root {
+  --title: #26b0a7;
+  --title-shadow: rgb(0 0 0 / 30%);
+  --itext: #fffb85;
+  --navy: #05055f;
+  --plum: #73005c;
+  --ink-green: #004f28;
+  --card-line: #0e5113;
+  --btn-line: #0e9942;
+  --exp-card: #4dfff3;
+  --exp-eq: #11f2e3;
+  --log-card: #80ffb6;
+  --log-eq: #3cf089;
+  --field-n: #ecffa1;
+  --field-r: #cdffee;
+  --field-k: #ffcdcd;
+  --graph: #ecffa1;
+  --cell: #f2ffd9;
+  --cell-line: #7ea586;
+  --axis: #348f92;
+  --arrow: #4cc0a5;
+  --curve: #b81624;
+  --dot: #ce0707;
+  --dot-line: #6c0a0a;
+  --k-line: #ff0000;
+  --calc: #2efff8;
+  --chip: #ff5555;
+  --chip-line: #960000;
+  --plot: #ffe600;
+  --next: #ffbdfa;
+  --skip: #c9c6ff;
+  --reset: #ff8f8f;
+  --gold: #e2a500;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+/* The widget backdrop fills the whole viewport, including any space around
+   the scaled 1920x1080 stage. */
+body {
+  background: #2d6d84 url("../assets/svg/bg.svg") center / cover no-repeat;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mainContainerOuter {
+  background: transparent;
+}
+
+/* Layering, bottom to top: body backdrop -> #viewport (the widget) ->
+   body::before (modal backdrop) -> #modal-layer (title, open modal, tour). */
+#viewport,
+#modal-layer {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+}
+
+#viewport {
+  z-index: 1;
+}
+
+/* Dark backdrop behind an open modal, covering the whole viewport. */
+body.has-modal::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  background: rgba(0, 0, 0, 0.8);
+}
+
+#modal-layer {
+  z-index: 3;
+  pointer-events: none;
+}
+
+body.has-modal #modal-layer,
+body.has-tour #modal-layer {
+  pointer-events: auto;
+}
+
+/* #stage holds the widget, #modal-stage the title and pop-ups; both are the
+   same fixed 1920x1080 design stage, scaled together by script.js. */
+#stage,
+#modal-stage {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1920px;
+  height: 1080px;
+  transform-origin: 0 0;
+  font-family: "Roboto", "Segoe UI", sans-serif;
+  line-height: 1.2;
+  color: #000;
+}
+
+#stage {
+  overflow: hidden;
+}
+
+/* The tour's dimming spotlight must reach past the stage into the letterbox. */
+#modal-stage {
+  overflow: visible;
+}
+
+img {
+  display: block;
+  -webkit-user-drag: none;
+}
+
+button {
+  font-family: inherit;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: default;
+}
+
+button:focus-visible,
+input:focus-visible {
+  outline: 4px solid #fff;
+  outline-offset: 3px;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+p,
+h3,
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+sub {
+  font-size: 0.62em;
+  line-height: 0;
+}
+
+.screen {
+  position: absolute;
+  inset: 0;
+  display: none;
+}
+
+.screen.is-active {
+  display: block;
+}
+
+/* ---------- title (outside the scaled stage, same as wg187) ---------- */
+/* z-index keeps it above #modal-layer, so it stays bright over the modal backdrop */
+#population-growth-widget .wdgetTitle {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 0;
+  z-index: 4;
+}
+
+#population-growth-widget .wdgetTitle h2 {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  padding: 8px 40px;
+  background: var(--title);
+  border-radius: 0 0 20px 20px;
+  box-shadow: 0 3px 3px var(--title-shadow);
+  color: #fff;
+  font-family: "Roboto", sans-serif;
+  font-size: 25px;
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: left;
+  white-space: nowrap;
+}
+
+#population-growth-widget .versionText {
+  position: absolute;
+  right: 20px;
+  top: 10px;
+  font-family: "Roboto", sans-serif;
+  font-size: 12px;
+  line-height: 1;
+  color: rgb(255 255 255 / 25%);
+}
+
+/* ---------- instruction line ---------- */
+.itext {
+  position: absolute;
+  left: 0;
+  width: 1920px;
+  height: 44px;
+  color: var(--itext);
+  font-size: 28px;
+  font-style: italic;
+  line-height: 44px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.itext b {
+  font-weight: 700;
+}
+
+.itext--start {
+  top: 129px;
+}
+
+.itext--sim {
+  top: 111px;
+}
+
+/* ---------- buttons on every screen ---------- */
+.home-btn {
+  position: absolute;
+  left: 44px;
+  top: 981px;
+  width: 66px;
+  height: 66px;
+}
+
+.home-btn img {
+  width: 100%;
+  height: 100%;
+}
+
+.insights-btn,
+.help-btn {
+  position: absolute;
+  top: 979px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  border-radius: 35px;
+  color: #fff;
+  font-size: 35px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.insights-btn {
+  left: 129px;
+  width: 251px;
+  padding-left: 22px;
+  gap: 6px;
+  background: #f7901e;
+}
+
+.insights-btn img {
+  width: 56px;
+  height: 56px;
+}
+
+.help-btn {
+  left: 401px;
+  width: 268px;
+  background: #00d331;
+}
+
+.help-btn__q {
+  position: absolute;
+  left: 9.5px;
+  top: 9.5px;
+  width: 51px;
+  height: 51px;
+  border-radius: 50%;
+  background: #d9f622;
+  color: #000;
+  font-family: "Segoe UI", "Roboto", sans-serif;
+  font-size: 46px;
+  font-weight: 700;
+  line-height: 51px;
+  text-align: center;
+}
+
+.help-btn > span:last-child {
+  position: absolute;
+  left: 52px;
+  width: 210px;
+  text-align: center;
+}
+
+.home-btn,
+.insights-btn,
+.help-btn {
+  transition: transform 0.15s ease;
+}
+
+.home-btn:hover,
+.insights-btn:hover,
+.help-btn:hover {
+  transform: scale(1.04);
+}
+
+.pill-btn {
+  position: absolute;
+  height: 57px;
+  border-radius: 28.5px;
+  color: #000;
+  font-size: 32px;
+  font-weight: 500;
+  line-height: 57px;
+  text-align: center;
+  white-space: nowrap;
+  transition: filter 0.15s ease, opacity 0.2s ease;
+}
+
+.pill-btn:hover:not(:disabled) {
+  filter: brightness(1.06);
+}
+
+/* ---------- opening screen ---------- */
+.mode-card {
+  position: absolute;
+  top: 331px;
+  width: 783px;
+  height: 416px;
+  border: 5px solid var(--card-line);
+  border-radius: 37px;
+  text-align: center;
+}
+
+.mode-card--exp {
+  left: 177px;
+  background: var(--exp-card);
+}
+
+.mode-card--log {
+  left: 988px;
+  top: 332px;
+  background: var(--log-card);
+}
+
+.mode-card__name {
+  position: absolute;
+  left: 0;
+  top: 91px;
+  width: 100%;
+  color: var(--ink-green);
+  font-size: 45px;
+  font-weight: 700;
+}
+
+.mode-card__eq {
+  position: absolute;
+  top: 156px;
+  height: 66px;
+  border-radius: 10px;
+  font-size: 40px;
+  line-height: 66px;
+}
+
+.mode-card--exp .mode-card__eq {
+  left: 276px;
+  width: 223px;
+  background: var(--exp-eq);
+}
+
+.mode-card--log .mode-card__eq {
+  left: 189px;
+  top: 155px;
+  width: 395px;
+  background: var(--log-eq);
+}
+
+.mode-card__desc {
+  position: absolute;
+  left: 0;
+  top: 239px;
+  width: 100%;
+  font-size: 30px;
+  line-height: 39px;
+}
+
+.explore-btn {
+  position: absolute;
+  left: 259px;
+  top: 352px;
+  width: 256px;
+  height: 93px;
+  border: 1px solid var(--btn-line);
+  border-radius: 47px;
+  box-shadow: 0 10px 0 #000;
+  background: #f7ff00;
+  font-size: 35px;
+  font-weight: 500;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.mode-card--log .explore-btn {
+  left: 258px;
+  top: 351px;
+  background: #ffd500;
+}
+
+.explore-btn:hover {
+  filter: brightness(1.04);
+}
+
+.explore-btn:active {
+  transform: translateY(6px);
+  box-shadow: 0 4px 0 #000;
+}
+
+.mode-icon {
+  position: absolute;
+  top: 259px;
+  width: 128px;
+  height: 128px;
+  pointer-events: none;
+}
+
+.mode-icon--exp {
+  left: 505px;
+}
+
+.mode-icon--log {
+  left: 1315px;
+}
+
+/* ---------- input panel ---------- */
+.inputs {
+  position: absolute;
+  left: 96px;
+  top: 179px;
+  width: 664px;
+  height: 756px;
+  border-radius: 30px;
+  background: var(--navy);
+}
+
+.sim--log .inputs {
+  height: 782px;
+}
+
+.inputs__tab {
+  position: absolute;
+  left: 50px;
+  top: -18px;
+  z-index: 1;
+  width: 218px;
+  height: 36px;
+  background: var(--navy);
+  color: #fff;
+  font-family: "Segoe UI", "Roboto", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 36px;
+  text-align: center;
+}
+
+.sim--log .inputs__tab {
+  background: var(--plum);
+}
+
+.field {
+  position: absolute;
+  left: 10px;
+  width: 645px;
+  text-align: center;
+}
+
+.field > p {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  white-space: nowrap;
+}
+
+.field__name {
+  font-size: 30px;
+  font-weight: 500;
+}
+
+.field__desc {
+  font-size: 27px;
+}
+
+.field__hint {
+  font-size: 20px;
+  font-style: italic;
+}
+
+.field--n {
+  background: var(--field-n);
+}
+
+.field--n .field__name {
+  color: #7b0549;
+}
+
+.field--n .field__hint {
+  color: #3d1d00;
+}
+
+.field--r {
+  background: var(--field-r);
+}
+
+.field--r .field__name {
+  color: #007714;
+}
+
+.field--r .field__hint {
+  color: #0f6606;
+}
+
+.field--k {
+  background: var(--field-k);
+}
+
+.field--k .field__name {
+  color: #af4a06;
+}
+
+.field--k .field__hint {
+  color: #772c00;
+}
+
+/* unlimited: two tall fields */
+.sim--exp .field--n { top: 9px; height: 311px; border-radius: 30px 30px 0 0; }
+.sim--exp .field--r { top: 324px; height: 334px; border-radius: 0 0 30px 30px; }
+.sim--exp .field--n .field__name { top: 45px; }
+.sim--exp .field--n .field__desc { top: 92px; }
+.sim--exp .field--n .num { top: 150px; }
+.sim--exp .field--n .field__hint { top: 231px; }
+.sim--exp .field--r .field__name { top: 16px; }
+.sim--exp .field--r .field__desc { top: 56px; line-height: 35px; }
+.sim--exp .field--r .num { top: 155px; }
+.sim--exp .field--r .field__hint { top: 239px; }
+
+/* limited: three shorter fields */
+.sim--log .field__desc { font-size: 25px; }
+.sim--log .field--n { top: 9px; height: 235px; border-radius: 30px 30px 0 0; }
+.sim--log .field--r { top: 247px; height: 231px; }
+.sim--log .field--k { top: 481px; height: 208px; }
+.sim--log .field--n .field__name { top: 25px; }
+.sim--log .field--n .field__desc { top: 64px; }
+.sim--log .field--n .num { top: 110px; }
+.sim--log .field--n .field__hint { top: 172px; }
+.sim--log .field--r .field__name { top: 7px; }
+.sim--log .field--r .field__desc { top: 48px; line-height: 33px; }
+.sim--log .field--r .num { top: 132px; }
+.sim--log .field--r .field__hint { top: 190px; }
+.sim--log .field--k .field__name { top: 7px; }
+.sim--log .field--k .field__desc { top: 50px; }
+.sim--log .field--k .num { top: 85px; }
+.sim--log .field--k .field__hint { top: 143px; }
+
+/* number box with its own up/down spinner, as drawn */
+.num {
+  position: absolute;
+  left: 216px;
+  width: 214px;
+  height: 72px;
+  display: flex;
+  box-shadow: 9px 8px 0 -2px rgb(0 0 0 / 24%);
+}
+
+.sim--log .num {
+  height: 50px;
+}
+
+.num__input {
+  width: 148px;
+  height: 100%;
+  margin: 0;
+  padding: 0 6px;
+  border: 1px solid #967fd4;
+  border-right: 0;
+  border-radius: 0;
+  background: #fff;
+  color: #000;
+  font-family: inherit;
+  font-size: 50px;
+  text-align: center;
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+.sim--log .num__input {
+  font-size: 40px;
+}
+
+.num__input::placeholder {
+  color: rgb(0 0 0 / 20%);
+  font-size: 30px;
+}
+
+.sim--log .num__input::placeholder {
+  font-size: 21px;
+}
+
+.num__input:disabled {
+  background: #fff;
+  color: #000;
+  opacity: 1;
+  -webkit-text-fill-color: #000;
+}
+
+.num__spin {
+  position: relative;
+  width: 66px;
+  height: 100%;
+  border: 1px solid #967fd4;
+  background: #83d465;
+}
+
+.field--n .num__input,
+.field--n .num__spin {
+  border-color: #ca5b5b;
+}
+
+.field--n .num__spin {
+  background: #eeb9b9;
+}
+
+.field--k .num__spin {
+  background: #ff702b;
+}
+
+.num__btn {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 50%;
+}
+
+.num__btn--up {
+  top: 0;
+}
+
+.num__btn--down {
+  bottom: 0;
+}
+
+.num__btn::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  width: 24px;
+  height: 21px;
+  margin-left: -12px;
+  background: #0d6e36;
+}
+
+.num__btn--up::before {
+  top: 6px;
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+}
+
+.num__btn--down::before {
+  bottom: 8px;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+}
+
+.sim--log .num__btn::before {
+  width: 18px;
+  height: 11px;
+  margin-left: -9px;
+}
+
+.sim--log .num__btn--up::before {
+  top: 3px;
+}
+
+.sim--log .num__btn--down::before {
+  bottom: 4px;
+}
+
+.field--n .num__btn::before {
+  background: #922a88;
+}
+
+.field--k .num__btn::before {
+  background: #7c3600;
+}
+
+.num__btn:disabled {
+  opacity: 0.35;
+}
+
+/* error and lock notes */
+.chip {
+  position: absolute;
+  height: 29px;
+  padding: 0 14px;
+  border: 1px dashed var(--chip-line);
+  border-radius: 7px;
+  background: var(--chip);
+  color: #fff;
+  font-size: 20px;
+  line-height: 27px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.chip--top {
+  left: 335px;
+  top: 277px;
+  transform: translateX(-50%);
+}
+
+.chip--bottom {
+  left: 31px;
+  top: 604px;
+  width: 602px;
+}
+
+.sim--log .chip--top {
+  top: 215px;
+}
+
+.sim--log .chip--bottom {
+  top: 660px;
+}
+
+.pill-btn--plot {
+  left: 233px;
+  top: 671px;
+  width: 205px;
+  background: var(--plot);
+}
+
+.sim--log .pill-btn--plot {
+  top: 705px;
+}
+
+.pill-btn--plot:disabled {
+  opacity: 0.4;
+}
+
+/* ---------- graph ---------- */
+.graph {
+  position: absolute;
+  left: 793px;
+  top: 188px;
+  width: 1032px;
+  height: 580px;
+  border: 1px solid #707070;
+  border-radius: 30px;
+  background: var(--graph);
+  transition: opacity 0.25s ease;
+}
+
+.graph.is-idle {
+  opacity: 0.2;
+}
+
+.graph__svg {
+  position: absolute;
+  left: -1px;
+  top: -1px;
+  width: 1032px;
+  height: 580px;
+  overflow: visible;
+  font-family: "Roboto", sans-serif;
+}
+
+.g-cell {
+  fill: var(--cell);
+  stroke: var(--cell-line);
+  stroke-width: 1;
+}
+
+.g-axis {
+  fill: var(--axis);
+}
+
+.g-arrow {
+  fill: var(--arrow);
+}
+
+.g-tick,
+.g-cap,
+.g-k {
+  fill: #000;
+  font-size: 25px;
+}
+
+.g-curve {
+  fill: none;
+  stroke: var(--curve);
+  stroke-width: 6;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.g-dot {
+  fill: var(--dot);
+  stroke: var(--dot-line);
+  stroke-width: 3;
+}
+
+.g-kline {
+  stroke: var(--k-line);
+  stroke-width: 4;
+  stroke-dasharray: 8 8;
+}
+
+/* ---------- equation box and the year's working ---------- */
+.eq-box,
+.calc {
+  position: absolute;
+  border: 3px dashed #707070;
+  background: var(--calc);
+  text-align: center;
+}
+
+.eq-box {
+  height: 69px;
+  border-radius: 18px;
+  font-size: 30px;
+  line-height: 63px;
+}
+
+.sim--exp .eq-box {
+  left: 1212px;
+  top: 829px;
+  width: 220px;
+}
+
+.sim--log .eq-box {
+  left: 1142px;
+  top: 791px;
+  width: 338px;
+}
+
+.calc {
+  height: 165px;
+  border-radius: 30px;
+}
+
+.sim--exp .calc {
+  left: 967px;
+  top: 770px;
+  width: 690px;
+}
+
+.sim--log .calc {
+  left: 887px;
+  top: 788px;
+  width: 850px;
+}
+
+.calc > p {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  white-space: nowrap;
+}
+
+.calc__eq {
+  top: 7px;
+  color: #002499;
+  font-size: 30px;
+}
+
+.calc__how {
+  top: 49px;
+  font-size: 25px;
+}
+
+.calc__year {
+  top: 83px;
+  color: #220097;
+  font-size: 22px;
+}
+
+.calc__sum {
+  top: 113px;
+  font-size: 30px;
+  font-weight: 700;
+}
+
+.calc__res {
+  color: #0036cc;
+}
+
+.sim--log .calc__res {
+  color: #4a4af3;
+}
+
+/* ---------- stepping buttons ---------- */
+.pill-btn--next {
+  left: 974px;
+  top: 984px;
+  width: 201px;
+  background: var(--next);
+}
+
+.pill-btn--skip {
+  left: 1199px;
+  top: 984px;
+  width: 245px;
+  background: var(--skip);
+}
+
+.pill-btn--reset {
+  left: 1468px;
+  top: 984px;
+  width: 169px;
+  background: var(--reset);
+}
+
+.steps .pill-btn:disabled {
+  opacity: 0.2;
+}
+
+/* ---------- insights ---------- */
+.modal {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+}
+
+.insights-card {
+  position: absolute;
+  left: 57px;
+  top: 115px;
+  width: 1818px;
+  height: 889px;
+  background: #fff;
+  border: 6px solid var(--gold);
+  border-radius: 16px;
+  box-shadow: 3px 3px 3px rgb(0 0 0 / 16%);
+}
+
+.insights-list {
+  position: absolute;
+  left: 69px;
+  top: 48px;
+  width: 1693px;
+  list-style: none;
+  font-size: 32px;
+  line-height: 50px;
+}
+
+.insights-list li {
+  position: relative;
+}
+
+.insights-list li::before {
+  content: "";
+  position: absolute;
+  left: -30.5px;
+  top: 18.5px;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: var(--gold);
+}
+
+.close-btn {
+  position: absolute;
+  left: 1810px;
+  top: 69px;
+  width: 92px;
+  height: 92px;
+  border-radius: 50%;
+}
+
+.close-btn img {
+  width: 100%;
+  height: 100%;
+}
+
+/* ---------- how to use ---------- */
+.tour {
+  position: absolute;
+  inset: 0;
+  z-index: 80;
+}
+
+.tour-spot {
+  position: absolute;
+  border-radius: 24px;
+  box-shadow: 0 0 0 4000px rgb(0 0 0 / 62%);
+  outline: 4px solid #ffd500;
+  pointer-events: none;
+  transition: left 0.25s ease, top 0.25s ease, width 0.25s ease, height 0.25s ease;
+}
+
+.tour-spot.is-blank {
+  outline: 0;
+}
+
+.tour-card {
+  position: absolute;
+  width: 560px;
+  padding: 24px 30px 26px;
+  background: #fff;
+  border: 4px solid var(--title);
+  border-radius: 30px;
+  box-shadow: 0 16px 40px rgb(0 0 0 / 35%);
+}
+
+.tour-close {
+  position: absolute;
+  right: -26px;
+  top: -26px;
+  width: 64px;
+  height: 64px;
+}
+
+.tour-close img {
+  width: 100%;
+  height: 100%;
+}
+
+.tour-step {
+  color: #506470;
+  font-size: 22px;
+}
+
+.tour-title {
+  margin-top: 6px;
+  color: var(--ink-green);
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.tour-text {
+  margin-top: 8px;
+  font-size: 28px;
+  line-height: 36px;
+}
+
+.tour-row {
+  position: relative;
+  height: 57px;
+  margin-top: 22px;
+}
+
+.tour-row .pill-btn {
+  top: 0;
+  width: 140px;
+}
+
+.tour-prev {
+  right: 160px;
+  background: var(--skip);
+}
+
+.tour-next {
+  right: 0;
+  background: var(--plot);
+}
+
+.tour-prev:disabled {
+  opacity: 0.35;
+}
+
+/* ---------- reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
