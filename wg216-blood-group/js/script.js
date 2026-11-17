@@ -84,6 +84,28 @@
   const btnAction = document.getElementById('btn-action');
   const btnActionLabel = btnAction.querySelector('text');
   const btnNew = document.getElementById('btn-new');
+
+  // Size the main action button to its label with the same side padding as
+  // "Test another sample" (measured from that button), keeping its right
+  // edge where the design has it so the gap between the two stays the same.
+  const ACTION_RIGHT = 1045, BTN_TOP = 954, BTN_H = 93;
+  function fitActionButton() {
+    const newPath = btnNew.querySelector('path'), newLabel = btnNew.querySelector('text');
+    const pathEl = btnAction.querySelector('path');
+    let pad = 40;
+    try {
+      pad = (newPath.getBBox().width - newLabel.getComputedTextLength()) / 2;
+      const textLen = btnActionLabel.getComputedTextLength();
+      if (!textLen || !isFinite(pad)) return; // hidden / not laid out yet
+      const w = textLen + 2 * pad;
+      const x = ACTION_RIGHT - w, r = BTN_H / 2;
+      pathEl.setAttribute('d',
+        `M${x + r},${BTN_TOP}h${w - 2 * r}a${r},${r} 0 0 1 0,${BTN_H}h${-(w - 2 * r)}a${r},${r} 0 0 1 0,${-BTN_H}Z`);
+      btnActionLabel.setAttribute('x', x + w / 2);
+    } catch (e) { /* not rendered yet (e.g. hidden): keep the design's shape */ }
+  }
+  // Fonts can load after first paint and change the text width.
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => fitActionButton());
   const btnInsights = document.getElementById('btn-insights');
   const modalLayer = document.getElementById('modal-layer');
   const modalBack = document.getElementById('modal-back');
@@ -169,6 +191,14 @@
   }
 
   /** Plays the smooth-red overlay on one well. */
+  /** Smooth-well overlay without the red cell dots ("circles-positive"),
+   *  so a well with no reaction fills with one plain, even colour. */
+  function smoothData() {
+    const data = JSON.parse(JSON.stringify(window.LOTTIE_DATA.smooth));
+    data.layers = data.layers.filter(l => l.nm !== 'circles-positive');
+    return data;
+  }
+
   function playSmooth(well) {
     const myGen = gen;
     return new Promise(resolve => {
@@ -177,7 +207,7 @@
         renderer: 'svg',
         loop: false,
         autoplay: !reduceMotion,
-        animationData: JSON.parse(JSON.stringify(window.LOTTIE_DATA.smooth))
+        animationData: smoothData()
       });
       wellAnims.push(anim);
       if (reduceMotion) {
@@ -240,9 +270,13 @@
   function refreshBar() {
     const showAction = S.phase < 2;
     btnAction.classList.toggle('hidden', !showAction);
+    // With the action button gone, centre "Test another sample" (its centre is x 1279; canvas centre is 960).
+    if (showAction) btnNew.removeAttribute('transform');
+    else btnNew.setAttribute('transform', 'translate(-319 0)');
     btnAction.classList.toggle('is-disabled', !!S.busy);
     btnAction.setAttribute('aria-disabled', S.busy ? 'true' : 'false');
     btnActionLabel.textContent = S.blood ? 'Add reagents' : 'Add blood sample';
+    fitActionButton();
     btnAction.setAttribute('aria-label', btnActionLabel.textContent);
     if (S.busy) return;
     if (!S.blood) setMsg("Start by placing one drop of the patient's blood in each well.");
@@ -420,7 +454,7 @@
         ${S.checked ? boxFeedback(id, st) : ''}`;
     };
     const finish = S.checked && st.allRight
-      ? '<div class="note ok" aria-live="polite"><p><b>All correct.</b></p><div class="actions"><button type="button" class="primary" data-act="new" data-key="new">Test another sample</button></div></div>' : '';
+      ? '<div class="note ok" aria-live="polite"><p><b>All correct.</b></p></div>' : '';
     return `<section class="card card-quiz${S.quizFaded ? '' : ' fade'}" data-kind="quiz" aria-labelledby="quiz-title">
       <h3 id="quiz-title" tabindex="-1">Determine the compatibility of this blood group.</h3>
       <p class="lead">Drag and drop each group into the sentence where it fits. A group can also go in both boxes.</p>
