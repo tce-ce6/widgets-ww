@@ -698,3 +698,43 @@ svg * {
       border-top-width: 2.5px
     }
   
+
+    /* ---- review fixes ---- */
+
+    /* Question stem: always visible, centred over the gear canvas (storyboard) */
+    .question-stem {
+      position: absolute;
+      top: 14px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 34px;
+      font-weight: 700;
+      color: #000;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Insights: animated gears over the static picture in insight-popup.svg.
+       Panel art is 1151x618; the picture area is x 34-1117, y 125-534, which
+       is the 1083x409 Lottie comp. White background hides the static gears. */
+    #insight-popup img:first-child {
+      display: block;
+      width: 1151px;
+      height: 618px;
+    }
+
+    .insight-anim {
+      position: absolute;
+      /* The art's picture starts at x 34, but the popup starts 50px off-screen
+         (x -50.55), so the animation sits 18px further right to keep "Slower"
+         visible; the padding keeps the white cover over the static art. */
+      left: 34px;
+      padding-left: 18px;
+      box-sizing: content-box;
+      top: 125px;
+      width: 1083px;
+      height: 409px;
+      background: #fff;
+      pointer-events: none;
+    }

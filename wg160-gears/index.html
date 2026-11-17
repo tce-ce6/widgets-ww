@@ -13,7 +13,7 @@
     <div class="mainContainerOuter">
       <div class="wdgetTitle">
         <h2>Gears</h2>
-        <span id="versionId" class="versionText">b4_wg160_260730_01</span>
+        <span id="versionId" class="versionText">b4_wg160_261117_01</span>
       </div>
       <div class="svg-container" id="svg-container">
         <svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" fill="none">
@@ -21,7 +21,7 @@
           <div class="app">
 
             <main class="stage">
-              <svg class="canvas" id="svg" viewBox="0 0 900 620" preserveAspectRatio="xMidYMid meet"
+              <svg class="canvas" id="svg" viewBox="0 0 560 511" preserveAspectRatio="xMidYMid meet"
                 aria-label="Gear canvas">
                 <defs>
                   <pattern id="grid" width="26" height="26" patternUnits="userSpaceOnUse">
@@ -35,6 +35,8 @@
                 <!-- <rect x="0" y="0" width="900" height="620" fill="url(#grid5)" /> -->
                 <g id="layer"></g>
               </svg>
+              <!-- Question stem (storyboard: always visible, centre aligned) -->
+              <div class="question-stem" id="questionStem">Which gear rotates faster?</div>
               <div class="empty-hint" id="emptyHint"><span>Add a gear to begin — the first one drives the train.</span>
               </div>
               <div class="status" id="status"><span class="dot"></span><span id="statusText">No gears yet.</span></div>
@@ -117,6 +119,8 @@
             <foreignObject class="insight-popup-wrapper" id="insight-popup" x="-50.55" y="413" width="1150" height="630" style="display: none;">
               <div>
                 <img src="./assets/images/insight-popup.svg" alt="">
+                <!-- Animated gears (assets/json/gears.json) play over the static picture in the panel -->
+                <div class="insight-anim" id="insight-anim" aria-hidden="true"></div>
                 <img class="close-btn" src="./assets/images/cross.svg" alt="" style="cursor: pointer;">
               </div>
             </foreignObject>
@@ -128,6 +132,7 @@
   </div>
 
   <script src="./js/lottie.min.js"></script>
+  <script src="./js/insight-anim-data.js"></script>
   <script src="./js/script.js"></script>
 </body>
 
