@@ -27,23 +27,30 @@
             <div class="tool-cards" id="toolCards"></div>
 
             <!-- what each rating means (from the review sheet) -->
-            <table class="ratings" aria-labelledby="ratingsTitle">
-              <caption class="ratings__title" id="ratingsTitle">Rating Definitions</caption>
-              <tbody>
-                <tr class="ratings__row ratings__row--high">
-                  <th scope="row">HIGH</th>
-                  <td>Can directly solve or significantly move the problem forward.</td>
-                </tr>
-                <tr class="ratings__row ratings__row--medium">
-                  <th scope="row">MEDIUM</th>
-                  <td>Helps but has limits. Cannot solve the problem alone.</td>
-                </tr>
-                <tr class="ratings__row ratings__row--low">
-                  <th scope="row">LOW</th>
-                  <td>Has little to no impact on this problem.</td>
-                </tr>
-              </tbody>
-            </table>
+            <section class="ratings" aria-labelledby="ratingsTitle">
+              <h4 class="ratings__tab" id="ratingsTitle">
+                <svg class="ratings__icon" viewBox="0 0 28 24" aria-hidden="true">
+                  <rect x="1" y="12" width="6" height="11" rx="1.5" fill="#6ee7a8"/>
+                  <rect x="11" y="5" width="6" height="18" rx="1.5" fill="#ffd54a"/>
+                  <rect x="21" y="1" width="6" height="22" rx="1.5" fill="#ff8a8a"/>
+                </svg>
+                Rating Definitions
+              </h4>
+              <dl class="ratings__list">
+                <div class="ratings__row ratings__row--high">
+                  <dt>HIGH</dt>
+                  <dd>Can directly solve or significantly move the problem forward.</dd>
+                </div>
+                <div class="ratings__row ratings__row--medium">
+                  <dt>MEDIUM</dt>
+                  <dd>Helps but has limits. Cannot solve the problem alone.</dd>
+                </div>
+                <div class="ratings__row ratings__row--low">
+                  <dt>LOW</dt>
+                  <dd>Has little to no impact on this problem.</dd>
+                </div>
+              </dl>
+            </section>
             <button class="pill-btn pill-btn--start" id="startBtn" type="button">Start</button>
           </section>
 
@@ -78,7 +85,7 @@
             <h3 class="summary__title">Here is what you discovered.</h3>
             <div class="summary" id="summary"></div>
             <p class="takeaway" id="takeaway" hidden>There is no single best tool. Every problem needs a different approach.
-              An informed citizen knows which tool works best &mdash; and when.</p>
+              An informed citizen knows which tool works best and when.</p>
             <button class="pill-btn pill-btn--sback" id="summaryBack" type="button">Back</button>
             <button class="pill-btn pill-btn--snext" id="summaryNext" type="button">Next</button>
             <button class="pill-btn pill-btn--restart" id="restartBtn" type="button">Restart</button>

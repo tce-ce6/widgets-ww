@@ -97,7 +97,7 @@
       "author": "tce-ashishg"
     },
     "wg187-citizen-engagement": {
-      "updatedAt": "2026-11-16T16:15:39+05:30",
+      "updatedAt": "2026-11-17T10:44:28+05:30",
       "author": "tce-nitinc"
     },
     "wg188-feed-the-animals": {
@@ -216,8 +216,12 @@
       "updatedAt": "2026-10-19T10:58:01+05:30",
       "author": "tce-nitinc"
     },
+    "wg225-blood-circulation": {
+      "updatedAt": "2026-11-16T19:14:47+05:30",
+      "author": "tce-ashishg"
+    },
     "wg226-temple-architecture": {
-      "updatedAt": "2026-11-11T14:49:17+05:30",
+      "updatedAt": "2026-11-17T10:44:28+05:30",
       "author": "tce-nitinc"
     },
     "wg230-sort-o-matic": {
@@ -278,6 +282,23 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-11-17T10:44:28+05:30",
+      "author": "tce-nitinc",
+      "message": "wg187 fixes",
+      "widgets": [
+        187,
+        226
+      ]
+    },
+    {
+      "date": "2026-11-16T19:14:47+05:30",
+      "author": "tce-ashishg",
+      "message": "wg225 completed",
+      "widgets": [
+        225
+      ]
+    },
     {
       "date": "2026-11-16T17:54:20+05:30",
       "author": "tce-ashishg",
@@ -521,22 +542,6 @@
         208,
         212,
         219
-      ]
-    },
-    {
-      "date": "2026-11-11T17:46:05+05:30",
-      "author": "tce-nitinc",
-      "message": "wg246",
-      "widgets": [
-        246
-      ]
-    },
-    {
-      "date": "2026-11-11T16:08:19+05:30",
-      "author": "tce-nitinc",
-      "message": "added wg-246",
-      "widgets": [
-        246
       ]
     }
   ]
