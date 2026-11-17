@@ -174,7 +174,7 @@
       },
       {
         title: 'Drag a tool into a box',
-        text: 'Press and hold a tool, drag it into <b>Low</b>, <b>Medium</b> or <b>High Effectiveness</b>, then let go. You can also tap a tool and then tap a box.',
+        text: 'Press and hold a tool, drag it into <b>Low</b>, <b>Medium</b> or <b>High Effectiveness</b>, then let go.',
         target: () => unionRect([...boxes(), ...chips()]),
         anim: (tok) => {
           const chip = freeChips()[0];
