@@ -86,12 +86,15 @@
   const btnNew = document.getElementById('btn-new');
 
   const btnNewLabel = btnNew.querySelector('text');
+  const btnReset = document.getElementById('btn-reset');
+  const btnResetLabel = btnReset.querySelector('text');
 
   // Bottom bar layout. Every button is sized to its label with the same side
-  // padding the design gives "Test another sample" (its 412-wide pill), and
-  // the visible buttons are centred on the canvas with the design's 28 gap.
-  //   Lab work:  [Add blood sample / Add reagents]  [Reset]
-  //   Questions:            [Test another sample]
+  // padding the design gives "Test another sample" (its 412-wide pill).
+  // Reset always sits just right of the centre; the left slot holds the
+  // lab-work button, then "Test another sample" once the questions start.
+  //   Lab work:  [Add blood sample / Add reagents] | [Reset]
+  //   Questions:            [Test another sample] | [Reset]
   const BTN_TOP = 954, BTN_H = 93, BTN_GAP = 28, CENTER_X = 960;
   const DESIGN_NEW_W = 412;
   let btnPad = null;
@@ -107,29 +110,26 @@
   }
 
   function layoutBar(showAction) {
-    btnNewLabel.textContent = showAction ? 'Reset' : 'Test another sample';
-    btnNew.setAttribute('aria-label', btnNewLabel.textContent);
+    btnNew.classList.toggle('hidden', showAction);
     try {
       // Padding: measured once, from the design's "Test another sample" pill.
+      // (Measured on the Reset label, which is always shown — a hidden label measures 0.)
       if (btnPad == null) {
-        const saved = btnNewLabel.textContent;
-        btnNewLabel.textContent = 'Test another sample';
-        const len = btnNewLabel.getComputedTextLength();
-        btnNewLabel.textContent = saved;
+        btnResetLabel.textContent = 'Test another sample';
+        const len = btnResetLabel.getComputedTextLength();
+        btnResetLabel.textContent = 'Reset';
         if (!len) return; // not laid out yet; fonts.ready will call again
         btnPad = (DESIGN_NEW_W - len) / 2;
       }
-      const wNew = btnNewLabel.getComputedTextLength() + 2 * btnPad;
-      if (!showAction) {
-        placeButton(btnNew, btnNewLabel, CENTER_X - wNew / 2, wNew);
-        return;
-      }
-      const lenAction = btnActionLabel.getComputedTextLength();
-      if (!lenAction) return;
-      const wAction = lenAction + 2 * btnPad;
-      const left = CENTER_X - (wAction + BTN_GAP + wNew) / 2;
-      placeButton(btnAction, btnActionLabel, left, wAction);
-      placeButton(btnNew, btnNewLabel, left + wAction + BTN_GAP, wNew);
+      // Right of centre: Reset, always in the same place.
+      const wReset = btnResetLabel.getComputedTextLength() + 2 * btnPad;
+      placeButton(btnReset, btnResetLabel, CENTER_X + BTN_GAP / 2, wReset);
+      // Left of centre: the lab-work button, or "Test another sample".
+      const [btn, label] = showAction ? [btnAction, btnActionLabel] : [btnNew, btnNewLabel];
+      const len = label.getComputedTextLength();
+      if (!len) return;
+      const w = len + 2 * btnPad;
+      placeButton(btn, label, CENTER_X - BTN_GAP / 2 - w, w);
     } catch (e) { /* not rendered yet: keep the design's shapes */ }
   }
   // Fonts can load after first paint and change the text width.
@@ -692,19 +692,23 @@
 
   bindSvgButton(btnAction, onAction);
   bindSvgButton(btnNew, () => newPatient());
+  bindSvgButton(btnReset, () => newPatient(true)); // same sample, from the start
   bindSvgButton(btnInsights, showInsights);
 
   // ---------------------------------------------------------------------
   // New sample
   // ---------------------------------------------------------------------
-  function newPatient() {
+  // keepSample: Reset — start the same blood group again from the beginning.
+  function newPatient(keepSample) {
     gen++;
     closeModal();
     if (drag && drag.ghost) drag.ghost.remove();
     drag = null;
     destroyAnims();
-    let patient;
-    do { patient = ORDER[Math.floor(Math.random() * ORDER.length)]; } while (ORDER.length > 1 && patient === S.patient);
+    let patient = keepSample && S.patient ? S.patient : null;
+    if (!patient) {
+      do { patient = ORDER[Math.floor(Math.random() * ORDER.length)]; } while (ORDER.length > 1 && patient === S.patient);
+    }
     S = {
       patient,
       blood: false, reagents: false, busy: false, phase: 0,
