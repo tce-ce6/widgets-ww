@@ -136,6 +136,9 @@ function draw() {
 
 function mousePressed() {
     if (showExample || sentenceComplete || gameFinished || !currentSentence) return;
+    // p5 listens on the whole window: ignore taps while the How to play tour is open.
+    const tour = document.getElementById('tour');
+    if (tour && tour.classList.contains('is-open')) return;
 
     for (let i = 0; i < wordButtons.length; i++) {
         const w = wordButtons[i];

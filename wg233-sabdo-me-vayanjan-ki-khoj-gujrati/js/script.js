@@ -21,7 +21,6 @@ const TOTAL_WORDS = ROUNDS.reduce((sum, round) => sum + Object.values(round).fla
 
 const HINT_WRONG = 'આ શબ્દ ધ્યાનથી જુઓ — તેમાં કયો જોડાક્ષર છુપાયેલો છે?';
 const HINT_SHOW_ANSWER = 'સાચી ગોઠવણ જુઓ. પછીના રાઉન્ડમાં જાતે પ્રયત્ન કરો.';
-const HINT_HELP = 'શરૂ કરવા માટે ઉપરના શબ્દ પર આંગળી કે માઉસ દબાવી રાખો અને નીચે સાચા ખાના સુધી ખેંચી જાઓ.';
 
 // Layout in XD pixels
 const SVG_NS = 'http://www.w3.org/2000/svg';
@@ -52,7 +51,6 @@ const progressFill = document.getElementById('progress-fill');
 const showBtn = document.getElementById('show-btn');
 const nextBtn = document.getElementById('next-btn');
 const replayBtn = document.getElementById('replay-btn');
-const helpBtn = document.getElementById('help-btn');
 const burstLayer = document.getElementById('burst-layer');
 
 let roundIndex = 0;
@@ -400,13 +398,6 @@ function restart() {
   loadRound();
 }
 
-function toggleHelp() {
-  if (hintKind === 'help') {
-    hideHint();
-  } else {
-    showHint(HINT_HELP, 'help');
-  }
-}
 
 function onButton(button, action) {
   button.addEventListener('click', () => {
@@ -429,7 +420,7 @@ boards.forEach((board) => {
 onButton(showBtn, showAnswer);
 onButton(nextBtn, nextRound);
 onButton(replayBtn, restart);
-onButton(helpBtn, toggleHelp);
+// The મદદ button opens the How to play tour (js/how-to-play.js).
 
 // Cloud text is fitted by measuring it, so the Gujarati font must be ready first.
 Promise.all([
