@@ -1,0 +1,513 @@
+/* ==========================================================================
+   wg220 — Access to Justice: PIL
+
+   Everything sits on one 1920x1080 SVG stage (#stage) that scales to fit
+   the page. HTML inside its <foreignObject>s uses 1 CSS px = 1 SVG unit, so
+   the px sizes below are in stage units. Colours and type: layout.svg.
+   ========================================================================== */
+
+:root {
+  --u: min(calc(100vw / 1920), calc(100vh / 1080));
+  --cyan: #7ee0e7;
+  --purple: #8244c6;   /* title bar */
+  --pink: #e01294;     /* main buttons */
+  --blue: #4f4fbe;     /* Try another combination */
+  --green-btn: #1f8d0e;/* Back to start */
+  --red: #ff0000;      /* stat */
+  --fb-red: #b70202;   /* feedback */
+  --orange: #f07f00;   /* result headings */
+  --ink: #181818;
+  --opt-yellow: #fffb92;
+  --opt-yellow-edge: #be7515;
+  --opt-green: #a5ff92;
+  --opt-green-edge: #135d03;
+  --pick: #8244c6;     /* chosen option outline */
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Page shell (same structure as the other widgets)                        */
+/* ---------------------------------------------------------------------- */
+
+html,
+body {
+  overflow: hidden;
+}
+
+#pil-widget {
+  margin: 0;
+}
+
+#pil-widget .container {
+  border: none;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+  user-select: none;
+}
+
+#pil-widget .mainContainerOuter {
+  position: relative;
+  flex: 0 0 auto;
+  width: calc(1920 * var(--u));
+  height: calc(1080 * var(--u));
+  min-height: 0;
+  background: url("../assets/bg.svg") center / cover no-repeat;
+}
+
+#pil-widget .wdgetTitle {
+  position: absolute;
+  z-index: 3;
+  left: 0;
+  top: 0;
+  width: 100%;
+  pointer-events: none;
+}
+
+#pil-widget .wdgetTitle h2 {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(530 * var(--u));
+  height: calc(90 * var(--u));
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(45 * var(--u));
+  font-weight: 500;
+  line-height: 1;
+  color: #fff;
+  white-space: nowrap;
+  background: var(--purple);
+  border-radius: 0 0 calc(20 * var(--u)) calc(20 * var(--u));
+}
+
+#pil-widget .versionText {
+  position: absolute;
+  right: calc(20 * var(--u));
+  top: calc(8 * var(--u));
+  font-size: calc(16 * var(--u));
+  line-height: 1.2;
+  color: rgb(0 0 0 / 30%);
+}
+
+#pil-widget .svg-container {
+  position: absolute;
+  inset: 0;
+}
+
+#pil-widget #stage {
+  display: block;
+  width: 100%;
+  height: 100%;
+  font-family: "Roboto", sans-serif;
+}
+
+/* global_style.css sets p { font-size: 16px; color: #494949 }: undo inside the stage */
+:where(#stage) p {
+  margin: 0;
+  font-size: inherit;
+  color: inherit;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Screens                                                                 */
+/* ---------------------------------------------------------------------- */
+
+.screen {
+  display: none;
+}
+
+.screen.active {
+  display: inline;
+}
+
+.itext {
+  font-size: 28px;
+  font-style: italic;
+  text-anchor: middle;
+  fill: #000;
+}
+
+.itext-bold {
+  font-weight: 700;
+}
+
+.para {
+  font-size: 32px;
+  font-style: italic;
+  line-height: 38px;
+  color: #000;
+}
+
+.stat-num {
+  font-size: 45px;
+  font-weight: 500;
+  text-anchor: middle;
+  fill: var(--red);
+}
+
+.stat-label {
+  font-size: 30px;
+  font-style: italic;
+  text-anchor: middle;
+  fill: var(--red);
+}
+
+/* Cards (drawn by script.js) */
+.card-sheet {
+  fill: #f6fff6;
+}
+
+.card-tape {
+  fill: #ffe85c;
+  opacity: .54;
+}
+
+.card-dot {
+  fill: var(--cyan);
+}
+
+/* Buttons (pill shape and label placed by script.js from data-btn) */
+.svg-btn {
+  cursor: pointer;
+  transition: opacity .2s;
+}
+
+.svg-btn rect {
+  transition: filter .15s;
+}
+
+.svg-btn:hover rect {
+  filter: brightness(1.1);
+}
+
+.svg-btn.pink rect { fill: var(--pink); }
+.svg-btn.blue rect { fill: var(--blue); }
+.svg-btn.green rect { fill: var(--green-btn); }
+
+.svg-btn text {
+  font-size: 35px;
+  font-weight: 500;
+  fill: #fff;
+  text-anchor: middle;
+  pointer-events: none;
+}
+
+.svg-btn.is-disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+
+.svg-btn:focus,
+.option:focus,
+.field:focus,
+.statement:focus {
+  outline: none;
+}
+
+.svg-btn:focus-visible rect,
+.option:focus-visible .opt-bg,
+.field:focus-visible .field-bg {
+  stroke: var(--pick);
+  stroke-width: 5;
+}
+
+/* Lottie */
+.lottie-box {
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.lottie-box svg {
+  display: block;
+}
+
+#confetti-layer {
+  pointer-events: none;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Screen 2: options                                                       */
+/* ---------------------------------------------------------------------- */
+
+.option {
+  cursor: pointer;
+}
+
+.opt-bg {
+  fill: var(--opt-yellow);
+  stroke: var(--opt-yellow-edge);
+  stroke-width: 2;
+}
+
+.opt-text {
+  font-size: 30px;
+  font-weight: 700;
+  fill: var(--ink);
+  pointer-events: none;
+}
+
+.opt-x {
+  display: none;
+  font-size: 34px;
+  font-weight: 700;
+  fill: #e00000;
+  text-anchor: middle;
+  pointer-events: none;
+}
+
+.option.inactive {
+  opacity: .45;
+  cursor: default;
+}
+
+.option.active .opt-bg {
+  stroke: var(--pick);
+  stroke-width: 4;
+  animation: opt-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes opt-pulse {
+  50% { stroke-width: 7; }
+}
+
+.option.explored {
+  cursor: default;
+}
+
+.option.explored .opt-x {
+  display: inline;
+}
+
+.option.playing .opt-bg {
+  stroke: var(--pick);
+  stroke-width: 4;
+}
+
+.feedback {
+  font-size: 28px;
+  font-style: italic;
+  line-height: 34px;
+  color: var(--fb-red);
+}
+
+.done-line {
+  font-size: 30px;
+  font-weight: 700;
+  text-anchor: middle;
+  fill: #000;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Screen 3: PIL arrives                                                   */
+/* ---------------------------------------------------------------------- */
+
+.pil-pop {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+}
+
+.pil-pop.go {
+  animation: pil-in 1s cubic-bezier(.2, 1.6, .4, 1) both;
+}
+
+@keyframes pil-in {
+  from { transform: scale(.2); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* ---------------------------------------------------------------------- */
+/* Screen 4                                                                */
+/* ---------------------------------------------------------------------- */
+
+.s4-text {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.strong {
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+/* ---------------------------------------------------------------------- */
+/* Screen 5: petition + results                                            */
+/* ---------------------------------------------------------------------- */
+
+.counter {
+  font-size: 45px;
+  font-weight: 500;
+  text-anchor: middle;
+  fill: #000;
+}
+
+.counter-label {
+  font-size: 30px;
+  font-style: italic;
+  text-anchor: middle;
+  fill: #000;
+}
+
+.cell-tick {
+  animation: cell-pop .35s ease-out both;
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+}
+
+@keyframes cell-pop {
+  from { transform: scale(.3); }
+  to { transform: scale(1); }
+}
+
+.field-q {
+  font-size: 32px;
+  font-weight: 700;
+  fill: #000;
+}
+
+.field {
+  cursor: pointer;
+}
+
+.field-bg {
+  stroke-width: 2;
+  transition: stroke-width .15s;
+}
+
+.field-bg.yellow {
+  fill: var(--opt-yellow);
+  stroke: var(--opt-yellow-edge);
+}
+
+.field-bg.green {
+  fill: var(--opt-green);
+  stroke: var(--opt-green-edge);
+}
+
+.field:hover .field-bg {
+  stroke-width: 4;
+}
+
+.field.selected .field-bg {
+  stroke: var(--pick);
+  stroke-width: 7;
+}
+
+.field-text {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 36px;
+  color: var(--ink);
+  pointer-events: none;
+}
+
+.result {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.r-head {
+  font-size: 32px;
+  font-weight: 700;
+  color: #000;
+  margin-top: 10px !important;
+}
+
+.r-head.orange {
+  color: var(--orange);
+}
+
+.r-text {
+  font-size: 30px;
+  font-style: italic;
+  line-height: 37px;
+  color: #000;
+}
+
+.r-extra {
+  margin-top: 12px !important;
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 37px;
+  color: var(--opt-green-edge);
+}
+
+/* ---------------------------------------------------------------------- */
+/* Screen 6: statements                                                    */
+/* ---------------------------------------------------------------------- */
+
+.statement {
+  cursor: pointer;
+}
+
+.statement .st-bg {
+  fill: var(--opt-yellow);
+  stroke: var(--opt-yellow-edge);
+  stroke-width: 2;
+}
+
+.statement:hover .st-box,
+.statement:focus-visible .st-box {
+  stroke: var(--pick);
+  stroke-width: 4;
+}
+
+.statement .st-box {
+  fill: #fff;
+  stroke: var(--opt-yellow-edge);
+  stroke-width: 3;
+}
+
+.statement.answered {
+  cursor: default;
+}
+
+.statement .st-text {
+  font-size: 28px;
+  line-height: 34px;
+  color: var(--ink);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}

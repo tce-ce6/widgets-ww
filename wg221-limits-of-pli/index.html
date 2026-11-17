@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Limits of PIL</title>
+
+  <link rel="stylesheet" href="./css/global_style.css">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body id="pil-widget">
+  <div class="container">
+    <div class="mainContainerOuter">
+      <div class="wdgetTitle">
+        <h2>Limits of PIL</h2>
+        <span id="versionId" class="versionText">b4_wg221_261117_01</span>
+      </div>
+      <div class="svg-container" id="svg-container">
+        <!-- Stage: 1920 x 1080, same coordinates as reference/en_ps_08_wg221_V1.xd.
+             Case screens: full-bleed visual (Lottie) on the left, black slanted panel on the right.
+             script.js shows one .screen at a time and fills the panel from CASES. -->
+        <svg id="stage" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+
+          <!-- ============ Intro (XD artboard 1) ============ -->
+          <g class="screen" id="intro">
+            <rect x="0" y="385" width="1920" height="695" fill="#2f8db2" />
+            <path d="M0 0H1920V470L957.7 770L0 470Z" fill="#000" />
+            <foreignObject x="380" y="190" width="1160" height="300">
+              <div xmlns="http://www.w3.org/1999/xhtml" class="intro-text">
+                <p class="itext">Read the paragraph. Then choose a case to explore.</p>
+                <p class="intro-para">Public Interest Litigation gave every citizen the power to approach the Supreme Court or a High Court for a public cause. It has been used to protect rivers, ensure food reaches the hungry, and hold governments accountable. But PIL is not unlimited. What a court can order is not always what a problem truly needs. Explore two cases and discover where those limits lie.</p>
+              </div>
+            </foreignObject>
+            <g class="case-card" data-case="river" role="button" tabindex="0" aria-label="The Poisoned River" transform="translate(402 503)">
+              <rect class="cc-frame" x="-6" y="-6" width="543.8" height="316.3" rx="16" />
+              <image href="./assets/images/vis_01_thumb.svg" width="531.8" height="304.26" />
+              <rect class="cc-shade" width="531.8" height="304.26" rx="10" />
+              <g class="cc-tick" transform="translate(478 52)">
+                <circle r="34" /><path d="M-16 1L-5 13L17 -12" />
+              </g>
+              <text class="cc-title" x="265.9" y="370">The Poisoned River</text>
+            </g>
+            <g class="case-card" data-case="food" role="button" tabindex="0" aria-label="The Right to Food" transform="translate(982 503)">
+              <rect class="cc-frame" x="-6" y="-6" width="543.8" height="316.3" rx="16" />
+              <image href="./assets/images/vis_02_thumb.svg" width="531.8" height="304.26" />
+              <rect class="cc-shade" width="531.8" height="304.26" rx="10" />
+              <g class="cc-tick" transform="translate(478 52)">
+                <circle r="34" /><path d="M-16 1L-5 13L17 -12" />
+              </g>
+              <text class="cc-title" x="265.9" y="370">The Right to Food</text>
+            </g>
+          </g>
+
+          <!-- ============ Case screens (XD artboards 18-23, 26-35) ============ -->
+          <g class="screen" id="case">
+            <!-- Left visual: loop Lottie while reading, op_01 / op_02 for each consequence -->
+            <foreignObject x="0" y="0" width="1920" height="1080">
+              <div xmlns="http://www.w3.org/1999/xhtml" class="lottie-box" id="visual"></div>
+            </foreignObject>
+            <path class="panel" d="M1206 0H1920V1080H1206L1137.6 523.6Z" />
+
+            <!-- Right panel -->
+            <foreignObject x="1196" y="60" width="700" height="1010">
+              <div xmlns="http://www.w3.org/1999/xhtml" class="pane">
+
+                <!-- Problem -->
+                <section class="step" id="step-problem">
+                  <p class="itext">Read the case. Tap to continue when ready.</p>
+                  <p class="tag" id="p-tag"></p>
+                  <div class="stats" id="p-stats"></div>
+                  <p class="context" id="p-context"></p>
+                  <button class="btn pink" id="p-next" type="button"></button>
+                </section>
+
+                <!-- Petition -->
+                <section class="step" id="step-petition">
+                  <p class="itext" id="t-itext"></p>
+                  <p class="label">The Petition</p>
+                  <button class="petition" id="opt-A" data-opt="A" type="button"><span class="pt-text"></span><span class="pt-tick" aria-hidden="true"></span></button>
+                  <button class="petition" id="opt-B" data-opt="B" type="button"><span class="pt-text"></span><span class="pt-tick" aria-hidden="true"></span></button>
+                  <div class="court hidden" id="court" aria-live="polite">
+                    <p class="label teal center">Court order</p>
+                    <p class="order" id="order"></p>
+                    <button class="btn pink" id="consequence-btn" type="button"></button>
+                    <p class="consequence hidden" id="consequence"></p>
+                  </div>
+                  <button class="btn pink hidden" id="ponder-btn" type="button">Pause and Ponder</button>
+                </section>
+
+                <!-- Pause and Ponder -->
+                <section class="step" id="step-ponder">
+                  <p class="itext">Tap the question. Read what it reveals about PIL.</p>
+                  <p class="label">Pause and Ponder</p>
+                  <button class="question" id="question" type="button"></button>
+                  <div class="insight hidden" id="insight" aria-live="polite">
+                    <p class="label teal center">Insight</p>
+                    <p class="insight-text" id="insight-text"></p>
+                  </div>
+                  <button class="btn blue hidden" id="end-btn" type="button"></button>
+                </section>
+
+              </div>
+            </foreignObject>
+          </g>
+
+          <!-- ============ Reinforcement (XD artboard 24) ============ -->
+          <g class="screen" id="reinforce">
+            <rect width="1920" height="1080" fill="#7ee0e7" />
+            <text class="itext-dark" x="960" y="146">Read each statement. Tap the box next to it to see if it is correct.</text>
+            <g id="statements"></g>
+            <g class="svg-btn blue hidden" id="restart-btn" role="button" tabindex="0" data-btn="801 931 319 93">
+              <text>Back to start</text>
+            </g>
+          </g>
+
+          <!-- Help (XD: yellow pill, bottom left) -->
+          <g id="help-btn" class="help-btn" role="button" tabindex="0" aria-label="Help: how to use this activity" transform="translate(29 985)">
+            <rect class="help-pill" width="176" height="70" rx="35" />
+            <circle cx="35" cy="35" r="27" fill="#d96f05" />
+            <text class="help-q" x="35" y="47">?</text>
+            <text class="help-label" x="80" y="48">Help</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- How to use tour (opened by the Help button) -->
+  <div id="tour" class="tour" aria-hidden="true">
+    <div id="tourSpot" class="tour-spot"></div>
+    <div id="tourDemo" class="tour-demo"></div>
+    <div id="tourCard" class="tour-card" role="dialog" aria-modal="true" aria-labelledby="tourTitle">
+      <button id="tourSkip" class="tour-skip" type="button" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div id="tourCount" class="tour-count"></div>
+      <h2 id="tourTitle"></h2>
+      <p id="tourText"></p>
+      <div class="tour-nav">
+        <div id="tourDots" class="tour-dots"></div>
+        <div class="tour-btns">
+          <button id="tourBack" class="tour-btn tour-btn--ghost" type="button">Back</button>
+          <button id="tourNext" class="tour-btn" type="button">Next</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p id="sr" class="sr-only" aria-live="polite"></p>
+
+  <script src="./js/lottie.js"></script>
+  <script src="./js/lottie-data.js"></script>
+  <script src="./js/script.js"></script>
+  <script src="./js/how-to-play.js"></script>
+</body>
+
+</html>

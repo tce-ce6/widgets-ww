@@ -1,0 +1,963 @@
+/* ==========================================================================
+   wg221 — Limits of PIL
+
+   Everything sits on one 1920x1080 SVG stage (#stage) that scales to fit
+   the page. HTML inside its <foreignObject>s uses 1 CSS px = 1 SVG unit, so
+   the px sizes below are in stage units. Colours, type and positions come
+   from reference/en_ps_08_wg221_V1.xd.
+   ========================================================================== */
+
+:root {
+  --u: min(calc(100vw / 1920), calc(100vh / 1080));
+  --magenta: #a0097c;   /* title bar */
+  --pink: #e01294;      /* main buttons */
+  --blue: #2853cc;      /* Back to Cases / start */
+  --teal: #49d6c2;      /* I-text, Court order, Insight */
+  --sky: #c2ebff;       /* section labels, card titles */
+  --body: #cdc8c8;      /* body text on black */
+  --ink: #181818;
+  --opt-yellow: #fffb92;
+  --opt-yellow-edge: #be7515;
+  --opt-green: #c1ffbd;
+  --opt-green-edge: #11730a;
+  --stat: #acd0ff;
+  --wrong: #d3141b;
+  --focus: #fdcd02;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Page shell (same structure as the other widgets)                        */
+/* ---------------------------------------------------------------------- */
+
+html,
+body {
+  overflow: hidden;
+}
+
+#pil-widget {
+  margin: 0;
+}
+
+#pil-widget .container {
+  border: none;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+  user-select: none;
+}
+
+#pil-widget .mainContainerOuter {
+  position: relative;
+  flex: 0 0 auto;
+  width: calc(1920 * var(--u));
+  height: calc(1080 * var(--u));
+  min-height: 0;
+  overflow: hidden;
+  background: url("../assets/bg.svg") center / cover no-repeat;
+}
+
+#pil-widget .wdgetTitle {
+  position: absolute;
+  z-index: 3;
+  left: 0;
+  top: 0;
+  width: 100%;
+  pointer-events: none;
+}
+
+#pil-widget .wdgetTitle h2 {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%); /* global_style.css also sets this, so centre on 50% */
+  width: calc(351 * var(--u));
+  height: calc(90 * var(--u));
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Roboto", sans-serif;
+  font-size: calc(45 * var(--u));
+  font-weight: 500;
+  line-height: 1;
+  color: #fff;
+  white-space: nowrap;
+  background: var(--magenta);
+  border-radius: 0 0 calc(25 * var(--u)) calc(25 * var(--u));
+}
+
+#pil-widget .versionText {
+  position: absolute;
+  right: calc(20 * var(--u));
+  top: calc(8 * var(--u));
+  font-size: calc(16 * var(--u));
+  line-height: 1.2;
+  color: rgb(255 255 255 / 35%);
+}
+
+#pil-widget .svg-container {
+  position: absolute;
+  inset: 0;
+}
+
+#pil-widget #stage {
+  display: block;
+  width: 100%;
+  height: 100%;
+  font-family: "Roboto", sans-serif;
+}
+
+/* global_style.css sets p { font-size: 16px; color: #494949 }: undo inside the stage */
+:where(#stage) p {
+  margin: 0;
+  font-size: inherit;
+  color: inherit;
+}
+
+:where(#stage) button {
+  font-family: inherit;
+  margin: 0;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Screens                                                                 */
+/* ---------------------------------------------------------------------- */
+
+.screen {
+  display: none;
+}
+
+.screen.active {
+  display: inline;
+}
+
+.itext {
+  font-size: 26px;
+  font-style: italic;
+  line-height: 32px;
+  text-align: center;
+  color: var(--teal);
+}
+
+.label {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 38px;
+  color: var(--sky);
+}
+
+.label.teal {
+  color: var(--teal);
+}
+
+.center {
+  text-align: center;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Intro                                                                   */
+/* ---------------------------------------------------------------------- */
+
+.intro-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+}
+
+.intro-text .itext {
+  font-size: 28px;
+}
+
+.intro-para {
+  font-size: 32px;
+  font-style: italic;
+  line-height: 40px;
+  text-align: center;
+  color: var(--body);
+}
+
+.case-card {
+  cursor: pointer;
+}
+
+.case-card:focus {
+  outline: none;
+}
+
+.cc-frame {
+  fill: #2b6072;
+  transition: fill .2s;
+}
+
+.case-card:hover .cc-frame,
+.case-card:focus-visible .cc-frame {
+  fill: var(--focus);
+}
+
+.cc-shade {
+  fill: #000;
+  opacity: 0;
+  transition: opacity .2s;
+  pointer-events: none;
+}
+
+.cc-title {
+  font-size: 40px;
+  font-weight: 700;
+  text-anchor: middle;
+  fill: var(--sky);
+}
+
+.cc-tick {
+  display: none;
+}
+
+.cc-tick circle {
+  fill: var(--opt-green-edge);
+  stroke: #fff;
+  stroke-width: 4;
+}
+
+.cc-tick path {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.case-card.explored {
+  cursor: default;
+}
+
+.case-card.explored .cc-frame {
+  fill: var(--opt-green-edge);
+}
+
+.case-card.explored .cc-shade {
+  opacity: .35;
+}
+
+.case-card.explored .cc-tick {
+  display: inline;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Case screens: visual + black panel                                      */
+/* ---------------------------------------------------------------------- */
+
+.lottie-box {
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.lottie-box svg {
+  display: block;
+}
+
+.panel {
+  fill: #000;
+}
+
+.pane {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 0 28px 0 16px;
+}
+
+.step {
+  display: none;
+  height: 100%;
+  flex-direction: column;
+}
+
+.step.active {
+  display: flex;
+}
+
+/* Problem */
+#step-problem {
+  justify-content: center;
+  gap: 30px;
+  padding-bottom: 40px;
+}
+
+.tag {
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  color: var(--sky);
+}
+
+.tag:empty {
+  display: none;
+}
+
+.stats {
+  display: flex;
+  justify-content: center;
+  gap: 33px;
+}
+
+.stat {
+  width: 192px;
+  min-height: 201px;
+  padding: 18px 12px;
+  background: var(--stat);
+  border: 2px solid var(--opt-yellow-edge);
+  border-radius: 18px;
+  color: var(--ink);
+  text-align: center;
+}
+
+.stats.two .stat {
+  width: 231px;
+}
+
+.stat-num {
+  font-size: 35px;
+  font-weight: 700;
+  line-height: 42px;
+}
+
+.stat-label {
+  margin-top: 6px !important;
+  font-size: 24px;
+  line-height: 29px;
+}
+
+.context {
+  font-size: 28px;
+  line-height: 37px;
+  color: var(--body);
+}
+
+/* Buttons (HTML in the panel) */
+.btn {
+  align-self: center;
+  min-height: 93px;
+  max-width: 600px;
+  padding: 10px 44px;
+  border: none;
+  border-radius: 47px;
+  font-size: 32px;
+  font-weight: 500;
+  line-height: 38px;
+  color: #fff;
+  cursor: pointer;
+  transition: filter .15s, transform .15s;
+}
+
+.btn:hover {
+  filter: brightness(1.12);
+}
+
+.btn:active {
+  transform: scale(.97);
+}
+
+.btn.pink { background: var(--pink); }
+.btn.blue { background: var(--blue); }
+
+.btn:focus {
+  outline: none;
+}
+
+.btn:focus-visible {
+  outline: 4px solid var(--focus);
+  outline-offset: 4px;
+}
+
+.btn.appear {
+  animation: appear .45s ease-out both;
+}
+
+@keyframes appear {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Petition */
+#step-petition {
+  padding-top: 28px;
+}
+
+#step-petition .label {
+  margin: 30px 0 18px !important;
+}
+
+.petition {
+  position: relative;
+  width: 656px;
+  min-height: 111px;
+  margin-bottom: 24px;
+  padding: 12px 70px 12px 28px;
+  display: flex;
+  align-items: center;
+  text-align: left;
+  background: var(--opt-yellow);
+  border: 2px solid var(--opt-yellow-edge);
+  border-radius: 18px;
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 37px;
+  color: var(--ink);
+  cursor: pointer;
+  transition: opacity .25s, background .25s, border-color .25s;
+}
+
+.petition:focus {
+  outline: none;
+}
+
+.petition:focus-visible {
+  outline: 4px solid var(--focus);
+  outline-offset: 3px;
+}
+
+.petition.active {
+  animation: blink 1.2s ease-in-out infinite;
+}
+
+@keyframes blink {
+  50% { box-shadow: 0 0 0 6px rgb(253 205 2 / 85%); }
+}
+
+.petition.inactive {
+  opacity: .7;
+  cursor: not-allowed;
+}
+
+.petition.selected {
+  border-color: var(--pink);
+  box-shadow: 0 0 0 4px var(--pink);
+  cursor: default;
+}
+
+.petition.explored {
+  background: var(--opt-green);
+  border-color: var(--opt-green-edge);
+  cursor: default;
+}
+
+.pt-tick {
+  position: absolute;
+  right: 22px;
+  bottom: 14px;
+  width: 36px;
+  height: 36px;
+  display: none;
+  background: no-repeat center / contain url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'%3E%3Cpath d='M3 20L13 32L33 4' fill='none' stroke='%2311a00a' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+.petition.explored .pt-tick {
+  display: block;
+}
+
+.court {
+  display: flex;
+  flex-direction: column;
+  margin-top: 12px;
+  animation: appear .45s ease-out both;
+}
+
+.order {
+  margin: 10px 0 22px 14px !important;
+  font-size: 32px;
+  line-height: 38px;
+  color: var(--body);
+}
+
+.court .btn {
+  margin-top: 4px;
+}
+
+.consequence {
+  margin: 6px 0 0 4px !important;
+  font-size: 32px;
+  font-weight: 700;
+  font-style: italic;
+  line-height: 40px;
+  color: #f9f9f9;
+  animation: appear .5s ease-out both;
+}
+
+#ponder-btn {
+  margin-top: 22px;
+}
+
+/* Pause and Ponder */
+#step-ponder {
+  padding-top: 28px;
+}
+
+#step-ponder .itext {
+  margin-bottom: 40px !important;
+}
+
+#step-ponder > .label {
+  margin-bottom: 26px !important;
+}
+
+.question {
+  width: 648px;
+  min-height: 196px;
+  padding: 20px 28px;
+  text-align: left;
+  background: var(--opt-yellow);
+  border: 2px solid var(--opt-yellow-edge);
+  border-radius: 18px;
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 38px;
+  color: var(--ink);
+  cursor: pointer;
+  animation: blink 1.2s ease-in-out infinite;
+}
+
+.question:focus {
+  outline: none;
+}
+
+.question:focus-visible {
+  outline: 4px solid var(--focus);
+  outline-offset: 3px;
+}
+
+.question.tapped {
+  cursor: default;
+  animation: none;
+  background: var(--opt-green);
+  border-color: var(--opt-green-edge);
+}
+
+.insight {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  margin: 40px 0 36px;
+  animation: appear .5s ease-out both;
+}
+
+.insight-text {
+  font-size: 32px;
+  font-weight: 700;
+  font-style: italic;
+  line-height: 40px;
+  color: #f9f9f9;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Reinforcement                                                           */
+/* ---------------------------------------------------------------------- */
+
+.itext-dark {
+  font-size: 28px;
+  font-style: italic;
+  text-anchor: middle;
+  fill: #000;
+}
+
+.statement {
+  cursor: pointer;
+}
+
+.statement:focus {
+  outline: none;
+}
+
+.st-bg {
+  fill: var(--opt-yellow);
+  stroke: var(--opt-yellow-edge);
+  stroke-width: 2;
+  transition: fill .25s, stroke .25s;
+}
+
+.st-box {
+  fill: #fff;
+  stroke: var(--opt-yellow-edge);
+  stroke-width: 3;
+  transition: stroke-width .15s;
+}
+
+.statement:hover .st-box,
+.statement:focus-visible .st-box {
+  stroke: var(--pink);
+  stroke-width: 5;
+}
+
+.st-text {
+  font-size: 28px;
+  fill: var(--ink);
+  pointer-events: none;
+}
+
+.st-mark {
+  display: none;
+  fill: none;
+  stroke-width: 7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.statement.answered {
+  cursor: default;
+}
+
+.statement.answered .st-box {
+  stroke-width: 3;
+}
+
+.statement.correct .st-bg {
+  fill: var(--opt-green);
+  stroke: var(--opt-green-edge);
+}
+
+.statement.correct .st-box {
+  stroke: var(--opt-green-edge);
+}
+
+.statement.correct .st-mark.tick {
+  display: inline;
+  stroke: #11a00a;
+}
+
+.statement.incorrect .st-bg {
+  fill: #ffd6d6;
+  stroke: var(--wrong);
+}
+
+.statement.incorrect .st-box {
+  stroke: var(--wrong);
+}
+
+.statement.incorrect .st-mark.cross {
+  display: inline;
+  stroke: var(--wrong);
+}
+
+/* SVG buttons (reinforcement) */
+.svg-btn {
+  cursor: pointer;
+}
+
+.svg-btn rect {
+  transition: filter .15s;
+}
+
+.svg-btn:hover rect {
+  filter: brightness(1.12);
+}
+
+.svg-btn.blue rect { fill: var(--blue); }
+
+.svg-btn text {
+  font-size: 35px;
+  font-weight: 500;
+  fill: #fff;
+  text-anchor: middle;
+  pointer-events: none;
+}
+
+.svg-btn:focus {
+  outline: none;
+}
+
+.svg-btn:focus-visible rect {
+  stroke: var(--focus);
+  stroke-width: 5;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Help button + How to use tour (same pattern as wg202 / wg231)           */
+/* ---------------------------------------------------------------------- */
+
+.help-btn {
+  cursor: pointer;
+}
+
+.help-btn:focus {
+  outline: none;
+}
+
+.help-pill {
+  fill: #fdcd02;
+  transition: filter .15s;
+}
+
+.help-btn:hover .help-pill {
+  filter: brightness(1.08);
+}
+
+.help-btn:focus-visible .help-pill {
+  stroke: #fff;
+  stroke-width: 4;
+}
+
+.help-q {
+  font-size: 36px;
+  font-weight: 700;
+  text-anchor: middle;
+  fill: #fdcd02;
+}
+
+.help-label {
+  font-size: 35px;
+  font-weight: 500;
+  fill: #000;
+}
+
+.tour {
+  --tour-pink: #e01294;
+  --tour-blue: #2853cc;
+  --tour-amber: #fdcd02;
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: none;
+  font-family: "Roboto", sans-serif;
+}
+
+.tour.is-open {
+  display: block;
+  animation: tour-in .3s ease both;
+}
+
+@keyframes tour-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.tour-spot {
+  position: fixed;
+  border-radius: 14px;
+  pointer-events: none;
+  box-shadow: 0 0 0 200vmax rgba(10, 20, 40, .75);
+  outline: 3px solid var(--tour-amber);
+  outline-offset: 3px;
+  transition: left .45s cubic-bezier(.4, 0, .2, 1), top .45s cubic-bezier(.4, 0, .2, 1),
+              width .45s cubic-bezier(.4, 0, .2, 1), height .45s cubic-bezier(.4, 0, .2, 1);
+}
+
+.tour-spot[hidden] {
+  display: none;
+}
+
+.tour.no-anim .tour-spot,
+.tour.no-anim .tour-card {
+  transition: none;
+}
+
+.tour-demo {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.tour-card {
+  position: fixed;
+  z-index: 3;
+  width: min(max(320px, calc(640 * var(--u))), calc(100vw - 24px));
+  background: #f8ffcd;
+  color: #1b1b1b;
+  border: 3px solid var(--tour-pink);
+  border-radius: 18px;
+  padding: max(14px, calc(26 * var(--u))) max(18px, calc(32 * var(--u))) max(12px, calc(22 * var(--u)));
+  box-shadow: 0 18px 40px rgba(0, 0, 0, .5);
+  transition: left .45s cubic-bezier(.4, 0, .2, 1), top .45s cubic-bezier(.4, 0, .2, 1);
+}
+
+.tour-count {
+  font-size: max(12px, calc(22 * var(--u)));
+  font-weight: 700;
+  color: var(--tour-pink);
+}
+
+.tour-card h2 {
+  margin: 4px 0 6px;
+  font-size: max(20px, calc(40 * var(--u)));
+  line-height: 1.25;
+  color: var(--tour-blue);
+}
+
+.tour-card p {
+  margin: 0;
+  font-size: max(15px, calc(30 * var(--u)));
+  line-height: 1.5;
+  color: #1b1b1b;
+}
+
+.tour-card p b {
+  color: var(--tour-pink);
+}
+
+.tour-card.enter .tour-count,
+.tour-card.enter h2,
+.tour-card.enter p {
+  animation: tour-rise .45s ease both;
+}
+
+.tour-card.enter h2 { animation-delay: .07s; }
+.tour-card.enter p { animation-delay: .15s; }
+
+@keyframes tour-rise {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+
+.tour-skip {
+  position: absolute;
+  top: -12px;
+  right: -12px;
+  width: max(36px, calc(56 * var(--u)));
+  height: max(36px, calc(56 * var(--u)));
+  padding: 0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--tour-pink);
+  color: #fff;
+  border: 3px solid #fff;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, .4);
+  cursor: pointer;
+  font-size: max(24px, calc(38 * var(--u)));
+  line-height: 1;
+}
+
+.tour-skip span {
+  display: block;
+  margin-top: -2px;
+}
+
+.tour-skip:hover {
+  filter: brightness(1.12);
+}
+
+.tour-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: max(14px, calc(24 * var(--u)));
+  gap: 10px;
+}
+
+.tour-dots {
+  display: flex;
+  gap: 5px;
+}
+
+.tour-dots i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #c9c9a6;
+  transition: background .2s, width .2s;
+}
+
+.tour-dots i.on {
+  background: var(--tour-pink);
+  width: 20px;
+  border-radius: 4px;
+}
+
+.tour-btns {
+  display: flex;
+  gap: 8px;
+}
+
+.tour-btn {
+  font-family: inherit;
+  font-size: max(14px, calc(28 * var(--u)));
+  font-weight: 700;
+  padding: max(6px, calc(10 * var(--u))) max(14px, calc(26 * var(--u)));
+  border-radius: 999px;
+  cursor: pointer;
+  background: var(--tour-blue);
+  color: #fff;
+  border: 2px solid var(--tour-blue);
+}
+
+.tour-btn--ghost {
+  background: transparent;
+  color: var(--tour-blue);
+}
+
+.tour-btn[hidden] {
+  display: none;
+}
+
+.tour :focus-visible {
+  outline: 3px solid var(--tour-amber);
+  outline-offset: 2px;
+}
+
+.tour-hand {
+  position: fixed;
+  z-index: 5;
+  width: 0;
+  height: 0;
+}
+
+.tour-hand svg {
+  position: absolute;
+  left: -8px;
+  top: -4px;
+  filter: drop-shadow(0 3px 3px rgba(0, 0, 0, .45));
+  transition: transform .15s;
+}
+
+.tour-hand.is-press svg {
+  transform: scale(.85);
+}
+
+.tour-ripple {
+  position: fixed;
+  z-index: 4;
+  width: 14px;
+  height: 14px;
+  margin: -7px 0 0 -7px;
+  border-radius: 50%;
+  border: 3px solid var(--tour-amber);
+  animation: tour-ripple .7s ease-out forwards;
+}
+
+@keyframes tour-ripple {
+  to { transform: scale(4); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}
