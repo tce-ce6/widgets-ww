@@ -201,7 +201,7 @@
       "author": "tce-nitinc"
     },
     "wg216-blood-group": {
-      "updatedAt": "2026-11-16T10:59:33+05:30",
+      "updatedAt": "2026-11-17T11:19:23+05:30",
       "author": "tce-ashishg"
     },
     "wg218-ancient-china": {
@@ -217,7 +217,7 @@
       "author": "tce-nitinc"
     },
     "wg225-blood-circulation": {
-      "updatedAt": "2026-11-16T19:14:47+05:30",
+      "updatedAt": "2026-11-17T11:19:23+05:30",
       "author": "tce-ashishg"
     },
     "wg226-temple-architecture": {
@@ -282,6 +282,15 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-11-17T11:19:23+05:30",
+      "author": "tce-ashishg",
+      "message": "wg216 issue resolved",
+      "widgets": [
+        216,
+        225
+      ]
+    },
     {
       "date": "2026-11-17T10:44:28+05:30",
       "author": "tce-nitinc",
@@ -525,21 +534,6 @@
       "author": "tce-ashishg",
       "message": "wg212 & wg219 i-text corrected",
       "widgets": [
-        212,
-        219
-      ]
-    },
-    {
-      "date": "2026-11-11T18:20:02+05:30",
-      "author": "tce-ashishg",
-      "message": "widgets thumbnail updated",
-      "widgets": [
-        197,
-        198,
-        199,
-        200,
-        207,
-        208,
         212,
         219
       ]
