@@ -126,7 +126,6 @@ document.addEventListener('DOMContentLoaded', () => {
     index: 0, // position in this round's order
     order: PROBLEMS.map((_, i) => i), // the problems, reshuffled every time a round starts
     placed: {}, // tool key -> level it was placed in
-    selected: null, // tool picked by tapping, waiting for a box
     completed: new Set(), // problems whose six tools were all placed
     summaryPage: 0,
   };
@@ -141,7 +140,6 @@ document.addEventListener('DOMContentLoaded', () => {
       const box = el('div', `box box--${level.key}`);
       box.dataset.level = level.key;
       box.style.left = `${level.left}px`;
-      box.setAttribute('role', 'button');
       box.setAttribute('aria-label', `${level.title}. ${level.sub}. Drop tools here.`);
       box.appendChild(el('h4', 'box__title', level.title));
       box.appendChild(el('p', 'box__sub', level.sub));
@@ -154,12 +152,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       holder.appendChild(box);
       boxEls[level.key] = box;
-      box.addEventListener('click', () => {
-        if (!state.selected) return;
-        const key = state.selected;
-        clearSelection();
-        placeTool(key, level.key);
-      });
     });
   };
 
@@ -181,11 +173,6 @@ document.addEventListener('DOMContentLoaded', () => {
     $('feedback').classList.remove('is-shown');
   };
 
-  const clearSelection = () => {
-    state.selected = null;
-    Object.keys(chipEls).forEach((k) => chipEls[k].classList.remove('is-selected'));
-  };
-
   const currentProblem = () => PROBLEMS[state.order[state.index]];
 
   // A new random order of the problems for each round
@@ -201,7 +188,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const loadProblem = () => {
     const problem = currentProblem();
     state.placed = {};
-    clearSelection();
     clearFeedback();
     setNextEnabled(false);
     updateCounter();
@@ -216,32 +202,14 @@ document.addEventListener('DOMContentLoaded', () => {
       chip.dataset.tool = key;
       chip.style.top = `${TRAY_TOPS[i]}px`;
       chip.style.background = tool.color;
-      chip.tabIndex = 0;
-      chip.setAttribute('role', 'button');
-      chip.setAttribute('aria-label', `${tool.name}. ${tool.desc}. Drag into a box, or tap it and then tap a box.`);
+      chip.setAttribute('aria-label', `${tool.name}. ${tool.desc}. Drag into a box.`);
       chip.appendChild(iconImg(tool));
       chip.appendChild(el('span', 'chip__name', tool.name));
       chip.appendChild(el('span', 'chip__desc', tool.desc));
       tray.appendChild(chip);
       chipEls[key] = chip;
       chip.addEventListener('pointerdown', (e) => onChipDown(e, key));
-      chip.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          toggleSelected(key);
-        }
-      });
     });
-  };
-
-  const toggleSelected = (key) => {
-    if (state.placed[key]) return;
-    const was = state.selected === key;
-    clearSelection();
-    if (!was) {
-      state.selected = key;
-      chipEls[key].classList.add('is-selected');
-    }
   };
 
   const placeTool = (key, level) => {
@@ -277,7 +245,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  /* ---- drag with pointer events (mouse and touch); a press that barely moves is a tap ---- */
+  /* ---- drag with pointer events (mouse and touch); a press that barely moves does nothing ---- */
 
   const boxAt = (clientX, clientY) => {
     const hit = document.elementsFromPoint(clientX, clientY).find((n) => n.classList && n.classList.contains('box'));
@@ -307,7 +275,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const onMove = (ev) => {
       if (!ghost && Math.hypot(ev.clientX - startX, ev.clientY - startY) > DRAG_THRESHOLD) {
-        clearSelection();
         ghost = chip.cloneNode(true);
         ghost.classList.add('chip-ghost');
         stage.appendChild(ghost);
@@ -332,8 +299,6 @@ document.addEventListener('DOMContentLoaded', () => {
           const level = boxAt(ev.clientX, ev.clientY);
           if (level) placeTool(key, level);
         }
-      } else if (!cancelled) {
-        toggleSelected(key);
       }
     };
     const onUp = (ev) => finish(ev, false);
