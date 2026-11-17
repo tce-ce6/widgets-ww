@@ -97,7 +97,7 @@
       "author": "tce-ashishg"
     },
     "wg187-citizen-engagement": {
-      "updatedAt": "2026-11-17T10:44:28+05:30",
+      "updatedAt": "2026-11-17T14:50:50+05:30",
       "author": "tce-nitinc"
     },
     "wg188-feed-the-animals": {
@@ -216,6 +216,10 @@
       "updatedAt": "2026-10-19T10:58:01+05:30",
       "author": "tce-nitinc"
     },
+    "wg224-population-growth": {
+      "updatedAt": "2026-11-17T14:50:50+05:30",
+      "author": "tce-nitinc"
+    },
     "wg225-blood-circulation": {
       "updatedAt": "2026-11-17T11:19:23+05:30",
       "author": "tce-ashishg"
@@ -282,6 +286,15 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-11-17T14:50:50+05:30",
+      "author": "tce-nitinc",
+      "message": "added wg224 and 187",
+      "widgets": [
+        187,
+        224
+      ]
+    },
     {
       "date": "2026-11-17T14:43:07+05:30",
       "author": "tce-ashishg",
@@ -529,15 +542,6 @@
       "message": "resolved 243 bugs",
       "widgets": [
         243
-      ]
-    },
-    {
-      "date": "2026-11-12T15:46:33+05:30",
-      "author": "tce-ashishg",
-      "message": "wg212 & wg219 i-text corrected",
-      "widgets": [
-        207,
-        208
       ]
     }
   ]
