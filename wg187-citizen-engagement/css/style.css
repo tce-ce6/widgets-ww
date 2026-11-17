@@ -399,7 +399,6 @@ button:focus-visible {
   border: 1px solid var(--line);
   border-radius: 21px;
   text-align: center;
-  cursor: pointer;
   pointer-events: auto;
   transition: transform 0.2s, box-shadow 0.2s;
 }
@@ -586,11 +585,6 @@ button:focus-visible {
 .chip.is-placed {
   visibility: hidden;
   pointer-events: none;
-}
-
-.chip.is-selected {
-  outline: 5px solid #fff;
-  outline-offset: 2px;
 }
 
 .chip.is-dragging {
