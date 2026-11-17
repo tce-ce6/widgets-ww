@@ -97,7 +97,7 @@
       "author": "tce-ashishg"
     },
     "wg187-citizen-engagement": {
-      "updatedAt": "2026-11-17T14:50:50+05:30",
+      "updatedAt": "2026-11-17T15:44:46+05:30",
       "author": "tce-nitinc"
     },
     "wg188-feed-the-animals": {
@@ -286,6 +286,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-11-17T15:44:46+05:30",
+      "author": "tce-nitinc",
+      "message": "fixed the bugs form the wg187",
+      "widgets": [
+        187
+      ]
+    },
     {
       "date": "2026-11-17T15:31:45+05:30",
       "author": "tce-ashishg",
@@ -532,16 +540,6 @@
       "widgets": [
         247,
         248
-      ]
-    },
-    {
-      "date": "2026-11-13T12:02:13+05:30",
-      "author": "tce-nitinc",
-      "message": "resolved comments",
-      "widgets": [
-        210,
-        213,
-        214
       ]
     }
   ]
