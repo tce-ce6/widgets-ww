@@ -1388,7 +1388,7 @@
   </defs>
           <!-- Intro (layout.svg "Blood_travels…") -->
           <text class="intro-text" x="960" y="133" text-anchor="middle">Blood travels through the body in a continuous pathway.</text>
-          <text class="intro-text" x="960" y="165" text-anchor="middle">Place the labels to complete the path and watch the blood flow!</text>
+          <text class="intro-text" x="960" y="165" text-anchor="middle">Place the flags to complete the path and watch the blood flow!</text>
 
           <!-- Diagram card: lungs, heart, body, vessels, legend (layout.svg #Group_423) -->
 <g id="Group_423">
@@ -2824,29 +2824,32 @@
             <circle id="Ellipse_8-2" class="st115" cx="519.82" cy="966.83" r="11.5" />
           </g>
         </g>
+        <!-- Region labels (review: brackets for Lungs and Heart, labels beside
+             them; Body label moved closer to the body) -->
         <g id="Lungs" class="st24">
-          <text class="st23" transform="translate(282.97 295.33)"><tspan x="0" y="0">Lungs</tspan></text>
+          <path class="region-bracket" d="M278,255 H270 V445 H278" />
+          <text class="st23" x="262" y="357" text-anchor="end">Lungs</text>
         </g>
         <g id="Heart" class="st24">
-          <text class="st23" transform="translate(221.22 595.33)"><tspan x="0" y="0">Heart</tspan></text>
+          <path class="region-bracket" d="M284,520 H276 V682 H284" />
+          <text class="st23" x="268" y="609" text-anchor="end">Heart</text>
         </g>
         <g id="Body" class="st24">
-          <text class="st23" transform="translate(285.63 835.33)"><tspan x="0" y="0">Body</tspan></text>
+          <text class="st23" x="390" y="878" text-anchor="end">Body</text>
         </g>
       </g>
-          <!-- Blood flow animation over the diagram. The Lottie comp is 380x760;
-               it lines up with the diagram artwork at this position/size (scale 0.961). -->
-          <foreignObject id="flow-layer" x="283.3" y="204.4" width="365.2" height="730.4">
-            <div xmlns="http://www.w3.org/1999/xhtml" class="flow-box">
-              <div class="lottie-box" id="lottie-loop"></div>
-              <div class="lottie-box" id="lottie-flow"></div>
-            </div>
-          </foreignObject>
+          <!-- Blood flow over the vessels: dots (and, once the path is complete,
+               white arrows) drawn by script.js along the vessel route -->
+          <g id="flow-layer" aria-hidden="true">
+            <g id="flow-dots"></g>
+            <g id="flow-arrows"></g>
+          </g>
 
           <!-- Chamber names, shown once that flag is placed -->
           <g id="chamber-names">
-            <g class="chamber-name" data-name="1"><line class="leader" x1="292" y1="534" x2="414" y2="568" /><text class="cname" x="288" y="540" text-anchor="end">Right atrium</text></g>
-            <g class="chamber-name" data-name="2"><line class="leader" x1="292" y1="654" x2="441" y2="622" /><text class="cname" x="288" y="660" text-anchor="end">Right ventricle</text></g>
+            <!-- The right-side names sit on two lines, between the card edge and the Heart bracket -->
+            <g class="chamber-name" data-name="1"><line class="leader" x1="272" y1="541" x2="414" y2="568" /><text class="cname" x="268" y="534" text-anchor="end"><tspan x="268">Right</tspan><tspan x="268" dy="22">atrium</tspan></text></g>
+            <g class="chamber-name" data-name="2"><line class="leader" x1="272" y1="661" x2="441" y2="622" /><text class="cname" x="268" y="654" text-anchor="end"><tspan x="268">Right</tspan><tspan x="268" dy="22">ventricle</tspan></text></g>
             <g class="chamber-name" data-name="4"><line class="leader" x1="652" y1="529" x2="488" y2="554" /><text class="cname" x="656" y="535">Left atrium</text></g>
             <g class="chamber-name" data-name="5"><line class="leader" x1="652" y1="644" x2="504" y2="610" /><text class="cname" x="656" y="650">Left ventricle</text></g>
           </g>
@@ -2857,11 +2860,26 @@
               <ellipse class="spot-shape" cx="408" cy="352" rx="60" ry="96" />
               <ellipse class="spot-shape" cx="528" cy="352" rx="60" ry="96" />
             </g>
-            <circle class="spot spot-shape" data-spot="ra" cx="419" cy="570" r="24" tabindex="0" role="button" aria-label="Heart, top part, right side" />
-            <circle class="spot spot-shape" data-spot="rv" cx="447" cy="620" r="24" tabindex="0" role="button" aria-label="Heart, bottom part, right side" />
-            <circle class="spot spot-shape" data-spot="la" cx="482" cy="556" r="24" tabindex="0" role="button" aria-label="Heart, top part, left side" />
-            <circle class="spot spot-shape" data-spot="lv" cx="498" cy="607" r="24" tabindex="0" role="button" aria-label="Heart, bottom part, left side" />
-            <ellipse class="spot spot-shape" data-spot="body" cx="470" cy="808" rx="72" ry="125" tabindex="0" role="button" aria-label="Body" />
+            <!-- Heart: the whole heart is split into four touch areas, one per
+                 chamber (review: the old 24px circles were hard to hit).
+                 The circle is only the hover / focus ring. -->
+            <g class="spot" data-spot="ra" tabindex="0" role="button" aria-label="Heart, top part, right side">
+              <polygon class="spot-hit" points="380,515 451,515 460.5,588 380,596" />
+              <circle class="spot-shape" cx="419" cy="570" r="26" />
+            </g>
+            <g class="spot" data-spot="la" tabindex="0" role="button" aria-label="Heart, top part, left side">
+              <polygon class="spot-hit" points="451,515 556,515 556,580 460.5,588" />
+              <circle class="spot-shape" cx="482" cy="556" r="26" />
+            </g>
+            <g class="spot" data-spot="rv" tabindex="0" role="button" aria-label="Heart, bottom part, right side">
+              <polygon class="spot-hit" points="380,596 460.5,588 474,683 380,683" />
+              <circle class="spot-shape" cx="447" cy="620" r="26" />
+            </g>
+            <g class="spot" data-spot="lv" tabindex="0" role="button" aria-label="Heart, bottom part, left side">
+              <polygon class="spot-hit" points="460.5,588 556,580 556,683 474,683" />
+              <circle class="spot-shape" cx="498" cy="607" r="26" />
+            </g>
+            <ellipse class="spot spot-shape" data-spot="body" cx="468" cy="810" rx="76" ry="126" tabindex="0" role="button" aria-label="Body" />
           </g>
 
           <!-- Drop points: rings that pulse around the white pins while a flag is picked -->
@@ -2871,7 +2889,7 @@
             <circle class="dp" data-dp="4" cx="482" cy="556" r="22" />
             <circle class="dp" data-dp="5" cx="498" cy="607" r="22" />
             <circle class="dp" data-dp="2" cx="447" cy="620" r="22" />
-            <circle class="dp" data-dp="6" cx="477" cy="747" r="22" />
+            <circle class="dp" data-dp="6" cx="467" cy="797" r="22" />
           </g>
 
           <!-- White location pins (layout.svg #Group_774) -->
@@ -2911,7 +2929,8 @@
             </g>
           </g>
         </g>
-        <g id="Group_603">
+        <!-- Body pin moved down to the centre of the body (review), from 477,747 -->
+        <g id="Group_603" transform="translate(-10 50)">
           <g class="st224">
             <g id="Group_415-12">
               <path id="Path_310-12" class="st90" d="M477.06,737.23c5.38,0,9.73,4.36,9.74,9.74,0,3.9-7.48,15.21-9.74,19.27-2.26-4.05-9.74-15.37-9.74-19.27,0-5.38,4.36-9.73,9.74-9.74M482.27,746.97c0-2.91-2.35-5.27-5.26-5.27-2.91,0-5.27,2.35-5.27,5.26s2.35,5.27,5.26,5.27c0,0,0,0,0,0,2.9,0,5.25-2.36,5.26-5.26" />
@@ -2922,42 +2941,45 @@
           <!-- Numbered pins, dropped in as each flag is placed (built in script.js) -->
           <g id="num-pins" aria-hidden="true"></g>
 
-          <!-- Instruction line (layout.svg "Place the flags…") -->
-          <foreignObject x="860" y="192" width="920" height="84">
+          <!-- Instruction line + feedback after each try (review: feedback only
+               at the top, not on the timeline) -->
+          <foreignObject id="instr-layer" x="860" y="178" width="920" height="104">
             <div xmlns="http://www.w3.org/1999/xhtml" class="instr" id="instr" aria-live="polite"></div>
           </foreignObject>
 
-          <!-- Flag tray (layout.svg Group_417…Group_428) -->
-          <foreignObject id="tray-layer" x="855" y="278" width="934" height="276">
+          <!-- Flag tray, in its own box (layout.svg Group_417…Group_428) -->
+          <rect class="tray-box" x="855" y="290" width="934" height="296" rx="22" />
+          <foreignObject id="tray-layer" x="869" y="300" width="906" height="276">
             <div xmlns="http://www.w3.org/1999/xhtml" class="tray" id="tray" role="group" aria-label="Flags"></div>
           </foreignObject>
 
-          <!-- Start again (layout.svg #Group_437) -->
-          <g id="btn-restart" class="svg-btn" role="button" tabindex="0" aria-label="Start again">
-            <rect x="1207.8" y="573.3" width="224.1" height="65.4" rx="32.7" fill="#ff2c68" />
-            <text class="btn-label-35" x="1319.85" y="618.3" text-anchor="middle">Start again</text>
-          </g>
-
-          <!-- Feedback (layout.svg #Correct_feedback_panel / #incorrect_feedback_panel) -->
-          <foreignObject id="feedback-layer" x="860" y="642" width="920" height="176">
+          <!-- What each placed flag is (sits on the timeline node it belongs to) -->
+          <foreignObject id="feedback-layer" x="860" y="600" width="920" height="136">
             <div xmlns="http://www.w3.org/1999/xhtml" class="feedback" id="feedback" aria-live="polite"></div>
           </foreignObject>
-          <line id="fb-connector" class="hidden" x1="0" y1="816" x2="0" y2="829" />
+          <line id="fb-connector" class="hidden" x1="0" y1="736" x2="0" y2="759" />
 
-          <!-- Progress track (layout.svg #Group_771) -->
+          <!-- Progress track (layout.svg #Group_771), moved up (review) -->
           <g id="track" aria-hidden="true">
-            <rect x="1007.3" y="858.3" width="667" height="3" fill="#d8d8d8" />
+            <rect x="1007.3" y="788.5" width="667" height="3" fill="#d8d8d8" />
             <g class="tnode start" data-step="0">
-              <circle cx="1011.8" cy="859.8" r="30.5" fill="#0c51c4" />
-              <text class="tnum" x="1011.8" y="866.8" text-anchor="middle">Start</text>
+              <circle cx="1011.8" cy="790" r="30.5" fill="#0c51c4" />
+              <text class="tnum" x="1011.8" y="797" text-anchor="middle">Start</text>
             </g>
-            <text class="tname" x="1006.4" y="919.3" text-anchor="middle">Blood</text>
-            <text class="tname" x="1006.4" y="943.3" text-anchor="middle">vessels</text>
-            <text class="tname" x="1006.4" y="967.3" text-anchor="middle">from the body</text>
+            <text class="tname" x="1006.4" y="849.5" text-anchor="middle">Blood</text>
+            <text class="tname" x="1006.4" y="873.5" text-anchor="middle">vessels</text>
+            <text class="tname" x="1006.4" y="897.5" text-anchor="middle">from the body</text>
           </g>
 
-          <!-- Insights (layout.svg #Group_15-2) -->
-          <g id="btn-insights" class="svg-btn" role="button" tabindex="0" aria-label="Insights">
+          <!-- Bottom right: Restart | Insights | Help (review). Restart stays
+               hidden until the first flag is placed. -->
+          <g id="btn-restart" class="svg-btn hidden" role="button" tabindex="0" aria-label="Restart">
+            <rect x="1356" y="996.8" width="176" height="53.6" rx="26.8" fill="#ff2c68" />
+            <text class="btn-label-30" x="1444" y="1034" text-anchor="middle">Restart</text>
+          </g>
+
+          <!-- Insights (layout.svg #Group_15-2), moved left to make room for Help -->
+          <g id="btn-insights" class="svg-btn" role="button" tabindex="0" aria-label="Insights" transform="translate(-152 0)">
 <g id="Group_15-2">
         <g class="st208">
           <g id="Group_591">
@@ -2988,6 +3010,15 @@
           </g>
         </g>
       </g>          </g>
+
+          <!-- Help (review: bottom right). Black pill art as in wg202 / wg231,
+               scaled to the Insights button's height. Opens the how-to tour. -->
+          <g id="help-btn" class="svg-btn help-btn" role="button" tabindex="0" aria-label="Help: how to use this activity" transform="translate(1757.2 996.8) scale(.7657)">
+            <path d="M35 0H141C160.33 0 176 15.67 176 35C176 54.33 160.33 70 141 70H35C15.67 70 0 54.33 0 35C0 15.67 15.67 0 35 0Z" fill="#000" />
+            <path d="M37.5992 61.257C51.6273 61.257 62.9992 49.8851 62.9992 35.857C62.9992 21.829 51.6273 10.457 37.5992 10.457C23.5712 10.457 12.1992 21.829 12.1992 35.857C12.1992 49.8851 23.5712 61.257 37.5992 61.257Z" fill="#FDCD02" />
+            <path d="M31.5109 27.9359L24.7109 24.6659C24.7609 24.3159 24.8409 23.9759 24.9709 23.6559C25.2809 22.9059 25.6509 22.1859 26.0909 21.5059C26.6709 20.5559 27.3809 19.6959 28.1909 18.9359C29.2409 18.0159 30.4609 17.3059 31.7809 16.8359C33.4509 16.1959 35.2309 15.8959 37.0309 15.9259C40.3909 15.8459 43.6609 16.9559 46.2709 19.0659C48.7609 20.9359 50.2009 23.8659 50.1709 26.9759C50.1709 30.8959 47.5509 33.9559 42.3509 36.1559C41.7409 36.3659 41.2509 36.8259 41.0009 37.4259C40.7909 38.1559 40.6909 38.9159 40.7109 39.6859V42.2759H33.0809V37.2259C33.0609 36.5759 33.1009 35.9259 33.1809 35.2859C33.2609 34.7259 33.4709 34.1859 33.7809 33.7059C34.1609 33.1059 34.6609 32.5859 35.2609 32.2059C35.7509 31.8959 36.4309 31.5259 37.2609 31.1159C38.0909 30.7059 38.6909 30.3659 39.1009 30.1259C39.5509 29.8159 39.9309 29.4059 40.2109 28.9259C40.5609 28.3359 40.7309 27.6659 40.7009 26.9759C40.7609 24.9459 39.1609 23.2459 37.1309 23.1859C37.0709 23.1859 37.0209 23.1859 36.9609 23.1859C35.6009 23.1159 34.2709 23.6459 33.3309 24.6359C32.4509 25.5559 31.8209 26.6959 31.5109 27.9359ZM36.8609 44.8559C39.7909 44.8559 42.1609 47.2259 42.1609 50.1559C42.1609 53.0859 39.7909 55.4559 36.8609 55.4559C35.4609 55.4659 34.1209 54.9059 33.1509 53.8959C31.0809 51.8359 31.0709 48.4859 33.1309 46.4159C33.1309 46.4159 33.1409 46.4059 33.1509 46.3959C34.1209 45.3859 35.4609 44.8259 36.8609 44.8359" fill="#D96F05" />
+            <text class="help-label" x="118" y="48">Help</text>
+          </g>
         </svg>
       </div>
     </div>
@@ -3018,11 +3049,29 @@
     </div>
   </div>
 
+  <!-- How to use tour (opened by the Help button) -->
+  <div id="tour" class="tour" aria-hidden="true">
+    <div id="tourSpot" class="tour-spot"></div>
+    <div id="tourDemo" class="tour-demo"></div>
+    <div id="tourCard" class="tour-card" role="dialog" aria-modal="true" aria-labelledby="tourTitle">
+      <button id="tourSkip" class="tour-skip" type="button" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div id="tourCount" class="tour-count"></div>
+      <h2 id="tourTitle"></h2>
+      <p id="tourText"></p>
+      <div class="tour-nav">
+        <div id="tourDots" class="tour-dots"></div>
+        <div class="tour-btns">
+          <button id="tourBack" class="tour-btn tour-btn--ghost" type="button">Back</button>
+          <button id="tourNext" class="tour-btn" type="button">Next</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <p id="sr" class="sr-only" aria-live="polite"></p>
 
-  <script src="./js/lottie.js"></script>
-  <script src="./js/lottie-data.js"></script>
   <script src="./js/script.js"></script>
+  <script src="./js/how-to-play.js"></script>
 </body>
 
 </html>

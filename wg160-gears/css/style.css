@@ -345,7 +345,27 @@ svg * {
       height: 44px;
       cursor: pointer;
     }
-  
+
+    /* Help and Insights panels: each foreignObject is 24px taller and 30px
+       wider than the art so the close button can sit on the top-right corner.
+       The art's tab lands exactly on the real button (y 960). */
+    #help-popup > div,
+    #insight-popup > div {
+      width: 1151px;
+      margin-top: 24px;
+    }
+
+    #help-popup > div { height: 331px; }
+    #insight-popup > div { height: 618px; }
+
+    #help-popup .close-btn,
+    #insight-popup .close-btn {
+      top: -22px;
+      right: -22px;
+      width: 64px;
+      height: 64px;
+    }
+
     @keyframes pulse {
       to {
         box-shadow: 0 0 0 7px rgba(31, 157, 107, 0)

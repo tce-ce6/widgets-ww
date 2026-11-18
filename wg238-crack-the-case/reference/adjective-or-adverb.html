@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Crack the Case: Adjective or Adverb?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;800&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+:root{
+  --desk:#2E4A5C; --desk-ink:#F3E9D2; --desk-soft:#A9BFCB;
+  --folder:#EFD596; --folder-edge:#C9A85E;
+  --paper:#FFFBEF; --ink:#2A2118; --ink-soft:#6B5D4C;
+  --adj:#0E7C86; --adv:#7B3FB5; --no:#C23B2E; --ok:#2E7D4F;
+  --marker:#FFE36A;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --desk:#13222C; --desk-ink:#EADFC6; --desk-soft:#7F98A6;
+    --folder:#4A3E22; --folder-edge:#2E2614;
+    --paper:#24211B; --ink:#F1E8D4; --ink-soft:#B8AA92;
+    --adj:#5ACFD8; --adv:#C29BF2; --no:#F08273; --ok:#7DCB9A;
+    --marker:rgba(255,214,90,.28);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --desk:#13222C; --desk-ink:#EADFC6; --desk-soft:#7F98A6;
+  --folder:#4A3E22; --folder-edge:#2E2614;
+  --paper:#24211B; --ink:#F1E8D4; --ink-soft:#B8AA92;
+  --adj:#5ACFD8; --adv:#C29BF2; --no:#F08273; --ok:#7DCB9A;
+  --marker:rgba(255,214,90,.28);
+  color-scheme:dark;
+}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+html,body{height:100%;margin:0}
+body{
+  background:var(--desk);color:var(--ink);
+  font-family:"Lexend",system-ui,"Segoe UI",Arial,sans-serif;
+  overflow:hidden;display:flex;flex-direction:column;
+}
+#app{flex:1;min-height:0;width:100%;max-width:1120px;margin:0 auto;display:flex;flex-direction:column;
+  padding:clamp(10px,2vh,24px) clamp(12px,3vw,32px) clamp(14px,2.5vh,28px)}
+.bar{display:flex;justify-content:space-between;align-items:baseline;gap:12px;color:var(--desk-ink);margin-bottom:clamp(30px,5vh,44px)}
+.brand{font-family:"Special Elite","Courier New",monospace;font-size:clamp(20px,2.6vw,30px);margin:0;font-weight:400}
+.status{color:var(--desk-soft);font-size:clamp(14px,1.5vw,18px)}
+
+.folder{flex:1;min-height:0;position:relative;background:var(--folder);
+  border-radius:0 14px 14px 14px;padding:clamp(12px,2.2vh,24px);
+  box-shadow:0 8px 0 -2px var(--folder-edge);display:flex}
+.tab{position:absolute;bottom:100%;left:0;background:var(--folder);border-radius:10px 10px 0 0;
+  padding:6px 18px 4px;font-family:"Special Elite","Courier New",monospace;font-size:clamp(14px,1.6vw,19px);color:var(--ink)}
+.paper{flex:1;min-height:0;overflow:auto;background:var(--paper);border-radius:4px;
+  padding:clamp(14px,3vh,40px) clamp(16px,4vw,56px);display:flex;flex-direction:column;align-items:center;justify-content:safe center;
+  box-shadow:0 1px 0 rgba(0,0,0,.08), 6px 6px 0 -2px rgba(0,0,0,.06)}
+
+h2{font-family:"Special Elite","Courier New",monospace;font-weight:400;font-size:clamp(32px,5.4vw,64px);margin:0 0 .2em;text-align:center;line-height:1.05}
+.lede{font-size:clamp(16px,2vw,23px);line-height:1.5;max-width:46ch;text-align:center;margin:0 0 clamp(14px,3vh,30px);color:var(--ink-soft)}
+.clues{display:grid;grid-template-columns:1fr 1fr;gap:clamp(12px,2.4vw,32px);width:100%;max-width:880px;margin-bottom:clamp(14px,3vh,30px)}
+.clue{border:3px solid currentColor;border-radius:10px;padding:clamp(10px,1.8vh,18px) clamp(14px,2vw,22px)}
+.clue.adj{color:var(--adj)} .clue.adv{color:var(--adv)}
+.clue h3{margin:0 0 .4em;font-size:clamp(18px,2.2vw,26px)}
+.clue ul{margin:0;padding-left:1.1em;color:var(--ink);font-size:clamp(14px,1.65vw,19px);line-height:1.5}
+.clue li+li{margin-top:.25em}
+
+.prompt{margin:0 0 clamp(10px,2vh,22px);font-size:clamp(16px,1.9vw,22px);color:var(--ink-soft);text-align:center}
+.sentence{font-size:clamp(24px,4.1vw,48px);line-height:1.4;text-align:center;max-width:30ch;margin:0;padding-top:1.1em}
+.target{position:relative;display:inline-block;font-weight:600;padding:0 .12em;
+  background:linear-gradient(transparent 58%,var(--marker) 58%)}
+.mark{position:absolute;left:50%;bottom:100%;transform:translate(-50%,10%) rotate(-9deg);
+  font-size:max(13px,.4em);font-weight:800;text-transform:uppercase;letter-spacing:.08em;
+  border:3px solid currentColor;border-radius:6px;padding:.05em .45em;line-height:1.3;white-space:nowrap;
+  background:var(--paper);animation:thud .35s cubic-bezier(.2,1.6,.4,1) both}
+.mark.adj{color:var(--adj)} .mark.adv{color:var(--adv)}
+@keyframes thud{from{opacity:0;transform:translate(-50%,10%) rotate(-9deg) scale(1.9)}to{opacity:1;transform:translate(-50%,10%) rotate(-9deg) scale(1)}}
+
+.stamps{display:flex;gap:clamp(14px,3vw,40px);justify-content:center;margin-top:clamp(18px,4vh,40px)}
+.stamp-btn{font:inherit;cursor:pointer;background:var(--paper);border:5px double currentColor;border-radius:12px;
+  padding:clamp(8px,1.4vh,14px) clamp(20px,3.4vw,44px);display:flex;flex-direction:column;align-items:center;
+  font-weight:800;font-size:clamp(22px,3vw,36px);letter-spacing:.06em;text-transform:uppercase;
+  transition:transform .12s ease}
+.stamp-btn span{font-weight:400;font-size:clamp(12px,1.3vw,15px);letter-spacing:0;text-transform:none;color:var(--ink-soft)}
+.stamp-btn.adj{color:var(--adj)} .stamp-btn.adv{color:var(--adv)}
+.stamp-btn:hover:not(:disabled){transform:rotate(-3deg) translateY(-2px)}
+.stamp-btn:active:not(:disabled){transform:translateY(2px)}
+.stamp-btn:disabled{cursor:default;opacity:.45}
+.stamp-btn.chosen{opacity:1}
+.stamp-btn.wrong{animation:shake .4s}
+@keyframes shake{25%{transform:translateX(-6px)}50%{transform:translateX(6px)}75%{transform:translateX(-3px)}}
+
+.feedback{min-height:3.2em;margin:clamp(12px,2.4vh,24px) 0 0;font-size:clamp(15px,1.8vw,21px);line-height:1.5;text-align:center;max-width:52ch}
+.ok{color:var(--ok)} .no{color:var(--no)}
+.actions{display:flex;gap:12px;justify-content:center;margin-top:clamp(8px,1.6vh,16px);min-height:3em}
+.primary,.ghost{font:inherit;font-weight:600;font-size:clamp(16px,1.9vw,21px);border-radius:999px;cursor:pointer;padding:.55em 1.5em}
+.primary{background:var(--ink);color:var(--paper);border:2px solid var(--ink)}
+.primary:disabled{opacity:.35;cursor:default}
+.ghost{background:transparent;color:var(--ink);border:2px solid var(--ink)}
+
+.rows{width:100%;max-width:900px;display:flex;flex-direction:column;gap:clamp(10px,2.6vh,28px)}
+.row{display:grid;grid-template-columns:1fr auto;align-items:end;gap:6px clamp(12px,2vw,24px);
+  border-bottom:2px dashed color-mix(in srgb,var(--ink) 25%,transparent);padding-bottom:clamp(8px,1.6vh,16px)}
+.row .sentence{font-size:clamp(20px,3vw,36px);text-align:left;max-width:none;padding-top:1.1em}
+.mini{display:flex;gap:8px}
+.mini button{font:inherit;font-weight:800;text-transform:uppercase;letter-spacing:.05em;cursor:pointer;
+  font-size:clamp(14px,1.6vw,18px);padding:.4em .9em;border-radius:8px;background:var(--paper);border:3px solid currentColor}
+.mini .adj{color:var(--adj)} .mini .adv{color:var(--adv)}
+.mini button[aria-pressed="true"].adj{background:var(--adj);color:var(--paper)}
+.mini button[aria-pressed="true"].adv{background:var(--adv);color:var(--paper)}
+.mini button:disabled{cursor:default}
+.why{grid-column:1/-1;margin:0;font-size:clamp(14px,1.6vw,18px);line-height:1.45;min-height:1.45em}
+
+.scores{font-size:clamp(18px,2.3vw,27px);line-height:1.6;text-align:center;margin:0 0 .4em}
+.scores strong{font-size:1.2em}
+
+.closed{font-family:"Special Elite","Courier New",monospace;font-size:clamp(44px,8vw,104px);color:var(--no);margin:0 0 clamp(34px,7vh,64px);
+  border:8px double currentColor;border-radius:16px;padding:.05em .45em;transform:rotate(-7deg);
+  animation:slam .5s cubic-bezier(.2,1.6,.4,1) .15s both}
+@keyframes slam{from{opacity:0;transform:rotate(-7deg) scale(2.2)}to{opacity:1;transform:rotate(-7deg) scale(1)}}
+.scores.final{font-size:clamp(24px,3.6vw,44px);margin:0 0 clamp(14px,3vh,30px)}
+.subtitle{font-size:clamp(20px,2.8vw,32px);font-weight:600;margin:0 0 .5em;text-align:center}
+button:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+@media (max-width:640px){
+  .clues{grid-template-columns:1fr}
+  .row{grid-template-columns:1fr}
+  .paper{justify-content:flex-start}
+}
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+<div id="app">
+  <header class="bar">
+    <h1 class="brand">Crack the Case</h1>
+    <span class="status" id="status"></span>
+  </header>
+  <main class="folder" id="folder">
+    <div class="tab" id="tab"></div>
+    <div class="paper" id="paper"></div>
+  </main>
+</div>
+
+<script>
+const P = (word, a, b) => ({word, rows:[a, b]});
+const R = (s, a, why) => ({s, a, why});
+const LABEL = {adj:"adjective", adv:"adverb"};
+const SETS = [
+  P("fast", R("Meena has a [fast] bicycle with five gears.", "adj", "It comes just before “bicycle” and tells us what kind of bicycle Meena has."),
+            R("The cheetah ran [fast] across the grassland.", "adv", "It tells us how the cheetah ran.")),
+  P("hard", R("Our team practised [hard] before the final.", "adv", "It tells us how the team practised."),
+            R("This mango is still too [hard] to eat.", "adj", "It comes after “is still too” and tells us more about the mango.")),
+  P("early", R("We caught the [early] train to Pune.", "adj", "It comes just before “train” and tells us which train we caught."),
+             R("Ravi woke up [early] on the day of the trip.", "adv", "It tells us when Ravi woke up.")),
+  P("high", R("The eagle flew [high] above the hills.", "adv", "It tells us where the eagle flew."),
+            R("The wall around the old fort is very [high].", "adj", "It comes after “is very” and tells us more about the wall.")),
+  P("low", R("Sit on the [low] stool near the window.", "adj", "It comes just before “stool” and tells us what kind of stool."),
+           R("The plane flew [low] over the village.", "adv", "It tells us where the plane flew.")),
+  P("far", R("We walked [far] into the forest.", "adv", "It tells us where we walked."),
+           R("Aunty lives on the [far] side of the river.", "adj", "It comes just before “side” and tells us which side.")),
+  P("long", R("It was a [long] drive to Shimla.", "adj", "It comes just before “drive” and tells us what kind of drive it was."),
+            R("We did not have to wait [long] for the bus.", "adv", "It tells us how much time we had to wait.")),
+  P("deep", R("Do not swim at the [deep] end of the pool.", "adj", "It comes just before “end” and tells us which end."),
+            R("The roots of the banyan tree go [deep] into the ground.", "adv", "It tells us where the roots go.")),
+  P("right", R("Turn [right] at the temple to reach the market.", "adv", "It tells us where to turn."),
+             R("Arjun gave the [right] answer in the quiz.", "adj", "It comes just before “answer” and tells us more about the answer.")),
+  P("daily", R("Dad reads the [daily] newspaper with his tea.", "adj", "It comes just before “newspaper” and tells us what kind of newspaper."),
+             R("Water the tulsi plant [daily].", "adv", "It tells us when to water the plant.")),
+  P("weekly", R("Our class library books are changed [weekly].", "adv", "It tells us when the books are changed."),
+              R("We have a [weekly] spelling test on Fridays.", "adj", "It comes before “spelling test” and tells us what kind of test.")),
+  P("close", R("Priya and Sana are [close] friends.", "adj", "It comes just before “friends” and tells us what kind of friends they are."),
+             R("Stand [close] together so that everyone fits in the photo.", "adv", "It tells us where to stand.")),
+  P("wrong", R("Karan spelt my name [wrong] on the card.", "adv", "It tells us how Karan spelt my name."),
+             R("We got on the [wrong] bus by mistake.", "adj", "It comes just before “bus” and tells us which bus.")),
+  P("straight", R("Draw a [straight] line with your ruler.", "adj", "It comes just before “line” and tells us what kind of line."),
+                R("Come [straight] home after school.", "adv", "It tells us how to come home.")),
+  P("late", R("The guests arrived [late] for dinner.", "adv", "It tells us when the guests arrived."),
+            R("My brother stayed up [late] to finish his model.", "adv", "It tells us when my brother stayed up.")),
+  P("monthly", R("We pay the milkman [monthly].", "adv", "It tells us when we pay the milkman."),
+               R("The school magazine comes out [monthly].", "adv", "It tells us when the magazine comes out.")),
+  P("softly", R("The cat walked [softly] across the roof.", "adv", "It tells us how the cat walked."),
+              R("Please speak [softly] in the hospital.", "adv", "It tells us how to speak.")),
+  P("friendly", R("Our new neighbours are very [friendly].", "adj", "It comes after “are very” and tells us more about the neighbours. It ends in -ly, but it is still an adjective."),
+                R("A [friendly] dog wagged its tail at us.", "adj", "It comes just before “dog” and tells us what kind of dog.")),
+  P("lovely", R("What a [lovely] garden you have!", "adj", "It comes just before “garden” and tells us what kind of garden. It ends in -ly, but it is still an adjective."),
+              R("The weather in Ooty was [lovely].", "adj", "It comes after “was” and tells us more about the weather.")),
+  P("lonely", R("The [lonely] kitten cried all night.", "adj", "It comes just before “kitten” and tells us what kind of kitten. It ends in -ly, but it is still an adjective."),
+              R("Grandpa feels [lonely] when we are away.", "adj", "It comes after “feels” and tells us more about Grandpa."))
+];
+
+const paper = document.getElementById("paper");
+const tab = document.getElementById("tab");
+const statusEl = document.getElementById("status");
+let i = 0, solved = 0, order = [];
+
+function shuffle(list){
+  const a = list.slice();
+  for (let j = a.length - 1; j > 0; j--){
+    const k = Math.floor(Math.random() * (j + 1));
+    [a[j], a[k]] = [a[k], a[j]];
+  }
+  return a;
+}
+const sameType = p => p.rows[0].a === p.rows[1].a;
+function newGame(){
+  // Shuffle the sets (keeping same-job sets apart) and the two sentences within each set
+  let o;
+  do { o = shuffle(SETS); } while (o.some((p, j) => j > 0 && sameType(p) && sameType(o[j-1])));
+  order = o.map(p => ({word: p.word, rows: shuffle(p.rows)}));
+  i = 0; solved = 0;
+  round();
+}
+
+const sentenceHTML = s => s.replace(/\[(.+?)\]/, '<span class="target">$1</span>');
+function stamp(target, kind){
+  target.querySelector(".mark")?.remove();
+  const m = document.createElement("span");
+  m.className = "mark " + kind;
+  m.textContent = LABEL[kind];
+  m.setAttribute("aria-hidden","true");
+  target.appendChild(m);
+}
+function set(tabText, status, html){
+  tab.textContent = tabText;
+  statusEl.textContent = status;
+  paper.innerHTML = html;
+  paper.scrollTop = 0;
+}
+
+function intro(){
+  set("Top secret briefing", "", `
+    <h2>Crack the Case</h2>
+    <p class="subtitle">Adjective or Adverb?</p>
+    <p class="lede">Some words can do two different jobs. Read each sentence closely to find out which job the word is doing.</p>
+    <div class="clues">
+      <div class="clue adj"><h3>Adjective clues</h3><ul>
+        <li>Tells us more about a noun</li>
+        <li>Answers <em>what kind</em>, <em>which one</em> or <em>how many</em></li>
+        <li>Often comes just before a noun, or after <em>is</em>, <em>was</em>, <em>looks</em> or <em>feels</em></li></ul></div>
+      <div class="clue adv"><h3>Adverb clues</h3><ul>
+        <li>Tells us more about a verb</li>
+        <li>Answers <em>how</em>, <em>when</em> or <em>where</em></li>
+        <li>Often comes after the verb it describes</li></ul></div>
+    </div>
+    <div class="actions"><button class="primary" id="go">Start the mission</button></div>`);
+  document.getElementById("go").onclick = newGame;
+}
+
+function round(){
+  const pair = order[i];
+  set("Mission: Crack the cases", `Case ${i+1} of ${order.length}`, `
+    <p class="prompt">Which job is “${pair.word}” doing in each report?</p>
+    <div class="rows">${pair.rows.map((r, k) => `
+      <div class="row" data-k="${k}">
+        <p class="sentence">${sentenceHTML(r.s)}</p>
+        <div class="mini" role="group" aria-label="Sentence ${k+1}">
+          <button class="adj" data-a="adj" aria-pressed="false">Adjective</button>
+          <button class="adv" data-a="adv" aria-pressed="false">Adverb</button>
+        </div>
+        <p class="why" aria-live="polite"></p>
+      </div>`).join("")}
+    </div>
+    <div class="actions"><button class="primary" id="check" disabled>Check</button></div>`);
+  const picks = [null, null];
+  const check = document.getElementById("check");
+  paper.querySelectorAll(".row").forEach(row => {
+    const k = +row.dataset.k;
+    row.querySelectorAll(".mini button").forEach(b => b.onclick = () => {
+      picks[k] = b.dataset.a;
+      row.querySelectorAll(".mini button").forEach(x => x.setAttribute("aria-pressed", x === b));
+      check.disabled = picks.includes(null);
+    });
+  });
+  check.onclick = () => {
+    if (check.dataset.done){ i++; return i < order.length ? round() : finish(); }
+    let both = true;
+    paper.querySelectorAll(".row").forEach(row => {
+      const k = +row.dataset.k, r = pair.rows[k], ok = picks[k] === r.a;
+      if (!ok) both = false;
+      row.querySelectorAll(".mini button").forEach(x => x.disabled = true);
+      stamp(row.querySelector(".target"), r.a);
+      row.querySelector(".why").innerHTML =
+        `<strong class="${ok ? "ok" : "no"}">${ok ? "Correct!" : "Not quite."}</strong> ${r.why}${r.why.includes(LABEL[r.a]) ? "" : ` It’s an ${LABEL[r.a]}.`}`;
+    });
+    if (both) solved++;
+    check.dataset.done = "1";
+    check.textContent = i < order.length-1 ? "Next case" : "See final result";
+    check.focus();
+  };
+}
+
+function finish(){
+  set("Results", "", `
+    <p class="closed">Case closed</p>
+    <p class="scores final">You cracked <strong>${solved}</strong> of ${order.length} cases!</p>
+    <div class="actions"><button class="primary" id="again">Play again</button></div>`);
+  document.getElementById("again").onclick = intro;
+}
+
+intro();
+</script>
+</body>
+</html>

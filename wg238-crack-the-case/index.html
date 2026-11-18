@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crack the Case: Adjective or Adverb?</title>
+
+  <link rel="stylesheet" href="./css/global_style.css">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body id="case-widget">
+  <div class="container">
+    <div class="mainContainerOuter">
+      <div class="wdgetTitle">
+        <h2>Crack the Case</h2>
+        <span id="versionId" class="versionText">b4_wg238_261118_01</span>
+      </div>
+      <div class="svg-container" id="svg-container">
+        <!-- Stage: 1920 x 1080, same coordinates as reference/Widget Assets/AI/en_en_04_wg238.svg.
+             Background art = assets/bg.svg (container). The folder shapes are drawn here in SVG;
+             the screens themselves are HTML inside one full-stage <foreignObject>
+             (1 CSS px = 1 stage unit). script.js shows one .screen at a time. -->
+        <svg id="stage" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+          <defs>
+            <!-- Rough, inky edge for the rubber stamps -->
+            <filter id="stamp-ink" x="-10%" y="-20%" width="120%" height="140%">
+              <feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="7" result="noise" />
+              <feColorMatrix in="noise" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -1.6 1.75" result="speckle" />
+              <feComposite in="SourceGraphic" in2="speckle" operator="in" />
+            </filter>
+          </defs>
+
+          <!-- Subtitle pill (design: Group_1683) — on every screen -->
+          <g class="subtitle-pill" aria-hidden="true">
+            <rect x="750" y="108" width="420" height="63" rx="11" fill="#b96285" stroke="#707070" />
+            <text x="960" y="154">Adjective or Adverb?</text>
+          </g>
+
+          <!-- Folder: briefing (design: Group_1570) -->
+          <g class="folder folder-brief" data-for="brief" aria-hidden="true">
+            <path fill="#e3ca84" stroke="#707070" d="M353.57,268.6c.76-14.6-.25-49.13,0-68.4.76-21.4,12.65-25.4,28.9-26s165.55,0,181.49,0c16.25.6,26.37,7,35.48,20.4,3.79,5.6,37.44,58.8,46.54,74-58.43.8-285.58.8-292.41,0Z" />
+            <path fill="#cbb066" d="M353.57,276.6c.76-14.6-.25-49.13,0-68.4.76-21.4,12.65-25.4,28.9-26s165.55,0,181.49,0c16.25.6,26.37,7,35.48,20.4,3.79,5.6,37.44,58.8,46.54,74-58.43.8-285.58.8-292.41,0Z" />
+            <path fill="#fff9c4" d="M400.43,206h1118.34c26.19,0,47.43,20.85,47.43,46.56v618.94c0,25.72-21.23,46.56-47.43,46.56H400.43c-26.19,0-47.43-20.85-47.43-46.56V252.56c0-25.72,21.23-46.56,47.43-46.56Z" />
+            <rect fill="#f5e774" x="353" y="213.4" width="1213.2" height="704.67" rx="50" />
+            <rect fill="#f5be74" x="386.93" y="909.4" width="1145.33" height="8.67" rx="4.33" />
+            <text class="tab-label" x="378" y="203">Top secret briefing</text>
+          </g>
+
+          <!-- Folder: game (design: activity_screen_base) -->
+          <g class="folder folder-game" data-for="game" aria-hidden="true">
+            <path fill="#ddb03f" stroke="#707070" d="M102.3,263.36c1-15.17-.33-51.05,0-71.07,1-22.23,16.72-26.39,38.21-27.01s218.88,0,239.95,0c21.49.62,34.86,7.27,46.9,21.2,5.02,5.82,49.5,61.09,61.53,76.88-77.25.83-377.57.83-386.6,0Z" />
+            <path fill="#c0804f" d="M102.3,271.67c1-15.17-.33-51.05,0-71.07,1-22.23,16.72-26.39,38.21-27.01s218.88,0,239.95,0c21.49.62,34.86,7.27,46.9,21.2,5.02,5.82,49.5,61.09,61.53,76.88-77.25.83-377.57.83-386.6,0Z" />
+            <path fill="#fff" d="M168.66,204.32h1582.67c37.07,0,67.12,21.66,67.12,48.38v643.07c0,26.72-30.05,48.38-67.12,48.38H168.66c-37.07,0-67.12-21.66-67.12-48.38V252.69c0-26.72,30.05-48.38,67.12-48.38Z" />
+            <rect fill="#f8fab3" x="101.54" y="212" width="1716.91" height="732.13" rx="50" />
+            <rect fill="#f5be74" x="146.41" y="935.13" width="1627.18" height="9" rx="4.5" />
+            <path fill="#ffdc69" stroke="#9e8c1a" d="M142,200.5h1636c21.82,0,39.5,17.68,39.5,39.5v63.5H102.5v-63.5c0-21.82,17.68-39.5,39.5-39.5Z" />
+            <text class="tab-label" x="134" y="193">Mission: Crack the cases</text>
+          </g>
+
+          <!-- Folder: results (design: Layer_15) -->
+          <g class="folder folder-result" data-for="result" aria-hidden="true">
+            <path fill="#ddb03f" stroke="#707070" d="M402.93,263.36c.7-15.17-.23-51.05,0-71.07.7-22.23,11.63-26.39,26.57-27.01s152.23,0,166.88,0c14.94.62,24.25,7.27,32.62,21.2,3.49,5.82,34.42,61.09,42.79,76.88-53.73.83-262.58.83-268.86,0Z" />
+            <path fill="#c0804f" d="M402.93,271.67c.7-15.17-.23-51.05,0-71.07.7-22.23,11.63-26.39,26.57-27.01s152.23,0,166.88,0c14.94.62,24.25,7.27,32.62,21.2,3.49,5.82,34.42,61.09,42.79,76.88-53.73.83-262.58.83-268.86,0Z" />
+            <path fill="#fff" d="M445.81,204.32h1028.38c24.09,0,43.61,21.66,43.61,48.38v643.07c0,26.72-19.53,48.38-43.61,48.38H445.81c-24.09,0-43.61-21.66-43.61-48.38V252.69c0-26.72,19.53-48.38,43.61-48.38Z" />
+            <rect fill="#f8fab3" x="402.2" y="212" width="1115.6" height="732.13" rx="50" />
+            <rect fill="#f5be74" x="447.06" y="935.13" width="1025.87" height="9" rx="4.5" />
+            <text class="tab-label" x="430" y="196">Results</text>
+          </g>
+
+          <!-- Books + binoculars (design: Group_1682), briefing only -->
+          <image class="books" href="./assets/images/books.svg" x="1500" y="720" width="330" height="280" />
+
+          <!-- All screens: HTML at stage scale -->
+          <foreignObject x="0" y="0" width="1920" height="1080">
+            <div xmlns="http://www.w3.org/1999/xhtml" class="ui">
+
+              <!-- ============ Briefing ============ -->
+              <section class="screen" id="brief" aria-labelledby="brief-title">
+                <h3 id="brief-title" class="sr-only">Top secret briefing</h3>
+                <p class="itext brief-itext">Some words can do two different jobs. Read each sentence closely to find out which job the word is doing.</p>
+
+                <div class="clue adj">
+                  <img class="clue-icon" src="./assets/images/icon-adjective.svg" alt="" />
+                  <h4>Adjective clues</h4>
+                  <ul>
+                    <li>Tells us more about a <b>noun</b></li>
+                    <li>Answers <b>what kind</b>, <b>which one</b> or <b>how many</b></li>
+                    <li>Often comes just <b>before a noun</b>, or after <b>is</b>, <b>was</b>, <b>looks</b> or <b>feels</b></li>
+                  </ul>
+                </div>
+                <div class="clue adv">
+                  <img class="clue-icon" src="./assets/images/icon-adverb.svg" alt="" />
+                  <h4>Adverb clues</h4>
+                  <ul>
+                    <li>Tells us more about a <b>verb</b></li>
+                    <li>Answers <b>how</b>, <b>when</b> or <b>where</b></li>
+                    <li>Often comes <b>after the verb</b> it describes</li>
+                  </ul>
+                </div>
+
+                <button type="button" class="btn btn-start" id="start-btn">Start the mission</button>
+              </section>
+
+              <!-- ============ Game ============ -->
+              <section class="screen" id="game" aria-labelledby="game-prompt">
+                <p class="prompt" id="game-prompt">Which job is “<span class="prompt-word" id="prompt-word"></span>” doing in each report?</p>
+                <p class="counter" id="counter" aria-live="polite">
+                  <span class="counter-icon" aria-hidden="true"></span>Case <b id="counter-num"></b>
+                </p>
+
+                <div class="row" data-k="0">
+                  <span class="note note-red" aria-hidden="true"><span>1</span></span>
+                  <p class="sentence"></p>
+                  <div class="picks" role="group" aria-label="Sentence 1">
+                    <button type="button" class="pick adj" data-a="adj" aria-pressed="false">Adjective</button>
+                    <span class="divider" aria-hidden="true"></span>
+                    <button type="button" class="pick adv" data-a="adv" aria-pressed="false">Adverb</button>
+                  </div>
+                  <p class="fb hidden" aria-live="polite"></p>
+                </div>
+
+                <div class="row" data-k="1">
+                  <span class="note note-blue" aria-hidden="true"><span>2</span></span>
+                  <p class="sentence"></p>
+                  <div class="picks" role="group" aria-label="Sentence 2">
+                    <button type="button" class="pick adj" data-a="adj" aria-pressed="false">Adjective</button>
+                    <span class="divider" aria-hidden="true"></span>
+                    <button type="button" class="pick adv" data-a="adv" aria-pressed="false">Adverb</button>
+                  </div>
+                  <p class="fb hidden" aria-live="polite"></p>
+                </div>
+
+                <button type="button" class="btn btn-check" id="main-btn" disabled>Check</button>
+              </section>
+
+              <!-- ============ Results ============ -->
+              <section class="screen" id="result" aria-labelledby="result-score">
+                <img class="closed-stamp" id="closed-stamp" src="./assets/images/case-closed.svg" alt="Case closed" />
+                <p class="score" id="result-score">You cracked <b id="score-num">0</b> of <span id="score-total">20</span> cases!</p>
+                <button type="button" class="btn btn-again" id="again-btn">Play again</button>
+              </section>
+
+            </div>
+          </foreignObject>
+
+          <!-- Help (design: global_button, bottom left) -->
+          <g id="help-btn" class="help-btn" role="button" tabindex="0" aria-label="Help: how to use this activity" transform="translate(68 972)">
+            <rect class="help-pill" width="176" height="70" rx="35" />
+            <circle cx="37.6" cy="35.86" r="25.4" fill="#d96f05" />
+            <text class="help-q" x="37.6" y="48">?</text>
+            <text class="help-label" x="80" y="51">Help</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- How to use tour (opened by the Help button) -->
+  <div id="tour" class="tour" aria-hidden="true">
+    <div id="tourSpot" class="tour-spot"></div>
+    <div id="tourDemo" class="tour-demo"></div>
+    <div id="tourCard" class="tour-card" role="dialog" aria-modal="true" aria-labelledby="tourTitle">
+      <button id="tourSkip" class="tour-skip" type="button" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div id="tourCount" class="tour-count"></div>
+      <h2 id="tourTitle"></h2>
+      <p id="tourText"></p>
+      <div class="tour-nav">
+        <div id="tourDots" class="tour-dots"></div>
+        <div class="tour-btns">
+          <button id="tourBack" class="tour-btn tour-btn--ghost" type="button">Back</button>
+          <button id="tourNext" class="tour-btn" type="button">Next</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./js/script.js"></script>
+  <script src="./js/how-to-play.js"></script>
+</body>
+
+</html>
