@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Access to Justice: PIL</title>
+
+  <link rel="stylesheet" href="./css/global_style.css">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body id="pil-widget">
+  <div class="container">
+    <div class="mainContainerOuter">
+      <div class="wdgetTitle">
+        <h2>Access to Justice: PIL</h2>
+        <span id="versionId" class="versionText">b4_wg220_261117_01</span>
+      </div>
+      <div class="svg-container" id="svg-container">
+        <!-- Stage: 1920 x 1080, same coordinates as assets/images/layout.svg.
+             Background = assets/bg.svg (container), title = .wdgetTitle above.
+             One <g class="screen"> per layout artboard; script.js shows one at a time. -->
+        <svg id="stage" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+
+          <!-- ============ Screen 1: Before PIL (layout scr_01) ============ -->
+          <g class="screen" id="s1">
+            <image href="./assets/images/before-pil-graphic.svg" x="33" y="55" width="235" height="83" />
+            <text class="itext" x="930" y="161">Take a moment to understand the situation before you continue.</text>
+            <image href="./assets/images/prison.svg" x="78" y="245" width="767" height="592" />
+            <g class="card" data-card="888 306 924 341"></g>
+            <text class="stat-num" x="1296" y="410">40,000</text>
+            <text class="stat-label" x="1343" y="449">People in Indian jails whose trials have not yet begun.</text>
+            <foreignObject x="968" y="468" width="760" height="170">
+              <p xmlns="http://www.w3.org/1999/xhtml" class="para">These prisoners had never appeared in court. Many had waited longer than the maximum sentence for the crime they were accused of. They had no lawyers. They had no way to reach the court.</p>
+            </foreignObject>
+            <g class="svg-btn pink" role="button" tabindex="0" data-go="s2" data-btn="1090 684 526 93">
+              <text>Who could speak for them?</text>
+            </g>
+          </g>
+
+          <!-- ============ Screen 2: who could speak for them? (layout scr_02) ============ -->
+          <g class="screen" id="s2">
+            <image href="./assets/images/before-pil-graphic.svg" x="33" y="55" width="235" height="83" />
+            <text class="itext" x="937" y="161">Try each option and see who could speak for them.</text>
+            <!-- Scene animation (1160x530 Lottie: jail + court) -->
+            <foreignObject x="-6" y="301" width="1160" height="530">
+              <div xmlns="http://www.w3.org/1999/xhtml" class="lottie-box" id="s2-scene"></div>
+            </foreignObject>
+            <g class="card" data-card="1129 186 754 591"></g>
+            <foreignObject x="1200" y="256" width="640" height="90">
+              <p xmlns="http://www.w3.org/1999/xhtml" class="para">These 40,000 prisoners needed someone to speak for them in court. Who could that be?</p>
+            </foreignObject>
+            <g class="option" data-opt="1" role="button" tabindex="0" transform="translate(1208 363)">
+              <rect class="opt-bg" width="462" height="76" /><text class="opt-text" x="28" y="49">The prisoner themselves.</text><text class="opt-x" x="432" y="52">✗</text>
+            </g>
+            <g class="option" data-opt="2" role="button" tabindex="0" transform="translate(1208 458)">
+              <rect class="opt-bg" width="462" height="76" /><text class="opt-text" x="27" y="49">A family member.</text><text class="opt-x" x="432" y="52">✗</text>
+            </g>
+            <g class="option" data-opt="3" role="button" tabindex="0" transform="translate(1208 553)">
+              <rect class="opt-bg" width="462" height="76" /><text class="opt-text" x="27" y="49">A concerned citizen.</text><text class="opt-x" x="432" y="52">✗</text>
+            </g>
+            <foreignObject x="1200" y="646" width="620" height="120">
+              <p xmlns="http://www.w3.org/1999/xhtml" class="feedback" id="s2-feedback" aria-live="polite"></p>
+            </foreignObject>
+            <g id="s2-done" class="hidden">
+              <text class="done-line" x="1501" y="820">None of them could reach the court.</text>
+              <text class="done-line" x="1505" y="857">The prisoners had no voice.</text>
+              <g class="svg-btn pink" role="button" tabindex="0" data-go="s3" data-btn="1226 885 580 93">
+                <text>But something changed in 1979</text>
+              </g>
+            </g>
+          </g>
+
+          <!-- ============ Screen 3: PIL arrives (layout Scr_03) ============ -->
+          <g class="screen" id="s3">
+            <text class="itext" x="949" y="141">Find out what changed in 1979.</text>
+            <g id="s3-pil" class="pil-pop">
+              <image href="./assets/images/scene3-pil-graphic.svg" x="367" y="215" width="1187" height="835" />
+            </g>
+          </g>
+
+          <!-- ============ Screen 4: After PIL (layout Scr_04) ============ -->
+          <g class="screen" id="s4">
+            <foreignObject x="359" y="109" width="1160" height="530">
+              <div xmlns="http://www.w3.org/1999/xhtml" class="lottie-box" id="s4-scene"></div>
+            </foreignObject>
+            <image href="./assets/images/after-pil-graphic.svg" x="24" y="24" width="279" height="201" />
+            <text class="itext" x="949" y="141">Find out what changed in 1979.</text>
+            <!-- (scene4-tos-panel.svg has the text drawn in, so the card is drawn instead) -->
+            <g class="card" data-card="56 577 1829 520"></g>
+            <foreignObject x="126" y="636" width="1740" height="300">
+              <div xmlns="http://www.w3.org/1999/xhtml" class="s4-text">
+                <p class="para">In 1979 advocate Pushpa Kapila Hingorani read about undertrial prisoners in a Patna jail in a newspaper. She was not their lawyer. She had no personal stake in their case. But she walked into the Supreme Court and filed a petition on their behalf.</p>
+                <p class="strong">The court heard her.</p>
+                <p class="para">This was Public Interest Litigation. Any citizen could now approach the Supreme Court or a High Court for a public cause — without being personally affected. The door that was closed to everyone was now open to all.</p>
+              </div>
+            </foreignObject>
+            <g class="svg-btn pink" role="button" tabindex="0" data-go="s5" data-btn="620 932 681 93">
+              <text>What if the petition had been different?</text>
+            </g>
+          </g>
+
+          <!-- ============ Screen 5: the petition (layout Scr_05 / Scr_05a) ============ -->
+          <g class="screen" id="s5">
+            <image href="./assets/images/after-pil-graphic.svg" x="24" y="24" width="279" height="201" />
+            <text class="itext" x="945" y="134">Try different options, then file the petition.</text>
+            <text class="itext" x="940" y="168">Observe the <tspan class="itext-bold">results</tspan> on the left to see the impact of your petition.</text>
+
+            <!-- 40 cells: one per 1,000 prisoners (built by script.js) -->
+            <g id="cell-grid"></g>
+            <text class="counter" id="cell-counter" x="493" y="982">40,000</text>
+            <text class="counter-label" id="cell-label" x="482" y="1019">People in Indian jails whose trials have not yet begun.</text>
+
+            <!-- Petition form -->
+            <g id="s5-form">
+              <image href="./assets/images/scene5-tos-panel.svg" x="780" y="178" width="837" height="721" />
+              <text class="field-q" x="863" y="290">Who is she speaking for?</text>
+              <g class="field" data-field="1" data-val="A" role="button" tabindex="0" transform="translate(866 310)">
+                <rect class="field-bg yellow" width="699" height="111" />
+                <foreignObject x="26" y="10" width="660" height="92"><p xmlns="http://www.w3.org/1999/xhtml" class="field-text">Prisoners in the states she visited who have been held longer than their maximum sentence.</p></foreignObject>
+              </g>
+              <g class="field" data-field="1" data-val="B" role="button" tabindex="0" transform="translate(866 440)">
+                <rect class="field-bg yellow" width="699" height="111" />
+                <foreignObject x="26" y="10" width="660" height="92"><p xmlns="http://www.w3.org/1999/xhtml" class="field-text">Prisoners across India who have been held longer than their maximum sentence.</p></foreignObject>
+              </g>
+              <text class="field-q" x="863" y="614">What does she want the court to do?</text>
+              <g class="field" data-field="2" data-val="A" role="button" tabindex="0" transform="translate(866 640)">
+                <rect class="field-bg green" width="699" height="81" />
+                <foreignObject x="26" y="10" width="660" height="62"><p xmlns="http://www.w3.org/1999/xhtml" class="field-text">Release them immediately.</p></foreignObject>
+              </g>
+              <g class="field" data-field="2" data-val="B" role="button" tabindex="0" transform="translate(866 740)">
+                <rect class="field-bg green" width="699" height="111" />
+                <foreignObject x="26" y="10" width="660" height="92"><p xmlns="http://www.w3.org/1999/xhtml" class="field-text">Review every case first. Then release those held longer than their maximum sentence.</p></foreignObject>
+              </g>
+              <g class="svg-btn pink is-disabled" id="file-btn" role="button" tabindex="0" data-btn="1011 912 347 93">
+                <text>File the Petition</text>
+              </g>
+            </g>
+
+            <!-- Court order / results -->
+            <g id="s5-result" class="hidden">
+              <image href="./assets/images/scene5a-tos-panel.svg" x="750" y="258" width="1141" height="604" />
+              <foreignObject x="810" y="330" width="1020" height="520">
+                <div xmlns="http://www.w3.org/1999/xhtml" class="result" aria-live="polite">
+                  <p class="r-head">Court Order</p>
+                  <p class="r-text" id="r-order"></p>
+                  <p class="r-head orange">Outcome</p>
+                  <p class="r-text" id="r-outcome"></p>
+                  <p class="r-head orange">What PIL made possible</p>
+                  <p class="r-text" id="r-possible"></p>
+                  <p class="r-extra hidden" id="r-extra"></p>
+                </div>
+              </foreignObject>
+              <g class="svg-btn blue" id="again-btn" role="button" tabindex="0" data-btn="1077 870 482 93">
+                <text>Try another combination</text>
+              </g>
+              <g class="svg-btn pink hidden" id="learn-btn" role="button" tabindex="0" data-go="s6" data-btn="1335 870 520 93">
+                <text>See what this case taught us</text>
+              </g>
+            </g>
+          </g>
+
+          <!-- ============ Screen 6: check what you learnt (layout Scr_06) ============ -->
+          <g class="screen" id="s6">
+            <image href="./assets/images/after-pil-graphic.svg" x="24" y="24" width="279" height="201" />
+            <text class="itext" x="930" y="151">Read each statement. Tap the box next to it to see if it is correct.</text>
+            <image href="./assets/images/scene6-tos-panel.svg" x="504" y="180" width="991" height="776" />
+            <g id="statements"></g>
+            <g class="svg-btn green hidden" id="back-btn" role="button" tabindex="0" data-btn="804 904 312 93">
+              <text>Back to start</text>
+            </g>
+          </g>
+
+          <!-- Confetti (the petition that was actually filed) -->
+          <foreignObject id="confetti-layer" x="0" y="0" width="1920" height="1080" class="hidden">
+            <div xmlns="http://www.w3.org/1999/xhtml" class="lottie-box" id="confetti"></div>
+          </foreignObject>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <p id="sr" class="sr-only" aria-live="polite"></p>
+
+  <script src="./js/lottie.js"></script>
+  <script src="./js/lottie-data.js"></script>
+  <script src="./js/script.js"></script>
+</body>
+
+</html>
