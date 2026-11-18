@@ -84,6 +84,10 @@
       "updatedAt": "2026-11-05T18:27:27+05:30",
       "author": "tce-ashishg"
     },
+    "wg182-land-based-neighbours": {
+      "updatedAt": "2026-11-18T18:20:46+05:30",
+      "author": "tce-nitinc"
+    },
     "wg183-the-chola-fortress-jenga": {
       "updatedAt": "2026-08-24T12:52:42+05:30",
       "author": "tce-ashishg"
@@ -221,7 +225,7 @@
       "author": "tce-ashishg"
     },
     "wg223-leaf-lab-transpiration": {
-      "updatedAt": "2026-10-19T10:58:01+05:30",
+      "updatedAt": "2026-11-18T18:20:46+05:30",
       "author": "tce-nitinc"
     },
     "wg224-population-growth": {
@@ -264,6 +268,10 @@
       "updatedAt": "2026-11-18T16:52:25+05:30",
       "author": "tce-ashishg"
     },
+    "wg239-simple-or-compound-leaves": {
+      "updatedAt": "2026-11-18T18:20:46+05:30",
+      "author": "tce-nitinc"
+    },
     "wg242-picture-stories": {
       "updatedAt": "2026-11-16T16:15:39+05:30",
       "author": "tce-nitinc"
@@ -288,6 +296,14 @@
       "updatedAt": "2026-11-16T12:53:03+05:30",
       "author": "tce-ashishg"
     },
+    "wg252-help-the-plant-survive": {
+      "updatedAt": "2026-11-18T18:20:46+05:30",
+      "author": "tce-nitinc"
+    },
+    "wg253-peel-a-flower": {
+      "updatedAt": "2026-11-18T18:20:46+05:30",
+      "author": "tce-nitinc"
+    },
     "wg31-world-war": {
       "updatedAt": "2026-10-21T09:34:16+05:30",
       "author": "tce-nitinc"
@@ -298,6 +314,18 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-11-18T18:20:46+05:30",
+      "author": "tce-nitinc",
+      "message": "added suraj shettigar widgets",
+      "widgets": [
+        182,
+        223,
+        239,
+        252,
+        253
+      ]
+    },
     {
       "date": "2026-11-18T16:52:25+05:30",
       "author": "tce-ashishg",
@@ -547,14 +575,6 @@
     },
     {
       "date": "2026-11-13T15:12:42+05:30",
-      "author": "tce-ashishg",
-      "message": "wg250 completed",
-      "widgets": [
-        250
-      ]
-    },
-    {
-      "date": "2026-11-13T15:11:31+05:30",
       "author": "tce-ashishg",
       "message": "wg250 completed",
       "widgets": [
