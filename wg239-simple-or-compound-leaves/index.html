@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="color-scheme" content="light only">
+<meta name="theme-color" content="#7CC79F">
+<meta name="format-detection" content="telephone=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Simple or Compound? Leaves</title>
+<link rel="stylesheet" href="./css/global_style.css">
+<link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+<div id="safe"></div>
+<div id="app" class="land">
+  <header>
+    <h1 class="brand">Simple or Compound?<span>Leaves</span></h1>
+    <div class="acts">
+      <span id="score" hidden aria-live="polite">★ 0 / 12</span>
+      <span id="versionId" class="versionText">b4_wg239_261113_01</span>
+      <button class="icon" id="soundBtn" aria-pressed="true" aria-label="Sound on or off" title="Sound on/off">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor" stroke="none"/><path class="on" d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/><path class="off" d="M16 9l6 6M22 9l-6 6"/></svg></button>
+      <button class="icon" id="helpBtn" aria-label="Help" title="Help"><span class="qm">?</span><svg class="helpPill" viewBox="4 4 180 70" aria-hidden="true" focusable="false"><path fill="#000" d="M39,4h106c19.33,0,35,15.67,35,35s-15.67,35-35,35H39c-19.33,0-35-15.67-35-35S19.67,4,39,4"/><circle cx="41.6" cy="39.86" r="25.4" fill="#fdcd02"/><path fill="#d96f05" d="M35.51,31.95l-6.8-3.27c.05-.35.13-.69.26-1.01.31-.75.68-1.47,1.12-2.15.58-.95,1.29-1.81,2.1-2.57,1.05-.92,2.27-1.63,3.59-2.1,1.67-.64,3.45-.94,5.25-.91,3.36-.08,6.63,1.03,9.24,3.14,2.49,1.87,3.93,4.8,3.9,7.91,0,3.92-2.62,6.98-7.82,9.18-.61.21-1.1.67-1.35,1.27-.21.73-.31,1.49-.29,2.26v2.59h-7.63v-5.05c-.02-.65.02-1.3.1-1.94.08-.56.29-1.1.6-1.58.38-.6.88-1.12,1.48-1.5.49-.31,1.17-.68,2-1.09s1.43-.75,1.84-.99c.45-.31.83-.72,1.11-1.2.35-.59.52-1.26.49-1.95.06-2.03-1.54-3.73-3.57-3.79-.06,0-.11,0-.17,0-1.36-.07-2.69.46-3.63,1.45-.88.92-1.51,2.06-1.82,3.3M40.86,48.86c2.93,0,5.3,2.37,5.3,5.3s-2.37,5.3-5.3,5.3c-1.4.01-2.74-.55-3.71-1.56-2.07-2.06-2.08-5.41-.02-7.48,0,0,.01-.01.02-.02.97-1.01,2.31-1.57,3.71-1.56"/><text x="84.21" y="51" fill="#fff" font-family="Roboto,'Segoe UI',Arial,sans-serif" font-size="35" font-weight="500">Help</text></svg></button>
+      <button class="icon" id="fsBtn" aria-label="Full screen" title="Full screen" hidden>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
+    </div>
+  </header>
+
+  <div class="body">
+    <div class="left">
+      <nav role="tablist" aria-label="Sections" id="tabs">
+        <button role="tab" data-tab="explore" aria-selected="true">Explore</button>
+        <button role="tab" data-tab="ven" aria-selected="false">Venation</button>
+        <button role="tab" data-tab="challenge" aria-selected="false">Challenge</button>
+      </nav>
+      <div class="stagebox" id="stagebox">
+        <svg id="scene" viewBox="0 0 1000 680" preserveAspectRatio="none" role="img" aria-label="Leaf scene"></svg>
+        <div id="toast" role="status" aria-live="polite" hidden></div>
+      </div>
+      <div class="hud" id="hud">
+        <div class="dock" id="dock" role="group" aria-label="Help, sound and full screen"></div>
+        <div><small id="h1l"></small><strong id="h1"></strong></div>
+        <div><small id="h2l"></small><strong id="h2"></strong><div class="hmeter" id="hm" hidden><i id="needle"></i></div></div>
+        <div><small id="h3l"></small><strong id="h3"></strong></div>
+      </div>
+    </div>
+
+    <aside class="panel" id="panel">
+      <!-- EXPLORE -->
+      <div class="pane on" id="pane-explore">
+        <p class="lead">This twig has one leaf. Drag the slider to cut into the lamina from the margin. When does a simple leaf become a compound leaf?</p>
+        <div><div class="lab"><label for="depth">Cut depth</label><output id="depthO">0%</output></div>
+          <input type="range" id="depth" min="0" max="100" step="1" value="0"></div>
+        <div><div class="lab">Cuts go towards the</div>
+          <div class="seg" id="cutTo"><button aria-pressed="true" data-v="mid">Midrib</button><button aria-pressed="false" data-v="pet">Petiole</button></div></div>
+        <div id="exQ" class="q" hidden></div>
+        <div class="row btns">
+          <button class="btn tog" id="budBtn" aria-pressed="false">Find the bud</button>
+          <button class="btn tog" id="partsBtn" aria-pressed="false">Show parts</button>
+          <button class="btn" id="exReset">Reset</button>
+        </div>
+      </div>
+
+      <!-- VENATION -->
+      <div class="pane" id="pane-ven">
+        <p class="lead">Rub away the green part of a leaf to see how its veins are arranged.</p>
+        <div><div class="lab">Choose a leaf</div>
+          <div class="seg" id="venLeaf"><button aria-pressed="true" data-v="peepal">Peepal</button><button aria-pressed="false" data-v="mango">Mango</button><button aria-pressed="false" data-v="banana">Banana</button><button aria-pressed="false" data-v="maize">Maize</button></div></div>
+        <div><div class="lab"><label for="rub">Rub away the green</label><output id="rubO">0%</output></div>
+          <input type="range" id="rub" min="0" max="100" step="1" value="0"></div>
+        <div id="venQ" class="q" hidden></div>
+        <div class="row btns"><button class="btn" id="venReset">Reset</button></div>
+      </div>
+
+      <!-- CHALLENGE -->
+      <div class="pane" id="pane-challenge">
+        <div class="card" id="chCard"><h2 id="taskNo"></h2><p id="taskText"></p></div>
+        <div class="row" id="budRow"><button class="btn tog" id="chBud" aria-pressed="false">Find the bud</button></div>
+        <div id="mcqBox" class="q"></div>
+        <div id="endCard" hidden>
+          <h3 style="margin:0 0 4px">Challenge complete</h3>
+          <div class="stars" id="endStars"></div>
+          <p id="endText"></p>
+        </div>
+        <div class="row btns" id="chNav" hidden><button class="btn primary" id="taskNext">Next card</button></div>
+        <div class="row btns" id="endNav" hidden><button class="btn primary" id="again">Play again</button></div>
+      </div>
+    </aside>
+  </div>
+    <div id="tour" hidden>
+    <div id="spot"></div>
+    <div id="hand"><div class="rip"></div><svg viewBox="0 0 48 60" width="46" height="58"><path d="M17 4c3 0 5 2 5 5v17l2-1c3-1 6 1 6 4v1l2-1c3-1 6 1 6 4v1c3-1 6 1 6 4v11c0 9-6 14-15 14h-3c-6 0-10-3-12-8L6 39c-1-3 1-6 4-6 2 0 3 1 4 2L12 9c0-3 2-5 5-5z" fill="#fff" stroke="#17302A" stroke-width="2.6" stroke-linejoin="round"/></svg></div>
+    <div id="tcard" role="dialog" aria-modal="true" aria-labelledby="tTitle">
+      <h3 id="tTitle"></h3><p id="tText"></p>
+      <div class="tnav"><span class="count" id="tCount"></span><button id="tskip">Skip</button>
+        <button class="btn" id="tBack">Back</button><button class="btn primary" id="tNext">Next</button></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+
+<script src="./js/script.js"></script>
+</body>
+</html>
