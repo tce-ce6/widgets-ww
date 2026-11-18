@@ -471,13 +471,13 @@ body {
 }
 
 /* ==========================================================================
-   Help (મદદ) button — top-left of the stage (the progress bar is top-right).
+   Help (મદદ) button — bottom-left, vertically centred on the button row.
    Art from wg202's help-btn.svg, label in Gujarati.
    ========================================================================== */
 .help-btn {
   position: absolute;
-  left: calc(40 * var(--u));
-  top: calc(30 * var(--u));
+  left: calc(51 * var(--u));
+  top: calc(947.5 * var(--u));
   z-index: 4;
   width: calc(176 * var(--u));
   height: calc(70 * var(--u));

@@ -20,6 +20,7 @@ const PALETTE=[
 const VB_W=560, VB_H=511;
 const BOUNDS={x0:6, y0:50, x1:VB_W-6, y1:VB_H-46};
 const LABEL_GAP=4;              // min space between speed labels
+const MIN_TEETH=6, MAX_TEETH=30; // teeth range for the inspector stepper
 
 // ---------- state ----------
 let gears=[];        // {id,teeth,x,y,colorIdx,angle(deg),omega(rad/s)}
@@ -375,13 +376,17 @@ function renderInspector(){
         teethInp=document.getElementById("teethInput"),
         speed=document.getElementById("inspSpeed"),
         actDriver=document.getElementById("actDriver"),
-        actDetach=document.getElementById("actDetach");
+        actDetach=document.getElementById("actDetach"),
+        incBtn=document.querySelector('.stepper [data-act="inc"]'),
+        decBtn=document.querySelector('.stepper [data-act="dec"]');
   if(!g){
     chip.style.background=getComputedStyle(document.body).getPropertyValue("--ink-faint")||"#b7bec2";
     name.textContent="No gear yet";
     role.textContent="Add a gear to begin";
     role.className="role";
     teethInp.value="";
+    incBtn.disabled=false;
+    decBtn.disabled=false;
     speed.textContent="—";
     actDriver.hidden=true;
     actDetach.hidden=true;
@@ -394,6 +399,9 @@ function renderInspector(){
   role.textContent=isDriver?"Driver":`Gear #${g.id}`;
   role.className=isDriver?"role driver":"role";
   teethInp.value=g.teeth;
+  // + stops at MAX_TEETH, − stops at MIN_TEETH
+  incBtn.disabled=g.teeth>=MAX_TEETH;
+  decBtn.disabled=g.teeth<=MIN_TEETH;
   computeSpeeds();
   const s=speedInfo(g);
   speed.textContent=s.spinning?`${s.cw?"↻":"↺"} ${s.mult.toFixed(2)}×`:"—";
@@ -411,7 +419,7 @@ function inspAction(act){
 function setTeeth(n){
   if(running) return;
   const g=byId(selectedId); if(!g) return;
-  n=Math.max(6,Math.min(60,n||g.teeth));
+  n=Math.max(MIN_TEETH,Math.min(MAX_TEETH,n||g.teeth));
   g.teeth=n;
   if(componentOf(g.id).size>1) relayout(g.id);
   keepInBounds();

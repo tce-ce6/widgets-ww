@@ -594,7 +594,12 @@ svg * {
     width: 55px;
     box-shadow: none;
     line-height: 1;
-      
+
+    }
+
+    .stepper button:disabled {
+      opacity: .45;
+      cursor: not-allowed;
     }
 
     .stepper input {
@@ -725,12 +730,7 @@ svg * {
 
     .insight-anim {
       position: absolute;
-      /* The art's picture starts at x 34, but the popup starts 50px off-screen
-         (x -50.55), so the animation sits 18px further right to keep "Slower"
-         visible; the padding keeps the white cover over the static art. */
       left: 34px;
-      padding-left: 18px;
-      box-sizing: content-box;
       top: 125px;
       width: 1083px;
       height: 409px;
