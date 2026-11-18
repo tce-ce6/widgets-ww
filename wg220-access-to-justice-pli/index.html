@@ -15,7 +15,7 @@
     <div class="mainContainerOuter">
       <div class="wdgetTitle">
         <h2>Access to Justice: PIL</h2>
-        <span id="versionId" class="versionText">b4_wg220_261117_01</span>
+        <span id="versionId" class="versionText">b4_wg220_261118_01</span>
       </div>
       <div class="svg-container" id="svg-container">
         <!-- Stage: 1920 x 1080, same coordinates as assets/images/layout.svg.
@@ -109,8 +109,8 @@
 
             <!-- 40 cells: one per 1,000 prisoners (built by script.js) -->
             <g id="cell-grid"></g>
-            <text class="counter" id="cell-counter" x="493" y="982">40,000</text>
-            <text class="counter-label" id="cell-label" x="482" y="1019">People in Indian jails whose trials have not yet begun.</text>
+            <text class="counter" id="cell-counter" x="525" y="982">40,000</text>
+            <text class="counter-label" id="cell-label" x="525" y="1019">People in Indian jails whose trials have not yet begun.</text>
 
             <!-- Petition form -->
             <g id="s5-form">
@@ -172,6 +172,14 @@
             </g>
           </g>
 
+          <!-- Help (yellow pill, bottom left, same as wg221) -->
+          <g id="help-btn" class="help-btn" role="button" tabindex="0" aria-label="Help: how to use this activity" transform="translate(29 985)">
+            <rect class="help-pill" width="176" height="70" rx="35" />
+            <circle cx="35" cy="35" r="27" fill="#d96f05" />
+            <text class="help-q" x="35" y="47">?</text>
+            <text class="help-label" x="80" y="48">Help</text>
+          </g>
+
           <!-- Confetti (the petition that was actually filed) -->
           <foreignObject id="confetti-layer" x="0" y="0" width="1920" height="1080" class="hidden">
             <div xmlns="http://www.w3.org/1999/xhtml" class="lottie-box" id="confetti"></div>
@@ -181,11 +189,31 @@
     </div>
   </div>
 
+  <!-- How to use tour (opened by the Help button) -->
+  <div id="tour" class="tour" aria-hidden="true">
+    <div id="tourSpot" class="tour-spot"></div>
+    <div id="tourDemo" class="tour-demo"></div>
+    <div id="tourCard" class="tour-card" role="dialog" aria-modal="true" aria-labelledby="tourTitle">
+      <button id="tourSkip" class="tour-skip" type="button" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div id="tourCount" class="tour-count"></div>
+      <h2 id="tourTitle"></h2>
+      <p id="tourText"></p>
+      <div class="tour-nav">
+        <div id="tourDots" class="tour-dots"></div>
+        <div class="tour-btns">
+          <button id="tourBack" class="tour-btn tour-btn--ghost" type="button">Back</button>
+          <button id="tourNext" class="tour-btn" type="button">Next</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <p id="sr" class="sr-only" aria-live="polite"></p>
 
   <script src="./js/lottie.js"></script>
   <script src="./js/lottie-data.js"></script>
   <script src="./js/script.js"></script>
+  <script src="./js/how-to-play.js"></script>
 </body>
 
 </html>

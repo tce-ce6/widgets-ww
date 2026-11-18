@@ -15,7 +15,7 @@
     <div class="mainContainerOuter">
       <div class="wdgetTitle">
         <h2>What Is The Blood Group?</h2>
-        <span id="versionId" class="versionText">b4_wg216_261117_03</span>
+        <span id="versionId" class="versionText">b4_wg216_261118_01</span>
       </div>
       <div class="svg-container" id="svg-container">
         <!-- Master canvas: 1920 x 1080, same coordinate space as assets/images/layout.svg.
@@ -74,8 +74,8 @@
             <text class="svg-btn-label" x="1200" y="1012" text-anchor="middle">Reset</text>
           </g>
 
-          <!-- "Insights" (layout.svg #insight_button) -->
-          <g id="btn-insights" class="svg-btn" role="button" tabindex="0" aria-label="Insights">
+          <!-- "Insights" (layout.svg #insight_button), moved to the bottom-right corner (x 1629-1880) -->
+          <g id="btn-insights" class="svg-btn" role="button" tabindex="0" aria-label="Insights" transform="translate(1589 0)">
             <g clip-path="url(#insights-clip)">
               <path fill="#927e03" d="M75,971h181c19.33,0,35,15.67,35,35s-15.67,35-35,35H75c-19.33,0-35-15.67-35-35s15.67-35,35-35" />
               <text class="svg-btn-label" x="124.429" y="1016">Insights</text>
@@ -84,6 +84,14 @@
               <path fill="#fff" d="M96.19,995.96c-.65,0-1.23-.43-1.44-1.05-1.18-3.06-3.92-5.25-7.16-5.73-1.31-.23-2.64-.2-3.94.08-.27.08-.55.11-.83.1-.65-.09-1.16-.62-1.24-1.28-.05-.69.38-1.33,1.04-1.54.67-.2,1.36-.33,2.06-.39,5.53-.62,10.79,2.52,12.86,7.68.36.73.06,1.62-.67,1.98-.21.11-.45.16-.69.15" />
               <path fill="#fff" d="M75.2,996.27c.81-.02,1.49.62,1.51,1.44v.16c.01,1.59.4,3.16,1.11,4.58.47.95,1.12,1.8,1.93,2.49.68.44.87,1.35.43,2.03-.04.06-.08.12-.13.17-.58.65-1.58.7-2.23.12-.04-.03-.07-.06-.1-.1-2.18-1.98-3.56-4.67-3.9-7.59-.07-.6-.11-1.21-.1-1.81,0-.81.64-1.47,1.45-1.48h.03" />
             </g>
+          </g>
+
+          <!-- Help (yellow pill, same as wg220 / wg221): bottom-left corner -->
+          <g id="help-btn" class="help-btn" role="button" tabindex="0" aria-label="Help: how to use this activity" transform="translate(40 971)">
+            <rect class="help-pill" width="176" height="70" rx="35" />
+            <circle cx="35" cy="35" r="27" fill="#d96f05" />
+            <text class="help-q" x="35" y="47">?</text>
+            <text class="help-label" x="80" y="48">Help</text>
           </g>
         </svg>
       </div>
@@ -103,9 +111,29 @@
     </div>
   </div>
 
+  <!-- How to use tour (opened by the Help button) -->
+  <div id="tour" class="tour" aria-hidden="true">
+    <div id="tourSpot" class="tour-spot"></div>
+    <div id="tourDemo" class="tour-demo"></div>
+    <div id="tourCard" class="tour-card" role="dialog" aria-modal="true" aria-labelledby="tourTitle">
+      <button id="tourSkip" class="tour-skip" type="button" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div id="tourCount" class="tour-count"></div>
+      <h2 id="tourTitle"></h2>
+      <p id="tourText"></p>
+      <div class="tour-nav">
+        <div id="tourDots" class="tour-dots"></div>
+        <div class="tour-btns">
+          <button id="tourBack" class="tour-btn tour-btn--ghost" type="button">Back</button>
+          <button id="tourNext" class="tour-btn" type="button">Next</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="./js/lottie.js"></script>
   <script src="./js/lottie-data.js"></script>
   <script src="./js/script.js"></script>
+  <script src="./js/how-to-play.js"></script>
 </body>
 
 </html>
