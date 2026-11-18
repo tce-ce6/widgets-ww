@@ -1,0 +1,829 @@
+/* ==========================================================================
+   Mission Land-based Neighbours (wg182)
+   Layout is authored on a fixed 1920x1080 stage (matching
+   en_geo_07_wg182_layout.svg) and scaled to the window by script.js.
+   ========================================================================== */
+
+:root {
+  --maroon: #490000;
+  --intro: #73002a;
+  --orange: #d9811d;
+  --itext: #fff56c;
+  --pink: #ff2c68;
+  --green: #4caf50;
+  --clue: #fbff7f;
+  --dot: #dce075;
+  --lime: #a2ff00;
+  --cream: #fffce8;
+}
+
+html,
+body {
+  overflow: hidden;
+}
+
+/* The widget backdrop fills the whole viewport. */
+body {
+  background: #4d0000 url("../assets/images/bg.svg") center / cover no-repeat;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mainContainerOuter {
+  background: transparent;
+}
+
+/* Layering, bottom to top: body backdrop -> #viewport (the widget) ->
+   body::before (popup backdrop) -> #modal-layer (open popup) -> title. */
+#viewport,
+#modal-layer {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+}
+
+#viewport {
+  z-index: 1;
+}
+
+body.has-modal::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  background: rgba(0, 0, 0, 0.8);
+}
+
+#modal-layer {
+  z-index: 3;
+  pointer-events: none;
+}
+
+body.has-modal #modal-layer {
+  pointer-events: auto;
+}
+
+#stage,
+#modal-stage {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1920px;
+  height: 1080px;
+  transform-origin: 0 0;
+  overflow: hidden;
+  color: #fff;
+  font-family: "Roboto", sans-serif;
+  line-height: 1.2;
+}
+
+#stage *,
+#stage *::before,
+#stage *::after,
+#modal-stage *,
+#modal-stage *::before,
+#modal-stage *::after {
+  box-sizing: border-box;
+}
+
+button {
+  font-family: "Roboto", sans-serif;
+}
+
+button:focus-visible,
+.flag:focus-visible {
+  outline: 5px solid #fff;
+  outline-offset: 3px;
+}
+
+/* ---------- title (outside the scaled stage, same as previous widgets) ---------- */
+/* z-index keeps it above #modal-layer, so it stays bright over the popup backdrop */
+#land-widget .wdgetTitle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  left: 0;
+  top: 0;
+  z-index: 4;
+}
+
+#land-widget .wdgetTitle h2 {
+  font-size: 25px;
+  font-weight: 600;
+  text-align: left;
+  background: var(--orange);
+  padding: 8px 40px;
+  color: #fff;
+  border-radius: 0 0px 20px 20px;
+  white-space: nowrap;
+}
+
+#land-widget .versionText {
+  position: absolute;
+  right: 20px;
+  top: 10px !important;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.25);
+}
+
+/* ---------- screens ---------- */
+.screen {
+  position: absolute;
+  inset: 0;
+  display: none;
+}
+
+.screen.is-active {
+  display: block;
+}
+
+/* Every text class sets its own margin/size/colour, which overrides the
+   generic p/h3 rules in global_style.css. */
+.itext {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  margin: 0;
+  color: var(--itext);
+  font-size: 28px;
+  font-weight: 300;
+  font-style: italic;
+  line-height: 50px;
+  text-align: center;
+}
+
+.itext b {
+  font-weight: 600;
+}
+
+.itext.itext--intro {
+  top: 630px;
+}
+
+.itext.itext--game {
+  top: 90px;
+}
+
+/* ---------- buttons ---------- */
+.pill-btn {
+  position: absolute;
+  height: 93px;
+  padding: 0 30px;
+  border: none;
+  border-radius: 47px;
+  color: #fff;
+  font-size: 35px;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.pill-btn:active {
+  transform: translateY(3px);
+}
+
+.pill-btn--start {
+  left: 805.5px;
+  top: 779px;
+  width: 309px;
+  background: var(--pink);
+}
+
+.pill-btn--next {
+  left: 825px;
+  top: 857px;
+  width: 270px;
+  background: var(--green);
+}
+
+.modal.is-missed .pill-btn--next {
+  top: 949px;
+}
+
+/* ---------- intro ---------- */
+.intro-panel {
+  position: absolute;
+  left: 421.5px;
+  top: 167px;
+  width: 1077px;
+  height: 399px;
+  padding: 34px 50px 0;
+  background: var(--intro);
+  border: 2px dashed var(--orange);
+  border-radius: 28px;
+  font-size: 32px;
+  line-height: 38px;
+}
+
+.intro-panel p {
+  margin: 0;
+  color: #fff;
+  font-size: 32px;
+  line-height: 38px;
+}
+
+.intro-row {
+  position: absolute;
+  left: 51px;
+  display: flex;
+  align-items: flex-start;
+}
+
+.intro-row img {
+  flex: 0 0 auto;
+}
+
+.intro-row--land {
+  top: 122px;
+}
+
+.intro-row--land img {
+  width: 105px;
+  height: 80px;
+  margin-right: 41px;
+}
+
+.intro-panel .intro-row--land p {
+  margin-top: 1px;
+}
+
+.intro-row--sea {
+  top: 244px;
+}
+
+.intro-row--sea img {
+  width: 85px;
+  height: 80px;
+  margin: 19px 51px 0 10px;
+}
+
+/* ---------- map ---------- */
+.map-panel {
+  position: absolute;
+  left: 34px;
+  top: 151px;
+  width: 1366px;
+  height: 783px;
+  background: var(--maroon);
+  border: 2px dashed var(--orange);
+  border-radius: 28px;
+}
+
+.map {
+  position: absolute;
+  left: 28px;
+  top: 27px;
+  width: 1307px;
+  height: 726px;
+  overflow: hidden;
+  border-radius: 23px;
+  background: #93cfe5;
+}
+
+#mapBase,
+#mapBase svg,
+.map-overlay {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1307px;
+  height: 726px;
+}
+
+/* sea names and the map's grid lines never block taps or count as land */
+#mapBase text,
+#map-Ocean_x5F_Sea,
+#map-arctic_circle {
+  pointer-events: none;
+}
+
+.map.is-armed {
+  cursor: pointer;
+}
+
+/* the overlay lets taps through to the base map, except on the six countries */
+.map-overlay {
+  pointer-events: none;
+}
+
+.country {
+  fill: transparent;
+  pointer-events: visiblePainted;
+  cursor: pointer;
+  transition: fill 0.4s;
+}
+
+.country:focus {
+  outline: none;
+}
+
+.country:focus-visible path {
+  stroke: #fff;
+  stroke-width: 2px;
+}
+
+/* found: the country's colour with a dashed black outline, as in the layout */
+.country.is-found {
+  fill: var(--country-color);
+  fill-opacity: var(--country-opacity, 1);
+  stroke: #000;
+  stroke-width: 2px;
+  stroke-dasharray: 4 2;
+}
+
+.country.is-wrong {
+  animation: wrong-flash 0.6s ease-out;
+}
+
+@keyframes wrong-flash {
+  0%, 100% { fill: transparent; }
+  30% { fill: rgba(255, 0, 0, 0.45); }
+}
+
+.map-pins {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.pin {
+  position: absolute;
+  width: 2px;
+  background: #000;
+}
+
+.pin img {
+  position: absolute;
+  left: 1px;
+  top: 0;
+  display: block;
+}
+
+.pin-label {
+  position: absolute;
+  height: 41px;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border: 2px solid #000;
+  border-radius: 16px;
+  color: #000;
+  font-size: 22px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* ---------- flag panel ---------- */
+.flag-panel {
+  position: absolute;
+  left: 1426px;
+  top: 151px;
+  width: 450px;
+  height: 783px;
+  background: var(--maroon);
+  border: 2px dashed var(--orange);
+  border-radius: 28px;
+}
+
+.flag-panel[hidden] {
+  display: none;
+}
+
+.flag-panel [hidden] {
+  display: none !important;
+}
+
+.flag-panel__title {
+  position: absolute;
+  left: 0;
+  top: 10px;
+  width: 100%;
+  margin: 0;
+  color: #fff;
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 36px;
+  text-align: center;
+}
+
+.flags {
+  position: absolute;
+  left: 22px;
+  top: 55px;
+  width: 408px;
+  display: grid;
+  grid-template-columns: 195px 195px;
+  gap: 29px 18px;
+}
+
+.flag {
+  position: relative;
+  width: 195px;
+  height: 110px;
+  padding: 0;
+  background: none;
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+}
+
+.flag img {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.flag::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 4px solid transparent;
+  pointer-events: none;
+}
+
+.flag.is-selected::after {
+  border-color: var(--lime);
+}
+
+/* Nepal's flag is not a rectangle: it sits centred in its cell and its
+   selection outline follows the flag's shape. */
+.flag--shaped img {
+  width: auto;
+  margin: 0 auto;
+}
+
+.flag--shaped::after {
+  display: none;
+}
+
+.flag__outline {
+  position: absolute;
+  left: 0;
+  top: 0;
+  overflow: visible;
+  fill: none;
+  stroke: transparent;
+  stroke-width: 4px;
+  pointer-events: none;
+}
+
+.flag.is-selected .flag__outline {
+  stroke: var(--lime);
+}
+
+.flag.is-done {
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+/* ---------- clue area (positions inside the flag panel) ---------- */
+.clue-hint {
+  position: absolute;
+  left: 20px;
+  top: 520px;
+  width: 410px;
+  margin: 0;
+  color: var(--clue);
+  font-size: 24px;
+  font-weight: 300;
+  line-height: 30px;
+  text-align: center;
+}
+
+.clue-dots {
+  position: absolute;
+  left: 107px;
+  top: 479px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+
+.clue-dots__label {
+  margin-right: -12px; /* leaves room for the ring round the first dot */
+  color: var(--dot);
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 30px;
+}
+
+.clue-dots i {
+  width: 23px;
+  height: 23px;
+  border-radius: 50%;
+  background: var(--dot);
+  opacity: 0.3;
+}
+
+.clue-dots i.is-on {
+  opacity: 1;
+}
+
+/* the current clue: a rounded ring around its dot, blinking 3 times when it changes */
+.clue-dots i.is-active {
+  outline: 3px solid var(--dot);
+  outline-offset: 4px;
+}
+
+.clue-dots i.is-blink {
+  animation: clue-blink 0.4s ease-in-out 3;
+}
+
+@keyframes clue-blink {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.1;
+  }
+}
+
+.clue-text {
+  position: absolute;
+  left: 20px;
+  top: 515px;
+  width: 410px;
+  height: 112px;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--clue);
+  font-size: 24px;
+  font-weight: 300;
+  line-height: 29px;
+  text-align: center;
+}
+
+/* long clues use the layout's smaller size so they still fit the box */
+.clue-text.is-small {
+  font-size: 21px;
+  line-height: 25px;
+}
+
+/* single flex item, so the sentence (with any <sup>/<sub>) wraps as normal text */
+.clue-text__inner {
+  display: block;
+  max-width: 100%;
+}
+
+.clue-text sup,
+.clue-text sub,
+.result-card__clues sup,
+.result-card__clues sub {
+  font-size: 0.6em;
+  line-height: 0;
+}
+
+.clue-question {
+  position: absolute;
+  left: 0;
+  top: 658px;
+  width: 100%;
+  margin: 0;
+  color: #fff;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 28px;
+  text-align: center;
+}
+
+.clue-wrong {
+  position: absolute;
+  left: 19px;
+  top: 703px;
+  width: 408px;
+  height: 65px;
+  margin: 0;
+  padding: 3px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffdcdc;
+  border: 1px dashed #f00;
+  border-radius: 12px;
+  color: #f00;
+  font-size: 20px;
+  line-height: 1.1;
+  text-align: center;
+}
+
+/* ---------- end panel (over the lower part of the flag panel) ---------- */
+.end-panel {
+  position: absolute;
+  left: 1426px;
+  top: 266px;
+  width: 450px;
+  height: 502px;
+  background: var(--maroon);
+  border: 2px dashed var(--orange);
+  border-radius: 28px;
+}
+
+.end-panel[hidden] {
+  display: none;
+}
+
+.end-panel__title {
+  position: absolute;
+  left: 0;
+  top: 27px;
+  width: 100%;
+  margin: 0;
+  color: #00ff3b;
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 48px;
+  text-align: center;
+}
+
+.end-panel__text {
+  position: absolute;
+  left: 60px;
+  top: 97px;
+  width: 330px;
+  margin: 0;
+  color: var(--clue);
+  font-size: 24px;
+  font-weight: 300;
+  line-height: 29px;
+  text-align: center;
+}
+
+.end-panel__text b {
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.end-panel__badge {
+  position: absolute;
+  left: 124px;
+  top: 172px;
+  width: 200px;
+  height: 220px;
+}
+
+.pill-btn.pill-btn--home {
+  left: 123.5px;
+  top: 458px;
+  width: 199px;
+  background: var(--green);
+}
+
+/* ---------- result popup ---------- */
+.modal {
+  position: absolute;
+  inset: 0;
+}
+
+.modal[hidden] {
+  display: none;
+}
+
+.result-card [hidden] {
+  display: none;
+}
+
+/* "Correctly placed" version: flag, name, tick line, capital, clues */
+.result-card {
+  position: absolute;
+  left: 325px;
+  top: 179px;
+  width: 1270px;
+  height: 717px;
+  padding: 39px 94px 0;
+  background: var(--cream);
+  border: 6px solid var(--orange);
+  border-radius: 16px;
+  color: #000;
+  text-align: center;
+}
+
+.result-card p {
+  margin: 0;
+  color: #000;
+}
+
+.result-card__title {
+  margin: 0;
+  color: #00851f;
+  font-size: 38px;
+  font-weight: 500;
+  line-height: 46px;
+}
+
+.result-card p.result-card__intro {
+  margin-top: 13px;
+  font-size: 26px;
+  font-weight: 500;
+  line-height: 32px;
+}
+
+.result-card__flag {
+  display: block;
+  width: 195px;
+  height: 110px;
+  margin: 0 auto;
+}
+
+/* Nepal's flag is narrower than the others */
+.result-card__flag.is-shaped {
+  width: auto;
+}
+
+.result-card p.result-card__name {
+  margin-top: 23px;
+  color: #000485;
+  font-size: 60px;
+  font-weight: 700;
+  line-height: 72px;
+}
+
+.result-card p.result-card__correct {
+  margin-top: 18px;
+  color: #00851f;
+  font-size: 32px;
+  font-weight: 500;
+  line-height: 40px;
+}
+
+.result-card p.result-card__capital {
+  margin-top: 38px;
+  font-size: 28px;
+  line-height: 34px;
+}
+
+.result-card__capital span {
+  font-weight: 500;
+}
+
+.result-card__clues {
+  margin: 39px 0 0;
+  padding: 0;
+  list-style: none;
+  text-align: left;
+  font-size: 24px;
+  line-height: 32px;
+}
+
+.result-card__clues li {
+  position: relative;
+  padding-left: 30px;
+}
+
+.result-card__clues li::before {
+  content: "\25CF";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: 20px;
+}
+
+.result-card p.result-card__next {
+  margin-top: 30px;
+  color: #005e5c;
+  font-size: 24px;
+  font-style: italic;
+  line-height: 30px;
+}
+
+/* long clues would run under the Next Country button: tighten the spacing */
+.result-card.is-tight .result-card__clues {
+  margin-top: 20px;
+  line-height: 29px;
+}
+
+/* "You used all the clues" version is taller and starts higher, as in the layout */
+.modal.is-missed .result-card {
+  left: 320px;
+  top: 119px;
+  width: 1280px;
+  height: 897px;
+  padding: 42px 126px 0;
+}
+
+.modal.is-missed .result-card__flag {
+  margin-top: 18px;
+}
+
+.modal.is-missed .result-card p.result-card__capital {
+  margin-top: 6px;
+}
+
+.modal.is-missed .result-card__clues {
+  margin-top: 30px;
+  line-height: 34px;
+}
+
+.modal.is-missed .result-card.is-tight .result-card__clues {
+  margin-top: 16px;
+  line-height: 30px;
+}
