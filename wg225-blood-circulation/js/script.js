@@ -8,19 +8,25 @@
        Body -> Right atrium -> Right ventricle -> Lungs -> Left atrium
             -> Left ventricle -> Body
      Pick a flag (tap) and tap the part of the diagram, or drag it there.
-     - Right flag, right place: the blood moves there, a numbered pin drops in,
-       the track fills, and a fact is shown.
+     - Right flag, right place: the blood flows on to that part and keeps
+       flowing up to it, a numbered pin drops in, the track fills, and a fact
+       is shown.
      - Wrong flag (not the next one): hint, the flag goes back.
      - Right flag, wrong place: hint, the flag stays picked.
      - After two wrong tries, the correct part glows.
-     When all six are placed, the blood flows round the whole path with a
-     caption for each part, and blood cells keep streaming round.
+     When all six are placed, blood flows round the whole path (with white
+     arrows on the vessels) and a caption is shown for each part.
 
-   Visuals:
-     - Diagram, white pins, Insights button: assets/images/layout.svg.
-     - Moving blood + arrows: LOTTIE_DATA.flow (circulation.json). The drop
-       stops at each part; FLOW_STOP / FLOW_RESUME below are those frames.
-     - Streaming cells: LOTTIE_DATA.loop (loop-circulation.json).
+   Review changes (en_evs_05_wg225_tech.xlsx):
+     - The blood is shown as dots moving along the vessels (drawn here, see
+       ROUTE), not the old Lottie drop + arrows. After each flag the dots keep
+       flowing up to that flag and stop there. Arrows appear only once the
+       whole path is complete. Dots are bigger and slower.
+     - Flag 3 (lungs): the dots stop at the left lung, not between the lungs.
+     - Feedback after each try is shown at the top (instruction line).
+     - "Restart" (was "Start again") sits bottom right, hidden until the first
+       flag is placed. Help button added (js/how-to-play.js).
+     - Larger heart touch areas (one quarter of the heart per chamber).
    ========================================================================== */
 
 (function () {
@@ -64,30 +70,98 @@
     'The left ventricle pushes the blood out to every part of the body.'
   ];
   const CAPTION_END = 'Then the blood comes back to the heart, and the trip starts again.';
-  const INSTR_START = 'Place the flags to complete the path and observe the blood flow without any obstruction.';
+  const INSTR_START = 'Pick a flag, then tap its spot on the picture. Remember to place the flags in the order the blood travels.';
+  const MSG_OK = 'Flag placed correctly!';
+  const MSG_NEXT = 'Where does the blood go next?';
+  const MSG_ALL = 'Brilliant! Every flag is in the right place.';
 
   // ---------------------------------------------------------------------
-  // Animation timing (frames of LOTTIE_DATA.flow, 30 fps)
-  // The drop pauses at each part; it arrives at FLOW_STOP[i] and leaves at
-  // FLOW_RESUME[i]. (Measured from circulation.json.)
+  // Geometry (canvas units)
   // ---------------------------------------------------------------------
-  const FLOW_STOP = [0, 100, 180, 452, 550, 670, 930];
-  const FLOW_RESUME = [0, 150, 270, 452, 630, 750, 930];
-  const FLOW_END = 930;
-  // Which part is being explained during the full run, by frame.
-  const STAGE_FROM = [0, 95, 178, 300, 540, 660, 790];
-  const STEP_MS = 1900; // reduced-motion: time per part in the full run
-
-  // Diagram geometry (layout.svg units)
-  const PIN_TIP = { 1: [419, 589], 2: [447, 639], 3: [407, 379], 4: [482, 575], 5: [498, 626], 6: [477, 766] };
+  const PIN_TIP = { 1: [419, 589], 2: [447, 639], 3: [407, 379], 4: [482, 575], 5: [498, 626], 6: [467, 816] };
   const WHITE_PIN_ID = { 1: 'Group_598', 2: 'Group_601', 3: 'Group_602', 4: 'Group_599', 5: 'Group_600', 6: 'Group_603' };
   const TRACK_X = [1011.8, 1135.8, 1242.8, 1347.8, 1439.8, 1546.8, 1674.8];
-  const TRACK_Y = 859.8;
+  const TRACK_Y = 790;
   const BLUE = '#0c51c4', RED = '#ff0000';
   const SVGNS = 'http://www.w3.org/2000/svg';
   // Teardrop pin (layout.svg diagram-location-icon, outer shape), tip at (16.38, 46.83)
   const PIN_PATH = 'M16.38,1.53c8.4,0,15.2,6.81,15.21,15.21,0,6.08-11.67,23.76-15.21,30.09C12.84,40.5,1.17,22.82,1.17,16.74c0-8.4,6.81-15.2,15.21-15.21Z';
   const FLAG_ICON = '<svg viewBox="0 0 32.94 47.36" aria-hidden="true"><path fill="#fff" d="M16.47,0C7.37,0,0,7.37,0,16.47c0,6.59,12.64,25.74,16.47,30.89,3.83-5.15,16.47-24.3,16.47-30.89C32.94,7.37,25.57,0,16.47,0ZM16.47,25.38c-4.92,0-8.91-3.99-8.91-8.91s3.99-8.91,8.91-8.91,8.91,3.99,8.91,8.91-3.99,8.91-8.91,8.91Z"/></svg>';
+
+  // ---------------------------------------------------------------------
+  // The blood's route along the vessels.
+  // Points along the centre of each vessel, taken from the arrow positions of
+  // the old circulation.json (380x760 comp placed at 283.3,204.4, scale .961).
+  // c() converts those comp coordinates to canvas units.
+  //   stop: n   — flag n's place on the route (the dots stop here)
+  //   arrow     — a white arrow is drawn here once the path is complete
+  //   tone      — colour of the blood on the leg that starts here
+  //   gap       — the blood passes through the lungs here: no dots drawn
+  // ---------------------------------------------------------------------
+  const c = (x, y, o) => Object.assign({ x: 283.3 + 0.961 * x, y: 204.4 + 0.961 * y }, o || {});
+  const p = (x, y, o) => Object.assign({ x, y }, o || {});
+  const ROUTE = [
+    // Start: blood leaves the body on the left (blue) …
+    c(130, 599, { stop: 0, tone: 'poor' }),
+    c(106, 599, { arrow: 1 }), c(66, 599, { arrow: 1 }), c(33, 595), c(23, 552, { arrow: 1 }),
+    c(23, 482, { arrow: 1 }), c(23, 408, { arrow: 1 }), c(29, 358), c(72, 352, { arrow: 1 }), c(135, 360),
+    // … into the right atrium, down to the right ventricle …
+    p(419, 570, { stop: 1 }),
+    p(447, 620, { stop: 2 }),
+    // … up and out to the lungs (left lung only: the dots stop there) …
+    c(181, 330), c(146, 313, { arrow: 1 }), c(51, 314, { arrow: 1 }), c(13, 284), c(13, 220, { arrow: 1 }),
+    c(23, 172), c(68, 165, { arrow: 1 }),
+    p(407, 360, { stop: 3, gap: true }),
+    // … through the lungs, where it turns red …
+    p(528, 360, { tone: 'rich' }),
+    c(308, 164, { arrow: 1 }), c(358, 178), c(365, 228, { arrow: 1 }), c(365, 286, { arrow: 1 }),
+    c(361, 348), c(316, 362, { arrow: 1 }), c(248, 362),
+    // … back into the left atrium, down to the left ventricle …
+    p(482, 556, { stop: 4 }),
+    p(498, 607, { stop: 5 }),
+    // … out through the big red vessel and down to the body.
+    c(158, 342), c(117, 336, { arrow: 1 }), c(117, 293), c(167, 290, { arrow: 1 }), c(237, 290, { arrow: 1 }),
+    c(305, 289, { arrow: 1 }), c(341, 324), c(341, 409, { arrow: 1 }), c(341, 468, { arrow: 1 }), c(342, 540),
+    c(332, 594), c(276, 599, { arrow: 1 }),
+    p(467, 800, { stop: 6, tone: 'poor' })
+    // (the route then closes back to the start, through the body)
+  ];
+  const GAP_LEN = 24;          // the lungs crossing counts as this long (no dots shown)
+  const DOT_R = 7;             // dot radius
+  const DOT_GAP = 30;          // distance between dots
+  const DOT_SPEED = 55;        // units per second while flowing
+  const FRONT_SPEED = 170;     // how fast the blood reaches a newly placed flag
+  const STAGE_MS = 2600;       // full run: time per part
+
+  // Lengths along the route (the closing leg back to the start is added last)
+  const LEGS = [];
+  let routeLen = 0;
+  const STOP_AT = [];
+  ROUTE.forEach((pt, i) => {
+    pt.s = routeLen;
+    if (pt.stop != null) STOP_AT[pt.stop] = routeLen;
+    const nx = ROUTE[(i + 1) % ROUTE.length];
+    const real = Math.hypot(nx.x - pt.x, nx.y - pt.y);
+    const len = pt.gap ? GAP_LEN : real;
+    LEGS.push({ a: pt, b: nx, len, gap: !!pt.gap });
+    routeLen += len;
+  });
+  // Tone of each leg: carried forward from the last point that set one
+  let tone = 'poor';
+  LEGS.forEach(l => { if (l.a.tone) tone = l.a.tone; l.tone = tone; });
+  const LOOP_LEN = routeLen;
+
+  function pointAt(s) {
+    s = ((s % LOOP_LEN) + LOOP_LEN) % LOOP_LEN;
+    for (const l of LEGS) {
+      if (s <= l.a.s + l.len) {
+        const t = l.len ? (s - l.a.s) / l.len : 0;
+        return { x: l.a.x + (l.b.x - l.a.x) * t, y: l.a.y + (l.b.y - l.a.y) * t, gap: l.gap, tone: l.tone };
+      }
+    }
+    const l = LEGS[LEGS.length - 1];
+    return { x: l.b.x, y: l.b.y, gap: false, tone: l.tone };
+  }
 
   const reduceMQ = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
   const reduced = () => !!reduceMQ.matches;
@@ -104,6 +178,9 @@
   const connector = $('#fb-connector');
   const trackG = $('#track');
   const numPinsG = $('#num-pins');
+  const dotsG = $('#flow-dots');
+  const arrowsG = $('#flow-arrows');
+  const restartBtn = $('#btn-restart');
   const srEl = $('#sr');
   const spots = all('.spot', svg);
   const modalLayer = $('#modal-layer');
@@ -115,7 +192,7 @@
     if (parent) parent.appendChild(e);
     return e;
   }
-  function esc(s) { return String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
+  function esc(s) { return String(s).replace(/[&<>"]/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[ch])); }
   function announce(msg) { srEl.textContent = ''; setTimeout(() => { srEl.textContent = msg; }, 30); }
   function now() { return performance.now(); }
   function shuffled(a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
@@ -128,53 +205,102 @@
   }
 
   // ---------------------------------------------------------------------
-  // Lottie
+  // Blood flow: dots along the route
   // ---------------------------------------------------------------------
-  const clone = d => JSON.parse(JSON.stringify(d));
-  const flowAnim = lottie.loadAnimation({
-    container: $('#lottie-flow'), renderer: 'svg', loop: false, autoplay: false,
-    animationData: clone(window.LOTTIE_DATA.flow)
-  });
-  const loopAnim = lottie.loadAnimation({
-    container: $('#lottie-loop'), renderer: 'svg', loop: true, autoplay: false,
-    animationData: clone(window.LOTTIE_DATA.loop)
-  });
-  const loopBox = $('#lottie-loop');
-  loopBox.style.visibility = 'hidden';
-  flowAnim.addEventListener('DOMLoaded', () => flowAnim.goToAndStop(0, true));
+  // flow.front: how far along the route the blood has got (dots show up to
+  // here). flow.loop: the whole path is complete, dots go round and round.
+  const flow = { front: 0, loop: false, paused: false, phase: 0, last: 0, raf: 0, reach: null };
+  const DOT_COUNT = Math.ceil(LOOP_LEN / DOT_GAP) + 2;
+  const dots = [];
+  for (let i = 0; i < DOT_COUNT; i++) dots.push(mk('circle', { class: 'blood-dot', r: DOT_R }, dotsG));
 
-  let flowGen = 0; // bumps whenever the flow animation is taken over
-
-  /** Plays flow frames [from, to]; onFrame gets the absolute frame. Resolves
-   *  true when done, false if something else took over meanwhile. */
-  function playFlow(from, to, onFrame) {
-    const myGen = ++flowGen;
-    return new Promise(resolve => {
-      if (reduced() || from >= to) {
-        flowAnim.goToAndStop(to, true);
-        if (onFrame) onFrame(to);
-        resolve(true);
-        return;
+  function drawDots() {
+    const visibleLen = flow.loop ? LOOP_LEN : flow.front;
+    // Evenly spaced dots that all move forward together: dot i sits at
+    // (phase mod gap) + i * gap. Past the front they are hidden, so a steady
+    // stream runs from the start up to the front.
+    const ph = flow.phase % DOT_GAP;
+    dots.forEach((d, i) => {
+      let s = ph + i * DOT_GAP;
+      let show;
+      if (flow.loop) {
+        show = s < LOOP_LEN;
+      } else {
+        show = visibleLen > 0 && s <= visibleLen;
       }
-      const onEnter = () => {
-        if (myGen !== flowGen) return;
-        if (onFrame) onFrame(flowAnim.firstFrame + flowAnim.currentFrame);
-      };
-      const onDone = () => {
-        flowAnim.removeEventListener('enterFrame', onEnter);
-        flowAnim.removeEventListener('complete', onDone);
-        resolve(myGen === flowGen);
-      };
-      flowAnim.addEventListener('enterFrame', onEnter);
-      flowAnim.addEventListener('complete', onDone);
-      flowAnim.playSegments([from, to], true);
+      if (!show) { d.setAttribute('visibility', 'hidden'); return; }
+      const pt = pointAt(s);
+      if (!show || pt.gap) { d.setAttribute('visibility', 'hidden'); return; }
+      // Fade in at the start and out at the front (not when going round)
+      let op = 1;
+      if (!flow.loop) {
+        op = Math.min(1, s / 18, (visibleLen - s) / 18);
+        if (op <= 0) { d.setAttribute('visibility', 'hidden'); return; }
+      }
+      d.setAttribute('visibility', 'visible');
+      d.setAttribute('cx', pt.x.toFixed(1));
+      d.setAttribute('cy', pt.y.toFixed(1));
+      d.setAttribute('opacity', op.toFixed(2));
+      d.setAttribute('class', 'blood-dot ' + (pt.tone === 'rich' ? 'rich' : 'poor'));
     });
   }
 
-  function stopFlowAnim(frame) {
-    flowGen++;
-    flowAnim.pause();
-    flowAnim.goToAndStop(frame, true);
+  function tick(t) {
+    const dt = flow.last ? Math.min((t - flow.last) / 1000, 0.1) : 0;
+    flow.last = t;
+    if (!flow.paused && !reduced()) {
+      flow.phase += DOT_SPEED * dt;
+      if (flow.reach) {
+        const r = flow.reach;
+        flow.front = Math.min(r.to, flow.front + FRONT_SPEED * dt);
+        if (flow.front >= r.to) { flow.reach = null; r.done(); }
+      }
+    }
+    drawDots();
+    flow.raf = requestAnimationFrame(tick);
+  }
+  flow.raf = requestAnimationFrame(tick);
+
+  /** Lets the blood flow on to flag m. Resolves when it gets there. */
+  function reachFlag(m) {
+    const to = STOP_AT[m];
+    if (reduced() || to <= flow.front) {
+      flow.front = Math.max(flow.front, to);
+      return Promise.resolve();
+    }
+    return new Promise(resolve => {
+      const r = { to, done: resolve };
+      flow.reach = r;
+      // Safety net: if animation frames stall (e.g. a background tab),
+      // finish the move anyway so the flag still gets placed.
+      const ms = (to - flow.front) / FRONT_SPEED * 1000 + 700;
+      setTimeout(() => {
+        if (flow.reach !== r) return;
+        flow.reach = null;
+        flow.front = to;
+        r.done();
+      }, ms);
+    });
+  }
+
+  function resetFlow() {
+    if (flow.reach) { const r = flow.reach; flow.reach = null; r.done(); }
+    flow.front = 0;
+    flow.loop = false;
+    flow.paused = false;
+    flow.phase = 0;
+    arrowsG.textContent = '';
+  }
+
+  // White arrows on the vessels, pointing the way the blood goes
+  function drawArrows() {
+    arrowsG.textContent = '';
+    ROUTE.forEach((pt, i) => {
+      if (!pt.arrow) return;
+      const nx = ROUTE[i + 1];
+      const ang = Math.atan2(nx.y - pt.y, nx.x - pt.x) * 180 / Math.PI;
+      mk('path', { class: 'flow-arrow', d: 'M-7,-10 L5,0 L-7,10', transform: `translate(${pt.x.toFixed(1)} ${pt.y.toFixed(1)}) rotate(${ang.toFixed(1)})` }, arrowsG);
+    });
   }
 
   // ---------------------------------------------------------------------
@@ -246,20 +372,30 @@
 
   function resetArt() {
     stopFull();
+    resetFlow();
     numPinsG.textContent = '';
     for (let i = 1; i <= 6; i++) setWhitePin(i, true);
     all('.chamber-name', svg).forEach(n => n.classList.remove('shown'));
     all('.dp', svg).forEach(d => d.classList.remove('gone'));
     spots.forEach(s => s.classList.remove('glow', 'nope', 'lit', 'drop-target'));
-    stopFlowAnim(0);
   }
 
   function unglow() { spots.forEach(s => s.classList.remove('glow')); }
 
   // ---------------------------------------------------------------------
-  // Feedback panel + instruction
+  // Top line (instruction / feedback after each try) and the fact card
   // ---------------------------------------------------------------------
-  function setInstr(t) { instrEl.textContent = t; }
+  function setInstr(t) { instrEl.className = 'instr'; instrEl.textContent = t; }
+
+  function instrGood(msg, then) {
+    instrEl.className = 'instr good';
+    instrEl.innerHTML = `<p><b class="ok">${esc(msg)}</b>${then ? ' ' + esc(then) : ''}</p>`;
+  }
+
+  function instrBad(msg, hint) {
+    instrEl.className = 'instr bad';
+    instrEl.innerHTML = `<p class="bad-msg">${esc(msg)}</p>${hint ? `<p class="bad-hint">${esc(hint)}</p>` : ''}`;
+  }
 
   function showConnector(step) {
     if (step == null) { connector.classList.add('hidden'); return; }
@@ -268,19 +404,12 @@
     connector.classList.remove('hidden');
   }
 
-  function feedGood(msg, title, text, step) {
-    feedbackEl.innerHTML =
-      (msg ? `<p class="fb-msg">${esc(msg)}</p>` : '') +
-      `<div class="fb-box"><p class="fb-title">${esc(title)}</p>${text ? `<p>${esc(text)}</p>` : ''}</div>`;
+  function factCard(title, text, step) {
+    feedbackEl.innerHTML = `<div class="fb-box"><p class="fb-title">${esc(title)}</p>${text ? `<p>${esc(text)}</p>` : ''}</div>`;
     showConnector(step);
   }
 
-  function feedBad(msg, hint) {
-    feedbackEl.innerHTML = `<div class="fb-bad"><p>${esc(msg)}</p>${hint ? `<p class="fb-hint">${esc(hint)}</p>` : ''}</div>`;
-    showConnector(null);
-  }
-
-  function feedClear() { feedbackEl.innerHTML = ''; showConnector(null); }
+  function factClear() { feedbackEl.innerHTML = ''; showConnector(null); }
 
   // ---------------------------------------------------------------------
   // Full run (after all six flags)
@@ -295,53 +424,39 @@
       const sp = spotEl(M[s].spot);
       if (sp) sp.classList.add('lit');
     }
-    all('.num-pin', numPinsG).forEach(p => p.classList.toggle('lit', +p.dataset.pin === s));
+    all('.num-pin', numPinsG).forEach(pin => pin.classList.toggle('lit', +pin.dataset.pin === s));
     renderTrack(6, s);
-    if (s >= 0) feedGood('Brilliant! Every flag is in the right place.', s === 0 ? 'Start: ' + M[0].name : M[s].name, CAPTIONS[s], s);
+    if (s >= 0) factCard(s === 0 ? 'Start: ' + M[0].name : M[s].name, CAPTIONS[s], s);
   }
 
-  function stageAtFrame(f) {
-    let s = 0;
-    STAGE_FROM.forEach((from, i) => { if (f >= from) s = i; });
-    return s;
-  }
-
-  async function startFull() {
+  function startFull() {
     stopFull();
     full.on = true;
     full.paused = false;
+    flow.loop = true;
+    flow.paused = false;
+    flow.front = LOOP_LEN;
+    drawArrows();
     document.body.classList.add('flowing');
-    setInstr('Watch the blood pass each flag.');
+    instrGood(MSG_ALL, 'Watch the blood pass each flag.');
     renderTray();
     for (let i = 1; i <= 6; i++) showName(i);
-    loopBox.style.visibility = '';
-    if (!reduced()) loopAnim.play();
-
-    if (reduced()) {
-      let i = 0;
-      setStage(0);
-      flowAnim.goToAndStop(FLOW_STOP[0], true);
-      full.timer = setInterval(() => {
-        if (full.paused) return;
-        i++;
-        if (i > 6) { clearInterval(full.timer); full.timer = 0; endFull(); return; }
-        setStage(i);
-        flowAnim.goToAndStop(FLOW_STOP[i], true);
-      }, STEP_MS);
-      return;
-    }
-
+    let i = 0;
     setStage(0);
-    const ok = await playFlow(0, FLOW_END, f => setStage(stageAtFrame(f)));
-    if (ok && full.on) endFull();
+    full.timer = setInterval(() => {
+      if (full.paused) return;
+      i++;
+      if (i > 6) { clearInterval(full.timer); full.timer = 0; endFull(); return; }
+      setStage(i);
+    }, STAGE_MS);
   }
 
   function endFull() {
     full.stage = -1;
     spots.forEach(e => e.classList.remove('lit'));
-    all('.num-pin', numPinsG).forEach(p => p.classList.remove('lit'));
+    all('.num-pin', numPinsG).forEach(pin => pin.classList.remove('lit'));
     renderTrack(6, -1);
-    feedGood('Brilliant! Every flag is in the right place.', 'All six flags placed!', CAPTION_END, null);
+    factCard('All six flags placed!', CAPTION_END, null);
     renderTray();
   }
 
@@ -349,20 +464,13 @@
     if (full.timer) clearInterval(full.timer);
     full = { on: false, paused: false, stage: -1, timer: 0 };
     document.body.classList.remove('flowing');
-    loopAnim.stop();
-    loopBox.style.visibility = 'hidden';
     spots.forEach(e => e.classList.remove('lit'));
   }
 
   function togglePause() {
     if (!full.on) return;
     full.paused = !full.paused;
-    if (full.paused) { flowAnim.pause(); loopAnim.pause(); }
-    else {
-      // Resume the guided drop only if it hasn't finished its run yet.
-      if (full.stage >= 0 && flowAnim.currentFrame < flowAnim.totalFrames - 1) flowAnim.play();
-      if (!reduced()) loopAnim.play();
-    }
+    flow.paused = full.paused;
     renderTray();
     announce(full.paused ? 'Paused.' : 'Playing.');
   }
@@ -371,6 +479,10 @@
   // Planting flags
   // ---------------------------------------------------------------------
   let plant = { next: 1, wrong: 0, moving: false, done: false, tray: [], selected: null };
+
+  function renderRestart() {
+    restartBtn.classList.toggle('hidden', plant.next === 1 && !plant.done);
+  }
 
   function renderTray() {
     const active = document.activeElement;
@@ -405,17 +517,11 @@
       });
     }
     document.body.classList.toggle('choosing', plant.selected != null);
+    renderRestart();
     if (key) {
       const f = trayEl.querySelector('[data-key="' + key + '"]');
       if (f) f.focus({ preventScroll: true });
     }
-  }
-
-  function renderPlantText() {
-    const placed = plant.next - 1;
-    if (plant.done) setInstr('Watch the blood pass each flag.');
-    else if (placed === 0) setInstr(INSTR_START);
-    else setInstr('Where does the blood go next?');
   }
 
   async function tryPlant(m, id, el) {
@@ -427,24 +533,25 @@
       plant.selected = null; plant.wrong = 0; unglow();
       plant.tray.splice(plant.tray.indexOf(m), 1);
       plant.moving = true;
+      const runId = plant.run;
       renderTray();
-      feedGood('Label placed correctly!', 'Flag ' + m + ': ' + M[m].name, FACT[m], m);
+      instrGood(MSG_OK, m < 6 ? MSG_NEXT : '');
       announce(M[m].name + ' flag placed correctly.');
-      const ok = await playFlow(FLOW_RESUME[m - 1], FLOW_STOP[m]);
-      if (!ok) return; // Start again was pressed meanwhile
+      await reachFlag(m);
+      if (runId !== plant.run) return; // Restart was pressed meanwhile
       plant.moving = false;
       reachArt(m);
       renderTrack(m, -1);
+      factCard('Flag ' + m + ': ' + M[m].name, FACT[m], m);
       plant.next++;
+      renderRestart();
       if (plant.next > 6) {
         plant.done = true;
-        renderPlantText();
+        instrGood(MSG_ALL, 'Watch the blood pass each flag.');
         renderTray();
-        feedGood('Brilliant! Every flag is in the right place.', 'All six flags placed!', 'Watch the blood pass each flag.', 6);
-        setTimeout(() => { if (plant.done && !full.on) startFull(); }, 900);
+        setTimeout(() => { if (plant.done && plant.run === runId && !full.on) startFull(); }, 900);
         return;
       }
-      renderPlantText();
       const f = trayEl.querySelector('.flag');
       if (f) f.focus({ preventScroll: true });
       return;
@@ -470,18 +577,19 @@
       if (t) t.classList.add('glow');
       hint = 'The glowing part is where the blood goes next.';
     }
-    feedBad(msg, hint);
+    instrBad(msg, hint);
   }
 
+  let runCount = 0;
   function enterPlant() {
     resetArt();
     let t;
     do { t = shuffled([1, 2, 3, 4, 5, 6]); } while (t.join() === '1,2,3,4,5,6');
-    plant = { next: 1, wrong: 0, moving: false, done: false, tray: t, selected: null };
+    plant = { next: 1, wrong: 0, moving: false, done: false, tray: t, selected: null, run: ++runCount };
     renderTrack(0, -1);
-    feedClear();
+    factClear();
     renderTray();
-    renderPlantText();
+    setInstr(INSTR_START);
   }
 
   // ---------------------------------------------------------------------
@@ -492,7 +600,7 @@
   function onSpot(id, el) {
     if (now() < suppressUntil) return;
     if (plant.done || plant.moving) return;
-    if (plant.selected == null) { feedBad('Pick a flag first, then tap where it goes.'); return; }
+    if (plant.selected == null) { instrBad('Pick a flag first, then tap where it goes.'); return; }
     tryPlant(plant.selected, id, el);
   }
 
@@ -540,7 +648,7 @@
     if (e.button !== undefined && e.button !== 0) return;
     const f = e.target.closest ? e.target.closest('.flag') : null;
     if (!f || !trayEl.contains(f)) return;
-    drag = { m: +f.dataset.m, el: f, x0: e.clientX, y0: e.clientY, moved: false, pid: e.pointerId, ox: 0, oy: 0 };
+    drag = { m: +f.dataset.m, el: f, x0: e.clientX, y0: e.clientY, moved: false, pid: e.pointerId };
   });
 
   document.addEventListener('pointermove', e => {
@@ -617,13 +725,12 @@
   }
 
   bindSvgButton($('#btn-insights'), openInsights);
-  bindSvgButton($('#btn-restart'), () => {
+  bindSvgButton(restartBtn, () => {
     enterPlant();
-    announce('Started again. All flags are back in the tray.');
+    announce('Restarted. All flags are back in the tray.');
   });
   $('#ins-close').addEventListener('click', closeInsights);
   modalLayer.addEventListener('click', e => { if (e.target === modalLayer || e.target === modalStage) closeInsights(); });
-  if (reduceMQ.addEventListener) reduceMQ.addEventListener('change', () => { if (full.on) startFull(); });
 
   // ---------------------------------------------------------------------
   // Go
