@@ -212,6 +212,14 @@
       "updatedAt": "2026-11-11T18:46:47+05:30",
       "author": "tce-ashishg"
     },
+    "wg220-access-to-justice-pli": {
+      "updatedAt": "2026-11-17T17:26:36+05:30",
+      "author": "tce-ashishg"
+    },
+    "wg221-limits-of-pli": {
+      "updatedAt": "2026-11-17T17:26:36+05:30",
+      "author": "tce-ashishg"
+    },
     "wg223-leaf-lab-transpiration": {
       "updatedAt": "2026-10-19T10:58:01+05:30",
       "author": "tce-nitinc"
@@ -286,6 +294,15 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-11-17T17:26:36+05:30",
+      "author": "tce-ashishg",
+      "message": "wg220 & 221 completed",
+      "widgets": [
+        220,
+        221
+      ]
+    },
     {
       "date": "2026-11-17T15:44:46+05:30",
       "author": "tce-nitinc",
@@ -531,15 +548,6 @@
       "message": "fixes 205",
       "widgets": [
         205
-      ]
-    },
-    {
-      "date": "2026-11-13T12:59:00+05:30",
-      "author": "tce-ashishg",
-      "message": "wg248 completed",
-      "widgets": [
-        247,
-        248
       ]
     }
   ]
