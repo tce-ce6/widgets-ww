@@ -1,7 +1,7 @@
 {
   "folders": {
     "wg160-gears": {
-      "updatedAt": "2026-11-18T12:47:23+05:30",
+      "updatedAt": "2026-11-18T16:52:25+05:30",
       "author": "tce-ashishg"
     },
     "wg161-where-does-my-food-go": {
@@ -229,7 +229,7 @@
       "author": "tce-nitinc"
     },
     "wg225-blood-circulation": {
-      "updatedAt": "2026-11-17T11:19:23+05:30",
+      "updatedAt": "2026-11-18T16:52:25+05:30",
       "author": "tce-ashishg"
     },
     "wg226-temple-architecture": {
@@ -259,6 +259,10 @@
     "wg237-double-agent-words": {
       "updatedAt": "2026-11-16T17:31:47+05:30",
       "author": "tce-nitinc"
+    },
+    "wg238-crack-the-case": {
+      "updatedAt": "2026-11-18T16:52:25+05:30",
+      "author": "tce-ashishg"
     },
     "wg242-picture-stories": {
       "updatedAt": "2026-11-16T16:15:39+05:30",
@@ -294,6 +298,16 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-11-18T16:52:25+05:30",
+      "author": "tce-ashishg",
+      "message": "wg225 issue resolved",
+      "widgets": [
+        160,
+        225,
+        238
+      ]
+    },
     {
       "date": "2026-11-18T12:47:23+05:30",
       "author": "tce-ashishg",
@@ -545,14 +559,6 @@
       "message": "wg250 completed",
       "widgets": [
         250
-      ]
-    },
-    {
-      "date": "2026-11-13T15:11:25+05:30",
-      "author": "tce-nitinc",
-      "message": "wg202 fixes",
-      "widgets": [
-        202
       ]
     }
   ]
