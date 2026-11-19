@@ -1,0 +1,63 @@
+@font-face {
+    font-family: 'Roboto';
+    src: url('../assets/font/roboto-medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('../assets/font/roboto-extrabold.ttf') format('truetype');
+    font-weight: 800;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('../assets/font/roboto-black.ttf') format('truetype');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('../assets/font/roboto-regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('../assets/font/roboto-bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('../assets/font/roboto-semibold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Version text, top right corner of the header (same style as wg205) */
+.versionText {
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    font-family: "Roboto", sans-serif;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 1;
+    color: rgb(255 255 255 / 20%);
+    white-space: nowrap;
+    pointer-events: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
