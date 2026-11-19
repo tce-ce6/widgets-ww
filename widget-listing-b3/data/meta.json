@@ -185,7 +185,7 @@
       "author": "Shyamsunder Hait"
     },
     "wg210-fool-khilao": {
-      "updatedAt": "2026-11-16T14:41:50+05:30",
+      "updatedAt": "2026-11-19T15:01:37+05:30",
       "author": "tce-nitinc"
     },
     "wg211-railgadi-banao": {
@@ -197,11 +197,11 @@
       "author": "tce-ashishg"
     },
     "wg213-cross-bridge": {
-      "updatedAt": "2026-11-16T14:41:50+05:30",
+      "updatedAt": "2026-11-19T15:01:37+05:30",
       "author": "tce-nitinc"
     },
     "wg214-jasus-pehchano": {
-      "updatedAt": "2026-11-13T18:13:55+05:30",
+      "updatedAt": "2026-11-19T15:01:37+05:30",
       "author": "tce-nitinc"
     },
     "wg215-dance-forms": {
@@ -318,6 +318,16 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-11-19T15:01:37+05:30",
+      "author": "tce-nitinc",
+      "message": "wg210 fixes",
+      "widgets": [
+        210,
+        213,
+        214
+      ]
+    },
     {
       "date": "2026-11-19T11:17:22+05:30",
       "author": "tce-nitinc",
@@ -572,16 +582,6 @@
       "message": "resolved wg236",
       "widgets": [
         236
-      ]
-    },
-    {
-      "date": "2026-11-13T18:13:55+05:30",
-      "author": "tce-nitinc",
-      "message": "resolved bugs",
-      "widgets": [
-        213,
-        214,
-        218
       ]
     }
   ]
