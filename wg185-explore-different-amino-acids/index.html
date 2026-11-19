@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>&ZeroWidthSpace;Explore Different Amino Acids&ZeroWidthSpace;</title>
+  <link rel="stylesheet" href="./css/global_style.css">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body id="explore-amino-acids-widget">
+  <div class="container">
+    <div class="mainContainerOuter">
+
+      <div id="viewport">
+        <div id="stage">
+
+          <!-- BG -->
+          <img class="stage-bg" src="./assets/svg/BG.svg" alt="" aria-hidden="true">
+
+          <!-- TITLE (inside stage so it scales with it) -->
+          <div class="wdgetTitle">
+            <h2>&ZeroWidthSpace;Explore Different Amino Acids&ZeroWidthSpace;</h2>
+            <span id="versionId" class="versionText">b4_wg185_261118_01</span>
+          </div>
+
+          <!-- ACTIVITY SCREEN -->
+          <section id="screen-activity" class="screen is-active" data-screen="activity">
+
+            <!-- Instruction text -->
+            <p id="instruction-text" class="instruction-text">
+              First select a <strong><em>category</em></strong> from above, then choose an <strong><em>amino acid</em></strong> from the dropdown to explore.
+            </p>
+
+            <!-- Categories panel -->
+            <div class="categories-panel" id="categories-panel">
+              <div class="categories-label">
+                <span class="cat-menu-icon">&#9776;</span>
+                <span>Categories</span>
+              </div>
+              <div class="category-pills" id="category-pills">
+                <!-- Rendered by JS -->
+              </div>
+            </div>
+
+            <!-- Controls row -->
+            <div class="controls-row" id="controls-row">
+
+              <!-- Dropdown 1 -->
+              <div class="dropdown-wrapper" id="dropdown-wrapper-1">
+                <button class="dropdown-btn" id="dropdown-btn-1"
+                  aria-haspopup="listbox" aria-expanded="false">
+                  <span class="dropdown-num">1</span>
+                  <span class="dropdown-label" id="dropdown-label-1">Choose Amino Acid</span>
+                  <span class="dropdown-arrow">&#9660;</span>
+                </button>
+                <ul class="dropdown-list" id="dropdown-list-1"
+                  role="listbox" aria-label="Amino Acid 1" hidden></ul>
+              </div>
+
+              <!-- Compare tabs (shown when compare is on and AA1 is selected) -->
+              <div class="compare-tabs" id="compare-tabs" hidden>
+                <button class="compare-tab is-active" data-mode="same" id="tab-same">Compare within same category</button>
+                <button class="compare-tab" data-mode="across" id="tab-across">Compare across categories</button>
+              </div>
+
+              <!-- Dropdown 2 (shown when compare is on) -->
+              <div class="dropdown-wrapper" id="dropdown-wrapper-2" hidden>
+                <button class="dropdown-btn" id="dropdown-btn-2"
+                  aria-haspopup="listbox" aria-expanded="false">
+                  <span class="dropdown-num">2</span>
+                  <span class="dropdown-label" id="dropdown-label-2">Choose Amino Acid</span>
+                  <span class="dropdown-arrow">&#9660;</span>
+                </button>
+                <ul class="dropdown-list" id="dropdown-list-2"
+                  role="listbox" aria-label="Amino Acid 2" hidden></ul>
+              </div>
+
+              <!-- Compare checkbox -->
+              <label class="compare-checkbox-label" id="compare-checkbox-label">
+                <span>Compare amino acids</span>
+                <input type="checkbox" id="compare-checkbox" aria-label="Compare amino acids">
+                <span class="compare-checkmark"></span>
+              </label>
+
+            </div><!-- /controls-row -->
+
+            <!-- Viewers (amino acid cards) -->
+            <div class="viewers-row" id="viewers-row">
+
+              <!-- Card 1 -->
+              <div class="amino-card" id="amino-card-1">
+                <div class="amino-card-inner">
+                  <div class="card-header" id="card-header-1" hidden>
+                    <span class="card-amino-label">Amino Acid <span class="card-slot-num">1</span></span>
+                    <div class="card-name-badge" id="card-name-badge-1"></div>
+                  </div>
+                  <div class="molecule-wrap" id="molecule-wrap-1">
+                    <svg class="molecule-svg" id="molecule-svg-1"
+                      viewBox="0 0 500 400" xmlns="http://www.w3.org/2000/svg"
+                      role="img" aria-label="Amino acid structure 1">
+                    </svg>
+                  </div>
+                  <div class="card-info" id="card-info-1" hidden>
+                    <div class="card-badges" id="card-badges-1"></div>
+                    <div class="card-insights" id="card-insights-1" role="status" aria-live="polite"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Card 2 (compare mode) -->
+              <div class="amino-card" id="amino-card-2" hidden>
+                <div class="amino-card-inner">
+                  <div class="card-header" id="card-header-2" hidden>
+                    <span class="card-amino-label">Amino Acid <span class="card-slot-num">2</span></span>
+                    <div class="card-name-badge" id="card-name-badge-2"></div>
+                  </div>
+                  <div class="molecule-wrap" id="molecule-wrap-2">
+                    <svg class="molecule-svg" id="molecule-svg-2"
+                      viewBox="0 0 500 400" xmlns="http://www.w3.org/2000/svg"
+                      role="img" aria-label="Amino acid structure 2">
+                    </svg>
+                  </div>
+                  <div class="card-info" id="card-info-2" hidden>
+                    <div class="card-badges" id="card-badges-2"></div>
+                    <div class="card-insights" id="card-insights-2" role="status" aria-live="polite"></div>
+                  </div>
+                </div>
+              </div>
+
+            </div><!-- /viewers-row -->
+
+            <!-- Reset button -->
+            <button class="reset-btn" id="reset-btn" type="button">Reset</button>
+
+            <!-- Insights button -->
+            <button class="insights-btn" id="insights-btn" type="button" aria-expanded="false">
+              <img src="./assets/svg/icon-insights.svg" alt="" aria-hidden="true">
+              <span>Insights</span>
+            </button>
+
+            <!-- Insights overlay (same pattern as wg184 — absolute inside stage) -->
+            <div class="insights" id="insights" hidden>
+              <div class="insights-box" role="dialog" aria-modal="true" aria-labelledby="insights-title">
+                <h3 id="insights-title">General Insights</h3>
+                <ul class="insights-list" id="insights-list"></ul>
+              </div>
+              <button class="insights-close" id="insights-close" type="button" aria-label="Close insights">
+                <img src="./assets/svg/icon-close.svg" alt="Close">
+              </button>
+            </div>
+
+          </section><!-- /screen-activity -->
+
+        </div><!-- /stage -->
+      </div><!-- /viewport -->
+
+    </div><!-- /mainContainerOuter -->
+  </div><!-- /container -->
+
+  <script src="./js/content-data.js"></script>
+  <script src="./js/script.js"></script>
+</body>
+
+</html>
