@@ -69,7 +69,7 @@
       "author": "tce-nitinc"
     },
     "wg178-maritime-neighbours": {
-      "updatedAt": "2026-10-22T16:02:23+05:30",
+      "updatedAt": "2026-11-19T11:17:22+05:30",
       "author": "tce-nitinc"
     },
     "wg179-decentralisation-explorer": {
@@ -85,7 +85,7 @@
       "author": "tce-ashishg"
     },
     "wg182-land-based-neighbours": {
-      "updatedAt": "2026-11-19T10:26:13+05:30",
+      "updatedAt": "2026-11-19T11:17:22+05:30",
       "author": "tce-nitinc"
     },
     "wg183-the-chola-fortress-jenga": {
@@ -314,6 +314,15 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-11-19T11:17:22+05:30",
+      "author": "tce-nitinc",
+      "message": "tour guide",
+      "widgets": [
+        178,
+        182
+      ]
+    },
     {
       "date": "2026-11-19T10:26:13+05:30",
       "author": "tce-nitinc",
@@ -571,14 +580,6 @@
         247,
         248,
         250
-      ]
-    },
-    {
-      "date": "2026-11-13T15:31:10+05:30",
-      "author": "tce-nitinc",
-      "message": "resolved wg218",
-      "widgets": [
-        218
       ]
     }
   ]
