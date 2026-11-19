@@ -85,7 +85,7 @@
       "author": "tce-ashishg"
     },
     "wg182-land-based-neighbours": {
-      "updatedAt": "2026-11-18T18:20:46+05:30",
+      "updatedAt": "2026-11-19T10:26:13+05:30",
       "author": "tce-nitinc"
     },
     "wg183-the-chola-fortress-jenga": {
@@ -314,6 +314,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-11-19T10:26:13+05:30",
+      "author": "tce-nitinc",
+      "message": "fixed widget no 182",
+      "widgets": [
+        182
+      ]
+    },
     {
       "date": "2026-11-18T18:20:46+05:30",
       "author": "tce-nitinc",
@@ -571,14 +579,6 @@
       "message": "resolved wg218",
       "widgets": [
         218
-      ]
-    },
-    {
-      "date": "2026-11-13T15:12:42+05:30",
-      "author": "tce-ashishg",
-      "message": "wg250 completed",
-      "widgets": [
-        250
       ]
     }
   ]
