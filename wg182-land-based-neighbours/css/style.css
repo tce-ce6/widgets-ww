@@ -293,13 +293,6 @@ button:focus-visible,
   height: 726px;
 }
 
-/* sea names and the map's grid lines never block taps or count as land */
-#mapBase text,
-#map-Ocean_x5F_Sea,
-#map-arctic_circle {
-  pointer-events: none;
-}
-
 .map.is-armed {
   cursor: pointer;
 }

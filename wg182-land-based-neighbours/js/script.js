@@ -20,8 +20,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const SVG_NS = 'http://www.w3.org/2000/svg';
   // The map frame's top-left corner on the stage (pins and labels are placed inside it).
   const MAP_ORIGIN = [64, 180];
-  // Sea and lakes in the base map: taps on these do not count as a guess.
-  const SEA_FILL = 'rgb(147, 207, 229)';
+  // Land colours in the base map (Asia, highlighted land, Europe/Africa):
+  // a tap on any other fill (sea, sea names, lines) does not count as a guess.
+  const LAND_FILLS = ['rgb(243, 245, 203)', 'rgb(255, 253, 221)', 'rgb(237, 237, 237)'];
   // Flags that are not rectangles: their selection outline follows the flag
   // (points in the 195x110 flag cell, from the layout's flag-highlight layer).
   const FLAG_OUTLINES = {
@@ -113,10 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const country = target.closest && target.closest('.country');
     if (country) return { country: country.dataset.country };
     const inBase = target.closest && target.closest('#mapBase');
-    if (inBase && target.tagName !== 'svg' && target.id !== 'map-Rectangle_36') {
-      const fill = getComputedStyle(target).fill;
-      if (fill && fill !== 'none' && fill !== SEA_FILL) return { land: true };
-    }
+    if (inBase && LAND_FILLS.includes(getComputedStyle(target).fill)) return { land: true };
     return {};
   };
 
