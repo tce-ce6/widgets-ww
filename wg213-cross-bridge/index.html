@@ -59,8 +59,6 @@
             <span id="nextLabel">अगला उदाहरण</span>
             <img src="assets/svg/next-arrow.svg" alt="">
           </button>
-          <!-- replaces the Next button after the last example -->
-          <button class="btn btn--again" id="againBtn" type="button" hidden>फिर से खेलो</button>
         </div>
       </div>
     </div>
@@ -68,7 +66,27 @@
 
   <script src="./js/lottie.js"></script>
   <script src="./js/anim-data.js"></script>
+  <!-- How to play tour (shown over the stage; positioned in viewport coordinates) -->
+  <div id="tour" class="tour" aria-hidden="true">
+    <div id="tourSpot" class="tour-spot"></div>
+    <div id="tourDemo" class="tour-demo"></div>
+    <div id="tourCard" class="tour-card" role="dialog" aria-modal="true" aria-labelledby="tourTitle">
+      <button id="tourSkip" class="tour-skip" type="button" aria-label="सहायता बंद करो"><span aria-hidden="true">&times;</span></button>
+      <div id="tourCount" class="tour-count"></div>
+      <h2 id="tourTitle"></h2>
+      <p id="tourText"></p>
+      <div class="tour-nav">
+        <div id="tourDots" class="tour-dots"></div>
+        <div class="tour-btns">
+          <button id="tourBack" class="tour-btn tour-btn--ghost" type="button">पीछे</button>
+          <button id="tourNext" class="tour-btn" type="button">आगे</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="./js/script.js"></script>
+  <script src="./js/how-to-play.js"></script>
 </body>
 
 </html>
