@@ -53,7 +53,7 @@ if (
     'धनुष': 'dhanush.wav', 'चाप': 'chaap.wav', 'कमान': 'kamaan.wav', 'धनु': 'dhanu.wav',
     'तलवार': 'talawaar.wav', 'निशाना': 'nishanaa.wav',
 
-    'कपड़ा': 'kapadaa.wav', 'वस्त्र': 'wastra.wav', 'पट': 'pat.wav',
+    'कपड़ा': 'kapadaa.wav', 'वस्त्र': 'wastra.wav', 'वसन': 'wasan.wav', 'पट': 'pat.wav',
     'गहना': 'gahanaa.wav', 'आभूषण': 'aabhushan.wav', 'भूषण': 'bhushan.wav', 'अलंकार': 'alankar.wav',
     'वचन': 'wachan.wav', 'अँगूठी': 'anguthi.wav',
 
