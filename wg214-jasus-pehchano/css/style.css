@@ -51,10 +51,8 @@ body {
   border: 0;
 }
 
-/* Layering, bottom to top: #viewport (the widget) -> body::before (modal
-   backdrop) -> #modal-layer (end screen) -> .wdgetTitle */
-#viewport,
-#modal-layer {
+/* Layering, bottom to top: #viewport (the widget) -> .wdgetTitle */
+#viewport {
   position: fixed;
   inset: 0;
   overflow: hidden;
@@ -67,28 +65,8 @@ body {
   background: #000;
 }
 
-/* Dark backdrop behind an open modal, covering the whole viewport. */
-body.has-modal::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: 2;
-  background: rgba(0, 0, 0, 0.8);
-}
-
-#modal-layer {
-  z-index: 3;
-  pointer-events: none;
-}
-
-body.has-modal #modal-layer {
-  pointer-events: auto;
-}
-
-/* #stage holds the widget, #modal-stage the modals; both are the same fixed
-   1920x1080 design stage, scaled together by script.js. */
-#stage,
-#modal-stage {
+/* #stage holds the widget: a fixed 1920x1080 design stage, scaled by script.js. */
+#stage {
   position: absolute;
   left: 0;
   top: 0;
@@ -339,6 +317,38 @@ button:disabled {
 .member.is-filled {
   background: #fff;
   animation: pop .4s ease-out;
+}
+
+/* a wrong word fits in for a moment, cracks, then falls into the water (as in the Bridge widget) */
+.member.is-wrong {
+  background: #fff;
+  border-color: #e02020;
+  color: #b00000;
+  animation: pop .3s ease-out;
+}
+
+.member.is-breaking {
+  animation: break-fall .9s ease-in forwards;
+}
+
+@keyframes break-fall {
+  0% {
+    transform: none;
+  }
+
+  25% {
+    transform: rotate(-6deg);
+  }
+
+  40% {
+    transform: rotate(5deg);
+    filter: brightness(.75);
+  }
+
+  100% {
+    transform: translateY(420px) rotate(38deg);
+    opacity: 0;
+  }
 }
 
 .fort--a .member:nth-child(1) { left: 89px; }
@@ -746,54 +756,3 @@ button:disabled {
   height: 31.4px;
 }
 
-/* ---------- end screen (modal) ---------- */
-.end {
-  position: absolute;
-  left: 410px;
-  top: 220px;
-  width: 1100px;
-  padding: 40px 60px 60px;
-  border-radius: 40px;
-  background: #fffbe0;
-  border: 6px solid var(--title-bg);
-  text-align: center;
-  animation: end-in .5s cubic-bezier(.3, 1.4, .5, 1);
-}
-
-@keyframes end-in {
-  from {
-    transform: scale(.7);
-    opacity: 0;
-  }
-
-  to {
-    transform: none;
-    opacity: 1;
-  }
-}
-
-.end__emblem {
-  height: 150px;
-}
-
-.end__title {
-  margin: 20px 0 0;
-  font-size: 64px;
-  font-weight: 700;
-  color: var(--title-bg);
-}
-
-.end__score {
-  margin: 26px 0 0;
-  font-size: 36px;
-  font-weight: 700;
-  line-height: 50px;
-}
-
-.btn--again {
-  position: static;
-  margin-top: 40px;
-  width: 300px;
-  background: #004141;
-  color: #fff;
-}

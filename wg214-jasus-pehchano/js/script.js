@@ -41,6 +41,7 @@
   const DOOR_H = 128; // the soldier shrinks to the doorway's height so he fits inside the arch
   const SOLDIER = [838, 465, 201, 354];
   const GRASS_Y = 900;
+  const WATER_DROP = 470; // how far a spy falls from the checkpoint into the river under the bridge
 
   /* ------------------------------------------------------------------------
      2. HELPERS, STAGE SCALING
@@ -49,7 +50,6 @@
   const $ = (selector, root = document) => root.querySelector(selector);
   const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
   const stage = $('#stage');
-  const modalStage = $('#modal-stage');
   const viewport = $('#viewport');
   const checkpoint = $('#checkpoint');
   const answerBtn = $('#answerBtn');
@@ -99,7 +99,6 @@
     stageOrigin = [(vw - 1920 * stageScale) / 2, (vh - 1080 * stageScale) / 2];
     const t = `translate(${stageOrigin[0]}px, ${stageOrigin[1]}px) scale(${stageScale})`;
     stage.style.transform = t;
-    modalStage.style.transform = t; // modals share the stage's position and scale
     viewport.style.setProperty('--grass-y', `${stageOrigin[1] + GRASS_Y * stageScale}px`);
   }
 
@@ -154,9 +153,26 @@
       src.start(start, Math.random() * 0.5, 0.35);
     }
 
+    // filtered noise sweep (the same as the Bridge widget's breaking / splash sounds)
+    function hiss(start, duration, peak, type, from, to) {
+      const src = ctx.createBufferSource();
+      const filter = ctx.createBiquadFilter();
+      const gain = ctx.createGain();
+      src.buffer = noise;
+      filter.type = type;
+      filter.frequency.setValueAtTime(from, start);
+      filter.frequency.exponentialRampToValueAtTime(to, start + duration);
+      gain.gain.setValueAtTime(peak, start);
+      gain.gain.exponentialRampToValueAtTime(0.0001, start + duration);
+      src.connect(filter).connect(gain).connect(ctx.destination);
+      src.start(start, 0, duration + 0.05);
+    }
+
     function sfx(name) {
       if (!ensure()) return;
       const t = ctx.currentTime;
+      if (name === 'breaking') { hiss(t, 0.12, 0.6, 'highpass', 3000, 1500); hiss(t + 0.08, 0.35, 0.45, 'lowpass', 900, 120); tone(140, t + 0.3, 0.4, 'sine', 0.2, 60); return; }
+      if (name === 'splash') { hiss(t, 0.9, 0.35, 'bandpass', 300, 1800); tone(500, t, 0.8, 'sine', 0.08, 160); return; }
       if (name === 'correct') { tone(587, t, 0.14, 'triangle', 0.2); tone(880, t + 0.1, 0.26, 'triangle', 0.2); }
       else if (name === 'wrong') { tone(220, t, 0.22, 'triangle', 0.16); tone(160, t + 0.12, 0.3, 'triangle', 0.14); }
       else if (name === 'salute') { tone(523, t, 0.12, 'square', 0.07); tone(659, t + 0.13, 0.12, 'square', 0.07); tone(784, t + 0.26, 0.3, 'square', 0.07); }
@@ -206,7 +222,6 @@
     handled: 0,
     mistake: false,
     done: false,
-    clean: 0,
     timeMax: 10,
     timeLeft: 10,
     raf: 0,
@@ -266,7 +281,6 @@
     if (state.handled === 8 && !state.done) {
       state.done = true;
       answerBtn.disabled = true;
-      if (!state.mistake) state.clean++;
       timerBar.style.width = '0%';
     }
   }
@@ -336,29 +350,31 @@
     const fam = familyOf(word);
 
     if (fam === 'x' && k === 'x') {
-      // spy under the lens: disguise comes off, he runs away, his word goes on the sign
+      // spy on the bridge: the disguise comes off, then he falls off the bridge into the
+      // water (like the Bridge widget's whirlpool); his word goes on the sign
       state.current = null;
       el.style.transform = '';
       Sound.sfx('reveal');
       el.classList.add('is-spy');
       $('.soldier__word', el).style.visibility = 'hidden';
       later(() => {
-        el.animate([{ transform: 'none' }, { transform: 'translateX(1150px)', opacity: 0.3 }], { duration: 800, easing: 'ease-in', fill: 'forwards' })
+        Sound.sfx('splash');
+        el.animate([
+          { transform: 'none', opacity: 1 },
+          { transform: 'translateY(-30px) rotate(-8deg)', opacity: 1, offset: 0.2 },
+          { transform: `translateY(${WATER_DROP}px) rotate(24deg) scale(.5)`, opacity: 0 }
+        ], { duration: 900, easing: 'ease-in', fill: 'forwards' })
           .onfinish = () => { addSpyChip($('#revealed'), word, false); state.handled++; nextSoldier(); };
       }, 600);
       announce(`${word} जासूस है।`);
       return;
     }
-    if (fam === 'x') {
-      // spy sent into a fort: he gets in, a brick falls, he is marked inside
-      state.current = null;
+    if (fam !== k && k !== 'x') {
+      // any wrong word at a fort (a spy, or a soldier of the other fort) fits in for a
+      // moment, then breaks and falls into the water, like the Bridge widget; the same
+      // soldier then steps back up to be sent again. Only right words stay at a fort.
       state.mistake = true;
-      enterFort(el, k, () => {
-        dropBrick(k);
-        addSpyChip(spiesInEl[k], word, true);
-        state.handled++;
-        later(nextSoldier, 400);
-      });
+      wrongAtFort(el, k, word, fam === 'x');
       return;
     }
     if (k === 'x') {
@@ -381,11 +397,33 @@
       });
       return;
     }
-    // the other fort
-    state.mistake = true;
+  }
+
+  /**
+   * A wrong word dropped on fort k: it shows in the fort's next empty slot, cracks and
+   * falls into the water, and the soldier comes back to the checkpoint (timer paused).
+   */
+  function wrongAtFort(el, k, word, isSpy) {
+    const slot = $$('.member', membersEl[k]).find((m) => !m.classList.contains('is-filled'));
     el.style.transform = '';
-    Sound.sfx('wrong');
-    restart(el, 'is-shake');
+    if (!slot) { Sound.sfx('wrong'); restart(el, 'is-shake'); return; }
+    state.current = null; // no other move, and the timer waits, until he is back
+    el.style.visibility = 'hidden';
+    slot.classList.add('is-wrong');
+    slot.textContent = word;
+    later(() => {
+      if (isSpy) dropBrick(k); // a spy at the gate still knocks a brick off the fort
+      Sound.sfx('breaking');
+      restart(slot, 'is-breaking');
+    }, 350);
+    later(() => {
+      slot.className = 'member';
+      slot.textContent = '';
+      el.style.visibility = '';
+      el.animate([{ opacity: 0, transform: 'translateY(30px)' }, { opacity: 1, transform: 'none' }], { duration: 400 });
+      state.current = { word, el };
+      if (state.pendingShow) showAnswer(); // Show Answer was pressed meanwhile
+    }, 1300);
   }
 
   /* drag the soldier to a fort or the lens; a plain tap says his word */
@@ -502,7 +540,8 @@
     state.pendingShow = false;
     state.saved = null;
     setAnswerBtn(false);
-    $('#nextLabel').textContent = state.r < ROUNDS.length - 1 ? 'अगला उदाहरण' : 'परिणाम देखें';
+    // on the last example the same button starts the game again
+    $('#nextLabel').textContent = state.r < ROUNDS.length - 1 ? 'अगला उदाहरण' : 'फिर से खेलो';
 
     // soldiers come in a new random order every time
     state.queue = shuffle([...round.a.slice(1), ...round.b.slice(1), ...round.x]);
@@ -574,7 +613,7 @@
     Sound.unlock();
     state.saved = snapshot();
     state.done = true;
-    state.mistake = true; // the answer was seen: this example no longer counts as clean
+    state.mistake = true;
     setAnswerBtn(true);
     const rest = [...(state.current ? [state.current.word] : []), ...state.queue];
     state.current = null;
@@ -589,39 +628,10 @@
     }, i * 200));
   }
 
+  /* अगला उदाहरण goes to the next example; on the last one it reads फिर से खेलो and starts over */
   function next() {
     Sound.unlock();
-    if (state.r < ROUNDS.length - 1) {
-      state.r++;
-      load();
-    } else {
-      finish();
-    }
-  }
-
-  /* ------------------------------------------------------------------------
-     5. END SCREEN (modal on the body.has-modal backdrop)
-     ------------------------------------------------------------------------ */
-
-  function finish() {
-    clearTimers();
-    Sound.stop();
-    state.done = true;
-    state.current = null;
-    const score = `${ROUNDS.length} में से ${state.clean} उदाहरण तुमने खुद, बिना गलती के पूरे किए!`;
-    $('#score').textContent = score;
-    $('#end').hidden = false;
-    document.body.classList.add('has-modal');
-    Sound.sfx('end');
-    announce(`सारे जासूस पहचाने गए! ${score}`);
-    $('#againBtn').focus();
-  }
-
-  function restartGame() {
-    $('#end').hidden = true;
-    document.body.classList.remove('has-modal');
-    state.r = 0;
-    state.clean = 0;
+    state.r = state.r < ROUNDS.length - 1 ? state.r + 1 : 0;
     load();
   }
 
@@ -630,7 +640,6 @@
   $('#itextAudio').addEventListener('click', (event) => { event.stopPropagation(); Sound.unlock(); Sound.speak(ITEXT, event.currentTarget); });
   answerBtn.addEventListener('click', toggleAnswer);
   $('#nextBtn').addEventListener('click', next);
-  $('#againBtn').addEventListener('click', restartGame);
 
   fitStage();
   window.addEventListener('resize', fitStage);

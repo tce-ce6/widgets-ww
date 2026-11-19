@@ -1,0 +1,28 @@
+{
+  "id": "wg298",
+  "file_name": "en_ma_01_wg298",
+  "title": "Shape Detective: Shapes Around Us",
+  "series": "all-1-maths",
+  "board": "All boards",
+  "grade": 1,
+  "subject": "maths",
+  "language": "en",
+  "topic": "2D shapes: circle, triangle, square, rectangle",
+  "entry": "index.html",
+  "build_id": "abbc73e2e5",
+  "released": "2026-11-19",
+  "size_kb": 77,
+  "offline": true,
+  "external_requests": 0,
+  "canvas": {
+    "landscape": [
+      1280,
+      720
+    ],
+    "portrait": [
+      480,
+      1000
+    ]
+  },
+  "needs": "see release/README.md"
+}

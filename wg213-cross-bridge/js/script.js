@@ -53,7 +53,7 @@ if (
     'धनुष': 'dhanush.wav', 'चाप': 'chaap.wav', 'कमान': 'kamaan.wav', 'धनु': 'dhanu.wav',
     'तलवार': 'talawaar.wav', 'निशाना': 'nishanaa.wav',
 
-    'कपड़ा': 'kapadaa.wav', 'वस्त्र': 'wastra.wav', 'पट': 'pat.wav',
+    'कपड़ा': 'kapadaa.wav', 'वस्त्र': 'wastra.wav', 'वसन': 'wasan.wav', 'पट': 'pat.wav',
     'गहना': 'gahanaa.wav', 'आभूषण': 'aabhushan.wav', 'भूषण': 'bhushan.wav', 'अलंकार': 'alankar.wav',
     'वचन': 'wachan.wav', 'अँगूठी': 'anguthi.wav',
 
@@ -241,56 +241,15 @@ if (
       else if (name === 'end') { [523, 659, 784, 1047, 1319].forEach((f, i) => tone(f, t + i * 0.12, 0.45, 'triangle', 0.15)); }
     }
 
-    /* ---- voice: recorded files in assets/audio ----
-       Each word plays its own recording (see WORD_AUDIO). Only the words in
-       SYSTEM_VOICE (no recording yet) use the browser / system Hindi voice; any
-       other word with no recording stays silent and is reported once in the console. */
-
-    const SYSTEM_VOICE = new Set(['वसन']);
+    /* ---- voice: recorded files in assets/audio only (no browser / system voice) ----
+       Each word plays its own recording (see WORD_AUDIO). A word with no recording
+       stays silent and is reported once in the console. */
 
     const player = new Audio();
     player.preload = 'auto';
     let playToken = 0;
     let playingBtn = null;
     const warned = new Set();
-
-    // the browser's voice list arrives late: keep the Hindi voice once it is known
-    let hindiVoice = null;
-    const pickVoice = () => {
-      try {
-        const hindi = window.speechSynthesis.getVoices().filter((v) => v.lang && v.lang.toLowerCase().startsWith('hi'));
-        hindiVoice = hindi.find((v) => v.localService) || hindi[0] || null;
-      } catch (e) { hindiVoice = null; }
-    };
-    if ('speechSynthesis' in window) {
-      pickVoice();
-      window.speechSynthesis.addEventListener('voiceschanged', pickVoice);
-    }
-    // kept here: Chrome can drop an utterance that is garbage-collected mid-speech
-    let currentUtterance = null;
-
-    function tts(text, tok) {
-      try {
-        const synth = window.speechSynthesis;
-        if (!synth) { done(tok); return; }
-        const speak = () => {
-          if (tok !== playToken) return;
-          const u = new SpeechSynthesisUtterance(text);
-          u.lang = 'hi-IN';
-          u.rate = 0.85;
-          if (!hindiVoice) pickVoice();
-          if (hindiVoice) u.voice = hindiVoice;
-          u.onend = () => done(tok);
-          u.onerror = () => done(tok);
-          currentUtterance = u;
-          synth.resume(); // Chrome can be left paused, and then nothing is heard
-          synth.speak(u);
-        };
-        // halt() has just called cancel(), and speaking straight after cancel() can drop
-        // the line in Chrome: wait a moment first
-        window.setTimeout(speak, 60);
-      } catch (e) { done(tok); }
-    }
 
     function markBtn(btn) {
       if (playingBtn && playingBtn !== btn) playingBtn.classList.remove('is-playing');
@@ -312,7 +271,6 @@ if (
       const tok = ++playToken;
       halt();
       if (!file) {
-        if (SYSTEM_VOICE.has(text)) { markBtn(btn); tts(text, tok); return; }
         if (!warned.has(text)) { warned.add(text); console.warn(`wg213: no recording for "${text}"`); }
         return;
       }
@@ -331,7 +289,6 @@ if (
       player.onended = null;
       player.onerror = null;
       try { player.pause(); } catch (e) { /* nothing playing */ }
-      try { window.speechSynthesis.cancel(); } catch (e) { /* no speech */ }
     }
 
     function stop() {
