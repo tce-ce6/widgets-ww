@@ -62,7 +62,6 @@
   const $ = (selector, root = document) => root.querySelector(selector);
   const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
   const stage = $('#stage');
-  const modalStage = $('#modal-stage');
   const viewport = $('#viewport');
   const flower = $('#flower');
   const flies = $('#flies');
@@ -107,7 +106,6 @@
     stageOrigin = [(vw - 1920 * stageScale) / 2, (vh - 1080 * stageScale) / 2];
     const t = `translate(${stageOrigin[0]}px, ${stageOrigin[1]}px) scale(${stageScale})`;
     stage.style.transform = t;
-    modalStage.style.transform = t; // modals share the stage's position and scale
     viewport.style.setProperty('--hill-y', `${stageOrigin[1] + HILL_Y * stageScale}px`);
   }
 
@@ -319,7 +317,8 @@
     answerBtn.disabled = false;
     answerBtn.textContent = ANSWER_SHOW;
     answerBtn.setAttribute('aria-pressed', 'false');
-    $('#nextLabel').textContent = state.r < ROUNDS.length - 1 ? 'अगला उदाहरण' : 'परिणाम देखें';
+    // on the last example the same button starts the game again
+    $('#nextLabel').textContent = state.r < ROUNDS.length - 1 ? 'अगला उदाहरण' : 'फिर से खेलो';
 
     // the four words land in random slots every time
     flies.innerHTML = '';
@@ -491,34 +490,10 @@
     });
   }
 
+  /* अगला उदाहरण goes to the next example; on the last one it reads फिर से खेलो and starts over */
   function next() {
     Sound.unlock();
-    if (state.r < ROUNDS.length - 1) {
-      state.r++;
-      load();
-    } else {
-      finish();
-    }
-  }
-
-  /* ------------------------------------------------------------------------
-     5. END SCREEN (modal on the body.has-modal backdrop)
-     ------------------------------------------------------------------------ */
-
-  function finish() {
-    clearTimers();
-    Sound.stop();
-    $('#end').hidden = false;
-    document.body.classList.add('has-modal');
-    Sound.sfx('bloom');
-    announce('सारे फूल खिल गए!');
-    $('#againBtn').focus();
-  }
-
-  function restart() {
-    $('#end').hidden = true;
-    document.body.classList.remove('has-modal');
-    state.r = 0;
+    state.r = state.r < ROUNDS.length - 1 ? state.r + 1 : 0;
     load();
   }
 
@@ -528,7 +503,6 @@
   $('#wordAudio').addEventListener('click', (event) => { Sound.unlock(); Sound.play(`assets/audio/word-${pad(state.r + 1)}.wav`, event.currentTarget); });
   answerBtn.addEventListener('click', toggleAnswer);
   $('#nextBtn').addEventListener('click', next);
-  $('#againBtn').addEventListener('click', restart);
 
   fitStage();
   window.addEventListener('resize', fitStage);

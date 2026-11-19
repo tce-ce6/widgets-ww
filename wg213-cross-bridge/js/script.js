@@ -46,6 +46,70 @@ if (
     { a: ['डर', 'भय', 'भीति', 'त्रास'], b: ['साहस', 'हिम्मत', 'हौसला', 'बहादुरी'], x: ['डरपोक', 'योद्धा'] }
   ];
 
+  // Each word's recording in assets/audio (one line per word, same order as ROUNDS).
+  // A word missing here is silent: there is no system / browser voice.
+  const WORD_AUDIO = {
+    'तीर': 'teer.wav', 'बाण': 'baan.wav', 'शर': 'shar.wav', 'इषु': 'eeshu.wav',
+    'धनुष': 'dhanush.wav', 'चाप': 'chaap.wav', 'कमान': 'kamaan.wav', 'धनु': 'dhanu.wav',
+    'तलवार': 'talawaar.wav', 'निशाना': 'nishanaa.wav',
+
+    'कपड़ा': 'kapadaa.wav', 'वस्त्र': 'wastra.wav', 'पट': 'pat.wav',
+    'गहना': 'gahanaa.wav', 'आभूषण': 'aabhushan.wav', 'भूषण': 'bhushan.wav', 'अलंकार': 'alankar.wav',
+    'वचन': 'wachan.wav', 'अँगूठी': 'anguthi.wav',
+
+    'कान': 'kaan.wav', 'कर्ण': 'karna.wav', 'श्रवण': 'shravan.wav', 'श्रोत्र': 'shotra.wav',
+    'नाक': 'naak.wav', 'नासिका': 'nasikaa.wav', 'घ्राण': 'ghraan.wav', 'नासा': 'nasa.wav',
+    'सुनना': 'sunanaa.wav', 'साँस': 'saas.wav',
+
+    'शहर': 'shahar.wav', 'नगर': 'nagar.wav', 'पुर': 'purr.wav', 'नगरी': 'nagari.wav',
+    'गाँव': 'gaaw.wav', 'ग्राम': 'graam.wav', 'देहात': 'dehat.wav', 'पल्ली': 'palli.wav',
+    'सड़क': 'sadak.wav', 'खेत': 'khet.wav',
+
+    'चाँद': 'chand.wav', 'चंद्रमा': 'chandramaa.wav', 'शशि': 'shashi.wav', 'सुधाकर': 'sudhakar.wav',
+    'बंदर': 'bandar.wav', 'वानर': 'wanar.wav', 'कपि': 'kapi.wav', 'मर्कट': 'markat.wav',
+    'चाँदनी': 'chandani.wav', 'लंगूर': 'langoor.wav',
+
+    'झंडा': 'zanda.wav', 'ध्वज': 'dhwaj.wav', 'पताका': 'pataakaa.wav', 'निशान': 'nishaan.wav',
+    'सिपाही': 'shipahi.wav', 'सैनिक': 'sainik.wav', 'जवान': 'jawaan.wav', 'फ़ौजी': 'fauji.wav',
+    'डंडा': 'danda.wav', 'बंदूक': 'bandook.wav',
+
+    'पेड़': 'ped.wav', 'वृक्ष': 'vriksha.wav', 'तरु': 'taru.wav', 'पादप': 'padap.wav',
+    'फूल': 'ful.wav', 'पुष्प': 'pushpa.wav', 'सुमन': 'suman.wav', 'कुसुम': 'kusum.wav',
+    'पत्ता': 'patta.wav', 'कली': 'kali.wav',
+
+    'शिक्षक': 'shikshak.wav', 'गुरु': 'guru.wav', 'अध्यापक': 'adhyapak.wav', 'आचार्य': 'acharya.wav',
+    'विद्यार्थी': 'vidyarthi.wav', 'छात्र': 'chatra.wav', 'शिष्य': 'shishya.wav', 'शिक्षार्थी': 'shiksharthi.wav',
+    'विद्यालय': 'vidyalay.wav', 'पढ़ाई': 'padhai.wav',
+
+    'जीभ': 'jeebh.wav', 'जिह्वा': 'jiwhaa.wav', 'रसना': 'rasana.wav', 'जबान': 'jaban.wav',
+    'भौंरा': 'bhura.wav', 'भ्रमर': 'bhramar.wav', 'मधुकर': 'madhukar.wav', 'मधुप': 'madhup.wav',
+    'स्वाद': 'swaad.wav', 'मधुमक्खी': 'madhumakhhi.wav',
+
+    'कोशिश': 'koshish.wav', 'प्रयास': 'prayas.wav', 'प्रयत्न': 'prayatna.wav', 'चेष्टा': 'cheshtaa.wav',
+    'मदद': 'madat.wav', 'सहायता': 'sahayata.wav', 'सहयोग': 'sahayog.wav', 'सहारा': 'sahara.wav',
+    'मेहनत': 'mehanat.wav', 'दान': 'daan.wav',
+
+    'आग': 'aag.wav', 'अग्नि': 'agni.wav', 'पावक': 'pawak.wav', 'अनल': 'anal.wav',
+    'समुद्र': 'samudra.wav', 'सागर': 'sagar.wav', 'जलधि': 'jaladhi.wav', 'रत्नाकर': 'ratnakar.wav',
+    'धुआँ': 'dhuwa.wav', 'लहर': 'lahar.wav',
+
+    'आँसू': 'aasu.wav', 'अश्रु': 'ashru.wav', 'नयनजल': 'nayan-jal.wav', 'नेत्रनीर': 'netranir.wav',
+    'दुख': 'dukh.wav', 'पीड़ा': 'peeda.wav', 'वेदना': 'wedana.wav', 'व्यथा': 'wyatha.wav',
+    'रोना': 'rona.wav', 'आँख': 'aankh.wav',
+
+    'साँप': 'saap.wav', 'सर्प': 'sarp.wav', 'भुजंग': 'bhujang.wav', 'उरग': 'urag.wav',
+    'बेटा': 'beta.wav', 'पुत्र': 'putra.wav', 'तनय': 'tanay.wav', 'सुत': 'sut.wav',
+    'केंचुआ': 'kechuwa.wav', 'सूत': 'soot.wav',
+
+    'आदर': 'adar.wav', 'सम्मान': 'sammaan.wav', 'इज़्ज़त': 'ijjat.wav', 'मान': 'maan.wav',
+    'घमंड': 'ghamand.wav', 'अहंकार': 'ahankar.wav', 'गर्व': 'garv.wav', 'अभिमान': 'abhiman.wav',
+    'आदत': 'adat.wav', 'प्रशंसा': 'prashnsa.wav',
+
+    'डर': 'darr.wav', 'भय': 'bhay.wav', 'भीति': 'bhiti.wav', 'त्रास': 'traas.wav',
+    'साहस': 'sahas.wav', 'हिम्मत': 'himmat.wav', 'हौसला': 'hosala.wav', 'बहादुरी': 'bahaduri.wav',
+    'डरपोक': 'darpok.wav', 'योद्धा': 'yoddha.wav'
+  };
+
   // stage geometry (px, from the AI layout)
   const CELLS = [[365, 769], [592, 769], [819, 769], [1046, 769], [365, 855], [592, 855], [819, 855], [1046, 855]];
   const PIECE = [214, 68];
@@ -177,34 +241,15 @@ if (
       else if (name === 'end') { [523, 659, 784, 1047, 1319].forEach((f, i) => tone(f, t + i * 0.12, 0.45, 'triangle', 0.15)); }
     }
 
-    /* ---- voice: recorded files in assets/audio, browser Hindi voice only as a fallback ----
-       The browser voice was unreliable (no Hindi voice on many machines, a late voice list,
-       and cancel() swallowing the next word), so every line now plays a recording.
-       If a recording is missing, that one line falls back to the browser voice. */
+    /* ---- voice: recorded files in assets/audio only (no browser / system voice) ----
+       Each word plays its own recording (see WORD_AUDIO). A word with no recording
+       stays silent and is reported once in the console. */
 
     const player = new Audio();
     player.preload = 'auto';
     let playToken = 0;
     let playingBtn = null;
-
-    // recordings that failed to load once are not tried again, so the voice starts at once
-    const missing = new Set();
-    // the spoken line is kept here: Chrome can drop an utterance that is garbage-collected mid-speech
-    let currentUtterance = null;
-
-    // the browser's voice list arrives late: keep the Hindi voice once it is known.
-    // An on-device voice starts speaking straight away; an online one has to download first.
-    let hindiVoice = null;
-    const pickVoice = () => {
-      try {
-        const hindi = window.speechSynthesis.getVoices().filter((v) => v.lang && v.lang.toLowerCase().startsWith('hi'));
-        hindiVoice = hindi.find((v) => v.localService) || hindi[0] || null;
-      } catch (e) { hindiVoice = null; }
-    };
-    if ('speechSynthesis' in window) {
-      pickVoice();
-      window.speechSynthesis.addEventListener('voiceschanged', pickVoice);
-    }
+    const warned = new Set();
 
     function markBtn(btn) {
       if (playingBtn && playingBtn !== btn) playingBtn.classList.remove('is-playing');
@@ -218,62 +263,32 @@ if (
       playingBtn = null;
     }
 
-    function tts(text, tok) {
-      try {
-        const synth = window.speechSynthesis;
-        if (!synth) { done(tok); return; }
-        const busy = synth.speaking || synth.pending;
-        if (busy) synth.cancel();
-        const speak = () => {
-          if (tok !== playToken) return;
-          const u = new SpeechSynthesisUtterance(text);
-          u.lang = 'hi-IN';
-          u.rate = 0.85;
-          if (!hindiVoice) pickVoice();
-          if (hindiVoice) u.voice = hindiVoice;
-          u.onend = () => done(tok);
-          u.onerror = () => done(tok);
-          currentUtterance = u;
-          synth.resume(); // Chrome can be left paused, and then nothing is heard
-          synth.speak(u);
-        };
-        // speaking straight after cancel() drops the line in Chrome: wait a moment only then
-        if (busy) window.setTimeout(speak, 60); else speak();
-      } catch (e) { done(tok); }
-    }
-
     /**
-     * Plays the recordings in `files` one after another (paths under assets/audio,
-     * without .mp3). `text` is what the browser voice says if a recording is missing.
+     * Plays a recording from assets/audio (file name with extension). `text` is the
+     * word, used only to report a missing recording.
      */
-    function say(files, text, btn) {
+    function say(file, text, btn) {
       const tok = ++playToken;
       halt();
+      if (!file) {
+        if (!warned.has(text)) { warned.add(text); console.warn(`wg213: no recording for "${text}"`); }
+        return;
+      }
       markBtn(btn);
-      const list = [].concat(files);
-      // a recording already known to be missing: go straight to the browser voice
-      if (list.some((f) => missing.has(f))) { tts(text, tok); return; }
-      let i = 0;
-      const next = () => {
-        if (tok !== playToken) return;
-        if (i >= list.length) { done(tok); return; }
-        player.src = `assets/audio/${list[i++]}.mp3`;
-        const p = player.play();
-        if (p && p.catch) p.catch(() => { /* reported by the error event, or autoplay was blocked */ });
-      };
-      player.onended = next;
+      player.onended = () => done(tok);
       player.onerror = () => {
-        missing.add(list[Math.max(0, i - 1)]);
-        if (tok === playToken) tts(text, tok);
+        if (!warned.has(file)) { warned.add(file); console.warn(`wg213: recording not found: assets/audio/${file}`); }
+        done(tok);
       };
-      next();
+      player.src = `assets/audio/${file}`;
+      const p = player.play();
+      if (p && p.catch) p.catch(() => { /* reported by the error event, or autoplay was blocked */ });
     }
 
     function halt() {
       player.onended = null;
       player.onerror = null;
       try { player.pause(); } catch (e) { /* nothing playing */ }
-      try { window.speechSynthesis.cancel(); } catch (e) { /* no speech */ }
     }
 
     function stop() {
@@ -310,19 +325,8 @@ if (
 
   const R = () => ROUNDS[state.r];
 
-  /**
-   * Recording for a word of the current example, e.g. round 1: r01-a0 = top bridge word,
-   * r01-a1..a3 = its three words, r01-b0..b3 = the bottom bridge, r01-x1..x2 = whirlpool words.
-   */
-  function audioFor(word, r = state.r) {
-    const round = ROUNDS[r];
-    const id = String(r + 1).padStart(2, '0');
-    const a = round.a.indexOf(word);
-    if (a >= 0) return `r${id}-a${a}`;
-    const b = round.b.indexOf(word);
-    if (b >= 0) return `r${id}-b${b}`;
-    return `r${id}-x${round.x.indexOf(word) + 1}`;
-  }
+  /** Recording for a word (file in assets/audio), or undefined if it has none. */
+  const audioFor = (word) => WORD_AUDIO[word];
   const speakWord = (word) => Sound.say(audioFor(word), word);
   const familyOf = (word) => (R().a.slice(1).includes(word) ? 'a' : R().b.slice(1).includes(word) ? 'b' : 'x');
 
@@ -412,7 +416,8 @@ if (
     $('#labelB').textContent = round.b[0];
     answerBtn.disabled = false;
     setAnswerBtn(false);
-    $('#nextLabel').textContent = state.r < ROUNDS.length - 1 ? 'अगला उदाहरण' : 'परिणाम देखें';
+    // on the last example the same button starts the game again
+    $('#nextLabel').textContent = state.r < ROUNDS.length - 1 ? 'अगला उदाहरण' : 'फिर से खेलो';
     renderBoard();
 
     // no sound plays by itself: a word is heard only when the learner taps a bridge label or a word
@@ -693,34 +698,10 @@ if (
     });
   });
 
+  /* अगला उदाहरण goes to the next example; on the last one it reads फिर से खेलो and starts over */
   function next() {
     Sound.unlock();
-    if (state.r < ROUNDS.length - 1) {
-      state.r++;
-      load();
-    } else {
-      finish();
-    }
-  }
-
-  /* ------------------------------------------------------------------------
-     5. END: no end screen; फिर से खेलो replaces the Next button
-     ------------------------------------------------------------------------ */
-
-  function finish() {
-    clearTimers();
-    Sound.stop();
-    $('#nextBtn').hidden = true;
-    $('#againBtn').hidden = false;
-    Sound.sfx('end');
-    announce('सब पार पहुँच गए!');
-    $('#againBtn').focus();
-  }
-
-  function restartGame() {
-    $('#againBtn').hidden = true;
-    $('#nextBtn').hidden = false;
-    state.r = 0;
+    state.r = state.r < ROUNDS.length - 1 ? state.r + 1 : 0;
     load();
   }
 
@@ -740,7 +721,6 @@ if (
 
   answerBtn.addEventListener('click', toggleAnswer);
   $('#nextBtn').addEventListener('click', next);
-  $('#againBtn').addEventListener('click', restartGame);
   document.addEventListener('keydown', (event) => { if (event.key === 'Escape') clearSelection(); });
 
   fitStage();
