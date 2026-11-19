@@ -216,7 +216,7 @@
     createSvg(svg, 'line', { x1: ML, y1: MT, x2: ML, y2: MT + PH, 'class': 'chart-axis-line' });
     createSvg(svg, 'line', { x1: ML, y1: MT + PH, x2: ML + PW, y2: MT + PH, 'class': 'chart-axis-line' });
     createSvg(svg, 'text', { x: 14, y: MT + PH / 2, 'class': 'chart-axis-label', 'text-anchor': 'middle',
-      transform: 'rotate(-90 14 ' + (MT + PH / 2) + ')' }, 'Birth and death rates');
+      transform: 'rotate(-90 14 ' + (MT + PH / 2) + ')' }, 'Birth and death rates');    ``
     createSvg(svg, 'text', { x: ML + PW / 2, y: H_CH - 10, 'class': 'chart-axis-label', 'text-anchor': 'middle' }, 'Time');
 
     /* Gap fill polygon */
