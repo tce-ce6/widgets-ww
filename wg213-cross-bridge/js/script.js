@@ -45,7 +45,6 @@ if (
     { a: ['आदर', 'सम्मान', 'इज़्ज़त', 'मान'], b: ['घमंड', 'अहंकार', 'गर्व', 'अभिमान'], x: ['आदत', 'प्रशंसा'] },
     { a: ['डर', 'भय', 'भीति', 'त्रास'], b: ['साहस', 'हिम्मत', 'हौसला', 'बहादुरी'], x: ['डरपोक', 'योद्धा'] }
   ];
-  const ITEXT = 'हर शब्द को उसके समान अर्थ वाले पुल में लगाओ। जो शब्द किसी पुल का नहीं, उसे नदी में बहा दो!';
 
   // stage geometry (px, from the AI layout)
   const CELLS = [[365, 769], [592, 769], [819, 769], [1046, 769], [365, 855], [592, 855], [819, 855], [1046, 855]];
@@ -64,7 +63,6 @@ if (
   const $ = (selector, root = document) => root.querySelector(selector);
   const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
   const stage = $('#stage');
-  const modalStage = $('#modal-stage');
   const viewport = $('#viewport');
   const pool = $('#pool');
   const answerBtn = $('#answerBtn');
@@ -113,7 +111,6 @@ if (
     stageOrigin = [(vw - 1920 * stageScale) / 2, (vh - 1080 * stageScale) / 2];
     const t = `translate(${stageOrigin[0]}px, ${stageOrigin[1]}px) scale(${stageScale})`;
     stage.style.transform = t;
-    modalStage.style.transform = t; // modals share the stage's position and scale
     viewport.style.setProperty('--water-y', `${stageOrigin[1] + WATER_Y * stageScale}px`);
   }
 
@@ -283,7 +280,6 @@ if (
       playToken++;
       halt();
       markBtn(null);
-      $$('.audio-btn.is-playing').forEach((b) => b.classList.remove('is-playing'));
     }
 
     return { sfx, say, stop, unlock: ensure };
@@ -301,8 +297,16 @@ if (
     mistake: false,
     done: false,
     selected: null,
-    clean: 0
+    layout: [], // this round's eight words, in the river cell order
+    placed: { a: [], b: [] }, // words on each bridge, in slot order
+    flushed: [], // words sent down the whirlpool
+    showing: false, // Show Answer is on (the button reads उत्तर छिपाएँ)
+    saved: null, // the learner's own progress, kept while the answer is shown
+    epoch: 0 // bumped whenever the board is rebuilt, so old animations stop
   };
+
+  const ANSWER_SHOW = 'उत्तर देखें';
+  const ANSWER_HIDE = 'उत्तर छिपाएँ';
 
   const R = () => ROUNDS[state.r];
 
@@ -337,51 +341,79 @@ if (
     speakWord(piece.dataset.word);
   }
 
+  function makePiece(w, i) {
+    const p = document.createElement('span');
+    p.className = 'plank piece';
+    p.textContent = w;
+    p.dataset.word = w;
+    p.tabIndex = 0;
+    p.setAttribute('role', 'button');
+    p.setAttribute('aria-label', `शब्द: ${w}`);
+    p.style.left = `${CELLS[i][0]}px`;
+    p.style.top = `${CELLS[i][1]}px`;
+    p.style.setProperty('--delay', `${-(i * 0.37) % 2.6}s`);
+    initDrag(p);
+    p.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); select(p); }
+    });
+    return p;
+  }
+
+  /**
+   * Draws the board from state.placed / state.flushed, with no animation:
+   * placed words sit in their bridge slots, flushed words are gone, every
+   * other word floats in its own river cell.
+   */
+  function renderBoard() {
+    state.epoch++;
+    clearSelection();
+    ['a', 'b'].forEach((k) => {
+      slotBoxes[k].innerHTML = '<span class="slot"></span><span class="slot"></span><span class="slot"></span>';
+      $$('.slot', slotBoxes[k]).forEach((slot, i) => {
+        if (i >= state.placed[k].length) return;
+        slot.dataset.taken = '1';
+        fillSlot(slot, state.placed[k][i]);
+      });
+      const rider = riders[k];
+      rider.style.transition = 'none';
+      rider.classList.remove('is-crossed', 'is-crossing', 'is-wobbling');
+      if (state.placed[k].length === 3) rider.classList.add('is-crossed');
+      void rider.offsetWidth;
+      rider.style.transition = '';
+    });
+    pool.innerHTML = '';
+    const out = [...state.placed.a, ...state.placed.b, ...state.flushed];
+    state.layout.forEach((w, i) => { if (!out.includes(w)) pool.appendChild(makePiece(w, i)); });
+    state.filled = { a: state.placed.a.length, b: state.placed.b.length };
+    state.handled = out.length;
+  }
+
+  function setAnswerBtn(showing) {
+    state.showing = showing;
+    answerBtn.textContent = showing ? ANSWER_HIDE : ANSWER_SHOW;
+    answerBtn.setAttribute('aria-pressed', String(showing));
+  }
+
   function load() {
     clearTimers();
     Sound.stop();
-    clearSelection();
     const round = R();
-    state.filled = { a: 0, b: 0 };
-    state.handled = 0;
     state.total = 8;
     state.mistake = false;
     state.done = false;
+    state.saved = null;
+    state.placed = { a: [], b: [] };
+    state.flushed = [];
+    // the eight words land in random cells every time
+    state.layout = shuffle([...round.a.slice(1), ...round.b.slice(1), ...round.x]);
 
     $('#exampleCounter').textContent = `उदाहरण ${state.r + 1} / ${ROUNDS.length}`;
     $('#labelA').textContent = round.a[0];
     $('#labelB').textContent = round.b[0];
-    ['a', 'b'].forEach((k) => {
-      slotBoxes[k].innerHTML = '<span class="slot"></span><span class="slot"></span><span class="slot"></span>';
-      const rider = riders[k];
-      rider.style.transition = 'none';
-      rider.classList.remove('is-crossed', 'is-crossing', 'is-wobbling');
-      void rider.offsetWidth;
-      rider.style.transition = '';
-    });
     answerBtn.disabled = false;
+    setAnswerBtn(false);
     $('#nextLabel').textContent = state.r < ROUNDS.length - 1 ? 'अगला उदाहरण' : 'परिणाम देखें';
-
-    // the eight words land in random cells every time
-    pool.innerHTML = '';
-    const words = shuffle([...round.a.slice(1), ...round.b.slice(1), ...round.x]);
-    words.forEach((w, i) => {
-      const p = document.createElement('span');
-      p.className = 'plank piece';
-      p.textContent = w;
-      p.dataset.word = w;
-      p.tabIndex = 0;
-      p.setAttribute('role', 'button');
-      p.setAttribute('aria-label', `शब्द: ${w}`);
-      p.style.left = `${CELLS[i][0]}px`;
-      p.style.top = `${CELLS[i][1]}px`;
-      p.style.setProperty('--delay', `${-(i * 0.37) % 2.6}s`);
-      initDrag(p);
-      p.addEventListener('keydown', (event) => {
-        if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); select(p); }
-      });
-      pool.appendChild(p);
-    });
+    renderBoard();
 
     // no sound plays by itself: a word is heard only when the learner taps a bridge label or a word
   }
@@ -441,7 +473,6 @@ if (
     if (state.handled === state.total && !state.done) {
       state.done = true;
       answerBtn.disabled = true;
-      if (!state.mistake) state.clean++;
     }
   }
 
@@ -450,7 +481,10 @@ if (
     const slot = nextSlot(k);
     const word = p.dataset.word;
     slot.dataset.taken = '1';
+    state.placed[k].push(word); // counted now, so Show / Hide Answer keeps it even mid-flight
+    const epoch = state.epoch;
     flyPiece(p, slotPos(k, slot), () => {
+      if (epoch !== state.epoch) return; // the board was rebuilt meanwhile
       p.classList.add('is-gone');
       fillSlot(slot, word);
       state.filled[k]++;
@@ -463,7 +497,10 @@ if (
   function flush(p) {
     // centre of #whirlAnim (1476 + 345/2, 776 + 216/2) minus half a piece
     const sink = [1648 - PIECE[0] / 2, 884 - PIECE[1] / 2];
+    state.flushed.push(p.dataset.word);
+    const epoch = state.epoch;
     flyPiece(p, sink, () => {
+      if (epoch !== state.epoch) return; // the board was rebuilt meanwhile
       // flyPiece clears its transform, so park the piece on the whirlpool before it spins down
       p.style.left = `${sink[0]}px`;
       p.style.top = `${sink[1]}px`;
@@ -504,7 +541,9 @@ if (
       if (!slot) { Sound.sfx('wrong'); restart(p, 'is-shake'); return; }
       slot.dataset.taken = '1';
       const home = [parseFloat(p.style.left), parseFloat(p.style.top)];
+      const epoch = state.epoch;
       flyPiece(p, slotPos(k, slot), () => {
+        if (epoch !== state.epoch) return; // the board was rebuilt meanwhile
         p.classList.add('is-gone');
         fillSlot(slot, word);
         later(() => {
@@ -530,13 +569,23 @@ if (
     restart(p, 'is-shake');
   }
 
+  /** उत्तर देखें / उत्तर छिपाएँ toggle. */
+  function toggleAnswer() {
+    if (state.showing) hideAnswer();
+    else showAnswer();
+  }
+
   function showAnswer() {
     if (state.done) return;
     Sound.unlock();
-    clearSelection();
+    clearTimers();
+    Sound.stop();
+    // keep the learner's own progress, then redraw it so nothing is left half-way
+    state.saved = { placed: { a: [...state.placed.a], b: [...state.placed.b] }, flushed: [...state.flushed] };
+    renderBoard();
     state.done = true;
     state.mistake = true;
-    answerBtn.disabled = true;
+    setAnswerBtn(true);
     const rest = $$('.piece').filter((p) => !p.classList.contains('is-gone'));
     // bridge words first (one by one), then the outsiders vanish
     const ordered = [...rest.filter((p) => familyOf(p.dataset.word) !== 'x'), ...rest.filter((p) => familyOf(p.dataset.word) === 'x')];
@@ -551,6 +600,20 @@ if (
         placeCorrect(p, fam);
       }
     }, i * 500));
+  }
+
+  /** Put the round back the way the learner left it before Show Answer. */
+  function hideAnswer() {
+    clearTimers();
+    Sound.stop();
+    if (state.saved) {
+      state.placed = state.saved.placed;
+      state.flushed = state.saved.flushed;
+      state.saved = null;
+    }
+    renderBoard();
+    state.done = false;
+    setAnswerBtn(false);
   }
 
   /* drag a piece to a bridge or the whirlpool; a plain tap selects it */
@@ -641,26 +704,23 @@ if (
   }
 
   /* ------------------------------------------------------------------------
-     5. END SCREEN (modal on the body.has-modal backdrop)
+     5. END: no end screen; फिर से खेलो replaces the Next button
      ------------------------------------------------------------------------ */
 
   function finish() {
     clearTimers();
     Sound.stop();
-    const score = `${ROUNDS.length} में से ${state.clean} उदाहरण तुमने खुद, बिना गलती के पूरे किए!`;
-    $('#score').textContent = score;
-    $('#end').hidden = false;
-    document.body.classList.add('has-modal');
+    $('#nextBtn').hidden = true;
+    $('#againBtn').hidden = false;
     Sound.sfx('end');
-    announce(`सब पार पहुँच गए! ${score}`);
+    announce('सब पार पहुँच गए!');
     $('#againBtn').focus();
   }
 
   function restartGame() {
-    $('#end').hidden = true;
-    document.body.classList.remove('has-modal');
+    $('#againBtn').hidden = true;
+    $('#nextBtn').hidden = false;
     state.r = 0;
-    state.clean = 0;
     load();
   }
 
@@ -678,8 +738,7 @@ if (
     $('#whirlAnim').innerHTML = '<img src="assets/svg/whirlpool.svg" alt="" style="width:100%;height:100%">';
   }
 
-  $('#itextAudio').addEventListener('click', (event) => { Sound.unlock(); Sound.say('itext', ITEXT, event.currentTarget); });
-  answerBtn.addEventListener('click', showAnswer);
+  answerBtn.addEventListener('click', toggleAnswer);
   $('#nextBtn').addEventListener('click', next);
   $('#againBtn').addEventListener('click', restartGame);
   document.addEventListener('keydown', (event) => { if (event.key === 'Escape') clearSelection(); });

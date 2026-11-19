@@ -51,10 +51,8 @@ body {
   border: 0;
 }
 
-/* Layering, bottom to top: #viewport (the widget) -> body::before (modal
-   backdrop) -> #modal-layer (end screen) -> .wdgetTitle */
-#viewport,
-#modal-layer {
+/* Layering, bottom to top: #viewport (the widget) -> .wdgetTitle */
+#viewport {
   position: fixed;
   inset: 0;
   overflow: hidden;
@@ -67,28 +65,8 @@ body {
   background: #000;
 }
 
-/* Dark backdrop behind an open modal, covering the whole viewport. */
-body.has-modal::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: 2;
-  background: rgba(0, 0, 0, 0.8);
-}
-
-#modal-layer {
-  z-index: 3;
-  pointer-events: none;
-}
-
-body.has-modal #modal-layer {
-  pointer-events: auto;
-}
-
-/* #stage holds the widget, #modal-stage the modals; both are the same fixed
-   1920x1080 design stage, scaled together by script.js. */
-#stage,
-#modal-stage {
+/* #stage holds the widget: a fixed 1920x1080 design stage, scaled by script.js. */
+#stage {
   position: absolute;
   left: 0;
   top: 0;
@@ -198,29 +176,6 @@ button:disabled {
   margin: 0;
   font-size: 30px;
   white-space: nowrap;
-}
-
-.audio-btn {
-  width: 58px;
-  height: 58px;
-  border-radius: 50%;
-  flex: 0 0 auto;
-}
-
-.audio-btn img {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
-.audio-btn.is-playing img {
-  animation: pulse .7s ease-in-out infinite alternate;
-}
-
-@keyframes pulse {
-  to {
-    transform: scale(1.1);
-  }
 }
 
 /* ---------- planks ---------- */
@@ -546,60 +501,14 @@ button:disabled {
   height: 31px;
 }
 
-/* ---------- end screen (modal) ---------- */
-.end {
-  position: absolute;
-  left: 410px;
-  top: 220px;
-  width: 1100px;
-  padding: 46px 60px 60px;
-  border-radius: 40px;
-  background: #fffbe0;
-  border: 6px solid var(--title-bg);
-  text-align: center;
-  animation: end-in .5s cubic-bezier(.3, 1.4, .5, 1);
-}
-
-@keyframes end-in {
-  from {
-    transform: scale(.7);
-    opacity: 0;
-  }
-
-  to {
-    transform: none;
-    opacity: 1;
-  }
-}
-
-.end__riders {
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  gap: 40px;
-}
-
-.end__riders img {
-  height: 150px;
-}
-
-.end__title {
-  margin: 26px 0 0;
-  font-size: 64px;
-  font-weight: 700;
-  color: var(--title-bg);
-}
-
-.end__score {
-  margin: 26px 0 0;
-  font-size: 36px;
-  font-weight: 700;
-  line-height: 50px;
-}
-
+/* after the last example: फिर से खेलो takes the Next button's place */
 .btn--again {
-  position: static;
-  margin-top: 40px;
-  width: 300px;
+  left: 772px;
+  top: 979px;
+  width: 340px;
   background: var(--green);
+}
+
+.btn[hidden] {
+  display: none;
 }

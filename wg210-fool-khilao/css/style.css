@@ -578,17 +578,23 @@ button:disabled {
   height: 31px;
 }
 
-/* ---------- end screen (modal) ---------- */
+/* ---------- end screen (modal): only the फिर से खेलो button, centred on the backdrop ---------- */
 .end {
   position: absolute;
-  left: 360px;
-  top: 200px;
-  width: 1200px;
-  padding-bottom: 60px;
-  border-radius: 40px;
-  background: #fff8ec;
-  border: 6px solid #e7b774;
-  text-align: center;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.end[hidden] {
+  display: none;
+}
+
+.btn--again {
+  position: static;
+  width: 300px;
+  background: var(--green);
   animation: end-in .5s cubic-bezier(.3, 1.4, .5, 1);
 }
 
@@ -602,41 +608,4 @@ button:disabled {
     transform: none;
     opacity: 1;
   }
-}
-
-.end__title {
-  margin: 56px 0 0;
-  font-size: 64px;
-  font-weight: 700;
-  color: var(--title-bg);
-}
-
-.end__garden {
-  margin: 34px auto 0;
-  width: 1040px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 18px 14px;
-}
-
-.end__garden img {
-  width: 72px;
-  height: 40px;
-  animation: pop .5s ease-out both;
-}
-
-.end__score {
-  margin: 44px 60px 0;
-  font-size: 36px;
-  font-weight: 700;
-  line-height: 50px;
-  color: var(--ink);
-}
-
-.btn--again {
-  position: static;
-  margin-top: 46px;
-  width: 300px;
-  background: var(--green);
 }
