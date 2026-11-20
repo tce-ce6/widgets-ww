@@ -13,7 +13,7 @@
     <div class="mainContainerOuter">
       <div class="wdgetTitle">
         <h2>Gears</h2>
-        <span id="versionId" class="versionText">b4_wg160_261118_01</span>
+        <span id="versionId" class="versionText">b4_wg160_261121_01</span>
       </div>
       <div class="svg-container" id="svg-container">
         <svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" fill="none">
@@ -101,19 +101,13 @@
           </div>
           </foreignObject>
           <foreignObject x="0" y="960" width="175" height="75" style="cursor: pointer;">
-              <div class="help-wrapper" id="help-btn">
+              <div class="help-wrapper" id="help-btn" role="button" tabindex="0" aria-label="Help: how to use this activity">
                 <img src="./assets/images/help-btn.svg" alt="">
               </div>
             </foreignObject>
             <foreignObject x="850" y="960" width="255" height="75" style="cursor: pointer;">
               <div class="insight-wrapper" id="insight-btn">
                 <img src="./assets/images/insight-btn.svg" alt="">
-              </div>
-            </foreignObject>
-            <foreignObject class="help-popup-wrapper" id="help-popup" x="0" y="676" width="1180" height="374" style="display: none;">
-              <div >
-                <img src="./assets/images/help-popup.svg" alt="">
-                <img class="close-btn" src="./assets/images/cross.svg" alt="" style="cursor: pointer;">
               </div>
             </foreignObject>
             <foreignObject class="insight-popup-wrapper" id="insight-popup" x="0" y="389" width="1180" height="660" style="display: none;">
@@ -131,9 +125,29 @@
     </div>
   </div>
 
+  <!-- How to use tour (opened by the Help button) -->
+  <div id="tour" class="tour" aria-hidden="true">
+    <div id="tourSpot" class="tour-spot"></div>
+    <div id="tourDemo" class="tour-demo"></div>
+    <div id="tourCard" class="tour-card" role="dialog" aria-modal="true" aria-labelledby="tourTitle">
+      <button id="tourSkip" class="tour-skip" type="button" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div id="tourCount" class="tour-count"></div>
+      <h2 id="tourTitle"></h2>
+      <p id="tourText"></p>
+      <div class="tour-nav">
+        <div id="tourDots" class="tour-dots"></div>
+        <div class="tour-btns">
+          <button id="tourBack" class="tour-btn tour-btn--ghost" type="button">Back</button>
+          <button id="tourNext" class="tour-btn" type="button">Next</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="./js/lottie.min.js"></script>
   <script src="./js/insight-anim-data.js"></script>
   <script src="./js/script.js"></script>
+  <script src="./js/how-to-play.js"></script>
 </body>
 
 </html>

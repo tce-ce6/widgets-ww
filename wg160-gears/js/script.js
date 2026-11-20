@@ -625,11 +625,8 @@ function tick(now){
 document.getElementById("addBtn").addEventListener("click",addGear);
 document.getElementById("clearBtn").addEventListener("click",clearAll);
 document.getElementById("runBtn").addEventListener("click",toggleRun);
-const helpPopup=document.getElementById("help-popup");
 const insightPopup=document.getElementById("insight-popup");
-document.getElementById("help-btn").addEventListener("click",()=>{
-  helpPopup.style.display="block";
-});
+// Help opens the how-to-use tour (js/how-to-play.js).
 // Insights: the gears animation (gears.json) plays while the panel is open.
 let insightAnim=null;
 function playInsightAnim(){
@@ -647,9 +644,6 @@ function playInsightAnim(){
 document.getElementById("insight-btn").addEventListener("click",()=>{
   insightPopup.style.display="block";
   playInsightAnim();
-});
-helpPopup.querySelector(".close-btn").addEventListener("click",()=>{
-  helpPopup.style.display="none";
 });
 insightPopup.querySelector(".close-btn").addEventListener("click",()=>{
   insightPopup.style.display="none";
