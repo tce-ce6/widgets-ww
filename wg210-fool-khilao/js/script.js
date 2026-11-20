@@ -48,6 +48,13 @@
   const FLOWER_HEAD = [1229.5, 606];
   const NUM = { 1: 'एक', 2: 'दो' };
 
+  // Butterfly words that have their own recording (in assets/audio). Every other
+  // butterfly word is read by the browser's Hindi voice. Add a line here per new file.
+  const WORD_AUDIO = {
+    'गज': 'gaj.wav',
+    'पुष्प': 'pushp.wav'
+  };
+
   /* ------------------------------------------------------------------------
      2. HELPERS, STAGE SCALING
      ------------------------------------------------------------------------ */
@@ -55,7 +62,6 @@
   const $ = (selector, root = document) => root.querySelector(selector);
   const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
   const stage = $('#stage');
-  const modalStage = $('#modal-stage');
   const viewport = $('#viewport');
   const flower = $('#flower');
   const flies = $('#flies');
@@ -100,7 +106,6 @@
     stageOrigin = [(vw - 1920 * stageScale) / 2, (vh - 1080 * stageScale) / 2];
     const t = `translate(${stageOrigin[0]}px, ${stageOrigin[1]}px) scale(${stageScale})`;
     stage.style.transform = t;
-    modalStage.style.transform = t; // modals share the stage's position and scale
     viewport.style.setProperty('--hill-y', `${stageOrigin[1] + HILL_Y * stageScale}px`);
   }
 
@@ -165,22 +170,63 @@
       if (p && p.catch) p.catch(() => { if (btn) btn.classList.remove('is-playing'); });
     }
 
-    /** Words with no recording (the butterfly words) use the browser's Hindi voice. */
-    function speak(text, delay = 0) {
+    // The voice list loads late in some browsers: look the Hindi voice up again
+    // when it arrives, so no word is read by a default English voice.
+    let hindiVoice = null;
+    const findHindi = () => {
       try {
-        if (!('speechSynthesis' in window)) return;
-        window.setTimeout(() => {
-          const u = new SpeechSynthesisUtterance(text);
-          u.lang = 'hi-IN';
-          u.rate = 0.85;
-          const hindi = window.speechSynthesis.getVoices().find((v) => v.lang && v.lang.startsWith('hi'));
-          if (hindi) u.voice = hindi;
-          window.speechSynthesis.speak(u);
-        }, delay);
+        hindiVoice = window.speechSynthesis.getVoices().find((v) => v.lang && v.lang.toLowerCase().startsWith('hi')) || null;
       } catch (e) { /* no speech */ }
+    };
+    if ('speechSynthesis' in window) {
+      findHindi();
+      window.speechSynthesis.addEventListener('voiceschanged', findHindi);
     }
 
-    return { sfx, play, speak, stop, unlock: ensure };
+    // Resolves when the last spoken word has finished (or could not be spoken).
+    let speechDone = Promise.resolve();
+
+    /** Words with no recording (the butterfly words) use the browser's Hindi voice. */
+    function speak(text, delay = 0) {
+      speechDone = new Promise((resolve) => {
+        try {
+          if (!('speechSynthesis' in window)) { resolve(); return; }
+          window.setTimeout(() => {
+            const u = new SpeechSynthesisUtterance(text);
+            u.lang = 'hi-IN';
+            u.rate = 0.85;
+            if (!hindiVoice) findHindi();
+            if (hindiVoice) u.voice = hindiVoice;
+            u.onend = resolve;
+            u.onerror = resolve;
+            window.speechSynthesis.speak(u);
+            window.setTimeout(resolve, 3000); // never wait forever if the browser drops the event
+          }, delay);
+        } catch (e) { resolve(); }
+      });
+    }
+
+    /** Plays a butterfly word's own recording (falls back to the browser voice if it fails). */
+    function playWord(src, text, delay = 0) {
+      speechDone = new Promise((resolve) => {
+        window.setTimeout(() => {
+          voice.pause();
+          voice = new Audio(src);
+          voice.addEventListener('ended', resolve);
+          voice.addEventListener('error', () => { speak(text); speechDone.then(resolve); });
+          const p = voice.play();
+          if (p && p.catch) p.catch(() => resolve());
+          window.setTimeout(resolve, 4000); // never wait forever if the browser drops the event
+        }, delay);
+      });
+    }
+
+    /** Runs `fn` once the word being spoken has finished. */
+    function afterSpeech(fn) {
+      speechDone.then(fn);
+    }
+
+    return { sfx, play, speak, playWord, afterSpeech, stop, unlock: ensure };
   }());
 
   /* ------------------------------------------------------------------------
@@ -195,8 +241,7 @@
     showing: false, // Show Answer is on (the button now reads Hide Answer)
     revealed: false, // Show Answer was used this round
     mine: [], // words the learner found themselves this round
-    layout: [], // [word, ok, slot index] for this round's butterflies
-    solo: [] // rounds bloomed with no wrong tap and no Show Answer
+    layout: [] // [word, ok, slot index] for this round's butterflies
   };
 
   const ANSWER_SHOW = 'उत्तर देखें';
@@ -272,15 +317,15 @@
     answerBtn.disabled = false;
     answerBtn.textContent = ANSWER_SHOW;
     answerBtn.setAttribute('aria-pressed', 'false');
-    $('#nextLabel').textContent = state.r < ROUNDS.length - 1 ? 'अगला उदाहरण' : 'परिणाम देखें';
+    // on the last example the same button starts the game again
+    $('#nextLabel').textContent = state.r < ROUNDS.length - 1 ? 'अगला उदाहरण' : 'फिर से खेलो';
 
     // the four words land in random slots every time
     flies.innerHTML = '';
     const words = shuffle([...R.ok.map((w) => [w, true]), ...R.no.map((w) => [w, false])]);
     state.layout = words.map(([w, ok], i) => [w, ok, i]);
     words.forEach(([w, ok], i) => flies.appendChild(makeFly(w, ok, SLOTS[i], i)));
-
-    later(() => Sound.play(`assets/audio/word-${pad(state.r + 1)}.wav`, $('#wordAudio')), 350);
+    // the word's audio plays only when the speaker button (#wordAudio) is tapped
   }
 
   /** Butterfly flies into the flower head and disappears. */
@@ -320,17 +365,19 @@
     }
     Sound.stop();
     Sound.sfx('correct');
-    Sound.speak(word, 150);
+    if (WORD_AUDIO[word]) Sound.playWord(`assets/audio/${WORD_AUDIO[word]}`, word, 150);
+    else Sound.speak(word, 150);
     flyIn(el, () => {
       state.found++;
       state.mine.push(word);
       markFound(word);
       bloom();
       if (state.found === R.ok.length) {
-        Sound.sfx('bloom');
+        // the chime waits for the last word to be spoken, so it does not play over it
+        const round = state.r;
+        Sound.afterSpeech(() => { if (state.r === round && state.done) Sound.sfx('bloom'); });
         state.done = true;
         answerBtn.disabled = true;
-        if (!state.missed && !state.revealed) state.solo.push(state.r);
         $$('.fly').forEach((f) => f.classList.add('is-faded'));
         setFeedback('');
       } else {
@@ -443,46 +490,10 @@
     });
   }
 
+  /* अगला उदाहरण goes to the next example; on the last one it reads फिर से खेलो and starts over */
   function next() {
     Sound.unlock();
-    if (state.r < ROUNDS.length - 1) {
-      state.r++;
-      load();
-    } else {
-      finish();
-    }
-  }
-
-  /* ------------------------------------------------------------------------
-     5. END SCREEN (modal on the body.has-modal backdrop)
-     ------------------------------------------------------------------------ */
-
-  function finish() {
-    clearTimers();
-    Sound.stop();
-    const garden = $('#garden');
-    garden.innerHTML = '';
-    ROUNDS.forEach((R, i) => {
-      const img = document.createElement('img');
-      img.src = 'assets/svg/flower-icon.svg';
-      img.alt = '';
-      img.style.animationDelay = `${i * 0.04}s`;
-      garden.appendChild(img);
-    });
-    const score = `${ROUNDS.length} में से ${state.solo.length} फूल तुमने खुद, पहली बार में खिलाए!`;
-    $('#score').textContent = score;
-    $('#end').hidden = false;
-    document.body.classList.add('has-modal');
-    Sound.sfx('bloom');
-    announce(`सारे फूल खिल गए! ${score}`);
-    $('#againBtn').focus();
-  }
-
-  function restart() {
-    $('#end').hidden = true;
-    document.body.classList.remove('has-modal');
-    state.r = 0;
-    state.solo = [];
+    state.r = state.r < ROUNDS.length - 1 ? state.r + 1 : 0;
     load();
   }
 
@@ -492,7 +503,6 @@
   $('#wordAudio').addEventListener('click', (event) => { Sound.unlock(); Sound.play(`assets/audio/word-${pad(state.r + 1)}.wav`, event.currentTarget); });
   answerBtn.addEventListener('click', toggleAnswer);
   $('#nextBtn').addEventListener('click', next);
-  $('#againBtn').addEventListener('click', restart);
 
   fitStage();
   window.addEventListener('resize', fitStage);

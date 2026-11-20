@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>India's Land-based Neighbours</title>
+<style>
+  :root{
+    --deep:#1E2A38;
+    --navy:#2C3E50;
+    --range:#4A6274;
+    --rangeLight:#6C889A;
+    --gold:#C98A4B;
+    --goldLight:#E8B27A;
+    --sand:#F2E8D5;
+    --ink:#1E2A38;
+    --success:#3F9E6D;
+    --danger:#C7583F;
+    --paper:#FBF7ED;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'Georgia','Times New Roman',serif;
+    background:
+      radial-gradient(circle at 80% 5%, #35495c 0%, transparent 40%),
+      linear-gradient(160deg, var(--deep) 0%, var(--navy) 55%, var(--range) 100%);
+    color:var(--sand);
+    min-height:100vh;
+    overflow-x:hidden;
+  }
+  .app{max-width:920px;margin:0 auto;padding:20px 16px 60px;position:relative;}
+
+  .screen{display:none;animation:fadeIn .5s ease;}
+  .screen.active{display:block;}
+  @keyframes fadeIn{from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);}}
+
+  h1.title{
+    font-family:'Palatino Linotype','Georgia',serif;
+    font-size:clamp(24px,4.6vw,38px);
+    letter-spacing:.5px;
+    color:var(--goldLight);
+    text-align:center;
+    margin:10px 0 4px;
+    text-shadow:0 2px 12px rgba(0,0,0,.4);
+  }
+  .subtitle{text-align:center;color:#C7D6DE;font-size:15px;font-style:italic;margin:0 0 24px;}
+  .btn{
+    display:inline-block;background:linear-gradient(180deg,var(--goldLight),var(--gold));
+    color:var(--ink);border:none;border-radius:30px;padding:14px 34px;font-size:16px;font-weight:bold;
+    font-family:'Georgia',serif;letter-spacing:.5px;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.35);
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .btn:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.45);}
+  .btn:disabled{opacity:.45;cursor:not-allowed;transform:none;}
+  .btn-ghost{background:transparent;border:2px solid var(--goldLight);color:var(--goldLight);box-shadow:none;}
+  .center{text-align:center;margin:24px 0;}
+
+  /* welcome */
+  .globe-wrap{display:flex;justify-content:center;margin:10px 0 20px;}
+  .globe-ring{width:150px;height:150px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#3d5266,#1c2733 75%);
+    box-shadow:0 0 40px rgba(201,138,75,.25), inset 0 0 25px rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;}
+  .globe-ring svg{width:80%;height:80%;}
+  .neighbour-explain{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin:0 0 20px;}
+  .explain-card{background:rgba(255,255,255,.05);border:1px solid rgba(232,178,122,.25);border-radius:14px;
+    padding:16px 18px;max-width:260px;text-align:center;}
+  .explain-card .emoji{font-size:28px;}
+  .explain-card h3{margin:6px 0 4px;color:var(--goldLight);font-size:16px;}
+  .explain-card p{margin:0;font-size:13px;color:#D9E3E9;line-height:1.4;}
+  .question-line{text-align:center;font-size:16px;color:var(--sand);margin:10px 0 6px;}
+  .companion-note{text-align:center;font-size:12.5px;color:#9FB2BE;margin:0 0 10px;font-style:italic;}
+
+  /* HUD */
+  .hud{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:14px;}
+  .pill{background:rgba(255,255,255,.08);border:1px solid rgba(232,178,122,.3);border-radius:20px;padding:6px 16px;font-size:13px;color:var(--goldLight);}
+
+  /* flag chips */
+  .flag-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:10px 0 16px;}
+  .flag-chip{background:rgba(255,255,255,.06);border:2px solid rgba(232,178,122,.3);border-radius:12px;
+    padding:8px 10px;text-align:center;cursor:grab;transition:all .15s ease;min-width:64px;}
+  .flag-chip .fl{font-size:24px;display:block;}
+  .flag-chip .nm{font-size:10px;color:#C7D6DE;margin-top:2px;display:block;}
+  .flag-chip:hover{border-color:var(--goldLight);}
+  .flag-chip.selected{border-color:var(--goldLight);background:rgba(232,178,122,.15);box-shadow:0 0 12px rgba(232,178,122,.3);}
+  .flag-chip.done{opacity:.35;cursor:not-allowed;}
+  .flag-chip.dragging{opacity:.5;}
+
+  /* clue box */
+  .clue-box{background:var(--paper);color:var(--ink);border-radius:14px;padding:16px 20px;margin:0 0 16px;
+    box-shadow:0 6px 20px rgba(0,0,0,.3);min-height:70px;position:relative;}
+  .clue-box .clue-label{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--range);font-weight:bold;}
+  .clue-box .clue-text{font-size:16px;line-height:1.5;margin-top:6px;}
+  .clue-box .clue-empty{color:#8A97A0;font-style:italic;font-size:14px;}
+  .feedback-msg{text-align:center;font-size:13.5px;margin:8px 0;min-height:20px;}
+  .feedback-msg .wrong{color:#F5A896;}
+  .feedback-msg .hint{color:var(--goldLight);}
+
+  /* map */
+  .map-wrap{background:rgba(0,0,0,.2);border-radius:18px;padding:10px;position:relative;border:1px solid rgba(232,178,122,.2);}
+  svg#mapSvg, svg#summarySvg{width:100%;height:auto;display:block;}
+  .india-shape{fill:#33475A;stroke:var(--goldLight);stroke-width:2;}
+  .india-label{fill:var(--goldLight);font-size:15px;font-family:'Palatino Linotype',serif;letter-spacing:2px;}
+  .range-line{stroke:#7C93A2;stroke-width:2;fill:none;stroke-dasharray:3 4;opacity:.6;}
+  .drop-zone{fill:rgba(255,255,255,0.001);cursor:pointer;}
+  .drop-zone:hover{fill:rgba(232,178,122,.08);}
+  .border-line{stroke:var(--goldLight);stroke-width:0;opacity:0;transition:opacity .4s;}
+  .border-line.show{opacity:.85;stroke-width:2;}
+  .zone-glow{opacity:0;transition:opacity .3s;}
+  .zone-glow.show{opacity:1;}
+  .pin-label{fill:var(--sand);font-size:13px;font-weight:bold;opacity:0;transition:opacity .3s;text-anchor:middle;}
+  .pin-label.show{opacity:1;}
+  .pending-mark{opacity:0;}
+  .pending-mark.show{opacity:1;}
+  .correct-flash{animation:flashCorrect .65s ease;}
+  @keyframes flashCorrect{0%{filter:brightness(1);}50%{filter:brightness(2);}100%{filter:brightness(1);}}
+
+  /* confirm bar */
+  .confirm-bar{display:none;align-items:center;justify-content:center;gap:10px;margin:10px 0 4px;flex-wrap:wrap;}
+  .confirm-bar.show{display:flex;}
+  .confirm-bar span{font-size:13.5px;color:var(--goldLight);}
+  .btn-sm{padding:8px 18px;font-size:13px;border-radius:20px;}
+
+  /* success overlay */
+  .overlay{position:fixed;inset:0;background:rgba(10,15,20,.85);display:none;align-items:center;justify-content:center;
+    padding:20px;z-index:50;}
+  .overlay.active{display:flex;animation:fadeIn .3s ease;}
+  .success-card{background:var(--paper);color:var(--ink);border-radius:20px;padding:26px;max-width:480px;width:100%;
+    max-height:85vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.5);}
+  .success-card .flg{font-size:44px;text-align:center;display:block;}
+  .success-card h2{text-align:center;margin:6px 0 2px;color:var(--deep);font-family:'Palatino Linotype',serif;}
+  .success-card .cap{text-align:center;color:var(--range);font-size:14px;margin-bottom:12px;}
+  .recap-title{font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--range);font-weight:bold;margin:14px 0 6px;}
+  .recap-list{list-style:none;padding:0;margin:0;}
+  .recap-list li{font-size:13.5px;line-height:1.5;padding:6px 0;border-bottom:1px dashed #DDD2BB;}
+  .recap-list li:last-child{border-bottom:none;}
+
+  /* mission complete */
+  .stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:24px 0;}
+  .stat-card{background:rgba(255,255,255,.06);border:1px solid rgba(232,178,122,.25);border-radius:14px;padding:16px;text-align:center;}
+  .stat-card .val{font-size:26px;color:var(--goldLight);font-weight:bold;}
+  .stat-card .lbl{font-size:12px;color:#C7D6DE;text-transform:uppercase;letter-spacing:.5px;margin-top:4px;}
+
+  /* summary map screen */
+  .summary-caption{text-align:center;font-size:13.5px;color:#C7D6DE;margin:0 0 16px;}
+  .summary-legend{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:14px;}
+  .summary-legend .leg-chip{background:rgba(255,255,255,.06);border:1px solid rgba(232,178,122,.25);border-radius:10px;
+    padding:6px 12px;font-size:12.5px;color:var(--sand);}
+
+  .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);}
+</style>
+</head>
+<body>
+<div class="app">
+  <h2 class="sr-only">An interactive geography game where players deduce and place the flags of India's seven land-border neighbours on a map using textbook-based clues, review a recap after each correct placement, and finish with a fully labeled summary map.</h2>
+
+  <!-- ============ SCREEN 1: WELCOME ============ -->
+  <section class="screen active" id="screenWelcome">
+    <h1 class="title">India's Land-based Neighbours</h1>
+    <p class="subtitle">A land-border deduction challenge</p>
+
+    <div class="globe-wrap">
+      <div class="globe-ring">
+        <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="none" stroke="#E8B27A" stroke-width="1" opacity="0.5"/>
+          <path d="M15 40 L30 25 L45 32 L60 22 L85 30" fill="none" stroke="#E8B27A" stroke-width="2" stroke-linecap="round"/>
+          <path d="M20 60 L40 55 L55 65 L70 58 L88 66" fill="none" stroke="#E8B27A" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="neighbour-explain">
+      <div class="explain-card">
+        <span class="emoji">&#127956;</span>
+        <h3>Land neighbours</h3>
+        <p>Countries that share an actual land border with India, reached by crossing solid ground.</p>
+      </div>
+      <div class="explain-card">
+        <span class="emoji">&#127754;</span>
+        <h3>Maritime neighbours</h3>
+        <p>Countries connected to India through the sea rather than a shared border — that's a different mission!</p>
+      </div>
+    </div>
+
+    <p class="question-line">Can you identify India's seven land neighbours using only clues from the textbook?</p>
+    <p class="companion-note">Companion mission to the maritime neighbour challenge.</p>
+
+    <div class="center">
+      <button class="btn" onclick="startMission()">Start mission</button>
+    </div>
+  </section>
+
+  <!-- ============ SCREEN 2: MISSION ============ -->
+  <section class="screen" id="screenMission">
+    <div class="hud">
+      <div class="pill" id="hudRemaining">Countries remaining: 7</div>
+      <div class="pill" id="hudHints">Hints used: 0</div>
+    </div>
+
+    <div class="flag-row" id="flagRow"></div>
+
+    <div class="clue-box" id="clueBox">
+      <div class="clue-label">Clue</div>
+      <div class="clue-text clue-empty">Select a flag above to reveal your first clue.</div>
+    </div>
+
+    <div class="feedback-msg" id="feedbackMsg"></div>
+    <div class="confirm-bar" id="confirmBar">
+      <span>Place the flag here?</span>
+      <button class="btn btn-sm" onclick="confirmGuess()">Confirm</button>
+      <button class="btn btn-sm btn-ghost" onclick="cancelGuess()">Choose again</button>
+    </div>
+
+    <div class="map-wrap">
+      <svg id="mapSvg" viewBox="0 0 760 560" xmlns="http://www.w3.org/2000/svg">
+        <path class="india-shape" d="M270 250 L330 205 L390 195 L440 215 L470 255 L480 300 L470 350 L450 410 L420 460 L390 495 L360 470 L335 420 L310 370 L285 320 Z"/>
+        <text class="india-label" x="375" y="330" text-anchor="middle">INDIA</text>
+        <path class="range-line" d="M260 220 Q320 180 390 190 Q450 200 500 240"/>
+
+        <line class="border-line" data-route="pakistan" x1="300" y1="255" x2="190" y2="250"/>
+        <line class="border-line" data-route="afghanistan" x1="200" y1="245" x2="110" y2="170"/>
+        <line class="border-line" data-route="china" x1="400" y1="205" x2="430" y2="95"/>
+        <line class="border-line" data-route="nepal" x1="360" y1="205" x2="345" y2="170"/>
+        <line class="border-line" data-route="bhutan" x1="440" y1="215" x2="490" y2="170"/>
+        <line class="border-line" data-route="bangladesh" x1="465" y1="270" x2="555" y2="300"/>
+        <line class="border-line" data-route="myanmar" x1="470" y1="310" x2="645" y2="345"/>
+
+        <circle class="zone-glow" data-glow="pakistan" cx="190" cy="250" r="34" fill="none" stroke="#3F9E6D" stroke-width="3"/>
+        <circle class="zone-glow" data-glow="afghanistan" cx="110" cy="170" r="30" fill="none" stroke="#3F9E6D" stroke-width="3"/>
+        <circle class="zone-glow" data-glow="china" cx="430" cy="95" r="40" fill="none" stroke="#3F9E6D" stroke-width="3"/>
+        <circle class="zone-glow" data-glow="nepal" cx="345" cy="170" r="28" fill="none" stroke="#3F9E6D" stroke-width="3"/>
+        <circle class="zone-glow" data-glow="bhutan" cx="490" cy="170" r="24" fill="none" stroke="#3F9E6D" stroke-width="3"/>
+        <circle class="zone-glow" data-glow="bangladesh" cx="555" cy="300" r="30" fill="none" stroke="#3F9E6D" stroke-width="3"/>
+        <circle class="zone-glow" data-glow="myanmar" cx="645" cy="345" r="34" fill="none" stroke="#3F9E6D" stroke-width="3"/>
+
+        <text class="pin-label" data-label="pakistan" x="190" y="300">Pakistan</text>
+        <text class="pin-label" data-label="afghanistan" x="110" y="212">Afghanistan</text>
+        <text class="pin-label" data-label="china" x="430" y="50">China</text>
+        <text class="pin-label" data-label="nepal" x="345" y="135">Nepal</text>
+        <text class="pin-label" data-label="bhutan" x="490" y="135">Bhutan</text>
+        <text class="pin-label" data-label="bangladesh" x="555" y="345">Bangladesh</text>
+        <text class="pin-label" data-label="myanmar" x="645" y="390">Myanmar</text>
+
+        <circle class="pending-mark" id="pendingMark" r="14" fill="#E8B27A" stroke="#1E2A38" stroke-width="2"/>
+
+        <circle class="drop-zone" data-zone="pakistan" cx="190" cy="250" r="55" onclick="onZoneClick('pakistan',event)"/>
+        <circle class="drop-zone" data-zone="afghanistan" cx="110" cy="170" r="55" onclick="onZoneClick('afghanistan',event)"/>
+        <circle class="drop-zone" data-zone="china" cx="430" cy="95" r="60" onclick="onZoneClick('china',event)"/>
+        <circle class="drop-zone" data-zone="nepal" cx="345" cy="170" r="50" onclick="onZoneClick('nepal',event)"/>
+        <circle class="drop-zone" data-zone="bhutan" cx="490" cy="170" r="50" onclick="onZoneClick('bhutan',event)"/>
+        <circle class="drop-zone" data-zone="bangladesh" cx="555" cy="300" r="55" onclick="onZoneClick('bangladesh',event)"/>
+        <circle class="drop-zone" data-zone="myanmar" cx="645" cy="345" r="55" onclick="onZoneClick('myanmar',event)"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ============ SCREEN 3: MISSION COMPLETE ============ -->
+  <section class="screen" id="screenComplete">
+    <h1 class="title">Mission complete!</h1>
+    <p class="subtitle">You've mapped all seven land neighbours.</p>
+    <div class="stat-grid">
+      <div class="stat-card"><div class="val" id="statIdentified">0 / 7</div><div class="lbl">Identified</div></div>
+      <div class="stat-card"><div class="val" id="statAccuracy">100%</div><div class="lbl">Accuracy</div></div>
+      <div class="stat-card"><div class="val" id="statHints">0</div><div class="lbl">Hints used</div></div>
+      <div class="stat-card"><div class="val" id="statTime">0:00</div><div class="lbl">Time taken</div></div>
+    </div>
+    <div class="center">
+      <button class="btn" onclick="showSummaryMap()">See the full neighbour map</button>
+    </div>
+  </section>
+
+  <!-- ============ SCREEN 4: SUMMARY MAP ============ -->
+  <section class="screen" id="screenSummary">
+    <h1 class="title">India and Her Land Neighbours</h1>
+    <p class="summary-caption">All seven neighbours, marked together as a recap.</p>
+    <div class="map-wrap">
+      <svg id="summarySvg" viewBox="0 0 760 560" xmlns="http://www.w3.org/2000/svg">
+        <path class="india-shape" d="M270 250 L330 205 L390 195 L440 215 L470 255 L480 300 L470 350 L450 410 L420 460 L390 495 L360 470 L335 420 L310 370 L285 320 Z"/>
+        <text class="india-label" x="375" y="330" text-anchor="middle">INDIA</text>
+        <path class="range-line" d="M260 220 Q320 180 390 190 Q450 200 500 240"/>
+
+        <line class="border-line show" x1="300" y1="255" x2="190" y2="250"/>
+        <line class="border-line show" x1="200" y1="245" x2="110" y2="170"/>
+        <line class="border-line show" x1="400" y1="205" x2="430" y2="95"/>
+        <line class="border-line show" x1="360" y1="205" x2="345" y2="170"/>
+        <line class="border-line show" x1="440" y1="215" x2="490" y2="170"/>
+        <line class="border-line show" x1="465" y1="270" x2="555" y2="300"/>
+        <line class="border-line show" x1="470" y1="310" x2="645" y2="345"/>
+
+        <circle class="zone-glow show" cx="190" cy="250" r="34" fill="none" stroke="#3F9E6D" stroke-width="3"/>
+        <circle class="zone-glow show" cx="110" cy="170" r="30" fill="none" stroke="#3F9E6D" stroke-width="3"/>
+        <circle class="zone-glow show" cx="430" cy="95" r="40" fill="none" stroke="#3F9E6D" stroke-width="3"/>
+        <circle class="zone-glow show" cx="345" cy="170" r="28" fill="none" stroke="#3F9E6D" stroke-width="3"/>
+        <circle class="zone-glow show" cx="490" cy="170" r="24" fill="none" stroke="#3F9E6D" stroke-width="3"/>
+        <circle class="zone-glow show" cx="555" cy="300" r="30" fill="none" stroke="#3F9E6D" stroke-width="3"/>
+        <circle class="zone-glow show" cx="645" cy="345" r="34" fill="none" stroke="#3F9E6D" stroke-width="3"/>
+
+        <text class="pin-label show" x="190" y="300">Pakistan</text>
+        <text class="pin-label show" x="110" y="212">Afghanistan</text>
+        <text class="pin-label show" x="430" y="50">China</text>
+        <text class="pin-label show" x="345" y="135">Nepal</text>
+        <text class="pin-label show" x="490" y="135">Bhutan</text>
+        <text class="pin-label show" x="555" y="345">Bangladesh</text>
+        <text class="pin-label show" x="645" y="390">Myanmar</text>
+      </svg>
+    </div>
+    <div class="summary-legend">
+      <span class="leg-chip">🇵🇰 Pakistan — Islamabad</span>
+      <span class="leg-chip">🇦🇫 Afghanistan — Kabul</span>
+      <span class="leg-chip">🇨🇳 China — Beijing</span>
+      <span class="leg-chip">🇳🇵 Nepal — Kathmandu</span>
+      <span class="leg-chip">🇧🇹 Bhutan — Thimphu</span>
+      <span class="leg-chip">🇧🇩 Bangladesh — Dhaka</span>
+      <span class="leg-chip">🇲🇲 Myanmar — Naypyidaw</span>
+    </div>
+    <div class="center">
+      <button class="btn" onclick="restartMission()">Play again</button>
+    </div>
+  </section>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+
+const COUNTRIES = {
+  pakistan: {
+    name:'Pakistan', flag:'\u{1F1F5}\u{1F1F0}', capital:'Islamabad',
+    clues:[
+      "Before the 1947 Partition, this country was part of India; since then the two nations have been through wars in 1948, 1965 and 1971, plus the Kargil conflict in 1999.",
+      "This country's border with India runs across Gujarat, Rajasthan, Punjab, and the union territories of Jammu and Kashmir and Ladakh.",
+      "A visa-free corridor lets Indian pilgrims cross into this country to visit a gurdwara that is the final resting place of Guru Nanak Dev.",
+      "Ancient Hindu and Sikh shrines survive here, including the Katas Raj temple complex linked to the Mahabharata and the Hinglaj Mata Mandir in Balochistan."
+    ]
+  },
+  afghanistan: {
+    name:'Afghanistan', flag:'\u{1F1E6}\u{1F1EB}', capital:'Kabul',
+    clues:[
+      "This country once shared a direct land border with India, until the creation of Pakistan in 1947 complicated access between the two.",
+      "The ancient Uttarapatha trade route linked the Ganga plains to Central Asia through this country, carrying Buddhism, Hinduism, art and philosophy.",
+      "The giant Buddhas of Bamiyan, carved into cliffs here as symbols of Mahayana Buddhism's reach from India, were destroyed in 2001.",
+      "India helped build this country's Parliament building and the Zaranj–Delaram highway, which connects to the Asian Highway Network."
+    ]
+  },
+  china: {
+    name:'China', flag:'\u{1F1E8}\u{1F1F3}', capital:'Beijing',
+    clues:[
+      "In the 13th century, Hindu merchants built temples in one of this country's port cities, where carved pillars still show scenes from the Ramayana and the Puranas.",
+      "Buddhism reached this country from India around the 1st century CE via trade and pilgrimage routes, and monks such as Faxian and Xuanzang later travelled to Indian centres of learning.",
+      "Since 1950, this country and India have shared a long relationship, with their Himalaya-separated border running from Arunachal Pradesh in the east to Ladakh in the west.",
+      "This country is about three times larger than India in area, and today India's chief exports to it include iron ore, chemicals and cotton yarn."
+    ]
+  },
+  nepal: {
+    name:'Nepal', flag:'\u{1F1F3}\u{1F1F5}', capital:'Kathmandu',
+    clues:[
+      "This country shares a long, open border with India across Uttarakhand, Uttar Pradesh, Bihar, West Bengal and Sikkim.",
+      "A 1950 Treaty of Peace and Friendship lets citizens of this country and India cross the border freely without passports or visas.",
+      "The Pashupatinatha temple in this country's capital draws thousands of Indian pilgrims every year.",
+      "India is this country's largest trading partner, supplying petroleum, medicines and food items in exchange for agricultural produce, handicrafts and garments."
+    ]
+  },
+  bhutan: {
+    name:'Bhutan', flag:'\u{1F1E7}\u{1F1F9}', capital:'Thimphu',
+    clues:[
+      "Known to its own people as 'Drukyul', or Land of the Thunder Dragon, this kingdom's border with India touches Sikkim, West Bengal, Assam and Arunachal Pradesh.",
+      "Rivers originating here flow into India and power joint hydroelectric projects, including one dedicated by both countries' prime ministers in 2008.",
+      "The dragon on this country's flag and emblem is said to symbolise the thunderous voice of the Buddha's teachings, introduced here in the 8th century CE.",
+      "This country developed the Gross National Happiness Index as a more holistic measure of progress than Gross Domestic Product."
+    ]
+  },
+  bangladesh: {
+    name:'Bangladesh', flag:'\u{1F1E7}\u{1F1E9}', capital:'Dhaka',
+    clues:[
+      "This country was born in 1971 as the outcome of a war between India and Pakistan, and was earlier known as East Pakistan.",
+      "Bangla, a language shared with India's West Bengal, is the common tongue here.",
+      "This country's land border with India is even longer than India's border with China, running along West Bengal, Assam, Meghalaya, Tripura and Mizoram.",
+      "About two-thirds of the world's largest mangrove forest, home to the Bengal tiger, lies in this country, with the rest in India."
+    ]
+  },
+  myanmar: {
+    name:'Myanmar', flag:'\u{1F1F2}\u{1F1F2}', capital:'Naypyidaw',
+    clues:[
+      "Earlier known as Burma, this country is connected to India by both a land border and a maritime boundary in the Bay of Bengal.",
+      "India's northeastern states of Arunachal Pradesh, Nagaland, Manipur and Mizoram share a border with this country.",
+      "A 2018 Land Border Crossing Agreement eased cross-border movement between India's northeast and this country.",
+      "India helped restore the Ananda temple in Bagan here, and gifted a 16-foot replica of the Sarnath Buddha statue to the Shwedagon Pagoda in its city of Yangon."
+    ]
+  }
+};
+
+const ORDER = ['pakistan','afghanistan','china','nepal','bhutan','bangladesh','myanmar'];
+
+let remaining = [...ORDER];
+let activeKey = null;
+let clueIndex = 0;
+let hintsUsed = 0;
+let attempts = 0;
+let correctAttempts = 0;
+let identifiedCount = 0;
+let startTime = 0;
+let pendingZone = null;
+
+function startMission(){
+  $('screenWelcome').classList.remove('active');
+  $('screenMission').classList.add('active');
+  startTime = Date.now();
+  renderFlagRow();
+  renderClueBox();
+  updateHud();
+}
+
+function renderFlagRow(){
+  $('flagRow').innerHTML = ORDER.map(key=>{
+    const c = COUNTRIES[key];
+    const done = !remaining.includes(key);
+    return `<div class="flag-chip${done?' done':''}${activeKey===key?' selected':''}" id="chip-${key}"
+      draggable="${!done}" ondragstart="onDragStart(event,'${key}')" ondragend="onDragEnd()"
+      onclick="${done?'':`selectFlag('${key}')`}">
+      <span class="fl">${c.flag}</span><span class="nm">${c.name}</span>
+    </div>`;
+  }).join('');
+}
+
+function selectFlag(key){
+  if(!remaining.includes(key)) return;
+  activeKey = key;
+  clueIndex = 0;
+  cancelGuess();
+  renderFlagRow();
+  renderClueBox();
+  $('feedbackMsg').innerHTML = '';
+}
+
+function renderClueBox(){
+  const box = $('clueBox');
+  if(!activeKey){
+    box.innerHTML = `<div class="clue-label">Clue</div><div class="clue-text clue-empty">Select a flag above to reveal your first clue.</div>`;
+    return;
+  }
+  const c = COUNTRIES[activeKey];
+  box.innerHTML = `<div class="clue-label">Clue ${clueIndex+1} of ${c.clues.length}</div><div class="clue-text">${c.clues[clueIndex]}</div>`;
+}
+
+function onZoneClick(zone){
+  if(!activeKey){
+    $('feedbackMsg').innerHTML = '<span class="hint">Select a flag first, then click where you think it belongs.</span>';
+    return;
+  }
+  pendingZone = zone;
+  const el = document.querySelector(`.drop-zone[data-zone="${zone}"]`);
+  const cx = el.getAttribute('cx'), cy = el.getAttribute('cy');
+  const mark = $('pendingMark');
+  mark.setAttribute('cx', cx);
+  mark.setAttribute('cy', cy);
+  mark.classList.add('show');
+  $('confirmBar').classList.add('show');
+}
+
+function cancelGuess(){
+  pendingZone = null;
+  $('pendingMark').classList.remove('show');
+  $('confirmBar').classList.remove('show');
+}
+
+function confirmGuess(){
+  if(!pendingZone || !activeKey) return;
+  const zone = pendingZone;
+  cancelGuess();
+  handleAttempt(activeKey, zone);
+}
+
+function handleAttempt(key, zone){
+  attempts++;
+  if(zone === key){
+    correctAttempts++;
+    revealSuccess(key);
+  } else {
+    const c = COUNTRIES[key];
+    if(clueIndex < c.clues.length - 1){
+      clueIndex++;
+      hintsUsed++;
+      renderClueBox();
+      updateHud();
+      $('feedbackMsg').innerHTML = '<span class="wrong">Not quite! Here\'s another clue.</span>';
+    } else {
+      $('feedbackMsg').innerHTML = '<span class="wrong">Not quite — try a different spot on the map.</span>';
+    }
+  }
+}
+
+function revealSuccess(key){
+  document.querySelector(`.border-line[data-route="${key}"]`).classList.add('show');
+  document.querySelector(`.zone-glow[data-glow="${key}"]`).classList.add('show');
+  document.querySelector(`.pin-label[data-label="${key}"]`).classList.add('show');
+  const zoneEl = document.querySelector(`.drop-zone[data-zone="${key}"]`);
+  zoneEl.classList.add('correct-flash');
+  setTimeout(()=>zoneEl.classList.remove('correct-flash'), 650);
+
+  showSuccessCard(key);
+
+  remaining = remaining.filter(k=>k!==key);
+  identifiedCount++;
+  activeKey = null;
+  renderFlagRow();
+  updateHud();
+}
+
+function showSuccessCard(key){
+  const c = COUNTRIES[key];
+  const overlay = document.createElement('div');
+  overlay.className = 'overlay active';
+  overlay.id = 'successOverlay';
+  overlay.innerHTML = `
+    <div class="success-card">
+      <span class="flg">${c.flag}</span>
+      <h2>${c.name}</h2>
+      <div class="cap">Capital: ${c.capital}</div>
+      <div class="recap-title">All clues, for the record</div>
+      <ul class="recap-list">${c.clues.map((cl,i)=>`<li><b>${i+1}.</b> ${cl}</li>`).join('')}</ul>
+      <div class="center" style="margin-top:18px;"><button class="btn" onclick="nextFlag()">Continue</button></div>
+    </div>`;
+  document.body.appendChild(overlay);
+}
+
+function nextFlag(){
+  const overlay = $('successOverlay');
+  if(overlay) overlay.remove();
+  clueIndex = 0;
+  renderClueBox();
+  $('feedbackMsg').innerHTML = '';
+  if(remaining.length === 0){
+    showMissionComplete();
+  }
+}
+
+function updateHud(){
+  $('hudRemaining').textContent = `Countries remaining: ${remaining.length}`;
+  $('hudHints').textContent = `Hints used: ${hintsUsed}`;
+}
+
+function showMissionComplete(){
+  $('screenMission').classList.remove('active');
+  $('screenComplete').classList.add('active');
+  const elapsed = Math.round((Date.now() - startTime)/1000);
+  const mins = Math.floor(elapsed/60);
+  const secs = elapsed % 60;
+  const accuracy = attempts > 0 ? Math.round(100 * correctAttempts / attempts) : 100;
+  $('statIdentified').textContent = identifiedCount + ' / 7';
+  $('statAccuracy').textContent = accuracy + '%';
+  $('statHints').textContent = hintsUsed;
+  $('statTime').textContent = mins + ':' + String(secs).padStart(2,'0');
+}
+
+function showSummaryMap(){
+  $('screenComplete').classList.remove('active');
+  $('screenSummary').classList.add('active');
+}
+
+// drag-and-drop support (desktop)
+function onDragStart(e, key){
+  if(!remaining.includes(key)) { e.preventDefault(); return; }
+  if(activeKey !== key) selectFlag(key);
+  e.dataTransfer.setData('text/plain', key);
+  $('chip-'+key).classList.add('dragging');
+}
+function onDragEnd(){
+  document.querySelectorAll('.flag-chip').forEach(c=>c.classList.remove('dragging'));
+}
+document.addEventListener('DOMContentLoaded', ()=>{
+  const svg = $('mapSvg');
+  svg.addEventListener('dragover', e=>e.preventDefault());
+  svg.addEventListener('drop', e=>{
+    e.preventDefault();
+    const key = e.dataTransfer.getData('text/plain');
+    if(!key) return;
+    const el = document.elementFromPoint(e.clientX, e.clientY);
+    if(el && el.classList.contains('drop-zone')){
+      onZoneClick(el.getAttribute('data-zone'));
+    }
+  });
+});
+
+function restartMission(){
+  remaining = [...ORDER];
+  identifiedCount = 0;
+  activeKey = null;
+  clueIndex = 0;
+  hintsUsed = 0;
+  attempts = 0;
+  correctAttempts = 0;
+  document.querySelectorAll('#mapSvg .border-line, #mapSvg .zone-glow, #mapSvg .pin-label').forEach(el=>el.classList.remove('show'));
+  cancelGuess();
+  $('screenSummary').classList.remove('active');
+  $('screenWelcome').classList.add('active');
+}
+</script>
+</body>
+</html>

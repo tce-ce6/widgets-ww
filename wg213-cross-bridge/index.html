@@ -30,9 +30,6 @@
 
           <div class="itext">
             <p>हर शब्द को उसके समान अर्थ वाले पुल में लगाओ। जो शब्द किसी पुल का नहीं, उसे नदी में बहा दो!</p>
-            <button class="audio-btn" id="itextAudio" type="button" aria-label="निर्देश सुनो">
-              <img src="assets/svg/audio-btn.svg" alt="">
-            </button>
           </div>
 
           <!-- the two bridges: label plank + three empty slots each -->
@@ -64,29 +61,32 @@
           </button>
         </div>
       </div>
-
-      <!-- Modals live in their own scaled layer above the body::before backdrop,
-           so the dark backdrop can cover the whole viewport, not just the stage. -->
-      <div id="modal-layer">
-        <div id="modal-stage">
-          <!-- ============ END SCREEN ============ -->
-          <div class="end" id="end" role="dialog" aria-modal="true" aria-labelledby="endTitle" hidden>
-            <div class="end__riders">
-              <img src="assets/svg/girl.svg" alt="">
-              <img src="assets/svg/boy.svg" alt="">
-            </div>
-            <h3 class="end__title" id="endTitle">सब पार पहुँच गए!</h3>
-            <p class="end__score" id="score"></p>
-            <button class="btn btn--again" id="againBtn" type="button">फिर से खेलो</button>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 
   <script src="./js/lottie.js"></script>
   <script src="./js/anim-data.js"></script>
+  <!-- How to play tour (shown over the stage; positioned in viewport coordinates) -->
+  <div id="tour" class="tour" aria-hidden="true">
+    <div id="tourSpot" class="tour-spot"></div>
+    <div id="tourDemo" class="tour-demo"></div>
+    <div id="tourCard" class="tour-card" role="dialog" aria-modal="true" aria-labelledby="tourTitle">
+      <button id="tourSkip" class="tour-skip" type="button" aria-label="सहायता बंद करो"><span aria-hidden="true">&times;</span></button>
+      <div id="tourCount" class="tour-count"></div>
+      <h2 id="tourTitle"></h2>
+      <p id="tourText"></p>
+      <div class="tour-nav">
+        <div id="tourDots" class="tour-dots"></div>
+        <div class="tour-btns">
+          <button id="tourBack" class="tour-btn tour-btn--ghost" type="button">पीछे</button>
+          <button id="tourNext" class="tour-btn" type="button">आगे</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="./js/script.js"></script>
+  <script src="./js/how-to-play.js"></script>
 </body>
 
 </html>
