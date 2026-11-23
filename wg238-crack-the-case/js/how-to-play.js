@@ -109,20 +109,9 @@
   const vis = (sel) => $$(sel).filter(shown);
   const enabled = (sel) => vis(sel).filter((b) => !b.disabled);
 
+  // No Help on the briefing screen. The game always shows the same four
+  // steps, before and after Check (both point at the main button).
   const STEPS = [
-    // Briefing
-    {
-      title: 'Read the clues',
-      text: 'The <b>Adjective clues</b> and <b>Adverb clues</b> tell you how to spot the job a word is doing.',
-      target: () => unionRect(vis('#brief .clue')),
-      anim: null
-    },
-    {
-      title: 'Start the mission',
-      text: 'When you are ready, tap <b>Start the mission</b>.',
-      target: () => unionRect(vis('#start-btn')),
-      anim: (tok) => tapLoop(tok, () => vis('#start-btn').map(centre))
-    },
     // Game
     {
       title: 'Your case',
@@ -131,28 +120,22 @@
       anim: null
     },
     {
-      title: 'Label the word',
-      text: 'Look at the <b>highlighted</b> word. Tap <b>Adjective</b> or <b>Adverb</b> for each sentence. You can change your choice until you check.',
+      title: 'Look at the highlighted word',
+      text: 'Tap <b>Adjective</b> or <b>Adverb</b> for each sentence. You can change your choice until you tap <b>Check</b>.',
       target: () => unionRect(vis('#game .row')),
       anim: (tok) => tapLoop(tok, () => enabled('#game .row .pick').filter((b, i) => i % 2 === 0).map(centre))
     },
     {
-      title: 'Check',
-      text: 'When both sentences have an answer, tap <b>Check</b>.',
-      target: () => unionRect(vis('#main-btn.btn-check')),
+      title: 'Check your answers',
+      text: 'When both sentences have a label, tap <b>Check</b>. You see the right answers and why they are right.',
+      target: () => unionRect(vis('#game #main-btn')),
       anim: (tok) => tapLoop(tok, () => enabled('#main-btn.btn-check').map(centre))
-    },
-    {
-      title: 'Read the feedback',
-      text: 'A stamp shows the right answer above each word. Read why it is an adjective or an adverb.',
-      target: () => unionRect(vis('#game .fb')),
-      anim: null
     },
     {
       title: 'Next case',
       text: 'Tap <b>Next case</b> to go on. After the last case, tap <b>See final result</b>.',
-      target: () => unionRect(vis('#main-btn.btn-next, #main-btn.btn-final')),
-      anim: (tok) => tapLoop(tok, () => vis('#main-btn.btn-next, #main-btn.btn-final').map(centre))
+      target: () => unionRect(vis('#game #main-btn')),
+      anim: (tok) => tapLoop(tok, () => enabled('#main-btn.btn-next, #main-btn.btn-final').map(centre))
     },
     // Results
     {
@@ -166,12 +149,6 @@
       text: 'Tap <b>Play again</b> to go back to the briefing and start a new mission.',
       target: () => unionRect(vis('#again-btn')),
       anim: (tok) => tapLoop(tok, () => vis('#again-btn').map(centre))
-    },
-    {
-      title: 'Need help again?',
-      text: 'Tap <b>Help</b> at any time to see these steps.',
-      target: () => unionRect([helpBtn]),
-      anim: null
     }
   ];
 
@@ -229,7 +206,7 @@
   }
 
   function open() {
-    // Only the steps for what is on screen now, plus the Help reminder.
+    // Only the steps for what is on screen now.
     steps = STEPS.filter((s) => s.target());
     opener = document.activeElement;
     tour.classList.add('is-open', 'no-anim');

@@ -629,6 +629,11 @@ body {
   cursor: pointer;
 }
 
+/* No Help on the briefing screen (review) */
+#stage[data-screen="brief"] .help-btn {
+  display: none;
+}
+
 .help-btn:focus {
   outline: none;
 }

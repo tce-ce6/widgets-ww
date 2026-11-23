@@ -200,7 +200,9 @@
       fb.innerHTML = '';
       const head = document.createElement('b');
       head.textContent = ok ? 'Correct!' : 'Not quite.';
-      fb.append(head, ` ${r.why} It’s an ${LABEL[r.a]}.`);
+      // Skip the closing "It's an ..." when the reason already says so (-ly adjectives).
+      const tail = /still an? (adjective|adverb)\.$/.test(r.why) ? '' : ` It’s an ${LABEL[r.a]}.`;
+      fb.append(head, ` ${r.why}${tail}`);
     });
     if (both) solved++;
     checked = true;
