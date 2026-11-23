@@ -1,7 +1,7 @@
 {
   "folders": {
     "wg160-gears": {
-      "updatedAt": "2026-11-18T16:52:25+05:30",
+      "updatedAt": "2026-11-21T01:24:35+05:30",
       "author": "tce-ashishg"
     },
     "wg161-where-does-my-food-go": {
@@ -269,7 +269,7 @@
       "author": "tce-nitinc"
     },
     "wg238-crack-the-case": {
-      "updatedAt": "2026-11-18T16:52:25+05:30",
+      "updatedAt": "2026-11-21T01:24:35+05:30",
       "author": "tce-ashishg"
     },
     "wg239-simple-or-compound-leaves": {
@@ -322,6 +322,15 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-11-21T01:24:35+05:30",
+      "author": "tce-ashishg",
+      "message": "wg160 issue resolved",
+      "widgets": [
+        160,
+        238
+      ]
+    },
     {
       "date": "2026-11-19T17:36:49+05:30",
       "author": "tce-nitinc",
@@ -580,14 +589,6 @@
       "message": "resolved wg218 fixes",
       "widgets": [
         218
-      ]
-    },
-    {
-      "date": "2026-11-16T13:07:47+05:30",
-      "author": "tce-ashishg",
-      "message": "wg248 updated",
-      "widgets": [
-        248
       ]
     }
   ]
