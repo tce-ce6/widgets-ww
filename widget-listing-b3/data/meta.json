@@ -85,7 +85,7 @@
       "author": "tce-ashishg"
     },
     "wg182-land-based-neighbours": {
-      "updatedAt": "2026-11-19T11:17:22+05:30",
+      "updatedAt": "2026-11-23T13:11:42+05:30",
       "author": "tce-nitinc"
     },
     "wg183-the-chola-fortress-jenga": {
@@ -205,7 +205,7 @@
       "author": "tce-nitinc"
     },
     "wg215-dance-forms": {
-      "updatedAt": "2026-10-30T17:36:31+05:30",
+      "updatedAt": "2026-11-23T13:11:42+05:30",
       "author": "tce-nitinc"
     },
     "wg216-blood-group": {
@@ -241,7 +241,7 @@
       "author": "tce-ashishg"
     },
     "wg226-temple-architecture": {
-      "updatedAt": "2026-11-17T10:44:28+05:30",
+      "updatedAt": "2026-11-23T13:11:42+05:30",
       "author": "tce-nitinc"
     },
     "wg230-sort-o-matic": {
@@ -322,6 +322,16 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-11-23T13:11:42+05:30",
+      "author": "tce-nitinc",
+      "message": "fixes",
+      "widgets": [
+        182,
+        215,
+        226
+      ]
+    },
     {
       "date": "2026-11-23T12:14:59+05:30",
       "author": "tce-nitinc",
@@ -580,14 +590,6 @@
       "widgets": [
         237,
         242
-      ]
-    },
-    {
-      "date": "2026-11-16T15:14:37+05:30",
-      "author": "tce-nitinc",
-      "message": "resolved bugs form 236",
-      "widgets": [
-        236
       ]
     }
   ]
