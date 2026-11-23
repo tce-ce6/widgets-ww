@@ -367,6 +367,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const renderOverlay = () => {
     overlay.innerHTML = '';
+    // placed dancers grow and shrink with the map, so they keep their size on the state
+    const zoom = HOME_VIEW.w / view.w;
 
     mapState.placed.forEach((shapeKey, danceKey) => {
       const [px, py] = toPanel(anchorFor(shapeKey));
@@ -375,12 +377,14 @@ document.addEventListener('DOMContentLoaded', () => {
       img.src = `${IMG}/cutouts/${danceKey}.png`;
       img.alt = '';
       img.style.left = `${px}px`;
-      img.style.top = `${py + 14}px`;
+      img.style.top = `${py + 14 * zoom}px`;
+      img.style.height = `${78 * zoom}px`;
       overlay.appendChild(img);
       // a placed dancer's state is always named, just under the dancer
       const name = el('span', 'map-name map-name--placed', shapeNames[shapeKey]);
       name.style.left = `${px}px`;
-      name.style.top = `${py + 16}px`;
+      name.style.top = `${py + 16 * zoom}px`;
+      name.style.transform = `translate(-50%, 0) scale(${zoom})`;
       overlay.appendChild(name);
     });
 

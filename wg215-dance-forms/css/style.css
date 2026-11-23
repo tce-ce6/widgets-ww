@@ -745,6 +745,7 @@ button:focus-visible {
   width: auto;
   padding: 1px 6px;
   transform: translate(-50%, 0);
+  transform-origin: 50% 0; /* scaled with the map zoom from its top edge */
   border-radius: 6px;
   background: #98ff99;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
