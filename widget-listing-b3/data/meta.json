@@ -233,7 +233,7 @@
       "author": "tce-nitinc"
     },
     "wg224-population-growth": {
-      "updatedAt": "2026-11-17T14:50:50+05:30",
+      "updatedAt": "2026-11-23T16:03:22+05:30",
       "author": "tce-nitinc"
     },
     "wg225-blood-circulation": {
@@ -241,7 +241,7 @@
       "author": "tce-ashishg"
     },
     "wg226-temple-architecture": {
-      "updatedAt": "2026-11-23T14:51:38+05:30",
+      "updatedAt": "2026-11-23T16:03:22+05:30",
       "author": "tce-nitinc"
     },
     "wg230-sort-o-matic": {
@@ -322,6 +322,15 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-11-23T16:03:22+05:30",
+      "author": "tce-nitinc",
+      "message": "fixes",
+      "widgets": [
+        224,
+        226
+      ]
+    },
     {
       "date": "2026-11-23T14:51:38+05:30",
       "author": "tce-nitinc",
@@ -583,14 +592,6 @@
       "message": "wg191 issue resolved",
       "widgets": [
         191
-      ]
-    },
-    {
-      "date": "2026-11-16T17:31:47+05:30",
-      "author": "tce-nitinc",
-      "message": "wg237 fixes",
-      "widgets": [
-        237
       ]
     }
   ]
