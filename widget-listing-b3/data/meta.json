@@ -269,7 +269,7 @@
       "author": "tce-nitinc"
     },
     "wg238-crack-the-case": {
-      "updatedAt": "2026-11-21T01:24:35+05:30",
+      "updatedAt": "2026-11-23T13:29:23+05:30",
       "author": "tce-ashishg"
     },
     "wg239-simple-or-compound-leaves": {
@@ -289,15 +289,15 @@
       "author": "tce-nitinc"
     },
     "wg247-do-varno-se-sabad-gujrati": {
-      "updatedAt": "2026-11-13T17:42:52+05:30",
+      "updatedAt": "2026-11-23T12:15:41+05:30",
       "author": "tce-ashishg"
     },
     "wg248-tin-varno-se-sabad-gujrati": {
-      "updatedAt": "2026-11-16T13:07:47+05:30",
+      "updatedAt": "2026-11-23T12:15:41+05:30",
       "author": "tce-ashishg"
     },
     "wg250-varno-se-sabad-banaye-gujrati": {
-      "updatedAt": "2026-11-16T12:53:03+05:30",
+      "updatedAt": "2026-11-23T12:15:41+05:30",
       "author": "tce-ashishg"
     },
     "wg252-help-the-plant-survive": {
@@ -323,6 +323,14 @@
   },
   "commits": [
     {
+      "date": "2026-11-23T13:29:23+05:30",
+      "author": "tce-ashishg",
+      "message": "wg238 issue resolved",
+      "widgets": [
+        238
+      ]
+    },
+    {
       "date": "2026-11-23T13:11:42+05:30",
       "author": "tce-nitinc",
       "message": "fixes",
@@ -330,6 +338,16 @@
         182,
         215,
         226
+      ]
+    },
+    {
+      "date": "2026-11-23T12:15:41+05:30",
+      "author": "tce-ashishg",
+      "message": "wg247, 248, 250 thumbnail img added",
+      "widgets": [
+        247,
+        248,
+        250
       ]
     },
     {
@@ -571,25 +589,6 @@
       "message": "wg246",
       "widgets": [
         246
-      ]
-    },
-    {
-      "date": "2026-11-16T16:15:39+05:30",
-      "author": "tce-nitinc",
-      "message": "wg 187 fixes",
-      "widgets": [
-        187,
-        242,
-        243
-      ]
-    },
-    {
-      "date": "2026-11-16T15:52:39+05:30",
-      "author": "tce-nitinc",
-      "message": "FIXES",
-      "widgets": [
-        237,
-        242
       ]
     }
   ]
