@@ -585,7 +585,9 @@
     const pts = routeBetween(walk.idx, index);
     walk.idx = index;
     renderCard();
-    travel(loop && data.loop ? pts.concat(data.loop) : pts, camFor(stop.id));
+    // the lap starts where the stop's path ends (a walk back arrives at `pos` instead)
+    const lap = data.loop ? [data.path[data.path.length - 1], ...data.loop] : [];
+    travel(loop ? pts.concat(lap) : pts, camFor(stop.id));
   }
 
   function next() {
@@ -621,7 +623,13 @@
       walk.dot = ROUTE.garbha.pos.slice();
       enterElev();
     } else if (index !== walk.idx) {
-      arriveAt(index, index > walk.idx);
+      // a tapped label always walks the stop's lap (prākāra, pradakṣiṇa corridor),
+      // whichever way the walker comes from
+      arriveAt(index, true);
+    } else if (ROUTE[STOPS[index].id].loop) {
+      // tapping the stop you are on walks its lap once more
+      const data = ROUTE[STOPS[index].id];
+      travel([data.path[data.path.length - 1], ...data.loop], camFor(STOPS[index].id));
     }
   }
 
@@ -678,7 +686,8 @@
       ${stop.arrival ? `<div class="card-box"><h5>${stop.arrival[0]}</h5>${stop.arrival[1]}</div>` : ''}`;
     if (stop.replay) {
       $('replayBtn').addEventListener('click', () => {
-        if (!walk.busy) travel(ROUTE[stop.id].loop, camFor(stop.id));
+        const data = ROUTE[stop.id];
+        if (!walk.busy) travel([data.path[data.path.length - 1], ...data.loop], camFor(stop.id));
       });
     }
     renderQuiz(stop);

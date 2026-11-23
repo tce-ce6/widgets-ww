@@ -42,6 +42,7 @@ window.STOPS = [
     expl: 'A temple’s main alignment is generally east–west, with the garbhagṛiha facing east.' },
   { id: 'prakara', name: 'Prākāra', sub: 'The enclosure wall',
     body: 'The prākāra is the wall that encloses the whole temple complex. Until the 8th or 9th century, temples were modest in size. From the 10th century onward they grew larger, adding more shrines, amenities and enclosures, until they became vast complexes.',
+    replay: 'Watch the walk again',
     q: 'Inside these walls, a temple was more than a place of worship. What else was it?',
     options: ['A centre for learning, art, economic life', 'A palace for the king and his court', 'A market for buying and selling goods'],
     expl: 'A temple was also a centre of learning, literature, art, social life and economic life.' },

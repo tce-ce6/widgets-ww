@@ -136,19 +136,19 @@
     mission: [
       {
         title: 'Choose a flag',
-        text: 'Each flag belongs to one of India\'s neighbours. Tap a flag to start finding its country.',
+        text: 'Each flag belongs to one of India\'s land-based neighbours. Tap a flag to start finding its country.',
         target: () => unionRect([$('#flags')]),
         anim: (tok) => tapLoop(tok, () => openFlags().slice(0, 1).map(centre))
       },
       {
         title: 'Read the clue',
-        text: 'A clue about the country appears here. The dots show which of the <b>four clues</b> you are on.',
+        text: 'One by one, a set of clues about the country appears here. The dots show which of the <b>four clues</b> you are on.',
         target: () => unionRect(clueParts()),
         anim: (tok) => popLoop(tok, () => $$('#clueDots i').filter(visible))
       },
       {
         title: 'Tap the country',
-        text: 'Use the clue to find the country, then tap it on the map.',
+        text: 'Use the clues to find the country, then tap it on the map.',
         target: () => boxOf($('#map')),
         anim: (tok) => tapLoop(tok, () => [mapPoint()])
       },
@@ -160,7 +160,7 @@
       },
       {
         title: 'Next Country',
-        text: 'Tap <b>Next Country</b> on the card. The country is marked on the map with its flag and name. Find every country to complete the mission.',
+        text: 'The country is marked on the map with its flag and name. Tap <b>Next Country</b> on the card to move on. Find every country to complete the mission.',
         target: () => boxOf($('#map')),
         anim: null
       }

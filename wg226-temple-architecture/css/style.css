@@ -1420,9 +1420,9 @@ button:focus-visible {
    Quick look feedback opens, so its text and spacing are a little tighter.
    ========================================================================== */
 .card-body {
-  margin-bottom: 10px;
-  font-size: 21px;
-  line-height: 28px;
+  margin-bottom: 8px;
+  font-size: 20px;
+  line-height: 26px;
 }
 
 .card-title {
@@ -1436,9 +1436,9 @@ button:focus-visible {
 }
 
 .card-itext {
-  margin-bottom: 6px;
-  font-size: 22px;
-  line-height: 28px;
+  margin-bottom: 4px;
+  font-size: 21px;
+  line-height: 27px;
 }
 
 .card-step {
@@ -1459,16 +1459,16 @@ button:focus-visible {
 }
 
 .quiz-q {
-  margin-bottom: 8px;
-  font-size: 21px;
-  line-height: 27px;
+  margin-bottom: 6px;
+  font-size: 20px;
+  line-height: 26px;
 }
 
 .quiz-opt {
-  min-height: 40px;
-  margin-bottom: 8px;
+  min-height: 36px;
+  margin-bottom: 6px;
   padding: 4px 12px;
-  font-size: 21px;
+  font-size: 20px;
 }
 
 .quiz-fb {
@@ -1478,14 +1478,18 @@ button:focus-visible {
 }
 
 .quiz-expl {
-  font-size: 21px;
-  line-height: 27px;
+  font-size: 20px;
+  line-height: 26px;
 }
 
 /* the text inside info boxes (e.g. "You have reached the centre") matches the stop text */
 .card-box {
-  font-size: 21px;
-  line-height: 27px;
+  font-size: 20px;
+  line-height: 26px;
+}
+
+.card-scroll {
+  padding-top: 16px;
 }
 
 .card-scroll > :last-child {
