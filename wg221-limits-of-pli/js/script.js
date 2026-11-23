@@ -42,9 +42,9 @@
         },
         B: {
           text: 'Order immediate and complete cessation of all industrial discharge into the river.',
-          order: 'All industrial discharge into the river shall cease with immediate effect. Factories shall install treatment systems within one year.',
+          order: 'All industrial discharge shall cease immediately. Factories shall install treatment systems within one year.',
           button: 'What changed in the river?',
-          consequence: 'The factories have stopped. The river is getting cleaner. But the recovery has stopped before the river is clean.'
+          consequence: 'The factories have stopped. The discharge has ended. But fifteen years of accumulated pollution cannot be undone by a court order. The river will take decades to recover.'
         }
       },
       question: 'Both petitions reached the court. The court acted both times. Yet the river did not fully recover. What does this tell you about the limits of PIL?',
@@ -66,11 +66,11 @@
           text: 'Order the government to distribute grain from state godowns to families facing hunger.',
           order: 'All state governments shall immediately release grain from Food Corporation of India godowns for distribution to families facing hunger.',
           button: 'Did the grain reach all?',
-          consequence: 'Grain reached some families. Many others received nothing.'
+          consequence: 'Grain reached some families. But the order covered only immediate distribution, not a permanent system. Many others received nothing.'
         },
         B: {
           text: 'Declare the right to food as a fundamental right that is enforceable for every citizen.',
-          order: 'The government shall ensure no person goes hungry where grain is available in state godowns.',
+          order: 'The government shall ensure grain stored in state godowns reaches those facing hunger. Declaring food a fundamental right falls within the powers of Parliament, not the judiciary.',
           button: 'Did the court deliver what Meera asked for?',
           consequence: 'Meera asked for an enforceable right. The court gave directions instead.'
         }
@@ -220,7 +220,7 @@
     picked = null;
     const c = CASES[id];
 
-    $('#p-tag').textContent = c.tag;
+    // $('#p-tag').textContent = c.tag;
     const stats = $('#p-stats');
     stats.classList.toggle('two', c.stats.length === 2);
     stats.innerHTML = c.stats.map(([n, t]) => `<div class="stat"><p class="stat-num">${n}</p><p class="stat-label">${t}</p></div>`).join('');

@@ -90,10 +90,10 @@ body {
   top: 0;
   left: 50%;
   transform: translateX(-50%); /* global_style.css also sets this, so centre on 50% */
-  width: calc(351 * var(--u));
-  height: calc(90 * var(--u));
+  width: auto;
+  height: calc(70 * var(--u));
   margin: 0;
-  padding: 0;
+  padding: 0 calc(30 * var(--u));
   display: flex;
   align-items: center;
   justify-content: center;

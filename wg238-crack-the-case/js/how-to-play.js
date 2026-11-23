@@ -104,13 +104,13 @@
     } catch (e) { /* step changed */ }
   }
 
-  /* ---------- the steps (briefing, game, results) ---------- */
+  /* ---------- the steps (game screen only) ---------- */
 
   const vis = (sel) => $$(sel).filter(shown);
   const enabled = (sel) => vis(sel).filter((b) => !b.disabled);
 
-  // No Help on the briefing screen. The game always shows the same four
-  // steps, before and after Check (both point at the main button).
+  // Help is only on the game screen (hidden on briefing and Case Closed).
+  // It always shows the same four steps, before and after Check.
   const STEPS = [
     // Game
     {
@@ -136,19 +136,6 @@
       text: 'Tap <b>Next case</b> to go on. After the last case, tap <b>See final result</b>.',
       target: () => unionRect(vis('#game #main-btn')),
       anim: (tok) => tapLoop(tok, () => enabled('#main-btn.btn-next, #main-btn.btn-final').map(centre))
-    },
-    // Results
-    {
-      title: 'Case closed',
-      text: 'See how many of the cases you cracked. A case counts only when both sentences are right.',
-      target: () => unionRect(vis('#result-score')),
-      anim: null
-    },
-    {
-      title: 'Play again',
-      text: 'Tap <b>Play again</b> to go back to the briefing and start a new mission.',
-      target: () => unionRect(vis('#again-btn')),
-      anim: (tok) => tapLoop(tok, () => vis('#again-btn').map(centre))
     }
   ];
 
