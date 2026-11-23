@@ -85,7 +85,7 @@
       "author": "tce-ashishg"
     },
     "wg182-land-based-neighbours": {
-      "updatedAt": "2026-11-19T11:17:22+05:30",
+      "updatedAt": "2026-11-23T13:11:42+05:30",
       "author": "tce-nitinc"
     },
     "wg183-the-chola-fortress-jenga": {
@@ -201,11 +201,11 @@
       "author": "tce-nitinc"
     },
     "wg214-jasus-pehchano": {
-      "updatedAt": "2026-11-19T17:31:55+05:30",
+      "updatedAt": "2026-11-23T12:14:59+05:30",
       "author": "tce-nitinc"
     },
     "wg215-dance-forms": {
-      "updatedAt": "2026-10-30T17:36:31+05:30",
+      "updatedAt": "2026-11-23T13:11:42+05:30",
       "author": "tce-nitinc"
     },
     "wg216-blood-group": {
@@ -241,7 +241,7 @@
       "author": "tce-ashishg"
     },
     "wg226-temple-architecture": {
-      "updatedAt": "2026-11-17T10:44:28+05:30",
+      "updatedAt": "2026-11-23T13:11:42+05:30",
       "author": "tce-nitinc"
     },
     "wg230-sort-o-matic": {
@@ -322,6 +322,32 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-11-23T13:11:42+05:30",
+      "author": "tce-nitinc",
+      "message": "fixes",
+      "widgets": [
+        182,
+        215,
+        226
+      ]
+    },
+    {
+      "date": "2026-11-23T12:14:59+05:30",
+      "author": "tce-nitinc",
+      "message": "fixes",
+      "widgets": [
+        214
+      ]
+    },
+    {
+      "date": "2026-11-23T12:05:47+05:30",
+      "author": "tce-nitinc",
+      "message": "fixes",
+      "widgets": [
+        214
+      ]
+    },
     {
       "date": "2026-11-21T01:24:35+05:30",
       "author": "tce-ashishg",
@@ -564,31 +590,6 @@
       "widgets": [
         237,
         242
-      ]
-    },
-    {
-      "date": "2026-11-16T15:14:37+05:30",
-      "author": "tce-nitinc",
-      "message": "resolved bugs form 236",
-      "widgets": [
-        236
-      ]
-    },
-    {
-      "date": "2026-11-16T14:41:50+05:30",
-      "author": "tce-nitinc",
-      "message": "fixes",
-      "widgets": [
-        210,
-        213
-      ]
-    },
-    {
-      "date": "2026-11-16T14:08:04+05:30",
-      "author": "tce-nitinc",
-      "message": "resolved wg218 fixes",
-      "widgets": [
-        218
       ]
     }
   ]

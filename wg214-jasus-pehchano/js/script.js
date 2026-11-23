@@ -3,7 +3,7 @@
    Plain ES6+, no dependencies. Sections:
      1. Content data (from the storyboard data table)
      2. Helpers, stage scaling
-     3. Sound (browser Hindi voice for words, synthesised SFX)
+     3. Sound (word recordings, synthesised SFX)
      4. Rounds: queue, checkpoint, timer, forts, lens, show answer, next
      5. End screen
    ========================================================================== */
@@ -32,10 +32,59 @@
     { a: ['चतुर', 'होशियार', 'बुद्धिमान', 'प्रवीण'], b: ['मूर्ख', 'नासमझ', 'अज्ञानी', 'मूढ़'], x: ['चतुर्थ', 'चालाकी'] },
     { a: ['मन', 'चित्त', 'मानस', 'अंतःकरण'], b: ['बुद्धि', 'मति', 'प्रज्ञा', 'अक्ल'], x: ['विचार', 'याद'] }
   ];
-  const ITEXT = 'हर सैनिक को उसके समान अर्थ वाले किले में भेजो। जो सैनिक किसी किले का नहीं, उसे लेंस के नीचे लाकर पहचानो!';
+  // recording of each word in assets/sound
+  const WORD_AUDIO = {
+    'नया': 'naya.wav', 'नवीन': 'navin.wav', 'नूतन': 'nutan.wav', 'अभिनव': 'abhinav.wav',
+    'पुराना': 'purana.wav', 'प्राचीन': 'prachin.wav', 'पुरातन': 'pratan.wav', 'जीर्ण': 'jirn.wav',
+    'बूढ़ा': 'budha.wav', 'कल': 'kal.wav',
+    'विजय': 'vijay.wav', 'जीत': 'jeet.wav', 'जय': 'jay.wav', 'फ़तह': 'fatah.wav',
+    'पराजय': 'parajay.wav', 'हार': 'haar.wav', 'शिकस्त': 'shikast.wav', 'मात': 'maat.wav',
+    'विषय': 'vishay.wav', 'खेल': 'khel.wav',
+    'प्रकाश': 'prakash.wav', 'रोशनी': 'roshani.wav', 'उजाला': 'ujala.wav', 'ज्योति': 'jyoti.wav',
+    'अँधेरा': 'andhera.wav', 'अंधकार': 'andhakaar.wav', 'तम': 'tam.wav', 'तिमिर': 'timir.wav',
+    'दीपक': 'deepak.wav', 'छाया': 'chaayaa.wav',
+    'तीर': 'teer.wav', 'बाण': 'baan.wav', 'शर': 'shar.wav', 'इषु': 'eeshu.wav',
+    'माँ': 'maa.wav', 'माता': 'mata.wav', 'जननी': 'janani.wav', 'मैया': 'maiya.wav',
+    'धनुष': 'dhanush.wav', 'मौसी': 'mausi.wav',
+    'झूठ': 'zooth.wav', 'असत्य': 'asatya.wav', 'मिथ्या': 'mithyaa.wav', 'अनृत': 'amrit.wav',
+    'सच': 'sach.wav', 'सत्य': 'satya.wav', 'यथार्थ': 'yatharth.wav', 'सच्चाई': 'sacchai.wav',
+    'झूठा': 'zuthaa.wav', 'सपना': 'sapanaa.wav',
+    'बंदर': 'bandar.wav', 'वानर': 'waanar.wav', 'कपि': 'kapi.wav', 'मर्कट': 'markat.wav',
+    'हाथी': 'haathi.wav', 'गज': 'gajj.wav', 'हस्ती': 'hasthi.wav', 'कुंजर': 'kunjar.wav',
+    'लंगूर': 'langoor.wav', 'सूँड़': 'suund.wav',
+    'यात्रा': 'yatra.wav', 'सफ़र': 'safar.wav', 'भ्रमण': 'bhraman.wav', 'पर्यटन': 'paryatan.wav',
+    'मेहमान': 'mehamaan.wav', 'अतिथि': 'atithi.wav', 'पाहुना': 'pahuna.wav', 'आगंतुक': 'aagantuk.wav',
+    'थैला': 'thailaa.wav', 'मेज़बान': 'mejban.wav',
+    'नदी': 'nadi.wav', 'सरिता': 'sarita.wav', 'तटिनी': 'tatini.wav', 'तरंगिणी': 'tarangini.wav',
+    'जंगल': 'jangal.wav', 'वन': 'vann.wav', 'अरण्य': 'aranya.wav', 'कानन': 'kanan.wav',
+    'नहर': 'nahar.wav', 'बाग': 'baagh.wav',
+    'युद्ध': 'yuuddha.wav', 'लड़ाई': 'ladhai.wav', 'संग्राम': 'sangraam.wav', 'रण': 'rann.wav',
+    'शांति': 'shaanti.wav', 'अमन': 'aman.wav', 'चैन': 'chain.wav', 'सुकून': 'sukun.wav',
+    'सेना': 'senaa.wav', 'मौन': 'maun.wav',
+    'साँप': 'saap.wav', 'सर्प': 'sarp.wav', 'उरग': 'urag.wav', 'नाग': 'naag.wav',
+    'तलवार': 'talawaar.wav', 'असि': 'asi.wav', 'कृपाण': 'krupan.wav', 'खड्ग': 'khadag.wav',
+    'केंचुआ': 'kechuwa.wav', 'ढाल': 'dhaal.wav',
+    'आज्ञा': 'aagyaa.wav', 'आदेश': 'aadesh.wav', 'हुक्म': 'hukma.wav', 'निर्देश': 'nirdesh.wav',
+    'प्रार्थना': 'prarthanaa.wav', 'विनती': 'vinati.wav', 'निवेदन': 'nivedan.wav', 'अर्ज़': 'arj.wav',
+    'आज्ञाकारी': 'agyakari.wav', 'प्रश्न': 'prashna.wav',
+    'दुश्मन': 'dushman.wav', 'शत्रु': 'shatru.wav', 'रिपु': 'reepu.wav', 'बैरी': 'bairee.wav',
+    'बिजली': 'bijali.wav', 'विद्युत': 'vidyut.wav', 'दामिनी': 'damini.wav', 'तड़ित': 'tadit.wav',
+    'सैनिक': 'sainik.wav', 'बादल': 'badal.wav',
+    'दया': 'dayaa.wav', 'करुणा': 'karuna.wav', 'कृपा': 'krupa.wav', 'रहम': 'raham.wav',
+    'प्रेम': 'prem.wav', 'स्नेह': 'sneh.wav', 'प्यार': 'pyar.wav', 'अनुराग': 'anurag.wav',
+    'दान': 'daan.wav', 'मित्र': 'mitra.wav',
+    'चतुर': 'chatur.wav', 'होशियार': 'hoshiyaar.wav', 'बुद्धिमान': 'buddhiman.wav', 'प्रवीण': 'pravin.wav',
+    'मूर्ख': 'murkh.wav', 'नासमझ': 'nasamaz.wav', 'अज्ञानी': 'agyani.wav', 'मूढ़': 'moodh.wav',
+    'चतुर्थ': 'chaturth.wav', 'चालाकी': 'chalaki.wav',
+    'मन': 'man.wav', 'चित्त': 'chitt.wav', 'मानस': 'manas.wav', 'अंतःकरण': 'antkaran.wav',
+    'बुद्धि': 'buddhi.wav', 'मति': 'mati.wav', 'प्रज्ञा': 'pragya.wav', 'अक्ल': 'akla.wav',
+    'विचार': 'vichar.wav', 'याद': 'yaad.wav'
+  };
+
 
   // stage geometry (px, from the AI layout)
-  const ZONES = { a: [50, 200, 700, 620], b: [1235, 200, 650, 620], x: [710, 629, 537, 250] };
+  // w = the river under the bridge (a spy can be dragged straight down into it)
+  const ZONES = { a: [50, 200, 700, 620], b: [1235, 200, 650, 620], x: [710, 629, 537, 250], w: [800, 900, 340, 180] };
   // doorway of each fort: centre x and the threshold y (bottom of the arch), from bg.svg
   const GATE = { a: [405, 812], b: [1558, 812] };
   const DOOR_H = 128; // the soldier shrinks to the doorway's height so he fits inside the arch
@@ -55,7 +104,7 @@
   const answerBtn = $('#answerBtn');
   const timerBar = $('#timerBar');
   const liveRegion = $('#liveRegion');
-  const zoneEls = { a: $('#fortA'), b: $('#fortB'), x: $('#lens') };
+  const zoneEls = { a: $('#fortA'), b: $('#fortB'), x: $('#lens'), w: $('#river') };
   const membersEl = { a: $('#membersA'), b: $('#membersB') };
   const spiesInEl = { a: $('#spiesA'), b: $('#spiesB') };
 
@@ -182,29 +231,25 @@
       else if (name === 'end') { [523, 659, 784, 1047, 1319].forEach((f, i) => tone(f, t + i * 0.12, 0.45, 'triangle', 0.15)); }
     }
 
-    /** No word recordings were supplied, so words use the browser's Hindi voice. */
-    function speak(text, btn) {
-      try {
-        if (!('speechSynthesis' in window)) return;
-        window.speechSynthesis.cancel();
-        const u = new SpeechSynthesisUtterance(text);
-        u.lang = 'hi-IN';
-        u.rate = 0.85;
-        const hindi = window.speechSynthesis.getVoices().find((v) => v.lang && v.lang.startsWith('hi'));
-        if (hindi) u.voice = hindi;
-        if (btn) {
-          btn.classList.add('is-playing');
-          const done = () => btn.classList.remove('is-playing');
-          u.onend = done;
-          u.onerror = done;
-        }
-        window.speechSynthesis.speak(u);
-      } catch (e) { /* no speech */ }
-    }
+    // word recordings (assets/sound); one player, so a new word cuts off the last one
+    const player = new Audio();
+    player.preload = 'auto';
+    const missing = new Set();
 
     function stop() {
-      try { window.speechSynthesis.cancel(); } catch (e) { /* no speech */ }
-      $$('.audio-btn.is-playing').forEach((b) => b.classList.remove('is-playing'));
+      try { player.pause(); } catch (e) { /* nothing playing */ }
+    }
+
+    /** Plays a word's recording (recordings only, no system voice). */
+    function speak(text) {
+      const file = WORD_AUDIO[text];
+      if (!file) return;
+      stop();
+      player.src = `assets/sound/${file}`;
+      player.currentTime = 0;
+      player.play().catch(() => {
+        if (!missing.has(file)) { missing.add(file); console.warn(`wg214: could not play ${file} for "${text}"`); }
+      });
     }
 
     return { sfx, speak, stop, unlock: ensure };
@@ -312,7 +357,7 @@
       return;
     }
     state.timeLeft = state.timeMax;
-    later(() => Sound.speak(word), 250);
+    // no autoplay: the word is heard only when the soldier is tapped
     // Show Answer was pressed while the last soldier was still on the move
     if (state.pendingShow) showAnswer();
   }
@@ -349,24 +394,39 @@
     const { word, el } = cur;
     const fam = familyOf(word);
 
-    if (fam === 'x' && k === 'x') {
-      // spy on the bridge: the disguise comes off, then he falls off the bridge into the
-      // water (like the Bridge widget's whirlpool); his word goes on the sign
+    if (fam === 'x' && (k === 'x' || k === 'w')) {
+      // spy on the bridge, or dragged straight down into the river: the disguise comes
+      // off, then he falls into the water (like the Bridge widget's whirlpool); his word
+      // goes on the sign
       state.current = null;
-      el.style.transform = '';
+      // dragged into the river: he is already over the water, so he sinks from there
+      const base = k === 'w' ? el.style.transform : '';
+      const inRiver = !!base;
+      const from = base || 'none';
+      const to = inRiver ? `${base} translateY(120px) rotate(24deg) scale(.4)` : `translateY(${WATER_DROP}px) rotate(24deg) scale(.5)`;
+      el.style.transform = base;
       Sound.sfx('reveal');
       el.classList.add('is-spy');
       $('.soldier__word', el).style.visibility = 'hidden';
       later(() => {
         Sound.sfx('splash');
         el.animate([
-          { transform: 'none', opacity: 1 },
-          { transform: 'translateY(-30px) rotate(-8deg)', opacity: 1, offset: 0.2 },
-          { transform: `translateY(${WATER_DROP}px) rotate(24deg) scale(.5)`, opacity: 0 }
+          { transform: from, opacity: 1 },
+          { transform: `${base} translateY(-30px) rotate(-8deg)`, opacity: 1, offset: 0.2 },
+          { transform: to, opacity: 0 }
         ], { duration: 900, easing: 'ease-in', fill: 'forwards' })
           .onfinish = () => { addSpyChip($('#revealed'), word, false); state.handled++; nextSoldier(); };
-      }, 600);
+      }, inRiver ? 300 : 600);
       announce(`${word} जासूस है।`);
+      return;
+    }
+    if (k === 'w') {
+      // a real soldier does not belong in the river: he climbs back to the checkpoint
+      state.mistake = true;
+      Sound.sfx('wrong');
+      el.animate([{ transform: el.style.transform || 'none' }, { transform: 'none' }], { duration: 300, easing: 'ease-out' });
+      el.style.transform = '';
+      later(() => restart(el, 'is-shake'), 300);
       return;
     }
     if (fam !== k && k !== 'x') {
@@ -439,6 +499,7 @@
       el.setPointerCapture(event.pointerId);
       const zoneAt = (cx, cy) => {
         const pt = toStage(cx, cy);
+        if (inside(pt, ZONES.w)) return 'w';
         if (inside(pt, ZONES.x)) return 'x';
         return ['a', 'b'].find((k) => inside(pt, ZONES[k])) || null;
       };
@@ -483,18 +544,24 @@
     });
   });
 
-  /** True while the instruction text is being read out (the timer waits for it). */
-  function instructionsPlaying() {
-    if (!$('#itextAudio').classList.contains('is-playing')) return false;
-    try { return window.speechSynthesis.speaking; } catch (e) { return false; }
-  }
+  // tapping a fort's word board says that word (and does not send the soldier in)
+  ['A', 'B'].forEach((K) => {
+    const board = $(`#label${K}`);
+    board.addEventListener('click', (event) => {
+      event.stopPropagation();
+      Sound.unlock();
+      Sound.speak(board.textContent);
+    });
+  });
 
   /* the timer: running out sends the soldier to the back of the queue */
   function tick(now) {
     const dt = Math.min(0.05, (now - state.last) / 1000 || 0);
     state.last = now;
     const cur = state.current;
-    if (cur && !state.done && !cur.el.classList.contains('is-dragging') && !instructionsPlaying()) {
+    // the timer also waits while the help tour is open
+    const touring = document.getElementById('tour').classList.contains('is-open');
+    if (cur && !state.done && !touring && !cur.el.classList.contains('is-dragging')) {
       state.timeLeft -= dt;
       const pct = Math.max(0, state.timeLeft / state.timeMax);
       timerBar.style.width = `${pct * 100}%`;
@@ -637,7 +704,6 @@
 
   /* ---- boot ---- */
 
-  $('#itextAudio').addEventListener('click', (event) => { event.stopPropagation(); Sound.unlock(); Sound.speak(ITEXT, event.currentTarget); });
   answerBtn.addEventListener('click', toggleAnswer);
   $('#nextBtn').addEventListener('click', next);
 
