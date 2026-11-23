@@ -360,7 +360,7 @@
   });
 
   /* ======================================================================
-     How to use: a spotlight with one short sentence per step. On a card
+     Help tour: a spotlight with one short sentence per step. On a card
      screen with no graph yet, it runs a live demo with example values and
      clears it again at the end, restoring anything that had been typed.
      ====================================================================== */
@@ -420,7 +420,7 @@
     if (tour.demo && st.demo && S) demo[st.demo](S);
     $('tourStep').textContent = `Step ${tour.i + 1} of ${tour.steps.length}`;
     $('tourTitle').textContent = st.title;
-    $('tourText').textContent = st.text + (tour.demo && st.demoText ? st.demoText : '');
+    $('tourText').innerHTML = st.text + (tour.demo && st.demoText ? st.demoText : '');
     $('tourPrev').disabled = tour.i === 0;
     $('tourNext').textContent = tour.i === tour.steps.length - 1 ? 'Done' : 'Next';
     requestAnimationFrame(positionTour);
