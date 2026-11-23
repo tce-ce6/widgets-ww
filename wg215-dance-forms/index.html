@@ -32,20 +32,20 @@
           </section>
 
           <!-- ============ LEVEL SELECT ============ -->
-          <section id="screen-menu" class="screen" aria-label="Choose a level">
-            <p class="itext itext--menu">Tap a level to enter.</p>
-            <button class="level-card level-card--1" type="button" data-level="1" aria-label="Level 1: Identify the dance">
+          <section id="screen-menu" class="screen" aria-label="Choose a part">
+            <p class="itext itext--menu">Tap a part to enter.</p>
+            <button class="level-card level-card--1" type="button" data-level="1" aria-label="Part 1: Identify the dance">
               <img src="assets/images/levels/level-1.png" alt="">
             </button>
-            <button class="level-card level-card--2" type="button" data-level="2" aria-label="Level 2: Where do I belong?">
+            <button class="level-card level-card--2" type="button" data-level="2" aria-label="Part 2: Where do I belong?">
               <img src="assets/images/levels/level-2.png" alt="">
             </button>
-            <button class="level-card level-card--3" type="button" data-level="3" aria-label="Level 3: Who am I?">
+            <button class="level-card level-card--3" type="button" data-level="3" aria-label="Part 3: Who am I?">
               <img src="assets/images/levels/level-3.png" alt="">
             </button>
-            <button class="pill-btn pill-btn--level pill-btn--level-1" type="button" data-level="1">Level 1</button>
-            <button class="pill-btn pill-btn--level pill-btn--level-2" type="button" data-level="2">Level 2</button>
-            <button class="pill-btn pill-btn--level pill-btn--level-3" type="button" data-level="3">Level 3</button>
+            <button class="pill-btn pill-btn--level pill-btn--level-1" type="button" data-level="1">Part 1</button>
+            <button class="pill-btn pill-btn--level pill-btn--level-2" type="button" data-level="2">Part 2</button>
+            <button class="pill-btn pill-btn--level pill-btn--level-3" type="button" data-level="3">Part 3</button>
           </section>
 
           <!-- ============ SCREEN 1: IDENTIFY THE DANCE ============ -->
@@ -112,7 +112,7 @@
                 <p class="panel__count" id="caseText">Case: 1 of 6</p>
               </div>
             </div>
-            <p class="itext itext--decode">Read clue(s), fill in the blanks to decode the dance name by tapping the correct alphabet from the second row.</p>
+            <p class="itext itext--decode">Read the clue, fill in the blanks to decode the dance name by tapping the correct alphabet from the second row.</p>
             <div class="clue-box">
               <b>Clue</b>
               <span id="clueText"></span>
@@ -124,12 +124,12 @@
               <img id="whoImg" src="" alt="">
             </div>
             <p class="who-caption" id="whoCaption">Who am I?</p>
-            <button class="home-btn" id="homeBtn3" type="button" aria-label="Home" disabled>
+            <button class="home-btn" id="homeBtn3" type="button" aria-label="Home">
               <img src="assets/images/home-btn.svg" alt="">
             </button>
           </section>
 
-          <!-- ============ HELP BUTTON (shown on the three levels) ============ -->
+          <!-- ============ HELP BUTTON (shown on the three parts) ============ -->
           <button class="help-btn" id="helpBtn" type="button" hidden>
             <span class="help-btn__icon" aria-hidden="true">?</span>Help
           </button>
@@ -157,6 +157,7 @@
           <div class="modal" id="roundModal" role="dialog" aria-modal="true" aria-labelledby="roundTitle" hidden>
             <div class="card card--round">
               <h4 class="card__title" id="roundTitle">5 Dancers met!</h4>
+              <p class="round-total" id="roundTotal">Total dancers met: 5</p>
               <div class="round-faces" id="roundFaces"></div>
               <p class="round-names" id="roundNames"></p>
               <button class="pill-btn pill-btn--modal pill-btn--wide" id="roundNext" type="button">Go to Round 2</button>
@@ -169,7 +170,7 @@
               <h4 class="card__title" id="placedTitle">All 15 dancers are home!</h4>
               <p class="card__text">Excellent! You got the dance form and its origin, correct.</p>
               <p class="card__text">Now become a Dance Detective. Can you name each dancer from a few clues?</p>
-              <button class="pill-btn pill-btn--modal pill-btn--wide" id="placedNext" type="button">Go to Screen 3</button>
+              <button class="pill-btn pill-btn--modal pill-btn--wide" id="placedNext" type="button">Go to Part 3</button>
             </div>
           </div>
 
@@ -177,7 +178,8 @@
           <div class="modal" id="doneModal" role="dialog" aria-modal="true" aria-labelledby="doneTitle" hidden>
             <div class="card card--message card--done">
               <h4 class="card__title" id="doneTitle">Congratulations!</h4>
-              <p class="card__text">You perfectly decoded all the dance forms.</p>
+              <p class="card__text" id="doneText">You perfectly decoded all the dance forms.</p>
+              <button class="pill-btn pill-btn--modal pill-btn--explore" id="exploreMore" type="button" hidden>Explore more</button>
               <button class="home-btn home-btn--done" id="doneHome" type="button" aria-label="Home">
                 <img src="assets/images/home-btn.svg" alt="">
               </button>

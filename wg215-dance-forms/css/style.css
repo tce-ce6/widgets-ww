@@ -739,6 +739,39 @@ button:focus-visible {
   pointer-events: none;
 }
 
+/* the state a dancer has been placed on: named under the dancer's feet */
+.map-name--placed {
+  z-index: 2;
+  width: auto;
+  padding: 1px 6px;
+  transform: translate(-50%, 0);
+  border-radius: 6px;
+  background: #98ff99;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+  font-weight: 700;
+  white-space: nowrap;
+  text-shadow: none;
+}
+
+/* state name that follows the mouse over the map */
+.map-tip {
+  position: absolute;
+  z-index: 3;
+  transform: translate(14px, -130%);
+  padding: 4px 10px;
+  border-radius: 8px;
+  background: #4a2803;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.map-tip[hidden] {
+  display: none;
+}
+
 /* the dancer list */
 .tiles {
   position: absolute;
@@ -1110,10 +1143,24 @@ button:focus-visible {
   padding-top: 38px;
 }
 
+/* running total under the round title */
+.round-total {
+  position: absolute;
+  left: 0;
+  top: 92px;
+  width: 100%;
+  margin: 0;
+  color: #4a2803;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 36px;
+  text-align: center;
+}
+
 .round-faces {
   position: absolute;
   left: 0;
-  top: 129px;
+  top: 142px;
   width: 100%;
   display: flex;
   justify-content: center;
@@ -1131,7 +1178,7 @@ button:focus-visible {
 .round-names {
   position: absolute;
   left: 58px;
-  top: 306px;
+  top: 314px;
   width: 845px;
   margin: 0;
   font-size: 30px;
@@ -1141,7 +1188,7 @@ button:focus-visible {
 
 .card--round .pill-btn--modal {
   left: 315px;
-  top: 410px;
+  top: 422px;
 }
 
 /* messages */
@@ -1180,6 +1227,31 @@ button:focus-visible {
   font-size: 40px;
   line-height: 58px;
   text-align: center;
+}
+
+/* end of a Part 3 batch: a taller card with the Explore more button */
+.card--done.has-more {
+  top: 280px;
+  height: 480px;
+}
+
+.card--done.has-more .card__text {
+  font-size: 34px;
+  line-height: 46px;
+}
+
+.card--done .pill-btn--explore {
+  left: 185px;
+  top: 340px;
+  width: 270px;
+}
+
+.pill-btn--explore[hidden] {
+  display: none;
+}
+
+.card--done.has-more .home-btn--done {
+  top: 494px; /* same offset below the card as the normal popup */
 }
 
 /* home button straddles the bottom edge of the card */

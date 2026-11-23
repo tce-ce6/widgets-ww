@@ -182,7 +182,7 @@
     match: [
       {
         title: 'Meet the dancers',
-        text: 'Each picture shows a dancer performing a dance from a different part of India. Look at their clothes and props.',
+        text: 'Each picture shows a dancer from a different part of India. Look closely at the clothes and props.',
         target: () => unionRect($$('#matchDancers .dancer')),
         anim: (tok) => popLoop(tok, () => $$('#matchDancers .dancer'))
       },
@@ -194,7 +194,7 @@
       },
       {
         title: 'Tap a dancer, then a name',
-        text: 'Tap a dancer to pick it, then tap the dance name that matches it.',
+        text: 'Tap a dancer, then tap the dance name that matches.',
         target: () => unionRect($$('#matchDancers .dancer, #matchNames .name')),
         anim: (tok) => tapLoop(tok, () => {
           const p = matchPair();
@@ -203,7 +203,7 @@
       },
       {
         title: 'Right or wrong?',
-        text: 'A right match fills the <b>?</b> box with the dance name. A wrong match shakes, so just try another name.',
+        text: 'A correct match replaces the <b>?</b> with the dance name. A wrong match makes the dancer shake. Try another name.',
         target: () => unionRect($$('#matchSlots .slot')),
         anim: (tok) => popLoop(tok, () => $$('#matchSlots .slot'))
       },
@@ -218,7 +218,7 @@
     map: [
       {
         title: 'Pick a dancer',
-        text: 'Tap a dancer in the list to pick it.',
+        text: 'Tap a dancer in the list.',
         target: () => unionRect($$('#tiles .tile')),
         anim: (tok) => tapLoop(tok, () => {
           const p = mapPair();
@@ -227,7 +227,7 @@
       },
       {
         title: 'Tap its home state',
-        text: 'Now tap the state or UT on the map where that dance comes from. A right answer puts the dancer on the map and shows a fun fact.',
+        text: 'Tap the state or UT on the map where that dance comes from. A correct answer places the dancer on the map and shows a fun fact.',
         target: () => unionRect([$('#mapPanel')]),
         anim: (tok) => tapLoop(tok, () => {
           const p = mapPair();
@@ -236,13 +236,13 @@
       },
       {
         title: 'Zoom and move the map',
-        text: 'Tap <b>+</b> and <b>&minus;</b> to zoom (or use the mouse wheel), drag the map to move it, and tap <b>&#8634;</b> to reset it.',
+        text: 'Tap <b>+</b> to zoom in and <b>&minus;</b> to zoom out, or use the mouse wheel. Tap the reset button <b>&#8634;</b> to see the whole map again.',
         target: () => unionRect([$('.zoom-btns')]),
         anim: (tok) => tapLoop(tok, () => [centre($('#zoomIn')), centre($('#zoomOut')), centre($('#zoomReset'))])
       },
       {
         title: 'Drag to look around',
-        text: 'When the map is zoomed in, press and drag it to see other parts of India.',
+        text: 'When the map is zoomed, tap and drag the map to move around and see other parts of India.',
         target: () => unionRect([$('#mapPanel')]),
         anim: (tok) => dragLoop(tok, () => centre($('#map')), () => {
           const c = centre($('#map'));
@@ -252,13 +252,13 @@
       },
       {
         title: 'Need a hint?',
-        text: '<b>Show Names</b> writes the state names on the map. <b>Show Answer</b> highlights the right state and dancer in green.',
+        text: 'Tap <b>Show Names</b> to see the names of the states and UTs on the map. Tap <b>Show Answer</b> to see the correct state and dancer in green.',
         target: () => unionRect([$('#namesBtn'), $('#answerBtn')]),
         anim: (tok) => tapLoop(tok, () => [centre($('#namesBtn')), centre($('#answerBtn'))])
       },
       {
         title: 'Place all 15',
-        text: 'The counter shows how many dancers are home. Place all 15 dancers, then tap <b>Next</b> to go to the last level.',
+        text: 'The counter shows how many dancers are home. Place all 15 dancers, then tap <b>Next</b> to go to the last part.',
         target: () => unionRect([$('#placedText'), $('#mapNext')]),
         anim: null
       }
@@ -279,13 +279,13 @@
       },
       {
         title: 'Right or wrong?',
-        text: 'A right letter stays in its box. A wrong letter turns red, shakes and is removed, so try another one.',
+        text: 'A correct letter stays in its box. A wrong letter turns red, shakes and goes back to the row. Try again.',
         target: () => unionRect([$('#blankRow')]),
         anim: null
       },
       {
         title: 'Who am I?',
-        text: 'When the name is complete, the dancer is revealed. Tap <b>Next Clue</b> for the next case. Decode all 6 to finish.',
+        text: 'When the name is complete, the dancer is revealed. Tap <b>Next Clue</b> for the next case. After every 6 or 3 cases, tap <b>Explore more</b> to meet more dancers.',
         target: () => unionRect([$('.who-card'), $('#nextClue')]),
         anim: (tok) => tapLoop(tok, () => [centre($('#nextClue'))])
       }

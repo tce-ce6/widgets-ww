@@ -266,9 +266,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const c = byKey(key);
     state.pending = { key, found };
     resultModal.classList.toggle('is-missed', !found);
-    $('resultTitle').hidden = found;
+    // the title sits above the flag in both versions, worded as in wg178
+    $('resultTitle').textContent = found ? 'You guessed it right! Congratulations!' : 'Better Luck Next Time';
     $('resultIntro').hidden = found;
-    $('resultCorrect').hidden = !found;
     $('resultNextLine').hidden = found;
     $('resultFlag').src = `assets/images/flag-${c.key}.svg`;
     $('resultFlag').alt = `Flag of ${c.name}`;
