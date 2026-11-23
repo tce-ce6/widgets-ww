@@ -201,7 +201,7 @@
       "author": "tce-nitinc"
     },
     "wg214-jasus-pehchano": {
-      "updatedAt": "2026-11-19T17:31:55+05:30",
+      "updatedAt": "2026-11-23T12:14:59+05:30",
       "author": "tce-nitinc"
     },
     "wg215-dance-forms": {
@@ -322,6 +322,22 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-11-23T12:14:59+05:30",
+      "author": "tce-nitinc",
+      "message": "fixes",
+      "widgets": [
+        214
+      ]
+    },
+    {
+      "date": "2026-11-23T12:05:47+05:30",
+      "author": "tce-nitinc",
+      "message": "fixes",
+      "widgets": [
+        214
+      ]
+    },
     {
       "date": "2026-11-21T01:24:35+05:30",
       "author": "tce-ashishg",
@@ -572,23 +588,6 @@
       "message": "resolved bugs form 236",
       "widgets": [
         236
-      ]
-    },
-    {
-      "date": "2026-11-16T14:41:50+05:30",
-      "author": "tce-nitinc",
-      "message": "fixes",
-      "widgets": [
-        210,
-        213
-      ]
-    },
-    {
-      "date": "2026-11-16T14:08:04+05:30",
-      "author": "tce-nitinc",
-      "message": "resolved wg218 fixes",
-      "widgets": [
-        218
       ]
     }
   ]
