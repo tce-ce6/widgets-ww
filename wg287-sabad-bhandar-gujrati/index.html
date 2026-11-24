@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="gu">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ફૂલ ખીલાવો</title>
+
+  <link rel="stylesheet" href="./css/global_style.css">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body id="phool-widget">
+  <!-- Polite live region so screen readers hear feedback messages -->
+  <div id="liveRegion" class="sr-only" aria-live="polite"></div>
+
+  <div class="container">
+    <div class="mainContainerOuter">
+      <div class="wdgetTitle">
+        <h2>ફૂલ ખીલાવો</h2>
+        <span id="versionId" class="versionText">b4_wg287_261123_01</span>
+      </div>
+      <div id="viewport">
+        <!-- Fixed 1920x1080 design stage, scaled to fit the window by script.js -->
+        <div id="stage">
+          <img class="stage-bg" src="assets/svg/bg.svg" alt="">
+
+          <!-- i-text -->
+          <div class="itext">
+            <p>સમાન અર્થ ધરાવતા બે શબ્દો શોધો. પતંગિયાઓને ફૂલ સુધી લઈ જાઓ.</p>
+            <button class="audio-btn audio-btn--itext" id="itextAudio" type="button" aria-label="સૂચના સાંભળો">
+              <img src="assets/svg/audio-btn.svg" alt="">
+            </button>
+          </div>
+
+          <!-- word card -->
+          <div class="card">
+            <img class="card__frame" src="assets/svg/card.svg" alt="">
+            <div class="card__pic"><img id="wordPic" alt=""></div>
+            <div class="card__word">
+              <span id="wordText"></span>
+            </div>
+            <button class="audio-btn audio-btn--word" id="wordAudio" type="button" aria-label="શબ્દ સાંભળો">
+              <img src="assets/svg/audio-btn.svg" alt="">
+            </button>
+            <ul class="found" id="found" aria-label="મળેલા શબ્દો"></ul>
+          </div>
+
+          <!-- flower -->
+          <div class="flower" id="flower" aria-label="ફૂલ">
+            <img class="flower__plant" src="assets/svg/plant.svg" alt="">
+            <img class="flower__petals flower__petals--half" src="assets/svg/petals-half.svg" alt="">
+            <img class="flower__petals flower__petals--full" src="assets/svg/petals-full.svg" alt="">
+          </div>
+
+          <!-- butterflies -->
+          <div class="flies" id="flies"></div>
+
+
+          <button class="btn btn--answer" id="answerBtn" type="button">જવાબ જુઓ</button>
+          <button class="btn btn--next" id="nextBtn" type="button">
+            <span id="nextLabel">આગળનું ઉદાહરણ</span>
+            <img src="assets/svg/next-arrow.svg" alt="">
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- How to play tour (shown over the stage; positioned in viewport coordinates) -->
+  <div id="tour" class="tour" aria-hidden="true">
+    <div id="tourSpot" class="tour-spot"></div>
+    <div id="tourDemo" class="tour-demo"></div>
+    <div id="tourCard" class="tour-card" role="dialog" aria-modal="true" aria-labelledby="tourTitle">
+      <button id="tourSkip" class="tour-skip" type="button" aria-label="મદદ બંધ કરો"><span aria-hidden="true">&times;</span></button>
+      <div id="tourCount" class="tour-count"></div>
+      <h2 id="tourTitle"></h2>
+      <p id="tourText"></p>
+      <div class="tour-nav">
+        <div id="tourDots" class="tour-dots"></div>
+        <div class="tour-btns">
+          <button id="tourBack" class="tour-btn tour-btn--ghost" type="button">પાછળ</button>
+          <button id="tourNext" class="tour-btn" type="button">આગળ</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./js/script.js"></script>
+  <script src="./js/how-to-play.js"></script>
+</body>
+
+</html>
