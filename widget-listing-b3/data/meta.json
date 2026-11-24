@@ -237,7 +237,7 @@
       "author": "tce-nitinc"
     },
     "wg225-blood-circulation": {
-      "updatedAt": "2026-11-23T17:57:29+05:30",
+      "updatedAt": "2026-11-23T19:30:18+05:30",
       "author": "tce-ashishg"
     },
     "wg226-temple-architecture": {
@@ -308,6 +308,10 @@
       "updatedAt": "2026-11-18T18:20:46+05:30",
       "author": "tce-nitinc"
     },
+    "wg287-sabad-bhandar-gujrati": {
+      "updatedAt": "2026-11-23T19:30:18+05:30",
+      "author": "tce-ashishg"
+    },
     "wg31-world-war": {
       "updatedAt": "2026-10-21T09:34:16+05:30",
       "author": "tce-nitinc"
@@ -322,6 +326,15 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-11-23T19:30:18+05:30",
+      "author": "tce-ashishg",
+      "message": "wg287 completed",
+      "widgets": [
+        225,
+        287
+      ]
+    },
     {
       "date": "2026-11-23T17:57:29+05:30",
       "author": "tce-ashishg",
@@ -586,14 +599,6 @@
       "widgets": [
         187,
         226
-      ]
-    },
-    {
-      "date": "2026-11-16T19:14:47+05:30",
-      "author": "tce-ashishg",
-      "message": "wg225 completed",
-      "widgets": [
-        225
       ]
     }
   ]
