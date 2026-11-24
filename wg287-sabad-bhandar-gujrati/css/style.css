@@ -152,9 +152,9 @@ button:disabled {
 /* ---------- i-text ---------- */
 .itext {
   position: absolute;
-  left: 479.5px;
+  left: 545px;
   top: 132.2px;
-  width: 932px;
+  width: 800px;
   height: 69px;
   border-radius: 23px;
   background: #ccf6fb;
@@ -163,13 +163,15 @@ button:disabled {
 
 .itext p {
   position: absolute;
-  left: 20px;
+  left: 50px;
   right: 76px;
   top: 0;
   bottom: 0;
   margin: 0;
   display: flex;
   align-items: center;
+  justify-content: center;
+  text-align: center;
   font-size: 30px;
   color: #000061;
   white-space: nowrap;
@@ -187,7 +189,7 @@ button:disabled {
 }
 
 .audio-btn--itext {
-  left: 892px;
+  left: 760px;
   top: -1px;
   width: 69px;
   height: 69px;
@@ -514,10 +516,13 @@ button:disabled {
   }
 }
 
-.fly.is-faded {
-  opacity: 0;
+/* left-over butterflies flying off to the right (script.js: flyAway) */
+.fly.is-gone {
   pointer-events: none;
-  transition: opacity .6s ease;
+}
+
+.fly.is-gone .fly__float {
+  animation: none;
 }
 
 

@@ -150,6 +150,10 @@
 
     function stop() {
       voice.pause();
+      if (clipSource) {
+        try { if (clipSource.stop) clipSource.stop(); } catch (e) { /* already stopped */ }
+        clipSource = null;
+      }
       try { window.speechSynthesis.cancel(); } catch (e) { /* no speech */ }
       $$('.audio-btn.is-playing').forEach((b) => b.classList.remove('is-playing'));
     }
@@ -219,12 +223,125 @@
       });
     }
 
+    /* Each word recording holds three words with pauses between them: the main
+       word, then its two same-meaning words in the order of ROUNDS[].ok (the
+       storyboard's "Correct answer" column). The file is decoded once and split
+       at the pauses:
+         - the word's speaker button plays only part 0 (the main word);
+         - a correct butterfly plays its own part (1 or 2).
+       If the file cannot be decoded (e.g. opened from file://), the speaker
+       plays the whole file and the butterfly word is read by the browser voice. */
+    const clipCache = new Map();
+    let clipSource = null;
+
+    function loadClip(src) {
+      if (clipCache.has(src)) return clipCache.get(src);
+      const job = new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', src);
+        xhr.responseType = 'arraybuffer';
+        xhr.onload = () => (xhr.status === 0 || xhr.status === 200 ? resolve(xhr.response) : reject(new Error('load')));
+        xhr.onerror = () => reject(new Error('load'));
+        xhr.send();
+      }).then((data) => new Promise((resolve, reject) => ctx.decodeAudioData(data, resolve, reject)))
+        .then((buffer) => ({ buffer, parts: findParts(buffer) }));
+      job.catch(() => clipCache.delete(src));
+      clipCache.set(src, job);
+      return job;
+    }
+
+    // [start, end] (seconds) of each stretch of sound, split at pauses of 0.3 s or more.
+    function findParts(buffer) {
+      const data = buffer.getChannelData(0);
+      const win = Math.round(buffer.sampleRate * 0.02);
+      const rms = [];
+      for (let i = 0; i < data.length; i += win) {
+        let sum = 0;
+        const stop = Math.min(i + win, data.length);
+        for (let j = i; j < stop; j++) sum += data[j] * data[j];
+        rms.push(Math.sqrt(sum / (stop - i)));
+      }
+      const limit = Math.max(...rms) * 0.06;
+      const GAP = 15; // 15 x 20 ms = 0.3 s of quiet ends a word
+      const PAD = 0.12; // a little room before and after each word
+      const parts = [];
+      let on = -1;
+      let quiet = 0;
+      for (let k = 0; k < rms.length; k++) {
+        if (rms[k] > limit) {
+          if (on < 0) on = k;
+          quiet = 0;
+        } else if (on >= 0 && ++quiet >= GAP) {
+          parts.push([on, k - GAP + 1]);
+          on = -1;
+          quiet = 0;
+        }
+      }
+      if (on >= 0) parts.push([on, rms.length]);
+      return parts.map(([a, b]) => [Math.max(0, a * 0.02 - PAD), Math.min(buffer.duration, b * 0.02 + PAD)]);
+    }
+
+    /** Plays [start, end] of a decoded buffer; calls `done` when it ends or is stopped. */
+    function playSlice(buffer, [start, end], done) {
+      const node = ctx.createBufferSource();
+      node.buffer = buffer;
+      node.connect(ctx.destination);
+      node.onended = () => {
+        const mine = clipSource === node;
+        if (mine) clipSource = null;
+        done(mine);
+      };
+      clipSource = node;
+      node.start(0, start, end - start);
+    }
+
+    /** Plays only the main word from a word recording; `btn` pulses while it plays. */
+    function playWordOnly(src, btn) {
+      stop();
+      if (!ensure()) { play(src, btn); return; }
+      const token = {};
+      clipSource = token;
+      if (btn) btn.classList.add('is-playing');
+      loadClip(src).then(({ buffer, parts }) => {
+        if (clipSource !== token) return;
+        const part = parts[0] || [0, buffer.duration];
+        // stop() clears the button itself, so only a clip that ran to its end does it here
+        playSlice(buffer, part, (mine) => { if (mine && btn) btn.classList.remove('is-playing'); });
+      }).catch(() => {
+        if (clipSource !== token) return;
+        clipSource = null;
+        play(src, btn);
+      });
+    }
+
+    /** Plays part `index` of a word recording (a same-meaning word); the browser voice reads `text` if that part cannot be found. */
+    function playPart(src, index, text, delay = 0) {
+      if (!ensure()) { speak(text, delay); return; }
+      speechDone = new Promise((resolve) => {
+        const token = {};
+        window.setTimeout(() => {
+          clipSource = token;
+          loadClip(src).then(({ buffer, parts }) => {
+            if (clipSource !== token) { resolve(); return; }
+            // exactly main word + two same-meaning words, otherwise the split is not trusted
+            if (parts.length !== 3 || !parts[index]) { clipSource = null; speak(text); speechDone.then(resolve); return; }
+            playSlice(buffer, parts[index], () => resolve());
+          }).catch(() => {
+            if (clipSource === token) clipSource = null;
+            speak(text);
+            speechDone.then(resolve);
+          });
+          window.setTimeout(resolve, 4000); // never wait forever
+        }, delay);
+      });
+    }
+
     /** Runs `fn` once the word being spoken has finished. */
     function afterSpeech(fn) {
       speechDone.then(fn);
     }
 
-    return { sfx, play, speak, playWord, afterSpeech, stop, unlock: ensure };
+    return { sfx, play, playWordOnly, playPart, speak, playWord, afterSpeech, stop, unlock: ensure };
   }());
 
   /* ------------------------------------------------------------------------
@@ -346,6 +463,21 @@
     };
   }
 
+  /** A left-over (wrong) butterfly flies off to the right of the screen and disappears. */
+  function flyAway(el, i) {
+    if (el.classList.contains('is-gone')) return;
+    el.classList.add('is-gone');
+    const x = parseFloat(el.style.left);
+    const dx = 1920 + 60 - x; // past the right edge of the stage
+    const t = getComputedStyle(el).transform;
+    const anim = el.animate([
+      { transform: t === 'none' ? 'translate(0, 0)' : t, opacity: 1 },
+      { transform: `translate(${dx * 0.45}px, -70px)`, opacity: 1, offset: 0.5 },
+      { transform: `translate(${dx}px, -140px)`, opacity: 0 }
+    ], { duration: 1500, delay: i * 200, easing: 'ease-in', fill: 'forwards' });
+    anim.onfinish = () => { if (el.isConnected) el.remove(); };
+  }
+
   function choose(el) {
     if (state.done || el.classList.contains('is-flying')) return;
     Sound.unlock();
@@ -364,7 +496,8 @@
     Sound.stop();
     Sound.sfx('correct');
     if (WORD_AUDIO[word]) Sound.playWord(`assets/audio/${WORD_AUDIO[word]}`, word, 150);
-    else Sound.speak(word, 150);
+    // the word's own part of this round's recording: part 1 = ok[0], part 2 = ok[1]
+    else Sound.playPart(`assets/audio/word-${pad(state.r + 1)}.mp3`, 1 + R.ok.indexOf(word), word, 150);
     flyIn(el, () => {
       state.found++;
       state.mine.push(word);
@@ -376,7 +509,7 @@
         Sound.afterSpeech(() => { if (state.r === round && state.done) Sound.sfx('bloom'); });
         state.done = true;
         answerBtn.disabled = true;
-        $$('.fly').forEach((f) => f.classList.add('is-faded'));
+        $$('.fly').filter((f) => !f.classList.contains('is-flying')).forEach(flyAway);
         setFeedback('');
       } else {
         const left = NUM[R.ok.length - state.found];
@@ -405,12 +538,14 @@
     state.revealed = true;
     setAnswerBtn(true);
     setFeedback('');
-    $$('.fly').forEach((f) => { if (f.dataset.ok !== '1') f.classList.add('is-faded'); });
     const rest = $$('.fly').filter((f) => f.dataset.ok === '1' && !f.classList.contains('is-flying'));
+    // the wrong butterflies fly off only after the right ones have reached the flower
+    const wrongAway = () => $$('.fly').filter((f) => f.dataset.ok !== '1').forEach(flyAway);
     rest.forEach((f, i) => later(() => flyIn(f, () => {
       state.found++;
       markFound(f.dataset.word);
       bloom();
+      if (i === rest.length - 1) wrongAway();
     }), i * 650));
     rest.forEach((f) => f.classList.add('is-flying'));
   }
@@ -498,7 +633,7 @@
   /* ---- boot ---- */
 
   $('#itextAudio').addEventListener('click', (event) => { Sound.unlock(); Sound.play('assets/audio/itext.mp3', event.currentTarget); });
-  $('#wordAudio').addEventListener('click', (event) => { Sound.unlock(); Sound.play(`assets/audio/word-${pad(state.r + 1)}.mp3`, event.currentTarget); });
+  $('#wordAudio').addEventListener('click', (event) => { Sound.unlock(); Sound.playWordOnly(`assets/audio/word-${pad(state.r + 1)}.mp3`, event.currentTarget); });
   answerBtn.addEventListener('click', toggleAnswer);
   $('#nextBtn').addEventListener('click', next);
 

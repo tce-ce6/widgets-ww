@@ -163,7 +163,7 @@
 
   /* ---------- tour steps ---------- */
 
-  const flies = () => $$('#flies .fly').filter((f) => !f.classList.contains('is-flying'));
+  const flies = () => $$('#flies .fly').filter((f) => !f.classList.contains('is-flying') && !f.classList.contains('is-gone'));
   const flowerHead = () => {
     const r = $('#flower').getBoundingClientRect();
     return { x: r.left + r.width * 0.53, y: r.top + r.height * 0.3 };
