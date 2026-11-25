@@ -173,11 +173,11 @@
       "author": "tce-nitinc"
     },
     "wg207-i-aur-ee-kee-maatra-mein-antar-gujrati": {
-      "updatedAt": "2026-11-12T15:46:33+05:30",
+      "updatedAt": "2026-11-25T16:50:52+05:30",
       "author": "tce-ashishg"
     },
     "wg208-u-aur-oo-kee-maatra-mein-antar-gujrati": {
-      "updatedAt": "2026-11-12T15:46:33+05:30",
+      "updatedAt": "2026-11-25T16:50:52+05:30",
       "author": "tce-ashishg"
     },
     "wg209-poppulation-density-simulator": {
@@ -193,7 +193,7 @@
       "author": "tce-nitinc"
     },
     "wg212-sabdo-me-swar-ki-khoj-gujrati": {
-      "updatedAt": "2026-11-11T18:46:47+05:30",
+      "updatedAt": "2026-11-25T16:50:52+05:30",
       "author": "tce-ashishg"
     },
     "wg213-cross-bridge": {
@@ -217,7 +217,7 @@
       "author": "tce-nitinc"
     },
     "wg219-sabdo-me-vayanjan-ki-khoj-gujrati": {
-      "updatedAt": "2026-11-11T18:46:47+05:30",
+      "updatedAt": "2026-11-25T16:50:52+05:30",
       "author": "tce-ashishg"
     },
     "wg220-access-to-justice-pli": {
@@ -237,7 +237,7 @@
       "author": "tce-nitinc"
     },
     "wg225-blood-circulation": {
-      "updatedAt": "2026-11-23T19:30:18+05:30",
+      "updatedAt": "2026-11-25T16:50:52+05:30",
       "author": "tce-ashishg"
     },
     "wg226-temple-architecture": {
@@ -326,6 +326,18 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-11-25T16:50:52+05:30",
+      "author": "tce-ashishg",
+      "message": "gujrati widgets issue resolved",
+      "widgets": [
+        207,
+        208,
+        212,
+        219,
+        225
+      ]
+    },
     {
       "date": "2026-11-25T15:05:39+05:30",
       "author": "tce-ashishg",
@@ -588,15 +600,6 @@
       "message": "wg160 issue resolved",
       "widgets": [
         160
-      ]
-    },
-    {
-      "date": "2026-11-17T14:50:50+05:30",
-      "author": "tce-nitinc",
-      "message": "added wg224 and 187",
-      "widgets": [
-        187,
-        224
       ]
     }
   ]
