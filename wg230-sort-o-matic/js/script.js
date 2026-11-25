@@ -346,8 +346,7 @@
       btn.appendChild(el('span', 'tray-label', tray.label));
       btn.appendChild(el('span', 'tray-tap', 'Tap here'));
       btn.appendChild(el('span', 'tray-items'));
-      btn.appendChild(el('span', 'tray-total', 'Total: 0'));
-      btn.setAttribute('aria-label', `${tray.label}, total 0`);
+      btn.setAttribute('aria-label', tray.label);
       btn.addEventListener('click', () => answer(tray.key, btn));
       trays.appendChild(btn);
     });
@@ -407,6 +406,7 @@
     resetMachines();
     cue.textContent = '';
     itemName.hidden = true;
+    itemImg.classList.remove('is-flying');
     itemImg.src = itemSrc(item);
     itemImg.alt = item.name;
     const y = restOn(spot.beltTop, spot.size, item);
@@ -469,6 +469,8 @@
     const box = trayItemCentre(tray, count);
 
     setPose({ squash: 1, rot: 0 });
+    // Fly in front of the trays, so the item is seen landing in its tray.
+    itemImg.classList.add('is-flying');
     await moveItem(box.x, box.y, TRAY_ITEM, 420);
     if (!isLive(token)) return;
 
@@ -476,8 +478,7 @@
     mini.src = itemSrc(item);
     mini.alt = '';
     holder.appendChild(mini);
-    tray.querySelector('.tray-total').textContent = `Total: ${count + 1}`;
-    tray.setAttribute('aria-label', `${tray.querySelector('.tray-label').textContent}, total ${count + 1}`);
+    itemImg.classList.remove('is-flying');
     itemImg.hidden = true;
 
     if (state.index < state.queue.length - 1) {
@@ -520,10 +521,21 @@
     throwConfetti();
   }
 
+  /** Success animation: the Lottie "Confetti 9" from the SB anim folder (embedded in confetti-data.js). */
+  let confettiAnim = null;
   function throwConfetti() {
     const box = $('confetti');
+    if (confettiAnim) confettiAnim.destroy();
+    confettiAnim = null;
     box.textContent = '';
     if (reduceMotion) return;
+    if (window.lottie && window.CONFETTI_ANIM) {
+      confettiAnim = window.lottie.loadAnimation({
+        container: box, renderer: 'svg', loop: false, autoplay: true,
+        animationData: JSON.parse(JSON.stringify(window.CONFETTI_ANIM)), // lottie changes the data it is given
+      });
+      return;
+    }
     const colours = ['#f2b83d', '#36a968', '#0295fc', '#dc4c43', '#acf4ff'];
     for (let i = 0; i < 70; i++) {
       const piece = el('i', 'confetti-piece');
@@ -541,6 +553,8 @@
     state.token += 1;
     state.round = null;
     state.ready = false;
+    if (confettiAnim) confettiAnim.destroy();
+    confettiAnim = null;
     $('confetti').textContent = '';
     goTo('home');
     $('tiles').firstElementChild.focus({ preventScroll: true });

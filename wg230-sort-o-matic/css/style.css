@@ -10,8 +10,8 @@
   --cue: #03fce3;
   --night: #000216;
   --tab-off: #110e00;
-  --tray-light: #5799c4;
-  --tray-dark: #206090;
+  --tray-light: #e3b86a;
+  --tray-dark: #c98f3c;
   --tray-pill: #acf4ff;
   --tray-pill-line: #009aff;
   --ok: #36a968;
@@ -172,11 +172,6 @@ button:focus-visible,
   width: 100%;
 }
 
-.home-how {
-  left: 814px;
-  top: 1003px;
-  width: 293px;
-}
 
 .tiles {
   position: absolute;
@@ -292,9 +287,9 @@ button:focus-visible,
 }
 
 .round-cue {
-  left: 1020px;
+  left: 560px;
   top: 150px;
-  width: 600px;
+  width: 800px;
   min-height: 34px;
 }
 
@@ -518,6 +513,11 @@ button:focus-visible,
   pointer-events: none;
 }
 
+/* On its way to a tray the item passes in front of the trays. */
+.item.is-flying {
+  z-index: 6;
+}
+
 .item-name {
   position: absolute;
   height: 50px;
@@ -688,19 +688,6 @@ button:focus-visible,
   height: 60px;
 }
 
-.tray-total {
-  position: absolute;
-  left: 50%;
-  bottom: 6px;
-  transform: translateX(-50%);
-  width: 118px;
-  height: 30px;
-  background: rgb(0 0 0 / 70%);
-  border-radius: 25px;
-  color: #fff;
-  font-size: 20px;
-  line-height: 30px;
-}
 
 /* ---------- round: result card ---------- */
 .card {
@@ -804,14 +791,8 @@ button:focus-visible,
   font-weight: 700;
 }
 
-.round-how {
-  left: 739px;
-  top: 1003px;
-  width: 293px;
-}
-
 .round-reset {
-  left: 1052px;
+  left: 895px;
   top: 1003px;
   width: 129px;
 }
@@ -893,6 +874,28 @@ button:focus-visible,
   top: 0;
   width: 14px;
   height: 22px;
+}
+
+/* ---------- help button (standard, bottom left) ---------- */
+.help-open {
+  position: absolute;
+  left: 40px;
+  top: 1000px;
+  width: 140px;
+  height: 54px;
+  background: none;
+  border: 0;
+  border-radius: 27px;
+  transition: transform 0.15s ease;
+}
+
+.help-open:hover {
+  transform: scale(1.04);
+}
+
+.help-open img {
+  width: 140px;
+  height: auto;
 }
 
 /* ---------- how to use ---------- */
