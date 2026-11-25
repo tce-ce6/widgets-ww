@@ -309,7 +309,7 @@
       "author": "tce-nitinc"
     },
     "wg287-sabad-bhandar-gujrati": {
-      "updatedAt": "2026-11-23T19:30:18+05:30",
+      "updatedAt": "2026-11-24T18:01:28+05:30",
       "author": "tce-ashishg"
     },
     "wg31-world-war": {
@@ -326,6 +326,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-11-24T18:01:28+05:30",
+      "author": "tce-ashishg",
+      "message": "wg287 img replaced",
+      "widgets": [
+        287
+      ]
+    },
     {
       "date": "2026-11-23T19:30:18+05:30",
       "author": "tce-ashishg",
@@ -590,15 +598,6 @@
       "widgets": [
         216,
         225
-      ]
-    },
-    {
-      "date": "2026-11-17T10:44:28+05:30",
-      "author": "tce-nitinc",
-      "message": "wg187 fixes",
-      "widgets": [
-        187,
-        226
       ]
     }
   ]
