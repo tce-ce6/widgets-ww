@@ -197,11 +197,11 @@
       "author": "tce-ashishg"
     },
     "wg213-cross-bridge": {
-      "updatedAt": "2026-11-19T17:31:55+05:30",
+      "updatedAt": "2026-11-25T12:37:49+05:30",
       "author": "tce-nitinc"
     },
     "wg214-jasus-pehchano": {
-      "updatedAt": "2026-11-23T12:14:59+05:30",
+      "updatedAt": "2026-11-25T12:37:49+05:30",
       "author": "tce-nitinc"
     },
     "wg215-dance-forms": {
@@ -225,7 +225,7 @@
       "author": "tce-ashishg"
     },
     "wg221-limits-of-pli": {
-      "updatedAt": "2026-11-23T17:57:29+05:30",
+      "updatedAt": "2026-11-25T12:39:32+05:30",
       "author": "tce-ashishg"
     },
     "wg223-leaf-lab-transpiration": {
@@ -245,7 +245,7 @@
       "author": "tce-nitinc"
     },
     "wg230-sort-o-matic": {
-      "updatedAt": "2026-11-03T17:55:28+05:30",
+      "updatedAt": "2026-11-25T12:37:49+05:30",
       "author": "tce-nitinc"
     },
     "wg231-choose-the-correct-spelling-gujrati": {
@@ -309,7 +309,7 @@
       "author": "tce-nitinc"
     },
     "wg287-sabad-bhandar-gujrati": {
-      "updatedAt": "2026-11-24T18:01:28+05:30",
+      "updatedAt": "2026-11-25T12:39:32+05:30",
       "author": "tce-ashishg"
     },
     "wg31-world-war": {
@@ -326,6 +326,25 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-11-25T12:39:32+05:30",
+      "author": "tce-ashishg",
+      "message": "wg287 and wg221 issue resolved",
+      "widgets": [
+        221,
+        287
+      ]
+    },
+    {
+      "date": "2026-11-25T12:37:49+05:30",
+      "author": "tce-nitinc",
+      "message": "fixes",
+      "widgets": [
+        213,
+        214,
+        230
+      ]
+    },
     {
       "date": "2026-11-24T18:01:28+05:30",
       "author": "tce-ashishg",
@@ -578,26 +597,6 @@
       "message": "wg216 reset btn added",
       "widgets": [
         216
-      ]
-    },
-    {
-      "date": "2026-11-17T14:20:05+05:30",
-      "author": "tce-ashishg",
-      "message": "wg231 232 233 help btn added",
-      "widgets": [
-        216,
-        231,
-        232,
-        233
-      ]
-    },
-    {
-      "date": "2026-11-17T11:19:23+05:30",
-      "author": "tce-ashishg",
-      "message": "wg216 issue resolved",
-      "widgets": [
-        216,
-        225
       ]
     }
   ]
