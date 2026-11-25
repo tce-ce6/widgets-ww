@@ -625,7 +625,7 @@ button:disabled {
   box-shadow: 0 3px 8px rgba(0, 0, 0, .4); cursor: pointer;
   font-size: 26px; line-height: 1;
 }
-.tour-skip span { display: block; margin-top: -2px; }
+.tour-skip span { display: block; margin-top: 5px; }
 .tour-skip:hover { filter: brightness(1.15); }
 .tour-nav { display: flex; align-items: center; justify-content: space-between; margin-top: 16px; gap: 10px; }
 .tour-dots { display: flex; gap: 5px; }
