@@ -157,18 +157,84 @@
   /* Left visual (Lottie)                                                    */
   /* ---------------------------------------------------------------------- */
 
+  /* Sound inside the Lottie files (audio layers with embedded mp3).
+     lottie.js only plays these through Howler.js, which this widget does not
+     load; without it lottie uses a stand-in with no volume() method, which
+     throws when the first audio layer starts and stops the animation there.
+     This small HTML5 Audio player gives lottie the methods it calls. */
+  let animSounds = [];
+
+  function lottieAudio(src) {
+    const el = new Audio(src);
+    el.preload = 'auto';
+    const sound = {
+      play() { const p = el.play(); if (p && p.catch) p.catch(() => { /* blocked until a tap */ }); },
+      pause() { el.pause(); },
+      stop() { el.pause(); },
+      playing() { return !el.paused && !el.ended; },
+      seek(t) {
+        if (typeof t !== 'number') return el.currentTime;
+        // past the end of the clip: leave it finished instead of restarting it
+        if (Number.isFinite(el.duration) && t >= el.duration) { el.pause(); return el.currentTime; }
+        el.currentTime = t;
+        return t;
+      },
+      rate(r) { if (typeof r === 'number') el.playbackRate = r; return el.playbackRate; },
+      volume(v) { if (typeof v === 'number') el.volume = Math.max(0, Math.min(1, v)); return el.volume; },
+      setVolume(v) { sound.volume(v); }
+    };
+    animSounds.push(el);
+    return sound;
+  }
+
+  function stopAnimSounds() {
+    animSounds.forEach((el) => { el.pause(); el.removeAttribute('src'); el.load(); });
+    animSounds = [];
+  }
+
+  // After Effects exports audio levels in dB (0 = normal), but lottie reads them
+  // as a percentage (0 = silent). Turn dB into lottie's 0-100 scale.
+  function fixAudioLevels(data) {
+    const toPct = (db) => 100 * Math.pow(10, db / 20);
+    const visit = (layers) => (layers || []).forEach((l) => {
+      if (l.ty !== 6) return;
+      const lv = l.au && l.au.lv;
+      if (!lv) return;
+      if (lv.a === 0 && Array.isArray(lv.k)) lv.k = lv.k.map(toPct);
+      else if (lv.a === 1 && Array.isArray(lv.k)) lv.k.forEach((kf) => { if (kf.s) kf.s = kf.s.map(toPct); if (kf.e) kf.e = kf.e.map(toPct); });
+    });
+    visit(data.layers);
+    (data.assets || []).forEach((a) => visit(a.layers));
+    return data;
+  }
+
   function playVisual(key, loop) {
     animRun++;
     if (anim) anim.destroy();
-    anim = lottie.loadAnimation({
+    stopAnimSounds();
+    // lottie mutates the data, so give each load its own copy
+    const data = fixAudioLevels(JSON.parse(JSON.stringify(window.LOTTIE_DATA[key])));
+    const a = lottie.loadAnimation({
       container: $('#visual'),
       renderer: 'svg',
       loop,
       autoplay: true,
-      // lottie mutates the data, so give each load its own copy
-      animationData: JSON.parse(JSON.stringify(window.LOTTIE_DATA[key])),
+      audioFactory: lottieAudio,
+      animationData: data,
       rendererSettings: { preserveAspectRatio: 'xMidYMid slice' }
     });
+    // lottie only lets the sound layers that exist when play() runs make sound;
+    // sound layers that start later are created afterwards and stay muted. Let
+    // them play as soon as they are created, unless the animation is paused.
+    const ac = a.audioController;
+    if (ac && ac.addAudio) {
+      const add = ac.addAudio.bind(ac);
+      ac.addAudio = (layer) => {
+        add(layer);
+        if (!a.isPaused && layer.resume) layer.resume();
+      };
+    }
+    anim = a;
     return anim;
   }
 
@@ -194,6 +260,7 @@
 
   function goIntro() {
     if (anim) { anim.destroy(); anim = null; }
+    stopAnimSounds();
     animRun++;
     showScreen('intro');
     $$('.case-card').forEach((c) => {
@@ -390,6 +457,7 @@
 
   function goReinforce() {
     if (anim) { anim.destroy(); anim = null; }
+    stopAnimSounds();
     animRun++;
     buildStatements();
     $('#restart-btn').classList.add('hidden');

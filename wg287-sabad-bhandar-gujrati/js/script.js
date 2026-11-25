@@ -229,8 +229,8 @@
        at the pauses:
          - the word's speaker button plays only part 0 (the main word);
          - a correct butterfly plays its own part (1 or 2).
-       If the file cannot be decoded (e.g. opened from file://), the speaker
-       plays the whole file and the butterfly word is read by the browser voice. */
+       If the file cannot be decoded (e.g. opened from file://), the speaker plays
+       only the start of the file and the butterfly word is read by the browser voice. */
     const clipCache = new Map();
     let clipSource = null;
 
@@ -250,10 +250,15 @@
       return job;
     }
 
-    // [start, end] (seconds) of each stretch of sound, split at pauses of 0.3 s or more.
+    /* Splits a recording into its three words: [[start, end] x 3] in seconds.
+       The pauses between the words are not all the same length (some are short),
+       so instead of a fixed pause length the two LONGEST pauses between the
+       first and last sound are used as the cut points. Returns fewer than three
+       parts only if the recording has fewer than two pauses at all. */
     function findParts(buffer) {
+      const STEP = 0.02; // analyse in 20 ms frames
       const data = buffer.getChannelData(0);
-      const win = Math.round(buffer.sampleRate * 0.02);
+      const win = Math.round(buffer.sampleRate * STEP);
       const rms = [];
       for (let i = 0; i < data.length; i += win) {
         let sum = 0;
@@ -261,24 +266,52 @@
         for (let j = i; j < stop; j++) sum += data[j] * data[j];
         rms.push(Math.sqrt(sum / (stop - i)));
       }
-      const limit = Math.max(...rms) * 0.06;
-      const GAP = 15; // 15 x 20 ms = 0.3 s of quiet ends a word
-      const PAD = 0.12; // a little room before and after each word
-      const parts = [];
-      let on = -1;
-      let quiet = 0;
-      for (let k = 0; k < rms.length; k++) {
-        if (rms[k] > limit) {
-          if (on < 0) on = k;
-          quiet = 0;
-        } else if (on >= 0 && ++quiet >= GAP) {
-          parts.push([on, k - GAP + 1]);
-          on = -1;
-          quiet = 0;
+      const peak = Math.max(...rms);
+
+      // quiet runs [from, to) between the first and the last sound, at a given level
+      function pauses(level) {
+        const loud = rms.map((v) => v > peak * level);
+        // a blip shorter than 80 ms inside a pause is not a word: count it as quiet
+        for (let k = 0; k < loud.length;) {
+          if (!loud[k]) { k++; continue; }
+          let e = k;
+          while (e < loud.length && loud[e]) e++;
+          if (e - k < 4 && k > 0 && e < loud.length) for (let m = k; m < e; m++) loud[m] = false;
+          k = e;
         }
+        const first = loud.indexOf(true);
+        const last = loud.lastIndexOf(true);
+        const runs = [];
+        for (let k = first + 1; k < last;) {
+          if (loud[k]) { k++; continue; }
+          let e = k;
+          while (e < last && !loud[e]) e++;
+          if (e - k >= 3) runs.push([k, e]); // at least 60 ms of quiet
+          k = e;
+        }
+        return { first, last, runs };
       }
-      if (on >= 0) parts.push([on, rms.length]);
-      return parts.map(([a, b]) => [Math.max(0, a * 0.02 - PAD), Math.min(buffer.duration, b * 0.02 + PAD)]);
+
+      // start strict; if two pauses are not found, accept softer sounds as quiet
+      let found = null;
+      for (const level of [0.06, 0.1, 0.15, 0.22]) {
+        found = pauses(level);
+        if (found.first >= 0 && found.runs.length >= 2) break;
+      }
+      const { first, last, runs } = found;
+      if (first < 0) return [[0, buffer.duration]];
+      const cuts = runs.slice().sort((p, q) => (q[1] - q[0]) - (p[1] - p[0])).slice(0, 2).sort((p, q) => p[0] - q[0]);
+
+      // word k runs from the end of pause k-1 to the start of pause k
+      const bounds = [first, ...cuts.flatMap(([a, b]) => [a, b]), last + 1];
+      const parts = [];
+      for (let k = 0; k < bounds.length; k += 2) parts.push([bounds[k], bounds[k + 1]]);
+      // a little room around each word, never reaching into the next one
+      return parts.map(([a, b], k) => {
+        const before = k === 0 ? 6 : Math.floor((a - parts[k - 1][1]) / 2);
+        const after = k === parts.length - 1 ? 6 : Math.floor((parts[k + 1][0] - b) / 2);
+        return [Math.max(0, (a - Math.min(6, before)) * STEP), Math.min(buffer.duration, (b + Math.min(6, after)) * STEP)];
+      });
     }
 
     /** Plays [start, end] of a decoded buffer; calls `done` when it ends or is stopped. */
@@ -298,7 +331,7 @@
     /** Plays only the main word from a word recording; `btn` pulses while it plays. */
     function playWordOnly(src, btn) {
       stop();
-      if (!ensure()) { play(src, btn); return; }
+      if (!ensure()) { playStart(src, btn); return; }
       const token = {};
       clipSource = token;
       if (btn) btn.classList.add('is-playing');
@@ -310,8 +343,27 @@
       }).catch(() => {
         if (clipSource !== token) return;
         clipSource = null;
-        play(src, btn);
+        playStart(src, btn);
       });
+    }
+
+    /* Without decoding (e.g. file://) the pauses cannot be found. Never play the
+       whole recording then (that would read out the answers): play the start of
+       it only, about the first 30 %, which is where the main word is. */
+    function playStart(src, btn) {
+      play(src, btn);
+      const el = voice;
+      const cut = () => {
+        if (!Number.isFinite(el.duration)) return;
+        const ms = el.duration * 0.3 * 1000;
+        window.setTimeout(() => {
+          if (voice !== el || el.paused) return;
+          el.pause();
+          if (btn) btn.classList.remove('is-playing');
+        }, ms);
+      };
+      if (el.readyState >= 1) cut();
+      else el.addEventListener('loadedmetadata', cut, { once: true });
     }
 
     /** Plays part `index` of a word recording (a same-meaning word); the browser voice reads `text` if that part cannot be found. */
