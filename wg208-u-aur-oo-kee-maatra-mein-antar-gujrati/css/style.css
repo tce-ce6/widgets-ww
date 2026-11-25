@@ -128,32 +128,39 @@ svg * {
   box-shadow: none
 }
 
+/* The background SVG keeps its 1920x1080 shape and is centred in the window
+   (letterboxed). The title bar sits on that same box, so it stays attached to
+   the top edge of the background at any window size. --u = 1 design px. */
 #tambola-wrapper .wdgetTitle {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  left: 0;
-  top: 0;
+  --bg-w: min(100vw, calc(100vh * 16 / 9));
+  --bg-h: min(100vh, calc(100vw * 9 / 16));
+  --u: calc(var(--bg-w) / 1920);
+  position: absolute;
+  width: var(--bg-w);
+  height: var(--bg-h);
+  left: calc((100vw - var(--bg-w)) / 2);
+  top: calc((100vh - var(--bg-h)) / 2);
+  pointer-events: none;
   z-index: 2;
 }
 
 #tambola-wrapper .wdgetTitle h2 {
-  font-size: 28px;
+  font-size: calc(28 * var(--u));
   font-weight: 600;
   text-align: left;
-  padding: 8px 40px;
+  padding: calc(8 * var(--u)) calc(40 * var(--u));
   color: #fff;
-  border-radius: 0 0px 20px 20px;
+  border-radius: 0 0 calc(20 * var(--u)) calc(20 * var(--u));
   background: #E63967;
   white-space: nowrap;
+  pointer-events: auto;
 }
 
 #tambola-wrapper .versionText {
   position: absolute;
-  right: 20px;
-  top: 10px !important;
-  font-size: 12px;
+  right: calc(20 * var(--u));
+  top: calc(10 * var(--u)) !important;
+  font-size: calc(12 * var(--u));
   color: rgb(0 0 0 / 20%);
 }
 

@@ -229,10 +229,8 @@ document.addEventListener('DOMContentLoaded', function () {
       currentIndex = swarList.indexOf(letter);
 
       const data = letterData[letter];
-      if(letter == "अं"){
-        agalaSwarBtn.style.opacity = 0.3;
-        agalaSwarBtn.style.pointerEvents = 'none';
-      }
+      // Last swar card: nothing comes after it, so Next is disabled
+      updateNextBtn();
 
       if (data) {
         currentData = data; // ✅ store for later (important)
@@ -257,10 +255,7 @@ document.addEventListener('DOMContentLoaded', function () {
     resetOptions();
 
     // if reached last → disable button
-    if (currentIndex === swarList.length - 1) {
-      agalaSwarBtn.style.opacity = 0.3;
-      agalaSwarBtn.style.pointerEvents = 'none'; // disable click
-    }
+    updateNextBtn();
   });
 
   homeBtn.addEventListener('click', () => {
@@ -295,6 +290,14 @@ function resetOptions() {
   uttarDekheBtn.style.pointerEvents = "auto";
   agalaSwarBtn.style.opacity = 1;
   agalaSwarBtn.style.pointerEvents = 'auto';
+}
+
+// Next is disabled on the last swar card (there is no next swar)
+function updateNextBtn() {
+  const isLast = currentIndex >= swarList.length - 1;
+  agalaSwarBtn.style.opacity = isLast ? 0.3 : 1;
+  agalaSwarBtn.style.pointerEvents = isLast ? 'none' : 'auto';
+  agalaSwarBtn.setAttribute('aria-disabled', isLast ? 'true' : 'false');
 }
 
 function loadSwar(selectedLetter) {
