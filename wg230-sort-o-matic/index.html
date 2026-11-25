@@ -26,7 +26,7 @@
             <p class="cue home-cue">Pick a property to begin</p>
             <img class="belt-home" src="assets/svg/belt-home.svg" alt="">
             <div class="tiles" id="tiles"></div>
-            <button class="line-btn home-how" data-help type="button">How to use this widget</button>
+            <button class="help-open" data-help type="button" aria-label="Help"><img src="assets/svg/help-btn.svg" alt=""></button>
           </section>
 
           <!-- ============ ROUND SCREEN ============ -->
@@ -92,7 +92,7 @@
             </div>
 
             <div class="tabs" id="tabs" role="group" aria-label="Property"></div>
-            <button class="line-btn round-how" data-help type="button">How to use this widget</button>
+            <button class="help-open" data-help type="button" aria-label="Help"><img src="assets/svg/help-btn.svg" alt=""></button>
             <button class="line-btn round-reset" id="resetBtn" type="button">Reset</button>
           </section>
 
@@ -130,6 +130,8 @@
     </div>
   </div>
 
+  <script src="./js/lottie.min.js"></script>
+  <script src="./js/confetti-data.js"></script>
   <script src="./js/content-data.js"></script>
   <script src="./js/script.js"></script>
 </body>
