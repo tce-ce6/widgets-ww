@@ -15,7 +15,7 @@
     <div class="mainContainerOuter">
       <div class="wdgetTitle">
         <h2>Blood Circulation</h2>
-        <span id="versionId" class="versionText">b4_wg225_261123_02</span>
+        <span id="versionId" class="versionText">b4_wg225_261125_01</span>
       </div>
       <div class="svg-container" id="svg-container">
         <!-- Master canvas: 1920 x 1080, same coordinate space as assets/images/layout.svg.
@@ -2838,12 +2838,15 @@
           <text class="st23" x="390" y="878" text-anchor="end">Body</text>
         </g>
       </g>
-          <!-- Blood flow over the vessels: dots (and, once the path is complete,
-               white arrows) drawn by script.js along the vessel route -->
-          <g id="flow-layer" aria-hidden="true">
-            <g id="flow-dots"></g>
-            <g id="flow-arrows"></g>
-          </g>
+          <!-- Blood flow animation over the diagram (Lottie, see js/lottie-data.js).
+               The comp is 380x760; it lines up with the diagram artwork at this
+               position at full size (scale 1). -->
+          <foreignObject id="flow-layer" x="283.8" y="189.6" width="380" height="760" aria-hidden="true">
+            <div xmlns="http://www.w3.org/1999/xhtml" class="flow-box">
+              <div class="lottie-box" id="lottie-loop"></div>
+              <div class="lottie-box" id="lottie-flow"></div>
+            </div>
+          </foreignObject>
 
           <!-- Chamber names, shown once that flag is placed -->
           <g id="chamber-names">
@@ -3070,6 +3073,8 @@
 
   <p id="sr" class="sr-only" aria-live="polite"></p>
 
+  <script src="./js/lottie.js"></script>
+  <script src="./js/lottie-data.js"></script>
   <script src="./js/script.js"></script>
   <script src="./js/how-to-play.js"></script>
 </body>

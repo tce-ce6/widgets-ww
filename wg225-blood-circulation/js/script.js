@@ -17,12 +17,12 @@
      When all six are placed, blood flows round the whole path (with white
      arrows on the vessels) and a caption is shown for each part.
 
+   Blood flow (Lottie, from assets/JSON, embedded in js/lottie-data.js):
+     - flow  <- circulation.json: a drop travels the path and leaves arrows.
+       It stops at each part; FLOW_STOP / FLOW_RESUME are those frames.
+     - loop  <- loop-circulation.json: cells streaming round (full run only).
+
    Review changes (en_evs_05_wg225_tech.xlsx):
-     - The blood is shown as dots moving along the vessels (drawn here, see
-       ROUTE), not the old Lottie drop + arrows. After each flag the dots keep
-       flowing up to that flag and stop there. Arrows appear only once the
-       whole path is complete. Dots are bigger and slower.
-     - Flag 3 (lungs): the dots stop at the left lung, not between the lungs.
      - Feedback after each try is shown at the top (instruction line).
      - "Restart" (was "Start again") sits bottom right, hidden until the first
        flag is placed. Help button added (js/how-to-play.js).
@@ -89,79 +89,16 @@
   const FLAG_ICON = '<svg viewBox="0 0 32.94 47.36" aria-hidden="true"><path fill="#fff" d="M16.47,0C7.37,0,0,7.37,0,16.47c0,6.59,12.64,25.74,16.47,30.89,3.83-5.15,16.47-24.3,16.47-30.89C32.94,7.37,25.57,0,16.47,0ZM16.47,25.38c-4.92,0-8.91-3.99-8.91-8.91s3.99-8.91,8.91-8.91,8.91,3.99,8.91,8.91-3.99,8.91-8.91,8.91Z"/></svg>';
 
   // ---------------------------------------------------------------------
-  // The blood's route along the vessels.
-  // Points along the centre of each vessel, taken from the arrow positions of
-  // the old circulation.json (380x760 comp placed at 283.3,204.4, scale .961).
-  // c() converts those comp coordinates to canvas units.
-  //   stop: n   — flag n's place on the route (the dots stop here)
-  //   arrow     — a white arrow is drawn here once the path is complete
-  //   tone      — colour of the blood on the leg that starts here
-  //   gap       — the blood passes through the lungs here: no dots drawn
+  // Animation timing (frames of LOTTIE_DATA.flow = circulation.json, 30 fps)
+  // The drop pauses at each part; it arrives at FLOW_STOP[i] and leaves at
+  // FLOW_RESUME[i]. (Measured from circulation.json.)
   // ---------------------------------------------------------------------
-  const c = (x, y, o) => Object.assign({ x: 283.3 + 0.961 * x, y: 204.4 + 0.961 * y }, o || {});
-  const p = (x, y, o) => Object.assign({ x, y }, o || {});
-  const ROUTE = [
-    // Start: blood leaves the body on the left (blue) …
-    c(130, 599, { stop: 0, tone: 'poor' }),
-    c(106, 599, { arrow: 1 }), c(66, 599, { arrow: 1 }), c(33, 595), c(23, 552, { arrow: 1 }),
-    c(23, 482, { arrow: 1 }), c(23, 408, { arrow: 1 }), c(29, 358), c(72, 352, { arrow: 1 }), c(135, 360),
-    // … into the right atrium, down to the right ventricle …
-    p(419, 570, { stop: 1 }),
-    p(447, 620, { stop: 2 }),
-    // … up and out to the lungs (left lung only: the dots stop there) …
-    c(181, 330), c(146, 313, { arrow: 1 }), c(51, 314, { arrow: 1 }), c(13, 284), c(13, 220, { arrow: 1 }),
-    c(23, 172), c(68, 165, { arrow: 1 }),
-    p(407, 360, { stop: 3, gap: true }),
-    // … through the lungs, where it turns red …
-    p(528, 360, { tone: 'rich' }),
-    c(308, 164, { arrow: 1 }), c(358, 178), c(365, 228, { arrow: 1 }), c(365, 286, { arrow: 1 }),
-    c(361, 348), c(316, 362, { arrow: 1 }), c(248, 362),
-    // … back into the left atrium, down to the left ventricle …
-    p(482, 556, { stop: 4 }),
-    p(498, 607, { stop: 5 }),
-    // … out through the big red vessel and down to the body.
-    c(158, 342), c(117, 336, { arrow: 1 }), c(117, 293), c(167, 290, { arrow: 1 }), c(237, 290, { arrow: 1 }),
-    c(305, 289, { arrow: 1 }), c(341, 324), c(341, 409, { arrow: 1 }), c(341, 468, { arrow: 1 }), c(342, 540),
-    c(332, 594), c(276, 599, { arrow: 1 }),
-    p(467, 800, { stop: 6, tone: 'poor' })
-    // (the route then closes back to the start, through the body)
-  ];
-  const GAP_LEN = 24;          // the lungs crossing counts as this long (no dots shown)
-  const DOT_R = 7;             // dot radius
-  const DOT_GAP = 30;          // distance between dots
-  const DOT_SPEED = 55;        // units per second while flowing
-  const FRONT_SPEED = 170;     // how fast the blood reaches a newly placed flag
-  const STAGE_MS = 2600;       // full run: time per part
-
-  // Lengths along the route (the closing leg back to the start is added last)
-  const LEGS = [];
-  let routeLen = 0;
-  const STOP_AT = [];
-  ROUTE.forEach((pt, i) => {
-    pt.s = routeLen;
-    if (pt.stop != null) STOP_AT[pt.stop] = routeLen;
-    const nx = ROUTE[(i + 1) % ROUTE.length];
-    const real = Math.hypot(nx.x - pt.x, nx.y - pt.y);
-    const len = pt.gap ? GAP_LEN : real;
-    LEGS.push({ a: pt, b: nx, len, gap: !!pt.gap });
-    routeLen += len;
-  });
-  // Tone of each leg: carried forward from the last point that set one
-  let tone = 'poor';
-  LEGS.forEach(l => { if (l.a.tone) tone = l.a.tone; l.tone = tone; });
-  const LOOP_LEN = routeLen;
-
-  function pointAt(s) {
-    s = ((s % LOOP_LEN) + LOOP_LEN) % LOOP_LEN;
-    for (const l of LEGS) {
-      if (s <= l.a.s + l.len) {
-        const t = l.len ? (s - l.a.s) / l.len : 0;
-        return { x: l.a.x + (l.b.x - l.a.x) * t, y: l.a.y + (l.b.y - l.a.y) * t, gap: l.gap, tone: l.tone };
-      }
-    }
-    const l = LEGS[LEGS.length - 1];
-    return { x: l.b.x, y: l.b.y, gap: false, tone: l.tone };
-  }
+  const FLOW_STOP = [0, 100, 180, 452, 550, 670, 930];
+  const FLOW_RESUME = [0, 150, 270, 452, 630, 750, 930];
+  const FLOW_END = 930;
+  // Which part is being explained during the full run, by frame.
+  const STAGE_FROM = [0, 95, 178, 300, 540, 660, 790];
+  const STAGE_MS = 2600;       // reduced motion: time per part in the full run
 
   const reduceMQ = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
   const reduced = () => !!reduceMQ.matches;
@@ -178,8 +115,6 @@
   const connector = $('#fb-connector');
   const trackG = $('#track');
   const numPinsG = $('#num-pins');
-  const dotsG = $('#flow-dots');
-  const arrowsG = $('#flow-arrows');
   const restartBtn = $('#btn-restart');
   const srEl = $('#sr');
   const spots = all('.spot', svg);
@@ -205,102 +140,70 @@
   }
 
   // ---------------------------------------------------------------------
-  // Blood flow: dots along the route
+  // Blood flow: Lottie animations (assets/JSON, embedded in js/lottie-data.js)
+  //   flow — one blood drop travels the path and leaves arrows on the vessels
+  //   loop — blood cells streaming round the whole path (after all 6 flags)
   // ---------------------------------------------------------------------
-  // flow.front: how far along the route the blood has got (dots show up to
-  // here). flow.loop: the whole path is complete, dots go round and round.
-  const flow = { front: 0, loop: false, paused: false, phase: 0, last: 0, raf: 0, reach: null };
-  const DOT_COUNT = Math.ceil(LOOP_LEN / DOT_GAP) + 2;
-  const dots = [];
-  for (let i = 0; i < DOT_COUNT; i++) dots.push(mk('circle', { class: 'blood-dot', r: DOT_R }, dotsG));
+  const clone = d => JSON.parse(JSON.stringify(d));
+  const flowAnim = lottie.loadAnimation({
+    container: $('#lottie-flow'), renderer: 'svg', loop: false, autoplay: false,
+    animationData: clone(window.LOTTIE_DATA.flow)
+  });
+  const loopAnim = lottie.loadAnimation({
+    container: $('#lottie-loop'), renderer: 'svg', loop: true, autoplay: false,
+    animationData: clone(window.LOTTIE_DATA.loop)
+  });
+  const loopBox = $('#lottie-loop');
+  loopBox.style.visibility = 'hidden';
+  flowAnim.addEventListener('DOMLoaded', () => flowAnim.goToAndStop(0, true));
 
-  function drawDots() {
-    const visibleLen = flow.loop ? LOOP_LEN : flow.front;
-    // Evenly spaced dots that all move forward together: dot i sits at
-    // (phase mod gap) + i * gap. Past the front they are hidden, so a steady
-    // stream runs from the start up to the front.
-    const ph = flow.phase % DOT_GAP;
-    dots.forEach((d, i) => {
-      let s = ph + i * DOT_GAP;
-      let show;
-      if (flow.loop) {
-        show = s < LOOP_LEN;
-      } else {
-        show = visibleLen > 0 && s <= visibleLen;
-      }
-      if (!show) { d.setAttribute('visibility', 'hidden'); return; }
-      const pt = pointAt(s);
-      if (!show || pt.gap) { d.setAttribute('visibility', 'hidden'); return; }
-      // Fade in at the start and out at the front (not when going round)
-      let op = 1;
-      if (!flow.loop) {
-        op = Math.min(1, s / 18, (visibleLen - s) / 18);
-        if (op <= 0) { d.setAttribute('visibility', 'hidden'); return; }
-      }
-      d.setAttribute('visibility', 'visible');
-      d.setAttribute('cx', pt.x.toFixed(1));
-      d.setAttribute('cy', pt.y.toFixed(1));
-      d.setAttribute('opacity', op.toFixed(2));
-      d.setAttribute('class', 'blood-dot ' + (pt.tone === 'rich' ? 'rich' : 'poor'));
-    });
-  }
+  let flowGen = 0; // bumps whenever the flow animation is taken over
 
-  function tick(t) {
-    const dt = flow.last ? Math.min((t - flow.last) / 1000, 0.1) : 0;
-    flow.last = t;
-    if (!flow.paused && !reduced()) {
-      flow.phase += DOT_SPEED * dt;
-      if (flow.reach) {
-        const r = flow.reach;
-        flow.front = Math.min(r.to, flow.front + FRONT_SPEED * dt);
-        if (flow.front >= r.to) { flow.reach = null; r.done(); }
-      }
-    }
-    drawDots();
-    flow.raf = requestAnimationFrame(tick);
-  }
-  flow.raf = requestAnimationFrame(tick);
-
-  /** Lets the blood flow on to flag m. Resolves when it gets there. */
-  function reachFlag(m) {
-    const to = STOP_AT[m];
-    if (reduced() || to <= flow.front) {
-      flow.front = Math.max(flow.front, to);
-      return Promise.resolve();
-    }
+  /** Plays flow frames [from, to]; onFrame gets the absolute frame. Resolves
+   *  true when done, false if something else took over meanwhile. */
+  function playFlow(from, to, onFrame) {
+    const myGen = ++flowGen;
     return new Promise(resolve => {
-      const r = { to, done: resolve };
-      flow.reach = r;
-      // Safety net: if animation frames stall (e.g. a background tab),
-      // finish the move anyway so the flag still gets placed.
-      const ms = (to - flow.front) / FRONT_SPEED * 1000 + 700;
-      setTimeout(() => {
-        if (flow.reach !== r) return;
-        flow.reach = null;
-        flow.front = to;
-        r.done();
-      }, ms);
+      if (reduced() || from >= to) {
+        flowAnim.goToAndStop(to, true);
+        if (onFrame) onFrame(to);
+        resolve(true);
+        return;
+      }
+      let finished = false;
+      const finish = ok => {
+        if (finished) return;
+        finished = true;
+        flowAnim.removeEventListener('enterFrame', onEnter);
+        flowAnim.removeEventListener('complete', onDone);
+        resolve(ok);
+      };
+      const onEnter = () => {
+        if (myGen !== flowGen) { finish(false); return; }
+        if (onFrame) onFrame(flowAnim.firstFrame + flowAnim.currentFrame);
+      };
+      const onDone = () => finish(myGen === flowGen);
+      flowAnim.addEventListener('enterFrame', onEnter);
+      flowAnim.addEventListener('complete', onDone);
+      flowAnim.playSegments([from, to], true);
     });
+  }
+
+  function stopFlowAnim(frame) {
+    flowGen++;
+    flowAnim.pause();
+    flowAnim.goToAndStop(frame, true);
+  }
+
+  /** Lets the blood flow on to flag m. Resolves true when it gets there. */
+  function reachFlag(m) {
+    return playFlow(FLOW_RESUME[m - 1], FLOW_STOP[m]);
   }
 
   function resetFlow() {
-    if (flow.reach) { const r = flow.reach; flow.reach = null; r.done(); }
-    flow.front = 0;
-    flow.loop = false;
-    flow.paused = false;
-    flow.phase = 0;
-    arrowsG.textContent = '';
-  }
-
-  // White arrows on the vessels, pointing the way the blood goes
-  function drawArrows() {
-    arrowsG.textContent = '';
-    ROUTE.forEach((pt, i) => {
-      if (!pt.arrow) return;
-      const nx = ROUTE[i + 1];
-      const ang = Math.atan2(nx.y - pt.y, nx.x - pt.x) * 180 / Math.PI;
-      mk('path', { class: 'flow-arrow', d: 'M-7,-10 L5,0 L-7,10', transform: `translate(${pt.x.toFixed(1)} ${pt.y.toFixed(1)}) rotate(${ang.toFixed(1)})` }, arrowsG);
-    });
+    stopFlowAnim(0);
+    loopAnim.stop();
+    loopBox.style.visibility = 'hidden';
   }
 
   // ---------------------------------------------------------------------
@@ -429,26 +332,40 @@
     if (s >= 0) factCard(s === 0 ? 'Start: ' + M[0].name : M[s].name, CAPTIONS[s], s);
   }
 
-  function startFull() {
+  function stageAtFrame(f) {
+    let s = 0;
+    STAGE_FROM.forEach((from, i) => { if (f >= from) s = i; });
+    return s;
+  }
+
+  async function startFull() {
     stopFull();
     full.on = true;
     full.paused = false;
-    flow.loop = true;
-    flow.paused = false;
-    flow.front = LOOP_LEN;
-    drawArrows();
     document.body.classList.add('flowing');
     instrGood(MSG_ALL, 'Watch the blood pass each flag.');
     renderTray();
     for (let i = 1; i <= 6; i++) showName(i);
-    let i = 0;
+    loopBox.style.visibility = '';
+    if (!reduced()) loopAnim.play();
+
+    if (reduced()) {
+      let i = 0;
+      setStage(0);
+      flowAnim.goToAndStop(FLOW_STOP[0], true);
+      full.timer = setInterval(() => {
+        if (full.paused) return;
+        i++;
+        if (i > 6) { clearInterval(full.timer); full.timer = 0; endFull(); return; }
+        setStage(i);
+        flowAnim.goToAndStop(FLOW_STOP[i], true);
+      }, STAGE_MS);
+      return;
+    }
+
     setStage(0);
-    full.timer = setInterval(() => {
-      if (full.paused) return;
-      i++;
-      if (i > 6) { clearInterval(full.timer); full.timer = 0; endFull(); return; }
-      setStage(i);
-    }, STAGE_MS);
+    const ok = await playFlow(0, FLOW_END, f => setStage(stageAtFrame(f)));
+    if (ok && full.on) endFull();
   }
 
   function endFull() {
@@ -464,13 +381,20 @@
     if (full.timer) clearInterval(full.timer);
     full = { on: false, paused: false, stage: -1, timer: 0 };
     document.body.classList.remove('flowing');
+    loopAnim.stop();
+    loopBox.style.visibility = 'hidden';
     spots.forEach(e => e.classList.remove('lit'));
   }
 
   function togglePause() {
     if (!full.on) return;
     full.paused = !full.paused;
-    flow.paused = full.paused;
+    if (full.paused) { flowAnim.pause(); loopAnim.pause(); }
+    else {
+      // Resume the guided drop only if it hasn't finished its run yet.
+      if (full.stage >= 0 && flowAnim.currentFrame < flowAnim.totalFrames - 1) flowAnim.play();
+      if (!reduced()) loopAnim.play();
+    }
     renderTray();
     announce(full.paused ? 'Paused.' : 'Playing.');
   }
