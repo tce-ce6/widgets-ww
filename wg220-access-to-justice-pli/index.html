@@ -15,7 +15,7 @@
     <div class="mainContainerOuter">
       <div class="wdgetTitle">
         <h2>Access to Justice: PIL</h2>
-        <span id="versionId" class="versionText">b4_wg220_261118_01</span>
+        <span id="versionId" class="versionText">b4_wg220_261126_01</span>
       </div>
       <div class="svg-container" id="svg-container">
         <!-- Stage: 1920 x 1080, same coordinates as assets/images/layout.svg.
@@ -26,7 +26,7 @@
           <!-- ============ Screen 1: Before PIL (layout scr_01) ============ -->
           <g class="screen" id="s1">
             <image href="./assets/images/before-pil-graphic.svg" x="33" y="55" width="235" height="83" />
-            <text class="itext" x="930" y="161">Take a moment to understand the situation before you continue.</text>
+            <text class="itext" x="960" y="161">Take a moment to understand the situation before you continue.</text>
             <image href="./assets/images/prison.svg" x="78" y="245" width="767" height="592" />
             <g class="card" data-card="888 306 924 341"></g>
             <text class="stat-num" x="1296" y="410">40,000</text>
@@ -42,7 +42,7 @@
           <!-- ============ Screen 2: who could speak for them? (layout scr_02) ============ -->
           <g class="screen" id="s2">
             <image href="./assets/images/before-pil-graphic.svg" x="33" y="55" width="235" height="83" />
-            <text class="itext" x="937" y="161">Try each option and see who could speak for them.</text>
+            <text class="itext" x="960" y="161">Try each option and see who could speak for them.</text>
             <!-- Scene animation (1160x530 Lottie: jail + court) -->
             <foreignObject x="-6" y="301" width="1160" height="530">
               <div xmlns="http://www.w3.org/1999/xhtml" class="lottie-box" id="s2-scene"></div>
@@ -74,7 +74,7 @@
 
           <!-- ============ Screen 3: PIL arrives (layout Scr_03) ============ -->
           <g class="screen" id="s3">
-            <text class="itext" x="949" y="141">Find out what changed in 1979.</text>
+            <text class="itext" x="960" y="141">Find out what changed in 1979.</text>
             <g id="s3-pil" class="pil-pop">
               <image href="./assets/images/scene3-pil-graphic.svg" x="367" y="215" width="1187" height="835" />
             </g>
@@ -86,17 +86,19 @@
               <div xmlns="http://www.w3.org/1999/xhtml" class="lottie-box" id="s4-scene"></div>
             </foreignObject>
             <image href="./assets/images/after-pil-graphic.svg" x="24" y="24" width="279" height="201" />
-            <text class="itext" x="949" y="141">Find out what changed in 1979.</text>
+            <text class="itext" x="960" y="141">Find out what changed in 1979.</text>
             <!-- (scene4-tos-panel.svg has the text drawn in, so the card is drawn instead) -->
-            <g class="card" data-card="56 577 1829 520"></g>
-            <foreignObject x="126" y="636" width="1740" height="300">
+            <!-- Card, text and button moved 45px down (review) so the card does
+                 not overlap the characters at the bottom of the animation above. -->
+            <g class="card" data-card="56 622 1829 520"></g>
+            <foreignObject x="126" y="681" width="1740" height="300">
               <div xmlns="http://www.w3.org/1999/xhtml" class="s4-text">
                 <p class="para">In 1979 advocate Pushpa Kapila Hingorani read about undertrial prisoners in a Patna jail in a newspaper. She was not their lawyer. She had no personal stake in their case. But she walked into the Supreme Court and filed a petition on their behalf.</p>
                 <p class="strong">The court heard her.</p>
                 <p class="para">This was Public Interest Litigation. Any citizen could now approach the Supreme Court or a High Court for a public cause — without being personally affected. The door that was closed to everyone was now open to all.</p>
               </div>
             </foreignObject>
-            <g class="svg-btn pink" role="button" tabindex="0" data-go="s5" data-btn="620 932 681 93">
+            <g class="svg-btn pink" role="button" tabindex="0" data-go="s5" data-btn="620 970 681 93">
               <text>What if the petition had been different?</text>
             </g>
           </g>
@@ -104,8 +106,8 @@
           <!-- ============ Screen 5: the petition (layout Scr_05 / Scr_05a) ============ -->
           <g class="screen" id="s5">
             <image href="./assets/images/after-pil-graphic.svg" x="24" y="24" width="279" height="201" />
-            <text class="itext" x="945" y="134">Try different options, then file the petition.</text>
-            <text class="itext" x="940" y="168">Observe the <tspan class="itext-bold">results</tspan> on the left to see the impact of your petition.</text>
+            <text class="itext" x="960" y="134">Try different options, then file the petition.</text>
+            <text class="itext" x="960" y="168">Observe the <tspan class="itext-bold">results</tspan> on the left to see the impact of your petition.</text>
 
             <!-- 40 cells: one per 1,000 prisoners (built by script.js) -->
             <g id="cell-grid"></g>
@@ -164,10 +166,11 @@
           <!-- ============ Screen 6: check what you learnt (layout Scr_06) ============ -->
           <g class="screen" id="s6">
             <image href="./assets/images/after-pil-graphic.svg" x="24" y="24" width="279" height="201" />
-            <text class="itext" x="930" y="151">Read each statement. Tap the box next to it to see if it is correct.</text>
+            <text class="itext" x="960" y="151">Read each statement. Tap the box next to it to see if it is correct.</text>
             <image href="./assets/images/scene6-tos-panel.svg" x="504" y="180" width="991" height="776" />
             <g id="statements"></g>
-            <g class="svg-btn green hidden" id="back-btn" role="button" tabindex="0" data-btn="804 904 312 93">
+            <!-- Centred on the white paper (scene6-tos-panel.svg, visible x ~530-1479), review -->
+            <g class="svg-btn green hidden" id="back-btn" role="button" tabindex="0" data-btn="848 904 312 93">
               <text>Back to start</text>
             </g>
           </g>
