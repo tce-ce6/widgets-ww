@@ -73,6 +73,35 @@
 
   function clearDemo() {
     layer.innerHTML = '';
+    stopMedia();
+  }
+
+  /* ---------- Lottie demo inside the card (js/help-anim-data.js) ---------- */
+
+  const media = $('#tourMedia');
+  let mediaAnim = null;
+
+  function stopMedia() {
+    if (mediaAnim) { mediaAnim.destroy(); mediaAnim = null; }
+    media.innerHTML = '';
+    media.hidden = true;
+  }
+
+  function playMedia(name) {
+    const data = name && window.lottie && window.HELP_ANIM && window.HELP_ANIM[name];
+    if (!data) return;
+    media.hidden = false;
+    media.style.aspectRatio = `${data.w} / ${data.h}`;
+    const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    mediaAnim = window.lottie.loadAnimation({
+      container: media,
+      renderer: 'svg',
+      loop: !reduce,
+      autoplay: !reduce,
+      animationData: JSON.parse(JSON.stringify(data))
+    });
+    // Reduced motion: show a still from the middle of the animation.
+    if (reduce) mediaAnim.addEventListener('DOMLoaded', () => mediaAnim.goToAndStop(Math.floor(mediaAnim.totalFrames / 2), true));
   }
 
   /* ---------- animated demo (loops until the step changes) ---------- */
@@ -121,12 +150,14 @@
       title: 'Mesh two gears',
       text: 'Drag a gear so its rim touches another. They snap together and spin in <b>opposite directions</b>.',
       target: gearArea,
+      lottie: 'step-2',
       anim: null
     },
     {
       title: 'Make a compound gear',
       text: 'Drop a gear onto the <b>centre</b> of another gear. They share one axle and spin together at the <b>same speed</b>.',
       target: gearArea,
+      lottie: 'step-3',
       anim: null
     },
     {
@@ -139,6 +170,7 @@
       title: 'Change a gear',
       text: 'Tap a gear to select it. Use <b>−</b> and <b>+</b> to change its number of teeth (6 to 30). You can also make it the driver, detach it or delete it.',
       target: () => unionRect(vis('#inspector')),
+      lottie: 'step-5',
       anim: (tok) => tapLoop(tok, () => vis('#inspector:not(.disabled) [data-act="inc"]:not(:disabled)').map(centre))
     },
     {
@@ -213,6 +245,7 @@
     $('#tourBack').hidden = index === 0;
     $('#tourNext').textContent = index === steps.length - 1 ? 'Got it' : 'Next';
     $('#tourDots').innerHTML = steps.map((_, k) => `<i class="${k === index ? 'on' : ''}"></i>`).join('');
+    playMedia(step.lottie); // before placing the card, so its height is known
     card.classList.remove('enter');
     void card.offsetWidth;
     card.classList.add('enter');

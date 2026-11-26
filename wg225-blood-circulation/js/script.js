@@ -93,9 +93,10 @@
   // The drop pauses at each part; it arrives at FLOW_STOP[i] and leaves at
   // FLOW_RESUME[i]. (Measured from circulation.json.)
   // ---------------------------------------------------------------------
-  const FLOW_STOP = [0, 100, 180, 452, 550, 670, 930];
-  const FLOW_RESUME = [0, 150, 270, 452, 630, 750, 930];
-  const FLOW_END = 930;
+  // circulation.json now has 911 frames (0-910); the drop finishes at 900.
+  const FLOW_STOP = [0, 100, 180, 452, 550, 670, 910];
+  const FLOW_RESUME = [0, 150, 270, 452, 630, 750, 910];
+  const FLOW_END = 910;
   // Which part is being explained during the full run, by frame.
   const STAGE_FROM = [0, 95, 178, 300, 540, 660, 790];
   const STAGE_MS = 2600;       // reduced motion: time per part in the full run
