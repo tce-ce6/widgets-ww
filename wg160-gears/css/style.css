@@ -821,6 +821,26 @@ svg * {
   transition: left .45s cubic-bezier(.4, 0, .2, 1), top .45s cubic-bezier(.4, 0, .2, 1);
 }
 
+/* Lottie demo for steps 2, 3 and 5 (aspect ratio set from the comp in JS).
+   Capped in height so the card still fits beside the canvas. */
+.tour-media {
+  width: 100%;
+  max-height: min(42vh, calc(300 * var(--u) + 120px));
+  margin: 4px 0 max(10px, calc(16 * var(--u)));
+  background: #fff;
+  border: 2px solid #ffd9bf;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.tour-media[hidden] {
+  display: none;
+}
+
+.tour-media svg {
+  display: block;
+}
+
 .tour-count {
   font-size: max(12px, calc(22 * var(--u)));
   font-weight: 700;

@@ -13,7 +13,7 @@
     <div class="mainContainerOuter">
       <div class="wdgetTitle">
         <h2>Gears</h2>
-        <span id="versionId" class="versionText">b4_wg160_261121_01</span>
+        <span id="versionId" class="versionText">b4_wg160_261126_01</span>
       </div>
       <div class="svg-container" id="svg-container">
         <svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" fill="none">
@@ -113,7 +113,7 @@
             <foreignObject class="insight-popup-wrapper" id="insight-popup" x="0" y="389" width="1180" height="660" style="display: none;">
               <div>
                 <img src="./assets/images/insight-popup.svg" alt="">
-                <!-- Animated gears (assets/json/gears.json) play over the static picture in the panel -->
+                <!-- Animated gears (assets/json/gear.json) play over the static picture in the panel -->
                 <div class="insight-anim" id="insight-anim" aria-hidden="true"></div>
                 <img class="close-btn" src="./assets/images/cross.svg" alt="" style="cursor: pointer;">
               </div>
@@ -133,6 +133,8 @@
       <button id="tourSkip" class="tour-skip" type="button" aria-label="Close"><span aria-hidden="true">&times;</span></button>
       <div id="tourCount" class="tour-count"></div>
       <h2 id="tourTitle"></h2>
+      <!-- Lottie demo for the step, when it has one (js/help-anim-data.js) -->
+      <div id="tourMedia" class="tour-media" aria-hidden="true" hidden></div>
       <p id="tourText"></p>
       <div class="tour-nav">
         <div id="tourDots" class="tour-dots"></div>
@@ -146,6 +148,7 @@
 
   <script src="./js/lottie.min.js"></script>
   <script src="./js/insight-anim-data.js"></script>
+  <script src="./js/help-anim-data.js"></script>
   <script src="./js/script.js"></script>
   <script src="./js/how-to-play.js"></script>
 </body>

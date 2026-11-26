@@ -627,7 +627,7 @@ document.getElementById("clearBtn").addEventListener("click",clearAll);
 document.getElementById("runBtn").addEventListener("click",toggleRun);
 const insightPopup=document.getElementById("insight-popup");
 // Help opens the how-to-use tour (js/how-to-play.js).
-// Insights: the gears animation (gears.json) plays while the panel is open.
+// Insights: the gears animation (gear.json) plays while the panel is open.
 let insightAnim=null;
 function playInsightAnim(){
   if(!window.lottie||!window.INSIGHT_ANIM) return;
