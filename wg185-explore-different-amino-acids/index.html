@@ -131,6 +131,12 @@
 
             </div><!-- /viewers-row -->
 
+            <!-- Help button -->
+            <button class="help-btn" id="help-btn" type="button" aria-label="Help">
+              <span class="help-icon" aria-hidden="true">?</span>
+              <span>Help</span>
+            </button>
+
             <!-- Reset button -->
             <button class="reset-btn" id="reset-btn" type="button">Reset</button>
 
@@ -149,6 +155,22 @@
               <button class="insights-close" id="insights-close" type="button" aria-label="Close insights">
                 <img src="./assets/svg/icon-close.svg" alt="Close">
               </button>
+            </div>
+
+            <!-- Guided help tour -->
+            <div class="help-tour" id="help-tour" hidden role="dialog" aria-modal="true" aria-labelledby="tour-step">
+              <div class="tour-backdrop" id="tour-backdrop"></div>
+              <div class="tour-spot" id="tour-spot" aria-hidden="true"></div>
+              <div class="tour-tip" id="tour-tip">
+                <div class="tour-step" id="tour-step"></div>
+                <div class="tour-text" id="tour-text"></div>
+                <div class="tour-buttons">
+                  <button class="tour-button tour-link" id="tour-skip" type="button">Skip</button>
+                  <span class="tour-spacer"></span>
+                  <button class="tour-button tour-back" id="tour-back" type="button">Back</button>
+                  <button class="tour-button" id="tour-next" type="button">Next</button>
+                </div>
+              </div>
             </div>
 
           </section><!-- /screen-activity -->
