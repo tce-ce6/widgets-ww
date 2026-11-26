@@ -97,7 +97,7 @@
       "author": "tce-ashishg"
     },
     "wg185-explore-different-amino-acids": {
-      "updatedAt": "2026-11-18T17:38:12+05:30",
+      "updatedAt": "2026-11-26T19:59:14+05:30",
       "author": "ShyamsundarHait"
     },
     "wg186-the-satavahana-stronghold-jenga": {
@@ -211,6 +211,10 @@
     "wg216-blood-group": {
       "updatedAt": "2026-11-18T12:47:23+05:30",
       "author": "tce-ashishg"
+    },
+    "wg217-population-lab": {
+      "updatedAt": "2026-11-19T19:14:35+05:30",
+      "author": "ShyamsundarHait"
     },
     "wg218-ancient-china": {
       "updatedAt": "2026-11-16T14:08:04+05:30",
@@ -330,6 +334,14 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-11-26T19:59:14+05:30",
+      "author": "ShyamsundarHait",
+      "message": "Improve amino acid exploration and comparison",
+      "widgets": [
+        185
+      ]
+    },
     {
       "date": "2026-11-26T18:33:58+05:30",
       "author": "tce-ashishg",
@@ -509,6 +521,22 @@
       ]
     },
     {
+      "date": "2026-11-19T19:14:35+05:30",
+      "author": "ShyamsundarHait",
+      "message": "updated",
+      "widgets": [
+        217
+      ]
+    },
+    {
+      "date": "2026-11-19T19:14:11+05:30",
+      "author": "ShyamsundarHait",
+      "message": "added wg217",
+      "widgets": [
+        217
+      ]
+    },
+    {
       "date": "2026-11-19T17:36:49+05:30",
       "author": "tce-nitinc",
       "message": "rename",
@@ -580,37 +608,6 @@
         239,
         252,
         253
-      ]
-    },
-    {
-      "date": "2026-11-18T17:38:12+05:30",
-      "author": "ShyamsundarHait",
-      "message": "Add interactive amino acid explorer",
-      "widgets": [
-        185
-      ]
-    },
-    {
-      "date": "2026-11-18T16:52:25+05:30",
-      "author": "tce-ashishg",
-      "message": "wg225 issue resolved",
-      "widgets": [
-        160,
-        225,
-        238
-      ]
-    },
-    {
-      "date": "2026-11-18T12:47:23+05:30",
-      "author": "tce-ashishg",
-      "message": "help btn added in wg216 & wg220",
-      "widgets": [
-        160,
-        216,
-        220,
-        231,
-        232,
-        233
       ]
     }
   ]
