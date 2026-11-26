@@ -1,0 +1,662 @@
+/* ==========================================================================
+   ફૂલ ખીલાવો (wg287, Gujarati version of wg210)
+   Layout is authored on a fixed 1920x1080 stage (matching the AI layout)
+   and scaled to the window by script.js, so the widget always fits one screen.
+   ========================================================================== */
+
+:root {
+  --title-bg: #5733a1;
+  --sky: #d4e2ff;
+  --hill: #069e89;
+  --ink: #700707;
+  --tag-fill: #fccece;
+  --tag-line: #d85a41;
+  --tag-shadow: #ec7760;
+  --mint: #cfffe9;
+  --blue-ink: #2e50ae;
+  --green: #358400;
+  --blue: #aa1f7b;
+  --gujarati: "Noto Sans Gujarati", "Nirmala UI", "Shruti", sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  overflow: hidden;
+}
+
+body {
+  background: var(--sky);
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mainContainerOuter {
+  background: var(--sky);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Layering, bottom to top: #viewport (the widget) -> .wdgetTitle */
+#viewport {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+}
+
+/* Full-window backdrop: sky above, the yellow hill below, so the letterbox
+   bars continue the picture (script.js sets --hill-y to the stage's hill line). */
+#viewport {
+  z-index: 1;
+  background: linear-gradient(to bottom, var(--sky) 0, var(--sky) var(--hill-y, 90%), var(--hill) var(--hill-y, 90%), var(--hill) 100%);
+}
+
+/* #stage holds the widget: a fixed 1920x1080 design stage, scaled by script.js. */
+#stage {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1920px;
+  height: 1080px;
+  transform-origin: 0 0;
+  overflow: hidden;
+  font-family: var(--gujarati);
+  line-height: 1.3;
+  color: #000;
+}
+
+.stage-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+button {
+  font-family: var(--gujarati);
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+button:focus-visible,
+[tabindex]:focus-visible {
+  outline: 4px solid #1a73e8;
+  outline-offset: 3px;
+}
+
+button:disabled {
+  opacity: .5;
+  cursor: default;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+/* ---------- title (outside the scaled stage, same as previous widgets) ---------- */
+#phool-widget .wdgetTitle {
+  position: absolute;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  left: 0;
+  top: 0;
+  z-index: 30;
+}
+
+#phool-widget .wdgetTitle h2 {
+  margin: 0;
+  font-family: var(--gujarati);
+  font-size: 25px;
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: left;
+  background: var(--title-bg);
+  padding: 8px 40px;
+  color: #fff;
+  border-radius: 0 0px 20px 20px;
+  white-space: nowrap;
+}
+
+#phool-widget .versionText {
+  position: absolute;
+  right: 20px;
+  top: 10px !important;
+  font-size: 12px;
+  line-height: 1;
+  color: rgb(0 0 0 / 25%);
+}
+
+/* ---------- i-text ---------- */
+.itext {
+  position: absolute;
+  left: 545px;
+  top: 132.2px;
+  width: 800px;
+  height: 69px;
+  border-radius: 23px;
+  background: #ccf6fb;
+  border: 1px solid #598de6;
+}
+
+.itext p {
+  position: absolute;
+  left: 50px;
+  right: 76px;
+  top: 0;
+  bottom: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 30px;
+  color: #000061;
+  white-space: nowrap;
+}
+
+.audio-btn {
+  position: absolute;
+  border-radius: 50%;
+}
+
+.audio-btn img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.audio-btn--itext {
+  left: 760px;
+  top: -1px;
+  width: 69px;
+  height: 69px;
+}
+
+.audio-btn.is-playing img {
+  animation: pulse .7s ease-in-out infinite alternate;
+}
+
+@keyframes pulse {
+  from {
+    transform: scale(1);
+  }
+
+  to {
+    transform: scale(1.1);
+  }
+}
+
+/* ---------- word card ---------- */
+.card {
+  position: absolute;
+  left: 80px;
+  top: 190px;
+  width: 445px;
+  height: 710px;
+}
+
+.card__frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.card__pic {
+  position: absolute;
+  /* sits exactly on the card's picture box (card.svg rect .c-pic) */
+  left: 48.52px;
+  top: 29.88px;
+  width: 358.48px;
+  height: 249.9px;
+  border-radius: 41px;
+  overflow: hidden;
+}
+
+/* each image's viewBox is cropped to its own blue border line, so every
+   edge of it lands right on top of the card's border */
+.card__pic img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.card__word {
+  position: absolute;
+  left: 48.5px;
+  top: 282.9px;
+  width: 358.5px;
+  height: 167px;
+  border-radius: 41px;
+  background: rgb(207 255 233 / 44%);
+}
+
+.card__word span {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 8px;
+  text-align: center;
+  font-size: 80px;
+  font-weight: 700;
+  line-height: 100px;
+  color: #000;
+}
+
+.audio-btn--word {
+  left: 182px;
+  top: 405px;
+  width: 86px;
+  height: 86px;
+}
+
+/* the two meanings found so far (design: list under the word) */
+.found {
+  position: absolute;
+  left: 48.5px;
+  top: 502.9px;
+  width: 358.5px;
+  height: 166px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-radius: 41px;
+  background: #ffffcf;
+}
+
+.found::after {
+  content: "";
+  position: absolute;
+  left: 1px;
+  right: 0;
+  top: 81px;
+  border-top: 4px dashed #dab600;
+}
+
+.found li {
+  position: absolute;
+  left: 41px;
+  right: 44px;
+  height: 66px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 40px;
+  font-weight: 700;
+  color: var(--blue-ink);
+}
+
+.found li:nth-child(1) {
+  top: 9px;
+}
+
+.found li:nth-child(2) {
+  top: 92px;
+}
+
+.found li img {
+  width: 53px;
+  height: 29px;
+  opacity: .3;
+  filter: grayscale(1);
+  transition: opacity .3s, filter .3s;
+}
+
+.found li span {
+  min-height: 1em;
+}
+
+.found li.is-found img {
+  opacity: 1;
+  filter: none;
+  animation: pop .45s ease-out;
+}
+
+.found li.is-found span {
+  animation: pop .45s ease-out;
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(.2);
+  }
+
+  70% {
+    transform: scale(1.18);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* ---------- flower ---------- */
+.flower {
+  position: absolute;
+  left: 1080px;
+  top: 440px;
+  width: 280px;
+  height: 540px;
+}
+
+.flower img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.flower__petals {
+  transform-origin: 53.4% 30.7%;
+  transform: scale(0) rotate(-40deg);
+  opacity: 0;
+  transition: transform .7s cubic-bezier(.3, 1.6, .5, 1), opacity .4s ease;
+}
+
+.flower.is-half .flower__petals--half,
+.flower.is-full .flower__petals {
+  transform: none;
+  opacity: 1;
+}
+
+.flower.is-full .flower__petals--full {
+  transition-delay: .1s;
+}
+
+.flower.is-full {
+  animation: bloom-glow 1.2s ease-out;
+}
+
+@keyframes bloom-glow {
+  0% {
+    filter: drop-shadow(0 0 0 rgb(255 230 80 / 0));
+  }
+
+  40% {
+    filter: drop-shadow(0 0 40px rgb(255 230 80 / 1));
+  }
+
+  100% {
+    filter: drop-shadow(0 0 0 rgb(255 230 80 / 0));
+  }
+}
+
+.flower.is-over {
+  filter: drop-shadow(0 0 22px rgb(255 60 60 / .9));
+}
+
+/* ---------- butterflies ---------- */
+.fly {
+  position: absolute;
+  width: 211px;
+  height: 235px;
+  touch-action: none;
+  cursor: grab;
+  z-index: 4;
+}
+
+.fly.is-dragging {
+  z-index: 10;
+  cursor: grabbing;
+}
+
+.fly__float {
+  position: absolute;
+  inset: 0;
+  animation: hover 2.6s ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+}
+
+.fly.is-dragging .fly__float,
+.fly.is-flying .fly__float {
+  animation: none;
+}
+
+@keyframes hover {
+
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+
+  50% {
+    transform: translate(6px, -12px);
+  }
+}
+
+.fly__wings {
+  position: absolute;
+  left: 44px;
+  top: 0;
+  width: 123px;
+  height: 116px;
+  animation: flap .5s ease-in-out infinite alternate;
+  animation-delay: var(--delay, 0s);
+}
+
+@keyframes flap {
+  from {
+    transform: scaleX(1);
+  }
+
+  to {
+    transform: scaleX(.72);
+  }
+}
+
+.fly__tag {
+  position: absolute;
+  left: 50%;
+  top: 121px;
+  min-width: 211px;
+  height: 104px;
+  padding: 0 20px 6px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 5px solid var(--tag-line);
+  border-radius: 21px;
+  background: var(--tag-fill);
+  box-shadow: 0 9px 0 var(--tag-shadow);
+  font-size: 60px;
+  font-weight: 700;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.fly.is-shake .fly__float {
+  animation: shake .45s ease;
+}
+
+.fly.is-shake .fly__tag {
+  border-color: #e11;
+}
+
+@keyframes shake {
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  20%,
+  60% {
+    transform: translateX(-12px);
+  }
+
+  40%,
+  80% {
+    transform: translateX(12px);
+  }
+}
+
+/* left-over butterflies flying off to the right (script.js: flyAway) */
+.fly.is-gone {
+  pointer-events: none;
+}
+
+.fly.is-gone .fly__float {
+  animation: none;
+}
+
+
+/* ---------- buttons ---------- */
+.btn {
+  position: absolute;
+  height: 75px;
+  border: 1px solid #707070;
+  border-radius: 37.5px;
+  font-size: 35px;
+  font-weight: 700;
+  color: #fff;
+  white-space: nowrap;
+}
+
+.btn--answer {
+  left: 828.7px;
+  top: 979px;
+  min-width: 228px;
+  padding: 0 22px;
+  background: var(--green);
+}
+
+.btn--next {
+  left: 1276px;
+  top: 979px;
+  min-width: 369px;
+  padding: 0 26px 0 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  background: var(--blue);
+}
+
+.btn--next img {
+  width: 32px;
+  height: 31px;
+}
+
+/* ==========================================================================
+   How to play tour (same as wg202, in this widget's colours)
+   ========================================================================== */
+/* help button: bottom left of the stage, in line with the bottom buttons */
+.how-btn {
+  position: absolute;
+  left: 34px;
+  top: 982px;
+  z-index: 40;
+  width: 180px;
+  height: 70px;
+  padding: 0;
+  background: none;
+  border: 0;
+  border-radius: 35px;
+  cursor: pointer;
+}
+.how-btn:hover { filter: brightness(1.06); }
+.how-btn img { display: block; width: 180px; height: 70px; }
+.how-btn span {
+  position: absolute; left: 70px; right: 8px; top: 0; bottom: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--gujarati); font-size: 32px; font-weight: 600; line-height: 1; color: #fff;
+}
+
+.tour { position: fixed; inset: 0; z-index: 300; display: none; font-family: var(--gujarati); }
+.tour.is-open { display: block; animation: tour-in .3s ease both; }
+@keyframes tour-in { from { opacity: 0; } to { opacity: 1; } }
+.tour-spot {
+  position: fixed; border-radius: 14px; pointer-events: none;
+  box-shadow: 0 0 0 200vmax rgba(40, 6, 0, .75);
+  outline: 3px solid var(--hill); outline-offset: 3px;
+  transition: left .45s cubic-bezier(.4, 0, .2, 1), top .45s cubic-bezier(.4, 0, .2, 1),
+              width .45s cubic-bezier(.4, 0, .2, 1), height .45s cubic-bezier(.4, 0, .2, 1);
+}
+.tour-spot[hidden] { display: none; }
+.tour.no-anim .tour-spot, .tour.no-anim .tour-card { transition: none; }
+.tour-demo { position: fixed; inset: 0; pointer-events: none; z-index: 2; }
+
+.tour-card {
+  position: fixed; z-index: 3; width: min(420px, calc(100vw - 24px));
+  background: #fff8ec; color: var(--ink);
+  border: 3px solid var(--tag-line); border-radius: 18px;
+  padding: 18px 22px 16px; box-shadow: 0 18px 40px rgba(0, 0, 0, .5);
+  transition: left .45s cubic-bezier(.4, 0, .2, 1), top .45s cubic-bezier(.4, 0, .2, 1);
+}
+.tour-count { font-size: 14px; font-weight: 700; color: var(--tag-line); }
+.tour-card h2 { margin: 4px 0 6px; font-size: 26px; line-height: 1.3; color: var(--title-bg); }
+.tour-card p { margin: 0; font-size: 18px; line-height: 1.55; color: #3a1a12; }
+.tour-card p b { color: var(--title-bg); }
+.tour-card.enter .tour-count, .tour-card.enter h2, .tour-card.enter p { animation: tour-rise .45s ease both; }
+.tour-card.enter h2 { animation-delay: .07s; }
+.tour-card.enter p { animation-delay: .15s; }
+@keyframes tour-rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.tour-skip {
+  position: absolute; top: -11px; right: -11px;
+  width: 38px; height: 38px; padding: 0; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--title-bg); color: #fff; border: 3px solid #fff8ec;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, .4); cursor: pointer;
+  font-size: 26px; line-height: 1;
+}
+.tour-skip span { display: block; margin-top: 5px; }
+.tour-skip:hover { filter: brightness(1.15); }
+.tour-nav { display: flex; align-items: center; justify-content: space-between; margin-top: 16px; gap: 10px; }
+.tour-dots { display: flex; gap: 5px; }
+.tour-dots i { width: 8px; height: 8px; border-radius: 50%; background: #f0d2b4; transition: background .2s, width .2s; }
+.tour-dots i.on { background: var(--title-bg); width: 20px; border-radius: 4px; }
+.tour-btns { display: flex; gap: 8px; }
+.tour-btn {
+  font-family: inherit; font-size: 16px; font-weight: 700; line-height: 1.3; padding: 8px 18px; border-radius: 20px; cursor: pointer;
+  background: var(--title-bg); color: #fff; border: 2px solid var(--title-bg);
+}
+.tour-btn--ghost { background: transparent; color: var(--title-bg); }
+.tour-btn[hidden] { display: none; }
+.tour :focus-visible { outline: 3px solid #1a73e8; outline-offset: 2px; }
+
+/* animated hand and the butterfly it carries */
+.tour-hand { position: fixed; z-index: 5; width: 0; height: 0; }
+.tour-hand svg { position: absolute; left: -8px; top: -4px; filter: drop-shadow(0 3px 3px rgba(0, 0, 0, .45)); transition: transform .15s; }
+.tour-hand.is-press svg { transform: scale(.85); }
+.tour-ripple {
+  position: fixed; z-index: 4; width: 14px; height: 14px; margin: -7px 0 0 -7px; border-radius: 50%;
+  border: 3px solid var(--hill); animation: tour-ripple .7s ease-out forwards;
+}
+@keyframes tour-ripple { to { transform: scale(4); opacity: 0; } }
+.tour-ghost { position: fixed; z-index: 4; width: 0; height: 0; opacity: .9; }
+.tour-ghost__inner { position: absolute; left: 0; top: 0; width: 211px; height: 235px; transform-origin: 0 0; }
+.tour-ghost__inner .fly { pointer-events: none; }
+.tour-ghost.is-settle { animation: tour-settle .4s ease both; }
+@keyframes tour-settle { 50% { opacity: .5; } }
+.tour-lift { opacity: .4; }
+.tour-pop { animation: tour-pop .5s ease both; }
+@keyframes tour-pop { 40% { transform: scale(1.08); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .tour.is-open, .tour-spot, .tour-card, .tour-card.enter * { animation: none !important; transition: none !important; }
+}

@@ -685,7 +685,7 @@ button:focus-visible,
   display: none;
 }
 
-/* "Correctly placed" version: flag, name, tick line, capital, clues */
+/* "You guessed it right" version: title, flag, name, capital, clues */
 .result-card {
   position: absolute;
   left: 325px;
@@ -740,16 +740,12 @@ button:focus-visible,
   line-height: 72px;
 }
 
-.result-card p.result-card__correct {
+.result-card__title ~ .result-card__flag {
   margin-top: 18px;
-  color: #00851f;
-  font-size: 32px;
-  font-weight: 500;
-  line-height: 40px;
 }
 
 .result-card p.result-card__capital {
-  margin-top: 38px;
+  margin-top: 4px; /* close under the country name */
   font-size: 28px;
   line-height: 34px;
 }
@@ -759,7 +755,7 @@ button:focus-visible,
 }
 
 .result-card__clues {
-  margin: 39px 0 0;
+  margin: 26px 0 0;
   padding: 0;
   list-style: none;
   text-align: left;

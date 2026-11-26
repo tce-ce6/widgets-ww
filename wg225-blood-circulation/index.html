@@ -15,7 +15,7 @@
     <div class="mainContainerOuter">
       <div class="wdgetTitle">
         <h2>Blood Circulation</h2>
-        <span id="versionId" class="versionText">b4_wg225_261117_01</span>
+        <span id="versionId" class="versionText">b4_wg225_261126_01</span>
       </div>
       <div class="svg-container" id="svg-container">
         <!-- Master canvas: 1920 x 1080, same coordinate space as assets/images/layout.svg.
@@ -2824,25 +2824,32 @@
             <circle id="Ellipse_8-2" class="st115" cx="519.82" cy="966.83" r="11.5" />
           </g>
         </g>
-        <!-- Region labels (review: brackets for Lungs and Heart, labels beside
-             them; Body label moved closer to the body) -->
-        <g id="Lungs" class="st24">
-          <path class="region-bracket" d="M278,255 H270 V445 H278" />
-          <text class="st23" x="262" y="357" text-anchor="end">Lungs</text>
-        </g>
-        <g id="Heart" class="st24">
-          <path class="region-bracket" d="M284,520 H276 V682 H284" />
-          <text class="st23" x="268" y="609" text-anchor="end">Heart</text>
-        </g>
-        <g id="Body" class="st24">
-          <text class="st23" x="390" y="878" text-anchor="end">Body</text>
-        </g>
       </g>
-          <!-- Blood flow over the vessels: dots (and, once the path is complete,
-               white arrows) drawn by script.js along the vessel route -->
-          <g id="flow-layer" aria-hidden="true">
-            <g id="flow-dots"></g>
-            <g id="flow-arrows"></g>
+          <!-- Blood flow animation over the diagram (Lottie, see js/lottie-data.js).
+               The flow comp (380x750) carries its own opaque background diagram;
+               Lottie centres it in this 380x760 box, which lines it up with the
+               artwork at full size (scale 1). The loop sits on top of the flow
+               so its cells are not hidden behind that background. -->
+          <foreignObject id="flow-layer" x="283.8" y="189.6" width="380" height="760" aria-hidden="true">
+            <div xmlns="http://www.w3.org/1999/xhtml" class="flow-box">
+              <div class="lottie-box" id="lottie-flow"></div>
+              <div class="lottie-box" id="lottie-loop"></div>
+            </div>
+          </foreignObject>
+
+          <!-- Region labels (review: brackets for Lungs and Heart, labels beside
+               them; Body label moved closer to the body). Drawn after the flow
+               layer so the Lottie background does not cover them. -->
+          <g id="Lungs" class="st24">
+            <path class="region-bracket" d="M278,255 H270 V445 H278" />
+            <text class="st23" x="262" y="357" text-anchor="end">Lungs</text>
+          </g>
+          <g id="Heart" class="st24">
+            <path class="region-bracket" d="M284,520 H276 V682 H284" />
+            <text class="st23" x="268" y="609" text-anchor="end">Heart</text>
+          </g>
+          <g id="Body" class="st24">
+            <text class="st23" x="390" y="878" text-anchor="end">Body</text>
           </g>
 
           <!-- Chamber names, shown once that flag is placed -->
@@ -2930,7 +2937,7 @@
           </g>
         </g>
         <!-- Body pin moved down to the centre of the body (review), from 477,747 -->
-        <g id="Group_603" transform="translate(-10 50)">
+        <g id="Group_603" transform="translate(-10 35)">
           <g class="st224">
             <g id="Group_415-12">
               <path id="Path_310-12" class="st90" d="M477.06,737.23c5.38,0,9.73,4.36,9.74,9.74,0,3.9-7.48,15.21-9.74,19.27-2.26-4.05-9.74-15.37-9.74-19.27,0-5.38,4.36-9.73,9.74-9.74M482.27,746.97c0-2.91-2.35-5.27-5.26-5.27-2.91,0-5.27,2.35-5.27,5.26s2.35,5.27,5.26,5.27c0,0,0,0,0,0,2.9,0,5.25-2.36,5.26-5.26" />
@@ -3070,6 +3077,8 @@
 
   <p id="sr" class="sr-only" aria-live="polite"></p>
 
+  <script src="./js/lottie.js"></script>
+  <script src="./js/lottie-data.js"></script>
   <script src="./js/script.js"></script>
   <script src="./js/how-to-play.js"></script>
 </body>

@@ -92,8 +92,8 @@ function addScratchCardLayer(data) {
     data.assets = data.assets || [];
     data.assets.push({ id: assetId, w: SCRATCH_CARD.w, h: SCRATCH_CARD.h, u: SCRATCH_CARD.path, p: SCRATCH_CARD.file, e: 0 });
     const maxInd = data.layers.reduce((m, l) => Math.max(m, l.ind || 0), 0);
-    data.layers.push({
-        ty: 2, nm: 'Scratch card', refId: assetId, ind: maxInd + 1,
+    const card = {
+        ty: 2, nm: 'Scratch card', refId: assetId, ind: maxInd + 2,
         sr: 1, st: 0, ip: 0, op: data.op, ao: 0, bm: 0,
         ks: {
             o: { a: 0, k: 100 },
@@ -102,7 +102,23 @@ function addScratchCardLayer(data) {
             a: { a: 0, k: [SCRATCH_CARD.w / 2, SCRATCH_CARD.h / 2, 0] },
             s: { a: 0, k: [SCRATCH_CARD.scale, SCRATCH_CARD.scale, 100] }
         }
-    });
+    };
+
+    // The word pictures are not all the same size or place: their edges differ
+    // from the card's by up to ~5px, so the card's blue border showed round the
+    // revealed picture. Clip the card to the picture's own shape (a hidden copy
+    // of the picture used as an alpha matte), so it can never stick out.
+    const pic = data.layers.find(l => l.ty === 2 && l.tt && l.refId);
+    if (pic) {
+        const matte = JSON.parse(JSON.stringify(pic));
+        delete matte.tt; delete matte.tp; delete matte.parent;
+        Object.assign(matte, { nm: 'Scratch card matte', ind: maxInd + 1, td: 1, ip: 0, op: data.op });
+        card.tt = 1;          // alpha matte
+        card.tp = matte.ind;  // ...taken from the hidden picture copy
+        data.layers.push(matte, card);
+    } else {
+        data.layers.push(card);
+    }
 }
 
 /**

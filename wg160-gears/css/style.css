@@ -328,42 +328,24 @@ svg * {
       background: var(--signal)
     }
 
-    #help-popup > div,
+    /* Insights panel: the foreignObject is 24px taller and 30px wider than
+       the art so the close button can sit on the top-right corner. The art's
+       "Insights" tab lands exactly on the real Insights button (x 850, y 960). */
     #insight-popup > div {
       position: relative;
-      width: 100%;
-      height: 100%;
-    }
-
-    #help-popup .close-btn,
-    #insight-popup .close-btn {
-      position: absolute;
-      top: 14px;
-      right: 14px;
-      z-index: 1;
-      width: 44px;
-      height: 44px;
-      cursor: pointer;
-    }
-
-    /* Help and Insights panels: each foreignObject is 24px taller and 30px
-       wider than the art so the close button can sit on the top-right corner.
-       The art's tab lands exactly on the real button (y 960). */
-    #help-popup > div,
-    #insight-popup > div {
       width: 1151px;
+      height: 618px;
       margin-top: 24px;
     }
 
-    #help-popup > div { height: 331px; }
-    #insight-popup > div { height: 618px; }
-
-    #help-popup .close-btn,
     #insight-popup .close-btn {
+      position: absolute;
       top: -22px;
       right: -22px;
+      z-index: 1;
       width: 64px;
       height: 64px;
+      cursor: pointer;
     }
 
     @keyframes pulse {
@@ -757,3 +739,264 @@ svg * {
       background: #fff;
       pointer-events: none;
     }
+
+/* ---------------------------------------------------------------------- */
+/* Help button + How to use tour (same pattern as wg216 / wg220 / wg221)   */
+/* ---------------------------------------------------------------------- */
+
+#help-btn {
+  cursor: pointer;
+}
+
+#help-btn:focus {
+  outline: none;
+}
+
+#help-btn:focus-visible img {
+  border-radius: 35px;
+  outline: 4px solid #fff;
+}
+
+.tour {
+  --u: min(calc(100vw / 1920), calc(100vh / 1080));
+  /* wg160 palette: orange buttons/outlines, peach panel, green close */
+  --tour-orange: #fc7f37;
+  --tour-orange-dark: #c9520e;
+  --tour-peach: #fff5eb;
+  --tour-green: #4caf50;
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: none;
+  font-family: "Roboto", sans-serif;
+}
+
+.tour.is-open {
+  display: block;
+  animation: tour-in .3s ease both;
+}
+
+@keyframes tour-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.tour-spot {
+  position: fixed;
+  border-radius: 14px;
+  pointer-events: none;
+  box-shadow: 0 0 0 200vmax rgba(10, 20, 40, .75);
+  outline: 3px solid var(--tour-orange);
+  outline-offset: 3px;
+  transition: left .45s cubic-bezier(.4, 0, .2, 1), top .45s cubic-bezier(.4, 0, .2, 1),
+              width .45s cubic-bezier(.4, 0, .2, 1), height .45s cubic-bezier(.4, 0, .2, 1);
+}
+
+.tour-spot[hidden] {
+  display: none;
+}
+
+.tour.no-anim .tour-spot,
+.tour.no-anim .tour-card {
+  transition: none;
+}
+
+.tour-demo {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.tour-card {
+  position: fixed;
+  z-index: 3;
+  width: min(max(320px, calc(640 * var(--u))), calc(100vw - 24px));
+  background: var(--tour-peach);
+  color: #000;
+  border: 4px solid var(--tour-orange);
+  border-radius: 18px;
+  padding: max(14px, calc(26 * var(--u))) max(18px, calc(32 * var(--u))) max(12px, calc(22 * var(--u)));
+  box-shadow: 0 18px 40px rgba(0, 0, 0, .5);
+  transition: left .45s cubic-bezier(.4, 0, .2, 1), top .45s cubic-bezier(.4, 0, .2, 1);
+}
+
+/* Lottie demo for steps 2, 3 and 5 (aspect ratio set from the comp in JS).
+   Capped in height so the card still fits beside the canvas. */
+.tour-media {
+  width: 100%;
+  max-height: min(42vh, calc(300 * var(--u) + 120px));
+  margin: 4px 0 max(10px, calc(16 * var(--u)));
+  background: #fff;
+  border: 2px solid #ffd9bf;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.tour-media[hidden] {
+  display: none;
+}
+
+.tour-media svg {
+  display: block;
+}
+
+.tour-count {
+  font-size: max(12px, calc(22 * var(--u)));
+  font-weight: 700;
+  color: var(--tour-orange-dark);
+}
+
+.tour-card h2 {
+  margin: 4px 0 6px;
+  font-size: max(20px, calc(40 * var(--u)));
+  line-height: 1.25;
+  color: #000;
+}
+
+.tour-card p {
+  margin: 0;
+  font-size: max(15px, calc(30 * var(--u)));
+  line-height: 1.5;
+  color: #000;
+}
+
+.tour-card p b {
+  color: var(--tour-orange-dark);
+}
+
+.tour-card.enter .tour-count,
+.tour-card.enter h2,
+.tour-card.enter p {
+  animation: tour-rise .45s ease both;
+}
+
+.tour-card.enter h2 { animation-delay: .07s; }
+.tour-card.enter p { animation-delay: .15s; }
+
+@keyframes tour-rise {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+
+.tour-skip {
+  position: absolute;
+  top: -12px;
+  right: -12px;
+  width: max(36px, calc(56 * var(--u)));
+  height: max(36px, calc(56 * var(--u)));
+  padding: 0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--tour-green);
+  color: #fff;
+  border: 3px solid #fff;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, .4);
+  cursor: pointer;
+  font-size: max(24px, calc(38 * var(--u)));
+  line-height: 1;
+}
+
+.tour-skip span {
+  display: block;
+  margin-top: -2px;
+}
+
+.tour-skip:hover {
+  filter: brightness(1.12);
+}
+
+.tour-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: max(14px, calc(24 * var(--u)));
+  gap: 10px;
+}
+
+.tour-dots {
+  display: flex;
+  gap: 5px;
+}
+
+.tour-dots i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #fcc9a8;
+  transition: background .2s, width .2s;
+}
+
+.tour-dots i.on {
+  background: var(--tour-orange);
+  width: 20px;
+  border-radius: 4px;
+}
+
+.tour-btns {
+  display: flex;
+  gap: 8px;
+}
+
+.tour-btn {
+  font-family: inherit;
+  font-size: max(14px, calc(28 * var(--u)));
+  font-weight: 700;
+  padding: max(6px, calc(10 * var(--u))) max(14px, calc(26 * var(--u)));
+  border-radius: 999px;
+  cursor: pointer;
+  background: var(--tour-orange);
+  color: #fff;
+  border: 2px solid var(--tour-orange);
+}
+
+.tour-btn--ghost {
+  background: #fff;
+  color: var(--tour-orange-dark);
+}
+
+.tour-btn[hidden] {
+  display: none;
+}
+
+.tour :focus-visible {
+  outline: 3px solid var(--tour-orange-dark);
+  outline-offset: 2px;
+}
+
+.tour-hand {
+  position: fixed;
+  z-index: 5;
+  width: 0;
+  height: 0;
+}
+
+.tour-hand svg {
+  position: absolute;
+  left: -8px;
+  top: -4px;
+  filter: drop-shadow(0 3px 3px rgba(0, 0, 0, .45));
+  transition: transform .15s;
+}
+
+.tour-hand.is-press svg {
+  transform: scale(.85);
+}
+
+.tour-ripple {
+  position: fixed;
+  z-index: 4;
+  width: 14px;
+  height: 14px;
+  margin: -7px 0 0 -7px;
+  border-radius: 50%;
+  border: 3px solid var(--tour-orange);
+  animation: tour-ripple .7s ease-out forwards;
+}
+
+@keyframes tour-ripple {
+  to { transform: scale(4); opacity: 0; }
+}
+

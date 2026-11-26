@@ -513,11 +513,8 @@ document.addEventListener('DOMContentLoaded', function () {
       currentIndex = vyanjanList.indexOf(letter);
 
       const data = letterData[letter];
-      console.log(vyanjans);
-      if(letter == "श्र"){
-        agalavyanjanBtn.style.opacity = 0.3;
-        agalavyanjanBtn.style.pointerEvents = 'none';
-      }
+      // Last vyanjan card: nothing comes after it, so Next is disabled
+      updateNextBtn();
       if (data) {
         currentData = data; // ✅ store for later (important)
 
@@ -541,11 +538,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const letter = vyanjanList[currentIndex];
     loadvyanjan(letter);
     resetOptions();
- // if reached last → disable button
- if (currentIndex === vyanjanList.length - 1) {
-  agalavyanjanBtn.style.opacity = 0.3;
-  agalavyanjanBtn.style.pointerEvents = 'none'; // disable click
-}
+    // if reached last → disable button
+    updateNextBtn();
   });
 
   homeBtn.addEventListener('click', () => {
@@ -580,6 +574,14 @@ function resetOptions() {
   uttarDekheBtn.style.pointerEvents = "auto";
   agalavyanjanBtn.style.opacity = 1;
   agalavyanjanBtn.style.pointerEvents = 'auto';
+}
+
+// Next is disabled on the last vyanjan card (there is no next vyanjan)
+function updateNextBtn() {
+  const isLast = currentIndex >= vyanjanList.length - 1;
+  agalavyanjanBtn.style.opacity = isLast ? 0.3 : 1;
+  agalavyanjanBtn.style.pointerEvents = isLast ? 'none' : 'auto';
+  agalavyanjanBtn.setAttribute('aria-disabled', isLast ? 'true' : 'false');
 }
 
 function loadvyanjan(selectedLetter) {

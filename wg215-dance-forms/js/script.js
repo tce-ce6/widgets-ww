@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const MAP_ORDER = window.MAP_ORDER;
   const SHAPES = window.MAP_SHAPES;
   const MAP_ANCHORS = window.MAP_ANCHORS || {};
-  const DECODE_COUNT = window.DECODE_COUNT;
+  const DECODE_BATCHES = window.DECODE_BATCHES;
 
   const byKey = {};
   DANCES.forEach((d) => { byKey[d.key] = d; });
@@ -159,6 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
      ========================================================================== */
 
   const match = {
+    rounds: ROUNDS, // the dancers of each round, shuffled on every start
     round: 0,
     selD: null,
     selN: null,
@@ -189,13 +190,13 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const buildRound = () => {
-    const keys = ROUNDS[match.round];
+    const keys = match.rounds[match.round];
     match.done = new Set();
     match.locked = false;
     clearMatchSelection();
     setMatchFeedback('');
     $('matchNext').disabled = true;
-    $('roundText').textContent = `Round: ${match.round + 1} of ${ROUNDS.length}`;
+    $('roundText').textContent = `Round: ${match.round + 1} of ${match.rounds.length}`;
     [...$('roundDots').children].forEach((dot, i) => dot.classList.toggle('is-on', i <= match.round));
 
     const dancers = $('matchDancers');
@@ -239,6 +240,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const startMatch = () => {
     clearTimers();
+    // random dancers in each round, in a random order (same round sizes as ROUNDS)
+    const all = shuffle(ROUNDS.flat());
+    let from = 0;
+    match.rounds = ROUNDS.map((r) => { from += r.length; return all.slice(from - r.length, from); });
     match.round = 0;
     showScreen('match');
     buildRound();
@@ -275,7 +280,7 @@ document.addEventListener('DOMContentLoaded', () => {
       slot.classList.add('is-filled');
       setMatchFeedback('Good match!');
       celebrate();
-      if (match.done.size === ROUNDS[match.round].length) roundComplete();
+      if (match.done.size === match.rounds[match.round].length) roundComplete();
     } else {
       setMatchFeedback('Wrong match! Try again.', true);
       shake(dEl);
@@ -287,9 +292,11 @@ document.addEventListener('DOMContentLoaded', () => {
     match.locked = true;
     $('matchNext').disabled = false;
     later(() => {
-      const keys = ROUNDS[match.round];
-      const last = match.round === ROUNDS.length - 1;
+      const keys = match.rounds[match.round];
+      const last = match.round === match.rounds.length - 1;
       $('roundTitle').textContent = `${keys.length} Dancers met!`;
+      const total = match.rounds.slice(0, match.round + 1).reduce((n, r) => n + r.length, 0);
+      $('roundTotal').textContent = `Total dancers met: ${total}`;
       const faces = $('roundFaces');
       faces.innerHTML = '';
       keys.forEach((key) => {
@@ -299,14 +306,14 @@ document.addEventListener('DOMContentLoaded', () => {
         faces.appendChild(img);
       });
       $('roundNames').textContent = keys.map((k) => byKey[k].name).join(', ');
-      $('roundNext').textContent = last ? 'Go to Screen 2' : `Go to Round ${match.round + 2}`;
+      $('roundNext').textContent = last ? 'Go to Part 2' : `Go to Round ${match.round + 2}`;
       openModal('roundModal', 'roundNext');
     }, MATCH_DONE_DELAY);
   };
 
   const nextRound = () => {
     clearTimers();
-    if (match.round < ROUNDS.length - 1) {
+    if (match.round < match.rounds.length - 1) {
       match.round++;
       buildRound();
     } else {
@@ -327,6 +334,7 @@ document.addEventListener('DOMContentLoaded', () => {
      ========================================================================== */
 
   const mapState = {
+    order: MAP_ORDER, // the dancer list, shuffled on every start
     selected: null,
     placed: new Map(), // dance key -> state shape key
     answerOn: false,
@@ -350,7 +358,7 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const updatePlacedText = () => {
-    $('placedText').textContent = `Dancer placed: ${mapState.placed.size} of ${MAP_ORDER.length}`;
+    $('placedText').textContent = `Dancer placed: ${mapState.placed.size} of ${mapState.order.length}`;
   };
 
   /* ---- map view: zoom and pan ---- */
@@ -359,6 +367,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const renderOverlay = () => {
     overlay.innerHTML = '';
+    // placed dancers grow and shrink with the map, so they keep their size on the state
+    const zoom = HOME_VIEW.w / view.w;
 
     mapState.placed.forEach((shapeKey, danceKey) => {
       const [px, py] = toPanel(anchorFor(shapeKey));
@@ -367,8 +377,15 @@ document.addEventListener('DOMContentLoaded', () => {
       img.src = `${IMG}/cutouts/${danceKey}.png`;
       img.alt = '';
       img.style.left = `${px}px`;
-      img.style.top = `${py + 14}px`;
+      img.style.top = `${py + 14 * zoom}px`;
+      img.style.height = `${78 * zoom}px`;
       overlay.appendChild(img);
+      // a placed dancer's state is always named, just under the dancer
+      const name = el('span', 'map-name map-name--placed', shapeNames[shapeKey]);
+      name.style.left = `${px}px`;
+      name.style.top = `${py + 16 * zoom}px`;
+      name.style.transform = `translate(-50%, 0) scale(${zoom})`;
+      overlay.appendChild(name);
     });
 
     if (mapState.namesOn) {
@@ -422,6 +439,21 @@ document.addEventListener('DOMContentLoaded', () => {
     e.preventDefault();
     zoomAt(e.deltaY < 0 ? 1.2 : 1 / 1.2, ...clientToMap(e.clientX, e.clientY));
   }, { passive: false });
+
+  // Hovering a state (mouse) shows its name next to the pointer.
+  const hoverTip = el('span', 'map-tip');
+  hoverTip.hidden = true;
+  $('mapPanel').appendChild(hoverTip);
+  map.addEventListener('pointermove', (e) => {
+    const g = e.pointerType === 'mouse' && !map.classList.contains('is-panning') && e.target.closest('[data-shape]');
+    if (!g) { hoverTip.hidden = true; return; }
+    const r = map.getBoundingClientRect();
+    hoverTip.textContent = shapeNames[g.dataset.shape] || '';
+    hoverTip.style.left = `${((e.clientX - r.left) / r.width) * PANEL_W}px`;
+    hoverTip.style.top = `${((e.clientY - r.top) / r.height) * PANEL_H}px`;
+    hoverTip.hidden = false;
+  });
+  map.addEventListener('pointerleave', () => { hoverTip.hidden = true; });
 
   // Drag to pan; a press that barely moves is a tap on a state.
   map.addEventListener('pointerdown', (e) => {
@@ -478,7 +510,7 @@ document.addEventListener('DOMContentLoaded', () => {
     'jammu-kashmir': 'Jammu and Kashmir',
     jharkhand: 'Jharkhand',
     karnataka: 'Karnataka',
-    kerala: 'Kerala',
+    kerala: 'Keralam',
     ladakh: 'Ladakh',
     lakshadweep: 'Lakshadweep',
     'madhya-pradesh': 'Madhya Pradesh',
@@ -564,7 +596,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const buildTiles = () => {
     const box = $('tiles');
     box.innerHTML = '';
-    MAP_ORDER.forEach((key, i) => {
+    mapState.order.forEach((key, i) => {
       const dance = byKey[key];
       const tile = el('button', 'tile');
       tile.type = 'button';
@@ -593,7 +625,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setBelongFeedback('');
   };
 
-  const firstUnplaced = () => MAP_ORDER.find((k) => !mapState.placed.has(k)) || null;
+  const firstUnplaced = () => mapState.order.find((k) => !mapState.placed.has(k)) || null;
 
   /* ---- placing a dancer on a state ---- */
 
@@ -643,7 +675,7 @@ document.addEventListener('DOMContentLoaded', () => {
     closeModal('factModal');
     mapState.busy = false;
     lockMap();
-    if (mapState.placed.size === MAP_ORDER.length) {
+    if (mapState.placed.size === mapState.order.length) {
       $('mapNext').disabled = false;
       setBelongFeedback('Well done!');
       celebrate();
@@ -692,6 +724,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const startMap = () => {
     clearTimers();
+    mapState.order = shuffle(MAP_ORDER);
     mapState.selected = null;
     mapState.placed = new Map();
     mapState.answerOn = false;
@@ -718,6 +751,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const decode = {
     cases: [],
+    batch: 0, // index into DECODE_BATCHES
+    shown: 0, // cases opened so far (the counter's total)
     index: 0,
     slots: [], // { letter, given, el }
     solved: false,
@@ -729,7 +764,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const buildCase = () => {
     const dance = decode.cases[decode.index];
     decode.solved = false;
-    $('caseText').textContent = `Case: ${decode.index + 1} of ${decode.cases.length}`;
+    $('caseText').textContent = `Case: ${decode.index + 1} of ${decode.shown}`;
     $('clueText').textContent = dance.clue;
     $('nextClue').disabled = true;
     $('whoImg').src = `${IMG}/silhouettes/${dance.key}.png`;
@@ -832,14 +867,28 @@ document.addEventListener('DOMContentLoaded', () => {
     $('whoImg').alt = dance.name;
     $('whoCaption').textContent = dance.name;
     celebrate();
-    if (decode.index < decode.cases.length - 1) {
+    if (decode.index < decode.shown - 1) {
       $('nextClue').disabled = false;
-    } else {
-      decode.allDone = true;
-      $('homeBtn3').disabled = false;
-      later(() => openModal('doneModal', 'doneHome'), 900);
+      return;
     }
+    // end of a batch: offer the next batch (Explore more), or finish after the last one
+    const more = decode.shown < decode.cases.length;
+    decode.allDone = !more;
+    $('doneModal').querySelector('.card').classList.toggle('has-more', more);
+    $('exploreMore').hidden = !more;
+    $('doneText').textContent = more
+      ? `You decoded ${decode.shown} dance forms. Tap Explore more to meet more dancers.`
+      : 'You perfectly decoded all the dance forms.';
+    later(() => openModal('doneModal', more ? 'exploreMore' : 'doneHome'), 900);
   };
+
+  $('exploreMore').addEventListener('click', () => {
+    closeModal('doneModal');
+    decode.batch++;
+    decode.shown += DECODE_BATCHES[decode.batch];
+    decode.index++;
+    buildCase();
+  });
 
   $('nextClue').addEventListener('click', () => {
     if ($('nextClue').disabled) return;
@@ -851,10 +900,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const startDecode = () => {
     clearTimers();
-    decode.cases = shuffle(DANCES).slice(0, DECODE_COUNT);
+    // every dance, in a random order; the batches open one after another
+    decode.cases = shuffle(DANCES).slice(0, DECODE_BATCHES.reduce((a, b) => a + b, 0));
+    decode.batch = 0;
+    decode.shown = DECODE_BATCHES[0];
     decode.index = 0;
     decode.allDone = false;
-    $('homeBtn3').disabled = true;
     showScreen('decode');
     buildCase();
   };
@@ -887,7 +938,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Opens level 3 on its last case and solves it, which brings up the Congratulations popup.
   const testDoneModal = () => {
     startDecode();
-    decode.index = decode.cases.length - 1;
+    decode.index = decode.shown - 1;
     buildCase();
     solveCase();
   };

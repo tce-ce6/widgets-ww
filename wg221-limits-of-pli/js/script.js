@@ -42,9 +42,9 @@
         },
         B: {
           text: 'Order immediate and complete cessation of all industrial discharge into the river.',
-          order: 'All industrial discharge into the river shall cease with immediate effect. Factories shall install treatment systems within one year.',
+          order: 'All industrial discharge shall cease immediately. Factories shall install treatment systems within one year.',
           button: 'What changed in the river?',
-          consequence: 'The factories have stopped. The river is getting cleaner. But the recovery has stopped before the river is clean.'
+          consequence: 'The factories have stopped. The discharge has ended. But fifteen years of accumulated pollution cannot be undone by a court order. The river will take decades to recover.'
         }
       },
       question: 'Both petitions reached the court. The court acted both times. Yet the river did not fully recover. What does this tell you about the limits of PIL?',
@@ -66,11 +66,11 @@
           text: 'Order the government to distribute grain from state godowns to families facing hunger.',
           order: 'All state governments shall immediately release grain from Food Corporation of India godowns for distribution to families facing hunger.',
           button: 'Did the grain reach all?',
-          consequence: 'Grain reached some families. Many others received nothing.'
+          consequence: 'Grain reached some families. But the order covered only immediate distribution, not a permanent system. Many others received nothing.'
         },
         B: {
           text: 'Declare the right to food as a fundamental right that is enforceable for every citizen.',
-          order: 'The government shall ensure no person goes hungry where grain is available in state godowns.',
+          order: 'The government shall ensure grain stored in state godowns reaches those facing hunger. Declaring food a fundamental right falls within the powers of Parliament, not the judiciary.',
           button: 'Did the court deliver what Meera asked for?',
           consequence: 'Meera asked for an enforceable right. The court gave directions instead.'
         }
@@ -157,18 +157,84 @@
   /* Left visual (Lottie)                                                    */
   /* ---------------------------------------------------------------------- */
 
+  /* Sound inside the Lottie files (audio layers with embedded mp3).
+     lottie.js only plays these through Howler.js, which this widget does not
+     load; without it lottie uses a stand-in with no volume() method, which
+     throws when the first audio layer starts and stops the animation there.
+     This small HTML5 Audio player gives lottie the methods it calls. */
+  let animSounds = [];
+
+  function lottieAudio(src) {
+    const el = new Audio(src);
+    el.preload = 'auto';
+    const sound = {
+      play() { const p = el.play(); if (p && p.catch) p.catch(() => { /* blocked until a tap */ }); },
+      pause() { el.pause(); },
+      stop() { el.pause(); },
+      playing() { return !el.paused && !el.ended; },
+      seek(t) {
+        if (typeof t !== 'number') return el.currentTime;
+        // past the end of the clip: leave it finished instead of restarting it
+        if (Number.isFinite(el.duration) && t >= el.duration) { el.pause(); return el.currentTime; }
+        el.currentTime = t;
+        return t;
+      },
+      rate(r) { if (typeof r === 'number') el.playbackRate = r; return el.playbackRate; },
+      volume(v) { if (typeof v === 'number') el.volume = Math.max(0, Math.min(1, v)); return el.volume; },
+      setVolume(v) { sound.volume(v); }
+    };
+    animSounds.push(el);
+    return sound;
+  }
+
+  function stopAnimSounds() {
+    animSounds.forEach((el) => { el.pause(); el.removeAttribute('src'); el.load(); });
+    animSounds = [];
+  }
+
+  // After Effects exports audio levels in dB (0 = normal), but lottie reads them
+  // as a percentage (0 = silent). Turn dB into lottie's 0-100 scale.
+  function fixAudioLevels(data) {
+    const toPct = (db) => 100 * Math.pow(10, db / 20);
+    const visit = (layers) => (layers || []).forEach((l) => {
+      if (l.ty !== 6) return;
+      const lv = l.au && l.au.lv;
+      if (!lv) return;
+      if (lv.a === 0 && Array.isArray(lv.k)) lv.k = lv.k.map(toPct);
+      else if (lv.a === 1 && Array.isArray(lv.k)) lv.k.forEach((kf) => { if (kf.s) kf.s = kf.s.map(toPct); if (kf.e) kf.e = kf.e.map(toPct); });
+    });
+    visit(data.layers);
+    (data.assets || []).forEach((a) => visit(a.layers));
+    return data;
+  }
+
   function playVisual(key, loop) {
     animRun++;
     if (anim) anim.destroy();
-    anim = lottie.loadAnimation({
+    stopAnimSounds();
+    // lottie mutates the data, so give each load its own copy
+    const data = fixAudioLevels(JSON.parse(JSON.stringify(window.LOTTIE_DATA[key])));
+    const a = lottie.loadAnimation({
       container: $('#visual'),
       renderer: 'svg',
       loop,
       autoplay: true,
-      // lottie mutates the data, so give each load its own copy
-      animationData: JSON.parse(JSON.stringify(window.LOTTIE_DATA[key])),
+      audioFactory: lottieAudio,
+      animationData: data,
       rendererSettings: { preserveAspectRatio: 'xMidYMid slice' }
     });
+    // lottie only lets the sound layers that exist when play() runs make sound;
+    // sound layers that start later are created afterwards and stay muted. Let
+    // them play as soon as they are created, unless the animation is paused.
+    const ac = a.audioController;
+    if (ac && ac.addAudio) {
+      const add = ac.addAudio.bind(ac);
+      ac.addAudio = (layer) => {
+        add(layer);
+        if (!a.isPaused && layer.resume) layer.resume();
+      };
+    }
+    anim = a;
     return anim;
   }
 
@@ -194,6 +260,7 @@
 
   function goIntro() {
     if (anim) { anim.destroy(); anim = null; }
+    stopAnimSounds();
     animRun++;
     showScreen('intro');
     $$('.case-card').forEach((c) => {
@@ -220,7 +287,7 @@
     picked = null;
     const c = CASES[id];
 
-    $('#p-tag').textContent = c.tag;
+    // $('#p-tag').textContent = c.tag;
     const stats = $('#p-stats');
     stats.classList.toggle('two', c.stats.length === 2);
     stats.innerHTML = c.stats.map(([n, t]) => `<div class="stat"><p class="stat-num">${n}</p><p class="stat-label">${t}</p></div>`).join('');
@@ -390,6 +457,7 @@
 
   function goReinforce() {
     if (anim) { anim.destroy(); anim = null; }
+    stopAnimSounds();
     animRun++;
     buildStatements();
     $('#restart-btn').classList.add('hidden');

@@ -20,7 +20,7 @@ window.DANCES = [
   { key: 'ghoomar', name: 'Ghoomar', state: 'Rajasthan', shape: 'rajasthan',
     fact: 'From ghoomna, meaning to spin. Women twirl in long, flowing skirts that spread out like flowers.',
     word: 'GHOOMAR', pattern: 'G _ O O _ A _', decoys: 'NU', clue: 'This dance originated in Rajasthan.' },
-  { key: 'mohiniyattam', name: 'Mohiniyattam', state: 'Kerala', shape: 'kerala',
+  { key: 'mohiniyattam', name: 'Mohiniyattam', state: 'Keralam', shape: 'kerala',
     fact: 'Named after Mohini, a graceful enchantress from legends. Its soft swaying is said to look like palm trees moving in the breeze.',
     word: 'MOHINIYATTAM', pattern: 'M O _ _ N _ _ A _ _ A _', decoys: 'EU', clue: 'This dance originated in Keralam (earlier Kerala).' },
   { key: 'bharatanatyam', name: 'Bharatanatyam', state: 'Tamil Nadu', shape: 'tamil-nadu',
@@ -69,5 +69,5 @@ window.MAP_ORDER = [
   'lezim', 'garhwali', 'dhunuchi-nritya', 'rouf-dance', 'yakshagana'
 ];
 
-// Screen 3: how many dances have to be decoded.
-window.DECODE_COUNT = 6;
+// Part 3: all dances are decoded, in batches; Explore more opens the next batch.
+window.DECODE_BATCHES = [6, 3, 3, 3];

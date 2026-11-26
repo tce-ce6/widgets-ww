@@ -629,6 +629,12 @@ body {
   cursor: pointer;
 }
 
+/* Help only on the game screen (review): none on briefing or Case Closed */
+#stage[data-screen="brief"] .help-btn,
+#stage[data-screen="result"] .help-btn {
+  display: none;
+}
+
 .help-btn:focus {
   outline: none;
 }

@@ -1,0 +1,598 @@
+/* ==========================================================================
+   ચિત્ર જોઈને રૂઢિપ્રયોગ બનાવો (wg307, Gujarati)
+   Layout is authored on a fixed 1920x1080 stage (positions and colours from
+   assets/gu_gu_05_wg307_Layout.svg and reference/gu_gu_05_wg307.xd) and
+   scaled to the window by script.js, so the widget always fits one screen.
+   ========================================================================== */
+
+:root {
+  --page: #e3ffe1;
+  --title-bg: #589a02;
+  --ink: #042972;
+  --tray-fill: #fcf4bd;
+  --tray-line: #227400;
+  --bank: rgba(74, 165, 15, .75);
+  --wrong: #ff0000;
+  --answer: #4caf50;
+  --answer-hide: #bc7b09;
+  --next: #ff2c68;
+  --meaning-fill: #c4f9b4;
+  --meaning-line: #299e06;
+  --meaning-tag: #0b6b04;
+  --usage-fill: #fbeed7;
+  --usage-line: #b77709;
+  --usage-tag: #db9010;
+  --gujarati: "Noto Sans Gujarati", "Nirmala UI", "Shruti", sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  overflow: hidden;
+}
+
+body {
+  background: var(--page);
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mainContainerOuter {
+  background: var(--page);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* The widget fills the window; the letterbox bars use the page colour. */
+#viewport {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  background: var(--page);
+}
+
+/* #stage holds the widget: a fixed 1920x1080 design stage, scaled by script.js. */
+#stage {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1920px;
+  height: 1080px;
+  transform-origin: 0 0;
+  overflow: hidden;
+  font-family: var(--gujarati);
+  line-height: 1.3;
+  color: #000;
+}
+
+.stage-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+button {
+  font-family: var(--gujarati);
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+button:focus-visible,
+[tabindex]:focus-visible {
+  outline: 4px solid #1a73e8;
+  outline-offset: 3px;
+}
+
+button:disabled {
+  opacity: .5;
+  cursor: default;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+/* ---------- title: scaled like the stage (--u = 1 design px), pinned to the
+   top edge of the window so it stays attached to the background ---------- */
+#idiom-widget .wdgetTitle {
+  --u: min(calc(100vw / 1920), calc(100vh / 1080));
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  width: calc(1920 * var(--u));
+  height: calc(1080 * var(--u));
+  display: block;
+  pointer-events: none;
+  z-index: 30;
+}
+
+#idiom-widget .wdgetTitle h2 {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  height: calc(82 * var(--u));
+  margin: 0;
+  padding: 0 calc(30 * var(--u));
+  font-family: var(--gujarati);
+  font-size: calc(50 * var(--u));
+  font-weight: 700;
+  line-height: calc(78 * var(--u));
+  text-align: center;
+  color: #fff;
+  white-space: nowrap;
+  background: var(--title-bg);
+  border-radius: 0 0 calc(35 * var(--u)) calc(35 * var(--u));
+  pointer-events: auto;
+}
+
+#idiom-widget .versionText {
+  position: absolute;
+  right: calc(20 * var(--u));
+  top: calc(10 * var(--u)) !important;
+  font-size: calc(17 * var(--u));
+  line-height: 1;
+  color: rgb(0 0 0 / 25%);
+}
+
+/* ---------- picture ---------- */
+.pic {
+  position: absolute;
+  left: 67px;
+  top: 237.6px;
+  width: 553px;
+  height: 668px;
+  border-radius: 74px;
+  overflow: hidden;
+  background: #fff;
+}
+
+/* the green frame sits on top of the picture */
+.pic::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 10px solid #b9ce01;
+  border-radius: 74px;
+  pointer-events: none;
+}
+
+.pic img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.pic img:not([src]) {
+  visibility: hidden;
+}
+
+/* idiom 10 (એક ને એક અગિયાર) is shown as text */
+.pic__text {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 96px;
+  font-weight: 700;
+  line-height: 1;
+  color: #6925a5;
+  white-space: nowrap;
+}
+
+/* ---------- i-text ---------- */
+.itext {
+  position: absolute;
+  left: 661px;
+  top: 210px;
+  width: 1172px;
+  margin: 0;
+  text-align: center;
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 56px;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+/* ---------- idiom tray ---------- */
+.tray {
+  position: absolute;
+  left: 661px;
+  top: 292.6px;
+  width: 1172px;
+  height: 158px;
+  border-radius: 44px / 53px;
+  background: var(--tray-fill);
+  border: 5px dashed var(--tray-line);
+  box-shadow: 5px 5px 3px rgba(0, 0, 0, .16);
+}
+
+.slots {
+  position: absolute;
+  inset: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.slot {
+  position: relative;
+  min-width: 150px;
+  height: 84px;
+  padding: 0 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 50px;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* the blank line under each word */
+.slot::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 4px;
+  height: 4px;
+  border-radius: 2px;
+  background: #000;
+}
+
+.slot.is-filled::after {
+  opacity: 0;
+}
+
+.slot.is-filled span {
+  animation: drop-in .35s ease-out both;
+}
+
+.slot.is-answer {
+  color: #0b6b04;
+}
+
+.tray.is-done .slot {
+  padding: 0;
+  min-width: 0;
+}
+
+.tray.is-done .slots {
+  gap: 16px;
+}
+
+@keyframes drop-in {
+  from { opacity: 0; transform: translateY(-18px) scale(.9); }
+  to { opacity: 1; transform: none; }
+}
+
+/* sparkles around the finished idiom */
+.stars {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.stars__one {
+  position: absolute;
+  top: 190px;
+  width: 300px;
+  height: 480px;
+}
+
+#starsL { left: 600px; }
+#starsR { left: 1560px; }
+
+/* ---------- word bank ---------- */
+.bank {
+  position: absolute;
+  left: 655px;
+  top: 483.6px;
+  width: 1185px;
+  height: 262px;
+  padding: 0 40px;
+  border-radius: 52px;
+  background: var(--bank);
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+  gap: 27px 31px;
+}
+
+.chip {
+  min-width: 192px;
+  height: 83px;
+  padding: 0 22px;
+  border-radius: 17px;
+  background: #fff;
+  font-size: 46px;
+  line-height: 1;
+  color: #000;
+  white-space: nowrap;
+  box-shadow: 0 3px 0 rgba(0, 0, 0, .12);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+
+.chip:hover:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 6px rgba(0, 0, 0, .16);
+}
+
+/* used words leave a gap so the other words don't jump */
+.chip.is-used {
+  visibility: hidden;
+}
+
+.chip.is-wrong {
+  box-shadow: inset 0 0 0 7px var(--wrong);
+  animation: shake .45s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-12px); }
+  40% { transform: translateX(10px); }
+  60% { transform: translateX(-7px); }
+  80% { transform: translateX(4px); }
+}
+
+/* ---------- result: meaning and usage ---------- */
+.result {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.panel {
+  position: absolute;
+  left: 661px;
+  width: 1172px;
+  box-shadow: 5px 5px 3px rgba(0, 0, 0, .16);
+  animation: rise .45s ease-out both;
+}
+
+.panel p {
+  position: absolute;
+  inset: 26px 40px 12px;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  line-height: 1.35;
+}
+
+.panel--meaning {
+  top: 528px;
+  height: 128px;
+  border-radius: 39px;
+  background: var(--meaning-fill);
+  border: 5px solid var(--meaning-line);
+}
+
+.panel--meaning p {
+  font-size: 48px;
+  white-space: nowrap;
+}
+
+.panel--usage {
+  top: 714px;
+  height: 182px;
+  border-radius: 55px;
+  background: var(--usage-fill);
+  border: 5px solid var(--usage-line);
+  animation-delay: .12s;
+}
+
+.panel--usage p {
+  font-size: 44px;
+}
+
+.panel--usage b {
+  font-weight: 700;
+}
+
+.tag {
+  position: absolute;
+  top: -46px;
+  height: 58px;
+  padding: 0 22px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  font-size: 35px;
+  line-height: 1;
+  color: #fff;
+}
+
+.tag--meaning {
+  left: 66px;
+  background: var(--meaning-tag);
+}
+
+.tag--usage {
+  left: 61px;
+  background: var(--usage-tag);
+  border-radius: 16px / 10px;
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* ---------- buttons ---------- */
+.btn {
+  position: absolute;
+  top: 953.6px;
+  height: 75px;
+  padding: 0 34px;
+  border-radius: 38px;
+  font-size: 35px;
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+  white-space: nowrap;
+  transition: filter .15s ease, transform .15s ease;
+}
+
+.btn:hover:not(:disabled) {
+  filter: brightness(1.07);
+  transform: translateY(-2px);
+}
+
+.btn--answer {
+  right: 758px;
+  min-width: 233px;
+  background: var(--answer);
+}
+
+/* જવાબ છુપાવો: brown pill with a white gap and an outer ring */
+.btn--answer.is-hide {
+  min-width: 256px;
+  background: var(--answer-hide);
+  box-shadow: 0 0 0 5px #fff, 0 0 0 10px var(--answer-hide);
+}
+
+.btn--next {
+  left: 1196px;
+  min-width: 328px;
+  background: var(--next);
+}
+
+/* ---------- reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .chip.is-wrong,
+  .slot.is-filled span,
+  .panel {
+    animation: none !important;
+  }
+
+  .chip,
+  .btn {
+    transition: none !important;
+  }
+}
+
+/* ==========================================================================
+   How to play tour (same as wg287, in this widget's colours)
+   ========================================================================== */
+.how-btn {
+  position: absolute;
+  left: 34px;
+  top: 965px;
+  z-index: 40;
+  width: 180px;
+  height: 70px;
+  padding: 0;
+  background: none;
+  border: 0;
+  border-radius: 35px;
+  cursor: pointer;
+}
+.how-btn:hover { filter: brightness(1.06); }
+.how-btn img { display: block; width: 180px; height: 70px; }
+.how-btn span {
+  position: absolute; left: 70px; right: 8px; top: 0; bottom: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--gujarati); font-size: 32px; font-weight: 600; line-height: 1; color: #fff;
+}
+
+.tour { position: fixed; inset: 0; z-index: 300; display: none; font-family: var(--gujarati); }
+.tour.is-open { display: block; animation: tour-in .3s ease both; }
+@keyframes tour-in { from { opacity: 0; } to { opacity: 1; } }
+.tour-spot {
+  position: fixed; border-radius: 14px; pointer-events: none;
+  box-shadow: 0 0 0 200vmax rgba(8, 30, 4, .75);
+  outline: 3px solid var(--title-bg); outline-offset: 3px;
+  transition: left .45s cubic-bezier(.4, 0, .2, 1), top .45s cubic-bezier(.4, 0, .2, 1),
+              width .45s cubic-bezier(.4, 0, .2, 1), height .45s cubic-bezier(.4, 0, .2, 1);
+}
+.tour-spot[hidden] { display: none; }
+.tour.no-anim .tour-spot, .tour.no-anim .tour-card { transition: none; }
+.tour-demo { position: fixed; inset: 0; pointer-events: none; z-index: 2; }
+
+.tour-card {
+  position: fixed; z-index: 3; width: min(420px, calc(100vw - 24px));
+  background: #f6fff0; color: #10300a;
+  border: 3px solid var(--title-bg); border-radius: 18px;
+  padding: 18px 22px 16px; box-shadow: 0 18px 40px rgba(0, 0, 0, .5);
+  transition: left .45s cubic-bezier(.4, 0, .2, 1), top .45s cubic-bezier(.4, 0, .2, 1);
+}
+.tour-count { font-size: 14px; font-weight: 700; color: var(--title-bg); }
+.tour-card h2 { margin: 4px 0 6px; font-size: 26px; line-height: 1.3; color: var(--meaning-tag); }
+.tour-card p { margin: 0; font-size: 18px; line-height: 1.55; color: #1c2a17; }
+.tour-card p b { color: var(--meaning-tag); }
+.tour-card.enter .tour-count, .tour-card.enter h2, .tour-card.enter p { animation: tour-rise .45s ease both; }
+.tour-card.enter h2 { animation-delay: .07s; }
+.tour-card.enter p { animation-delay: .15s; }
+@keyframes tour-rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.tour-skip {
+  position: absolute; top: -11px; right: -11px;
+  width: 38px; height: 38px; padding: 0; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--title-bg); color: #fff; border: 3px solid #f6fff0;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, .4); cursor: pointer;
+  font-size: 26px; line-height: 1;
+}
+.tour-skip span { display: block; margin-top: 5px; }
+.tour-skip:hover { filter: brightness(1.15); }
+.tour-nav { display: flex; align-items: center; justify-content: space-between; margin-top: 16px; gap: 10px; }
+.tour-dots { display: flex; gap: 5px; }
+.tour-dots i { width: 8px; height: 8px; border-radius: 50%; background: #cfe8bf; transition: background .2s, width .2s; }
+.tour-dots i.on { background: var(--title-bg); width: 20px; border-radius: 4px; }
+.tour-btns { display: flex; gap: 8px; }
+.tour-btn {
+  font-family: inherit; font-size: 16px; font-weight: 700; line-height: 1.3; padding: 8px 18px; border-radius: 20px; cursor: pointer;
+  background: var(--title-bg); color: #fff; border: 2px solid var(--title-bg);
+}
+.tour-btn--ghost { background: transparent; color: var(--title-bg); }
+.tour-btn[hidden] { display: none; }
+.tour :focus-visible { outline: 3px solid #1a73e8; outline-offset: 2px; }
+
+/* animated hand */
+.tour-hand { position: fixed; z-index: 5; width: 0; height: 0; }
+.tour-hand svg { position: absolute; left: -8px; top: -4px; filter: drop-shadow(0 3px 3px rgba(0, 0, 0, .45)); transition: transform .15s; }
+.tour-hand.is-press svg { transform: scale(.85); }
+.tour-ripple {
+  position: fixed; z-index: 4; width: 14px; height: 14px; margin: -7px 0 0 -7px; border-radius: 50%;
+  border: 3px solid var(--title-bg); animation: tour-ripple .7s ease-out forwards;
+}
+@keyframes tour-ripple { to { transform: scale(4); opacity: 0; } }
+.tour-pop { animation: tour-pop .5s ease both; }
+@keyframes tour-pop { 40% { transform: scale(1.08); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .tour.is-open, .tour-spot, .tour-card, .tour-card.enter * { animation: none !important; transition: none !important; }
+}

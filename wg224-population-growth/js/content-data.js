@@ -1,6 +1,6 @@
 /* Population Growth with Unlimited and Limited Resources (wg224): all on-screen text. */
 window.POP_CONTENT = {
-  /* Example values the How to use tour fills in on a card screen. */
+  /* Example values the Help tour fills in on a card screen. */
   demo: {
     exp: { N: '10', r: '0.5' },
     log: { N: '10', r: '0.4', K: '200' }
@@ -48,30 +48,30 @@ window.POP_CONTENT = {
     '<b>The logistic growth model</b> is considered more realistic because resources in nature are always finite and become limiting sooner or later.'
   ],
 
-  /* How to use. `sel` is what the spotlight covers; `demo` runs on that step during a first-visit demo. */
+  /* Help tour. `sel` is what the spotlight covers; `demo` runs on that step during a first-visit demo. */
   tours: {
     start: [
       { sel: null, title: 'Welcome', text: 'This tour shows how the widget works.' },
       { sel: '.mode-card, .mode-icon', title: 'Choose a condition', text: 'Choose a condition to open its simulation.' },
-      { sel: '#insightsBtn', title: 'Insights', text: 'Insights gives a quick recap.' },
-      { sel: '#helpBtn', title: 'How to use', text: 'Tap How to use to replay the tour for any screen.' }
+      { sel: '#insightsBtn', title: 'Insights', text: '<b>Insights</b> gives a quick recap.' },
+      { sel: '#helpBtn', title: 'Help', text: 'Tap <b>Help</b> to replay the tour for any screen.' }
     ],
     exp: [
       { sel: '#expInstr', title: 'Guide strip', text: 'This line tells you what to do next.' },
       { sel: '#expInputs .field', title: 'Enter values', text: 'Enter N₀ and r.', demoText: ' Example values are filled in.', demo: 'fill' },
-      { sel: '#expPlot', title: 'Plot the graph', text: 'Tap Plot graph.' },
+      { sel: '#expPlot', title: 'Plot the graph', text: 'Tap <b>Plot graph</b>.' },
       { sel: '#expGraph', title: 'Read the graph', text: 'The dot shows the population each year.', demo: 'plot' },
-      { sel: '#expCalc, #expSteps .pill-btn', title: 'Step through time', text: 'Next year adds one year and shows the working. Skip 5 years jumps ahead. Reset starts over.', demo: 'advance' },
-      { sel: '#homeBtn', title: 'Home', text: 'Home takes you back to choose a condition.' }
+      { sel: '#expCalc, #expSteps .pill-btn', title: 'Step through time', text: '<b>Next year</b> adds one year and shows the working. <b>Skip 5 years</b> jumps ahead. <b>Reset</b> starts over.', demo: 'advance' },
+      { sel: '#homeBtn', title: 'Home', text: '<b>Home</b> takes you back to choose a condition.' }
     ],
     log: [
       { sel: '#logInstr', title: 'Guide strip', text: 'This line tells you what to do next.' },
       { sel: '#logInputs .field', title: 'Enter values', text: 'Enter N₀, r and K.', demoText: ' Example values are filled in.', demo: 'fill' },
-      { sel: '#logPlot', title: 'Plot the graph', text: 'Tap Plot graph.' },
+      { sel: '#logPlot', title: 'Plot the graph', text: 'Tap <b>Plot graph</b>.' },
       { sel: '#logGraph', title: 'Read the graph', text: 'The dot shows the population each year. The dashed line is K.', demo: 'plot' },
-      { sel: '#logCalc, #logSteps .pill-btn', title: 'Step through time', text: 'Next year adds one year and shows the working. Skip 5 years jumps ahead. Reset starts over.', demo: 'advance' },
+      { sel: '#logCalc, #logSteps .pill-btn', title: 'Step through time', text: '<b>Next year</b> adds one year and shows the working. <b>Skip 5 years</b> jumps ahead. <b>Reset</b> starts over.', demo: 'advance' },
       { sel: '#logCalc', title: 'Braking term', text: '(K−N)/K is the braking term. It shrinks as N nears K.', demo: 'advance' },
-      { sel: '#homeBtn', title: 'Home', text: 'Home takes you back to choose a condition.' }
+      { sel: '#homeBtn', title: 'Home', text: '<b>Home</b> takes you back to choose a condition.' }
     ]
   }
 };
