@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="gu">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ચિત્ર જોઈને રૂઢિપ્રયોગ બનાવો</title>
+
+  <link rel="stylesheet" href="./css/global_style.css">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body id="idiom-widget">
+  <!-- Polite live region so screen readers hear feedback messages -->
+  <div id="liveRegion" class="sr-only" aria-live="polite"></div>
+
+  <div class="container">
+    <div class="mainContainerOuter">
+      <div class="wdgetTitle">
+        <h2>ચિત્ર જોઈને રૂઢિપ્રયોગ બનાવો</h2>
+        <span id="versionId" class="versionText">b4_wg307_261125_03</span>
+      </div>
+      <div id="viewport">
+        <!-- Fixed 1920x1080 design stage, scaled to fit the window by script.js -->
+        <div id="stage">
+          <img class="stage-bg" src="assets/svg/bg.svg" alt="">
+
+          <!-- picture -->
+          <div class="pic" id="pic">
+            <img id="picImg" alt="">
+            <p class="pic__text" id="picText" hidden></p>
+          </div>
+
+          <!-- i-text -->
+          <p class="itext">સાચા શબ્દોને સ્પર્શ કરો અને યોગ્ય રૂઢિપ્રયોગ બનાવો.</p>
+
+          <!-- idiom tray: one blank per word -->
+          <div class="tray" id="tray">
+            <div class="slots" id="slots" aria-label="રૂઢિપ્રયોગ"></div>
+          </div>
+          <div class="stars" id="stars" aria-hidden="true">
+            <div class="stars__one" id="starsL"></div>
+            <div class="stars__one" id="starsR"></div>
+          </div>
+
+          <!-- word bank -->
+          <div class="bank" id="bank" role="group" aria-label="શબ્દો"></div>
+
+          <!-- result: meaning and usage -->
+          <div class="result" id="result" hidden>
+            <div class="panel panel--meaning">
+              <span class="tag tag--meaning">અર્થ</span>
+              <p id="meaning"></p>
+            </div>
+            <div class="panel panel--usage">
+              <span class="tag tag--usage">વાક્યપ્રયોગ</span>
+              <p id="usage"></p>
+            </div>
+          </div>
+
+          <button class="btn btn--answer" id="answerBtn" type="button">જવાબ જુઓ</button>
+          <button class="btn btn--next" id="nextBtn" type="button">આગળનું ઉદાહરણ</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- How to play tour (shown over the stage; positioned in viewport coordinates) -->
+  <div id="tour" class="tour" aria-hidden="true">
+    <div id="tourSpot" class="tour-spot"></div>
+    <div id="tourDemo" class="tour-demo"></div>
+    <div id="tourCard" class="tour-card" role="dialog" aria-modal="true" aria-labelledby="tourTitle">
+      <button id="tourSkip" class="tour-skip" type="button" aria-label="મદદ બંધ કરો"><span aria-hidden="true">&times;</span></button>
+      <div id="tourCount" class="tour-count"></div>
+      <h2 id="tourTitle"></h2>
+      <p id="tourText"></p>
+      <div class="tour-nav">
+        <div id="tourDots" class="tour-dots"></div>
+        <div class="tour-btns">
+          <button id="tourBack" class="tour-btn tour-btn--ghost" type="button">પાછળ</button>
+          <button id="tourNext" class="tour-btn" type="button">આગળ</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./js/lottie.js"></script>
+  <script src="./js/lottie-data.js"></script>
+  <script src="./js/script.js"></script>
+  <script src="./js/how-to-play.js"></script>
+</body>
+
+</html>
