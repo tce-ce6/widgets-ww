@@ -1,7 +1,7 @@
 {
   "folders": {
     "wg160-gears": {
-      "updatedAt": "2026-11-21T01:24:35+05:30",
+      "updatedAt": "2026-11-26T15:47:17+05:30",
       "author": "tce-ashishg"
     },
     "wg161-where-does-my-food-go": {
@@ -237,7 +237,7 @@
       "author": "tce-nitinc"
     },
     "wg225-blood-circulation": {
-      "updatedAt": "2026-11-25T16:50:52+05:30",
+      "updatedAt": "2026-11-26T15:47:17+05:30",
       "author": "tce-ashishg"
     },
     "wg226-temple-architecture": {
@@ -289,7 +289,7 @@
       "author": "tce-nitinc"
     },
     "wg247-do-varno-se-sabad-gujrati": {
-      "updatedAt": "2026-11-23T12:15:41+05:30",
+      "updatedAt": "2026-11-26T15:47:17+05:30",
       "author": "tce-ashishg"
     },
     "wg248-tin-varno-se-sabad-gujrati": {
@@ -309,7 +309,7 @@
       "author": "tce-nitinc"
     },
     "wg287-sabad-bhandar-gujrati": {
-      "updatedAt": "2026-11-26T12:44:24+05:30",
+      "updatedAt": "2026-11-26T15:47:17+05:30",
       "author": "tce-ashishg"
     },
     "wg307-chitra-dekh-kar-muhavare-banaye-gujrati": {
@@ -330,6 +330,17 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-11-26T15:47:17+05:30",
+      "author": "tce-ashishg",
+      "message": "wg160 and wg225 lottie updated",
+      "widgets": [
+        160,
+        225,
+        247,
+        287
+      ]
+    },
     {
       "date": "2026-11-26T12:44:24+05:30",
       "author": "tce-ashishg",
@@ -599,14 +610,6 @@
       "widgets": [
         220,
         221
-      ]
-    },
-    {
-      "date": "2026-11-17T15:44:46+05:30",
-      "author": "tce-nitinc",
-      "message": "fixed the bugs form the wg187",
-      "widgets": [
-        187
       ]
     }
   ]
