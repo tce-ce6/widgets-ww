@@ -249,15 +249,15 @@
       "author": "tce-nitinc"
     },
     "wg231-choose-the-correct-spelling-gujrati": {
-      "updatedAt": "2026-11-18T12:47:23+05:30",
+      "updatedAt": "2026-11-25T18:23:02+05:30",
       "author": "tce-ashishg"
     },
     "wg232-sentence-construction-gujrati": {
-      "updatedAt": "2026-11-18T12:47:23+05:30",
+      "updatedAt": "2026-11-25T18:23:02+05:30",
       "author": "tce-ashishg"
     },
     "wg233-sabdo-me-vayanjan-ki-khoj-gujrati": {
-      "updatedAt": "2026-11-18T12:47:23+05:30",
+      "updatedAt": "2026-11-25T18:23:02+05:30",
       "author": "tce-ashishg"
     },
     "wg236-road-signs": {
@@ -309,7 +309,11 @@
       "author": "tce-nitinc"
     },
     "wg287-sabad-bhandar-gujrati": {
-      "updatedAt": "2026-11-25T15:05:39+05:30",
+      "updatedAt": "2026-11-26T12:44:24+05:30",
+      "author": "tce-ashishg"
+    },
+    "wg307-chitra-dekh-kar-muhavare-banaye-gujrati": {
+      "updatedAt": "2026-11-25T18:23:02+05:30",
       "author": "tce-ashishg"
     },
     "wg31-world-war": {
@@ -326,6 +330,25 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-11-26T12:44:24+05:30",
+      "author": "tce-ashishg",
+      "message": "wg287 images replaced",
+      "widgets": [
+        287
+      ]
+    },
+    {
+      "date": "2026-11-25T18:23:02+05:30",
+      "author": "tce-ashishg",
+      "message": "wg307 started",
+      "widgets": [
+        231,
+        232,
+        233,
+        307
+      ]
+    },
     {
       "date": "2026-11-25T16:50:52+05:30",
       "author": "tce-ashishg",
@@ -584,22 +607,6 @@
       "message": "fixed the bugs form the wg187",
       "widgets": [
         187
-      ]
-    },
-    {
-      "date": "2026-11-17T15:31:45+05:30",
-      "author": "tce-ashishg",
-      "message": "wg160 issue resolved",
-      "widgets": [
-        160
-      ]
-    },
-    {
-      "date": "2026-11-17T15:24:42+05:30",
-      "author": "tce-ashishg",
-      "message": "wg160 issue resolved",
-      "widgets": [
-        160
       ]
     }
   ]
