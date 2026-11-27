@@ -56,8 +56,10 @@ body {
   width: 100vw;
   display: flex;
   align-items: center;
-  justify-content: center;
-  background: #000;
+  justify-content: flex-start;   /* stage (and its title) starts at the top of the window */
+  /* Background fills the whole window, so there are no bars at the sides
+     when the window is not 16:9; the 1920x1080 stage sits centred on it. */
+  background: #476cb2 url("../assets/bg.svg") center / cover no-repeat;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
 }
@@ -69,7 +71,7 @@ body {
   height: 1080px;
   min-height: 0;
   overflow: hidden;
-  background: url("../assets/bg.svg") center / cover no-repeat;
+  background: none;        /* the background is on .container */
 }
 
 #stage {
@@ -116,8 +118,8 @@ body {
   position: absolute;
   top: 0;
   left: 445px;
-  width: 1030px;
-  height: 90px;
+  width: 950px;
+  height: 80px;
   transform: none;
   margin: 0;
   padding: 0;
