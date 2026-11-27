@@ -1,6 +1,6 @@
 @font-face {
     font-family: 'Roboto';
-    src: url('./assets/font/Roboto-Medium.ttf') format('truetype');
+    src: url('../assets/font/roboto-medium.ttf') format('truetype');
     font-weight: 500;
     font-style: normal;
     font-display: swap;
@@ -8,7 +8,7 @@
 
 @font-face {
     font-family: 'Roboto';
-    src: url('./assets/font/Roboto-ExtraBold.ttf') format('truetype');
+    src: url('../assets/font/roboto-extrabold.ttf') format('truetype');
     font-weight: bold;
     font-style: normal;
     font-display: swap;
@@ -16,7 +16,7 @@
 
 @font-face {
     font-family: 'Roboto';
-    src: url('./assets/font/Roboto-Black.ttf') format('truetype');
+    src: url('../assets/font/roboto-black.ttf') format('truetype');
     font-weight: 900;
     font-style: normal;
     font-display: swap;
@@ -24,7 +24,7 @@
 
 @font-face {
     font-family: 'Roboto';
-    src: url('./assets/font/Roboto-Regular.ttf') format('truetype');
+    src: url('../assets/font/roboto-regular.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -32,7 +32,7 @@
 
 @font-face {
     font-family: 'Roboto';
-    src: url('./assets/font/Roboto-Bold.ttf') format('truetype');
+    src: url('../assets/font/roboto-bold.ttf') format('truetype');
     font-weight: bold;
     font-style: normal;
     font-display: swap;
@@ -40,7 +40,7 @@
 
 @font-face {
     font-family: 'Roboto';
-    src: url('./assets/font/Roboto-SemiBold.ttf') format('truetype');
+    src: url('../assets/font/roboto-semibold.ttf') format('truetype');
     font-weight: 600;
     font-style: normal;
     font-display: swap;
@@ -167,11 +167,14 @@ h1, h2, h3, h4, h5, p{
 }   
 .button-controls{
     padding: 12px;
-    position: relative;
+    position: absolute;
     border-top: 1px solid #ddd;
     background: #f7f7f7;
     border-radius: 10px;
     flex-wrap: wrap;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
     @media screen and (max-width: 650px) {
         justify-content: center;
         flex-direction: column;
@@ -186,12 +189,8 @@ button{
     color: white;
     border: none;
     border-radius: 12px;
-    /* Ensures the slider thumb is interactive and indicates it can be dragged */
     cursor: pointer;
     font-size: 14px;
-}
-button:hover{
-    background-color: #01296e;
 }
 
 button:disabled{
@@ -300,7 +299,7 @@ button:disabled{
     justify-content: center;
         padding: 0;
         flex-grow: 1;
-        min-height: calc(100% - 300px);
+        min-height: calc(100% - 200px);
         margin: auto;
         height: 100%;
   }
@@ -313,18 +312,23 @@ button:disabled{
     gap: 20px;
     left: 0;
     top: 0;
+    position: absolute;
   }
   .wdgetTitle h2 {
-    font-size: 16px;
+    font-size: 35px;
     font-weight: 600;
     text-align: left;
     background: #1e6bef;
-    padding: 5px 20px;
+    padding: 15px 50px;
     color: #fff;
-    /* border-radius: 0 20px 20px 0;
+    border-radius: 0 0px 30px 30px;
     background: #099eed;
     background: linear-gradient(90deg, #099eed 0%, #1779e6 48%, #09f 100%);
-    margin: 16px 0px; */
+    margin: 0px 0px;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
   }
 
   .p5Canvas{
@@ -342,6 +346,6 @@ button:disabled{
 .versionText{position: absolute;
   right: 20px;
   top: 20px;
-    font-size: 12px;
+    font-size: 18px;
     color: rgb(0 0 0 / 20%);
   }

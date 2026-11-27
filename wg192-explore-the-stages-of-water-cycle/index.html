@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Explore The Stages of Water Cycle</title>
+
+  <link rel="stylesheet" href="./css/global_style.css">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body id="wc-widget">
+  <div class="container">
+    <div class="mainContainerOuter" id="outer">
+      <!-- Stage: 1920 x 1080, same coordinates as the design
+           (reference/AI/en_bio_09_wg192.svg). script.js scales it to fit. -->
+      <main id="stage">
+        <div class="wdgetTitle">
+          <h2>Explore The Stages of Water Cycle</h2>
+          <span id="versionId" class="versionText">b4_wg192_261127_01</span>
+        </div>
+
+        <!-- Instruction (design #i_text); hidden once the cycle has started -->
+        <p id="itext" aria-live="polite">Tap any stage to start the water cycle</p>
+
+        <!-- Dashed loop with its arrows (design Layer_1 / Group_814) -->
+        <img id="loop" src="./assets/images/cycle-loop.svg" alt="">
+
+        <!-- The scene: one 1920x1080 Lottie per stage, the framed landscape is part of each -->
+        <div id="scene" role="img" aria-label="Water cycle scene: the Sun, the ocean, rivers, hills and ground water">
+          <div class="lottie-box" data-stage="evaporation"></div>
+          <div class="lottie-box" data-stage="condensation"></div>
+          <div class="lottie-box" data-stage="precipitation"></div>
+          <div class="lottie-box" data-stage="collection"></div>
+        </div>
+
+        <!-- Stage buttons on the loop (design #cycle_button / #hilight_cycle_buttons) -->
+        <button class="stage-btn" type="button" data-stage="evaporation">Evaporation</button>
+        <button class="stage-btn" type="button" data-stage="condensation">Condensation</button>
+        <button class="stage-btn" type="button" data-stage="precipitation">Precipitation</button>
+        <button class="stage-btn" type="button" data-stage="collection">Collection</button>
+
+        <!-- Blinking "Tap here" cue beside the next stage (design #tap_here) -->
+        <div class="tap-cue" data-stage="evaporation" aria-hidden="true"></div>
+        <div class="tap-cue" data-stage="condensation" aria-hidden="true"></div>
+        <div class="tap-cue" data-stage="precipitation" aria-hidden="true"></div>
+        <div class="tap-cue" data-stage="collection" aria-hidden="true"></div>
+
+        <!-- Description of the stage (design #feedback_evaporation …) -->
+        <div id="desc" aria-live="polite" hidden>
+          <img class="bulb" src="./assets/images/bulb.svg" alt="">
+          <p id="descText"></p>
+        </div>
+
+        <!-- Insights and Reset (design #buttons) -->
+        <button id="insightBtn" type="button">
+          <img src="./assets/images/insights-icon.svg" alt=""><span>Insights</span>
+        </button>
+        <button id="resetBtn" type="button" disabled>Reset</button>
+        <button id="help-btn" type="button" aria-label="Help: how to use this activity">
+          <span class="q" aria-hidden="true">?</span><span>Help</span>
+        </button>
+
+        <!-- Insights panel (design #insights) -->
+        <div id="insight" class="overlay" role="dialog" aria-modal="true" aria-label="Insights" hidden>
+          <div id="insightPanel">
+            <ul class="ins">
+              <li>The <b>water cycle</b> is the continuous movement of water between the <b>waterbodies</b>, the <b>atmosphere</b> and the <b>land</b>, driven by <b>energy from the Sun</b>.</li>
+              <li><b>Evaporation</b>: It is the transformation of water from <b>liquid to vapour</b> at the surface of seas, oceans, rivers, soil and plant leaves, using <b>heat from the Sun</b>.</li>
+              <li><b>Condensation:</b> It is the transformation of <b>water vapour back into tiny liquid droplets</b> when rising air <b>cools</b>, and these droplets collect to form <b>clouds</b>.</li>
+              <li><b>Precipitation:</b> It is the fall of water from clouds to the Earth's surface as <b>rain, snow, sleet</b> or <b>hail</b>, once the droplets become <b>too heavy for the air to hold</b>.</li>
+              <li><b>Collection:</b> It is the gathering of fallen water in <b>oceans, rivers, lakes</b> and <b>underground stores</b>, from where it evaporates again.</li>
+              <li>Water vapour also forms through <b>transpiration</b> from the leaves of plants.</li>
+              <li>Water that soaks into the ground becomes <b>groundwater</b> and reaches rivers slowly, so it is delayed rather than lost.</li>
+            </ul>
+          </div>
+          <button class="close" id="insightClose" type="button" aria-label="Close">
+            <svg viewBox="0 0 88 88" aria-hidden="true"><path d="M29 29l30 30M59 29L29 59" /></svg>
+          </button>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- How to use tour (opened by the Help button; js/how-to-play.js) -->
+  <div id="tour" class="tour" aria-hidden="true">
+    <div id="tourSpot" class="tour-spot"></div>
+    <div id="tourDemo" class="tour-demo"></div>
+    <div id="tourCard" class="tour-card" role="dialog" aria-modal="true" aria-labelledby="tourTitle">
+      <button id="tourSkip" class="tour-skip" type="button" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div id="tourCount" class="tour-count"></div>
+      <h2 id="tourTitle"></h2>
+      <p id="tourText"></p>
+      <div class="tour-nav">
+        <div id="tourDots" class="tour-dots"></div>
+        <div class="tour-btns">
+          <button id="tourBack" class="tour-btn tour-btn--ghost" type="button">Back</button>
+          <button id="tourNext" class="tour-btn" type="button">Next</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./js/lottie.js"></script>
+  <script src="./js/lottie-data.js"></script>
+  <script src="./js/script.js"></script>
+  <script src="./js/how-to-play.js"></script>
+</body>
+
+</html>
