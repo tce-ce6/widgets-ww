@@ -225,11 +225,11 @@
       "author": "tce-ashishg"
     },
     "wg220-access-to-justice-pli": {
-      "updatedAt": "2026-11-26T18:33:58+05:30",
+      "updatedAt": "2026-11-27T12:01:49+05:30",
       "author": "tce-ashishg"
     },
     "wg221-limits-of-pli": {
-      "updatedAt": "2026-11-25T12:39:32+05:30",
+      "updatedAt": "2026-11-27T12:01:49+05:30",
       "author": "tce-ashishg"
     },
     "wg223-leaf-lab-transpiration": {
@@ -312,6 +312,10 @@
       "updatedAt": "2026-11-18T18:20:46+05:30",
       "author": "tce-nitinc"
     },
+    "wg257-exploring-the-body-symmetry-of-organisms": {
+      "updatedAt": "2026-11-27T12:01:49+05:30",
+      "author": "tce-ashishg"
+    },
     "wg287-sabad-bhandar-gujrati": {
       "updatedAt": "2026-11-26T18:33:58+05:30",
       "author": "tce-ashishg"
@@ -334,6 +338,16 @@
     }
   },
   "commits": [
+    {
+      "date": "2026-11-27T12:01:49+05:30",
+      "author": "tce-ashishg",
+      "message": "wg257 completed",
+      "widgets": [
+        220,
+        221,
+        257
+      ]
+    },
     {
       "date": "2026-11-26T19:59:14+05:30",
       "author": "ShyamsundarHait",
@@ -596,18 +610,6 @@
       "message": "fixed widget no 182",
       "widgets": [
         182
-      ]
-    },
-    {
-      "date": "2026-11-18T18:20:46+05:30",
-      "author": "tce-nitinc",
-      "message": "added suraj shettigar widgets",
-      "widgets": [
-        182,
-        223,
-        239,
-        252,
-        253
       ]
     }
   ]
