@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>&ZeroWidthSpace;Population Lab&ZeroWidthSpace;</title>
+
+  <link rel="stylesheet" href="./css/global_style.css">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body id="population-lab-widget">
+  <!-- Live region for screen readers -->
+  <div id="liveRegion" class="sr-only" aria-live="polite"></div>
+
+  <div class="container">
+    <div class="mainContainerOuter">
+
+      <div id="viewport">
+        <!-- Fixed 1920x1080 stage scaled to fit window -->
+        <div id="stage">
+
+          <!-- Header: Title centered at top -->
+          <header class="stage-title" id="widgetHeader">
+            <h2>&ZeroWidthSpace;Population Lab&ZeroWidthSpace;</h2>
+          </header>
+          <span id="versionId" class="versionText">b4_wg217_261119_01</span>
+
+          <!-- Level Navigation Track Pills (hidden on intro screen) -->
+          <nav class="pills-track" id="pills" role="tablist" aria-label="Level selection" hidden>
+            <button class="pill pill--1 on" id="nav1" role="tab" aria-selected="true" type="button">
+              <span class="bdg" id="bdg1">1</span>Read the graph
+            </button>
+            <button class="pill pill--2" id="nav2" role="tab" aria-selected="false" type="button">
+              <span class="bdg" id="bdg2">2</span>Name the stage
+            </button>
+            <button class="pill pill--3" id="nav3" role="tab" aria-selected="false" type="button">
+              <span class="bdg" id="bdg3">3</span>Advise the minister
+            </button>
+            <button class="pill pill--4" id="nav4" role="tab" aria-selected="false" type="button">
+              <span class="bdg" id="bdg4">4</span>Results
+            </button>
+          </nav>
+
+          <!-- Floating Insights Button in bottom-left inside stage -->
+          <button class="stage-btn-insight" id="insHead" type="button" aria-label="Open Insights">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <span>Insights</span>
+          </button>
+
+          <!-- Stage Bottom Check / Reveal Buttons (Exact SVG layout coordinates) -->
+          <button class="stage-btn-check" id="stageChkBtn" type="button" hidden>Check answer</button>
+          <button class="stage-btn-reveal" id="stageRevBtn" type="button" hidden>Reveal answer</button>
+
+          <!-- ================= SCREEN 1: INTRO ================= -->
+          <section id="screen-intro" class="screen is-active" data-screen="intro" aria-label="Introduction">
+            <div class="intro-grid-bg" aria-hidden="true"></div>
+            <div class="intro-crowd-bg" aria-hidden="true"></div>
+            <div class="intro-center-card">
+              <p>The Theory of Demographic Transition explains how birth and death rates change over time and how this affects population growth.<br>This can be understood by the three stages of demographic transition.</p>
+            </div>
+            <button class="btn--explore" id="startBtn" type="button">Let's explore</button>
+          </section>
+
+          <!-- ================= SCREEN 2: LEVEL 1 (Read the graph) ================= -->
+          <section id="screen-lv1" class="screen" data-screen="lv1" hidden aria-label="Level 1: Read the graph">
+            <div class="cards-container">
+              <!-- Left Column: Graph & Slider -->
+              <div class="card-left">
+                <div class="chartbox-wrap">
+                  <svg id="chart1" viewBox="0 0 640 300" role="img" aria-label="Graph of birth and death rates over time"></svg>
+                </div>
+                <div class="axis-caption-center" aria-hidden="true">Time</div>
+                <div class="slider-container">
+                  <div class="slider-track-wrap">
+                    <input type="range" class="slider-input" id="time1" min="0" max="100" value="70" step="1" aria-label="Move through time slider">
+                  </div>
+                  <div class="slider-labels-row">
+                    <span>Earlier</span>
+                    <span>Later</span>
+                  </div>
+                  <div class="slider-arrow-hint" aria-hidden="true">
+                    <div class="arrow-line arrow-line--left"></div>
+                    <span>Move through time</span>
+                    <div class="arrow-line arrow-line--right"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right Column: Question Panel -->
+              <div class="card-right">
+                <div class="card-right-bg" aria-hidden="true"></div>
+                <!-- Tutorial Swirl Arrow (shown on first task) -->
+                <svg class="tutorial-arrow-svg" id="tutorialArrow" viewBox="0 0 200 200" fill="none" aria-hidden="true" hidden>
+                  <defs>
+                    <marker id="arrowhead" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                      <path d="M 0 0 L 10 5 L 0 10 z" fill="#00d2d2"/>
+                    </marker>
+                  </defs>
+                  <path d="M 170 10 C 185 80, 50 20, 70 85 C 90 145, 160 110, 150 70 C 135 15, 30 85, 10 170" 
+                        stroke="#00d2d2" stroke-width="3" stroke-dasharray="5 5" fill="none" marker-end="url(#arrowhead)"/>
+                </svg>
+                <div id="p1" style="height: 100%; display: flex; flex-direction: column;"></div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ================= SCREEN 3: LEVEL 2 (Name the stage) ================= -->
+          <section id="screen-lv2" class="screen" data-screen="lv2" hidden aria-label="Level 2: Name the stage">
+            <div class="cards-container">
+              <!-- Left Column: Graph, Stats & Info -->
+              <div class="card-left">
+                <div class="chartbox-wrap chartbox-wrap--small">
+                  <svg id="chart2" viewBox="0 0 640 300" role="img" aria-label="Country position on demographic graph"></svg>
+                </div>
+                <div class="axis-caption-center" aria-hidden="true">Time</div>
+                <div class="l2-top-info">
+                  <span class="l2-tag" id="l2tag">Level 2: Country P</span>
+                  <p class="l2-context" id="l2ctx"></p>
+                </div>
+                <div class="l2-table-card" id="l2tab">
+                  <table class="stats-table" id="l2stats"></table>
+                </div>
+                <div class="char-card" id="l2char" hidden></div>
+              </div>
+
+              <!-- Right Column: Stage Choice & Clues -->
+              <div class="card-right">
+                <div class="card-right-bg" aria-hidden="true"></div>
+                <div id="p2" style="height: 100%; display: flex; flex-direction: column;"></div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ================= SCREEN 4: LEVEL 3 (Advise the minister) ================= -->
+          <section id="screen-lv3" class="screen" data-screen="lv3" hidden aria-label="Level 3: Advise the minister">
+            <div class="cards-container">
+              <!-- Left Column: Stage Strip, Pointer, Situation & Savanna Image -->
+              <div class="card-left">
+                <div class="l3-container">
+                  <div class="l3-track-section">
+                    <div class="l3-stage-bar">
+                      <div class="l3-stage-seg l3-stage-seg--1">Stage 1</div>
+                      <div class="l3-stage-seg l3-stage-seg--2">Stage 2</div>
+                      <div class="l3-stage-seg l3-stage-seg--3">Stage 3</div>
+                    </div>
+                    <div class="l3-pointer-track">
+                      <div class="l3-country-pointer" id="ptr3">Country X</div>
+                    </div>
+                  </div>
+                  <p class="l3-situation-text" id="l3brief"></p>
+                  <img class="l3-savanna-img" src="./assets/svg/savanna.svg" alt="African savanna village landscape">
+                </div>
+              </div>
+
+              <!-- Right Column: Policy Decision Choices -->
+              <div class="card-right">
+                <div class="card-right-bg" aria-hidden="true"></div>
+                <div id="p3" style="height: 100%; display: flex; flex-direction: column;"></div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ================= SCREEN 5: RESULTS ================= -->
+          <section id="screen-results" class="screen" data-screen="results" hidden aria-label="Results">
+            <div class="results-bg-people" aria-hidden="true"></div>
+            <div class="results-content-wrap">
+              <div class="results-total-score" id="totalScore">Total score: 0 of 22</div>
+              <div class="results-cards-row" id="badgeCards"></div>
+              <div class="results-closing-card">
+                <span class="results-closing-tag">Think about it</span>
+                <p class="results-closing-p">Think about your own town or village. How might the number of babies born, and the number of older people, change what it needs in the next 20 years?</p>
+              </div>
+              <button class="btn--restart-all" id="resetAll" type="button">Start again from the beginning</button>
+            </div>
+          </section>
+
+        </div><!-- /stage -->
+      </div><!-- /viewport -->
+
+      <!-- Modal Layer (Same 1920x1080 stage scale) -->
+      <div id="modal-layer">
+        <div id="modal-stage">
+
+          <!-- Level Summary Popup Card -->
+          <div class="level-summary-card" id="summaryCard" hidden role="dialog" aria-modal="true" aria-labelledby="summaryScoreHead">
+            <img class="summary-rosette-icon" src="./assets/svg/rosette.svg" alt="Achievement rosette badge">
+            <div class="summary-score-head" id="summaryScoreHead">Level <span class="badge-circle-num" id="sumLvlNum">1</span> score: <span id="sumScoreNum">5</span> out of <span id="sumMaxNum">6</span>.</div>
+            <div class="summary-badge-earned" id="summaryBadge">Badge earned: Graph Reader.</div>
+            <div class="summary-gold-hint" id="summaryGoldHint">Get 5 or more right on your own to make it gold.</div>
+            <div class="summary-buttons-row">
+              <button class="btn--play-again" id="sumPlayAgain" type="button">Play again</button>
+              <button class="btn--go-next" id="sumGoNext" type="button">Go to level 2</button>
+            </div>
+          </div>
+
+          <!-- Insight Overlay Sheet -->
+          <div class="overlay" id="insightModal" hidden role="dialog" aria-modal="true" aria-label="Insight: the three stages">
+            <div class="sheet">
+              <button class="sheet-close-btn" id="insClose" type="button" aria-label="Close insight">
+                <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+              <div class="sheet-insights-badge">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <span>Insights</span>
+              </div>
+              <h3 class="sheet-title">Insight: the three stages</h3>
+              <p class="sheet-intro-p">The birth rate is the number of babies born in a year for every 1,000 people. The death rate is the number of people who die in a year for every 1,000 people. As these two rates change, a country's population moves through three stages.</p>
+              <div class="sheet-cards-grid">
+                <div class="sheet-card sheet-card--1">
+                  <div class="sheet-card-stage-title"><span>Stage</span><span class="s-circ">1</span></div>
+                  <div class="sheet-card-headline">High birth rate, high death rate</div>
+                  <p class="sheet-card-desc">Many babies are born, but many people also die. The population grows very slowly.</p>
+                </div>
+                <div class="sheet-card sheet-card--2">
+                  <div class="sheet-card-stage-title"><span>Stage</span><span class="s-circ">2</span></div>
+                  <div class="sheet-card-headline">Death rate falls first, then birth rate</div>
+                  <p class="sheet-card-desc">Better healthcare helps people live longer, so deaths fall first. Families stay large for a while and then slowly get smaller. The population grows fast.</p>
+                </div>
+                <div class="sheet-card sheet-card--3">
+                  <div class="sheet-card-stage-title"><span>Stage</span><span class="s-circ">3</span></div>
+                  <div class="sheet-card-headline">Birth rate and death rate are both low</div>
+                  <p class="sheet-card-desc">The two rates come close together. The population grows very slowly and may even start to shrink.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /modal-stage -->
+      </div><!-- /modal-layer -->
+
+    </div><!-- /mainContainerOuter -->
+  </div><!-- /container -->
+
+  <script src="./js/content-data.js"></script>
+  <script src="./js/script.js"></script>
+</body>
+
+</html>

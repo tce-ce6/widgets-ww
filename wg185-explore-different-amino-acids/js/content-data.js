@@ -2,7 +2,7 @@ window.WIDGET_DATA = {
   categories: [
     { id: 'all',               label: 'All',                color: '#F5A623', textColor: '#fff' },
     { id: 'nonpolar-aliphatic',label: 'Nonpolar aliphatic', color: '#7ED321', textColor: '#fff' },
-    { id: 'nonpolar-aromatic', label: 'Nonpolar aromatic',  color: '#4A90E2', textColor: '#fff' },
+    { id: 'nonpolar-aromatic', label: 'Aromatic',           color: '#4A90E2', textColor: '#fff' },
     { id: 'polar-uncharged',   label: 'Polar uncharged',    color: '#00BCD4', textColor: '#fff' },
     { id: 'polar-basic',       label: 'Polar basic',        color: '#F5D020', textColor: '#222' },
     { id: 'polar-acidic',      label: 'Polar acidic',       color: '#9B59B6', textColor: '#fff' },
@@ -144,7 +144,7 @@ window.WIDGET_DATA = {
     {
       id: 'phenylalanine', name: 'Phenylalanine',
       categories: ['nonpolar-aromatic', 'essential'],
-      badges: ['Nonpolar aromatic', 'Essential'],
+      badges: ['Aromatic', 'Essential'],
       badgeColors: ['#4A90E2', '#E91E8C'],
       insights: [
         'R group contains a benzene ring',
@@ -156,7 +156,7 @@ window.WIDGET_DATA = {
     {
       id: 'tryptophan', name: 'Tryptophan',
       categories: ['nonpolar-aromatic', 'essential'],
-      badges: ['Nonpolar aromatic', 'Essential'],
+      badges: ['Aromatic', 'Essential'],
       badgeColors: ['#4A90E2', '#E91E8C'],
       insights: [
         'R group contains the largest ring structure among amino acids',
@@ -167,9 +167,9 @@ window.WIDGET_DATA = {
     },
     {
       id: 'tyrosine', name: 'Tyrosine',
-      categories: ['polar-uncharged', 'non-essential'],
-      badges: ['Polar uncharged', 'Non-essential'],
-      badgeColors: ['#00BCD4', '#E91E63'],
+      categories: ['nonpolar-aromatic', 'non-essential'],
+      badges: ['Aromatic', 'Non-essential'],
+      badgeColors: ['#4A90E2', '#E91E63'],
       insights: [
         'R group contains a ring with a hydroxyl (−OH) group',
         'A precursor for thyroid hormones and the pigment melanin'
@@ -277,7 +277,7 @@ window.WIDGET_DATA = {
       badges: ['Polar basic', 'Essential'],
       badgeColors: ['#F5D020', '#E91E8C'],
       insights: [
-        'R group ends in an amino group (−NH₂) that carries a positive charge',
+        'R group ends in a protonated amino group (−NH₃⁺) that carries a positive charge',
         'An essential amino acid'
       ],
       rGroup: {
@@ -390,11 +390,12 @@ window.WIDGET_DATA = {
   ],
 
   generalInsights: [
-    'Amino acids are the building blocks of proteins.',
-    'All amino acids share the same basic structure: an amino group (NH₂), a carboxyl group (COOH), a hydrogen atom (H), and a variable R group, all attached to a central carbon atom (C).',
-    'The R group is the only part that differs between amino acids — it determines the identity, properties, and behaviour of each amino acid.',
-    'There are 20 standard amino acids found in living organisms (plus selenocysteine, the 21st amino acid).',
-    'Amino acids are classified by their R group chemistry into five categories: nonpolar aliphatic, nonpolar aromatic, polar uncharged, polar basic, and polar acidic.',
-    'They are also classified by dietary requirement: 9 are essential (must be obtained from food) and the rest are non-essential (the body can synthesise them).'
+    '<b>Amino acids</b> are the <b>building blocks of proteins.</b>',
+    'All amino acids share the same <b>basic structure</b>: an <b>amino group (NH<sub>2</sub>)</b>, a <b>carboxyl group (COOH)</b>, a <b>hydrogen atom (H)</b>, and a variable <b>R group</b>, all attached to a <b>central carbon atom.</b>',
+    '<span class="insight-figure"><svg viewBox="0 0 340 200" role="img" aria-label="General structure of an amino acid, showing the amino group, central carbon with R group and hydrogen, and carboxyl group" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="340" height="200" rx="8" fill="#fff"/><text x="180" y="16" text-anchor="middle" font-size="12" fill="#2266AA">Variable group</text><rect x="10" y="30" width="115" height="120" rx="10" fill="#FBC9A0"/><rect x="205" y="30" width="125" height="120" rx="10" fill="#D9A6E6"/><g stroke="#1a1a1a" stroke-width="2"><line x1="40" y1="95" x2="66" y2="95"/><line x1="78" y1="63" x2="78" y2="83"/><line x1="90" y1="95" x2="166" y2="95"/><line x1="180" y1="54" x2="180" y2="81"/><line x1="180" y1="109" x2="180" y2="136"/><line x1="194" y1="95" x2="229" y2="95"/><line x1="235" y1="61" x2="235" y2="83"/><line x1="245" y1="61" x2="245" y2="83"/><line x1="252" y1="95" x2="272" y2="95"/></g><rect x="166" y="26" width="28" height="28" rx="5" fill="#6ED3DF"/><rect x="166" y="81" width="28" height="28" rx="5" fill="#F26B6B"/><rect x="166" y="136" width="28" height="28" rx="5" fill="#7DCB7D"/><g font-size="20" font-weight="700" fill="#1a1a1a" text-anchor="middle" dominant-baseline="central"><text x="78" y="52">H</text><text x="30" y="95">H</text><text x="78" y="95">N</text><text x="180" y="40">R</text><text x="180" y="95">C</text><text x="180" y="150">H</text><text x="240" y="50">O</text><text x="240" y="95">C</text><text x="292" y="95">OH</text></g><text x="67" y="138" text-anchor="middle" font-size="12" fill="#A0522D">Amino group</text><text x="267" y="138" text-anchor="middle" font-size="12" fill="#7B2D8E">Carboxyl group</text></svg></span>',
+    'The <b>R group</b> is the <b>only part that differs</b> between amino acids; it determines the <b>identity</b>, <b>properties</b>, and <b>behaviour</b> of each amino acid.',
+    'There are <b>20 standard amino acids</b> found in living organisms, plus <b>selenocysteine</b>, the 21st amino acid.',
+    'Amino acids are classified by their <b>R group chemistry</b> into five categories: <b>nonpolar aliphatic</b>, <b>aromatic</b>, <b>polar uncharged</b>, <b>polar basic</b>, and <b>polar acidic.</b>',
+    'They are also classified by <b>dietary requirement</b>: <b>9 are essential</b> (must be obtained from food) and the rest are <b>non-essential</b> (the body can synthesise them).'
   ]
 };
