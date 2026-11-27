@@ -1,0 +1,674 @@
+/* ==========================================================================
+   wg192 — Explore The Stages of Water Cycle
+
+   Everything sits on one 1920x1080 stage (#stage). script.js scales the whole
+   stage to fit the window (--s), so every px below is a design px.
+   Positions, colours and type: reference/AI/en_bio_09_wg192.svg (and XD).
+   ========================================================================== */
+
+:root {
+  --s: 1;                  /* stage scale, set by script.js */
+  --evaporation: #00ffff;
+  --condensation: #ffadad;
+  --precipitation: #9effa7;
+  --collection: #cfb6ff;
+  --ring: #ff8800;         /* tapped stage */
+  --cue: #f6ff00;          /* Tap here */
+  --itext: #ffea31;
+  --desc: #00ffff;
+  --desc-edge: #00cbcb;
+  --reset: #ff2c68;
+  --insights: #f7901e;
+  --gold: #e2a500;
+  --close: #4caf50;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Page shell                                                              */
+/* ---------------------------------------------------------------------- */
+
+html,
+body {
+  overflow: hidden;
+}
+
+#wc-widget {
+  margin: 0;
+}
+
+#wc-widget .container {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;   /* stage (and its title) starts at the top of the window */
+  /* Background fills the whole window, so there are no bars at the sides
+     when the window is not 16:9; the 1920x1080 stage sits centred on it. */
+  background: #003776 url("../assets/images/bg.svg") center / cover no-repeat;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#wc-widget .mainContainerOuter {
+  position: relative;
+  flex: 0 0 auto;
+  width: 1920px;           /* replaced by script.js with 1920 * scale */
+  height: 1080px;
+  min-height: 0;
+  overflow: hidden;
+  background: none;        /* the background is on .container */
+}
+
+#stage {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1920px;
+  height: 1080px;
+  transform: scale(var(--s));
+  transform-origin: 0 0;
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  color: #000;
+}
+
+/* global_style.css styles p / button for other widgets: undo inside the stage */
+#stage p {
+  margin: 0;
+  font-size: inherit;
+  color: inherit;
+}
+
+#stage button {
+  font: inherit;
+  color: inherit;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  cursor: pointer;
+}
+
+/* Title: global_style.css .wdgetTitle h2 is the base; only the colour is
+   changed here, to the design's title tab (#980ce9). Asked to match. */
+#wc-widget .wdgetTitle h2 {
+  background: #980ce9;
+}
+
+#wc-widget .wdgetTitle {
+  z-index: 3;
+  pointer-events: none;
+}
+
+#wc-widget .versionText {
+  top: 6px;
+  font-size: 16px;
+  color: rgb(255 255 255 / 30%);
+}
+
+/* ---------------------------------------------------------------------- */
+/* Instruction (design #i_text)                                            */
+/* ---------------------------------------------------------------------- */
+
+#itext {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 66px;
+  text-align: center;
+  font-size: 28px !important;
+  font-style: italic;
+  font-weight: 400;
+  line-height: 44px;
+  color: var(--itext) !important;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Loop, scene and stage buttons                                           */
+/* ---------------------------------------------------------------------- */
+
+#loop,
+#scene,
+.lottie-box {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1920px;
+  height: 1080px;
+  pointer-events: none;
+}
+
+.lottie-box {
+  visibility: hidden;
+}
+
+.lottie-box.on {
+  visibility: visible;
+}
+
+.stage-btn {
+  position: absolute;
+  z-index: 2;
+  width: 200px;
+  height: 45px;
+  border-radius: 22.5px !important;
+  font-size: 24px !important;
+  line-height: 45px;
+  color: #000 !important;
+  transition: transform .08s, box-shadow .15s;
+}
+
+.stage-btn[data-stage="evaporation"] { left: 230px; top: 433px; background: var(--evaporation) !important; }
+.stage-btn[data-stage="condensation"] { left: 860px; top: 126px; background: var(--condensation) !important; }
+.stage-btn[data-stage="precipitation"] { left: 1488px; top: 433px; background: var(--precipitation) !important; }
+.stage-btn[data-stage="collection"] { left: 860px; top: 752px; background: var(--collection) !important; }
+
+.stage-btn:hover:not(.locked) {
+  transform: scale(1.04);
+}
+
+.stage-btn:active:not(.locked) {
+  transform: scale(.98);
+}
+
+/* Tapped stage: white then orange ring, as the design's highlight */
+.stage-btn.on {
+  box-shadow: 0 0 0 3px #fff, 0 0 0 9px var(--ring);
+}
+
+.stage-btn.locked {
+  cursor: default;
+}
+
+.stage-btn.nudge {
+  animation: nudge .45s ease-in-out 2;
+}
+
+@keyframes nudge {
+  50% { transform: scale(1.08); }
+}
+
+/* "Tap here" cues (design #tap_here), 127x30 Lottie each */
+.tap-cue {
+  position: absolute;
+  z-index: 2;
+  width: 127px;
+  height: 30px;
+  pointer-events: none;
+  display: none;
+}
+
+.tap-cue.on {
+  display: block;
+}
+
+.tap-cue[data-stage="evaporation"] { left: 89px; top: 440px; }
+.tap-cue[data-stage="condensation"] { left: 715px; top: 137px; }
+.tap-cue[data-stage="precipitation"] { left: 1703px; top: 440px; }
+.tap-cue[data-stage="collection"] { left: 1078px; top: 758px; }
+
+/* ---------------------------------------------------------------------- */
+/* Description (design #feedback_evaporation …)                            */
+/* ---------------------------------------------------------------------- */
+
+#desc {
+  position: absolute;
+  left: 519px;
+  top: 823px;
+  width: 882px;
+  height: 119px;
+  border-radius: 25px;
+  background: var(--desc);
+  box-shadow: 0 16px 0 -6px rgb(44 7 78 / 70%);
+  animation: fade-in .6s ease both;
+}
+
+#desc::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border: 4px dashed var(--desc-edge);
+  border-radius: 25px;
+  pointer-events: none;
+}
+
+#desc.out {
+  animation: fade-out .35s ease both;
+}
+
+#desc .bulb {
+  position: absolute;
+  left: -26px;
+  top: -20px;
+  width: 70px;
+  height: 71px;
+}
+
+#descText {
+  position: absolute;
+  inset: 0 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 25px !important;
+  line-height: 33px;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+}
+
+@keyframes fade-out {
+  to { opacity: 0; }
+}
+
+/* ---------------------------------------------------------------------- */
+/* Insights / Reset / Help                                                 */
+/* ---------------------------------------------------------------------- */
+
+#insightBtn {
+  position: absolute;
+  left: 34px;
+  top: 989px;
+  width: 251px;
+  height: 70px;
+  border-radius: 35px !important;
+  background: var(--insights) !important;
+  color: #fff !important;
+  font-size: 35px !important;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding-left: 26px !important;
+}
+
+#insightBtn img {
+  width: 56px;
+  height: 58px;
+}
+
+#resetBtn {
+  position: absolute;
+  left: 856px;
+  top: 968px;
+  width: 209px;
+  height: 93px;
+  border-radius: 46.5px !important;
+  background: var(--reset) !important;
+  color: #fff !important;
+  font-size: 35px !important;
+  line-height: 93px;
+}
+
+#stage #resetBtn:disabled {
+  opacity: .35;
+  cursor: default;
+  pointer-events: auto;
+}
+
+#help-btn {
+  position: absolute;
+  left: 1706px;
+  top: 989px;
+  width: 180px;
+  height: 70px;
+  border-radius: 35px !important;
+  background: #fdcd02 !important;
+  color: #000 !important;
+  font-size: 35px !important;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-left: 11px !important;
+}
+
+#help-btn .q {
+  width: 51px;
+  height: 51px;
+  border-radius: 50%;
+  background: #d96f05;
+  color: #fdcd02;
+  font-size: 38px;
+  font-weight: 700;
+  line-height: 51px;
+  text-align: center;
+}
+
+#insightBtn,
+#resetBtn,
+#help-btn {
+  transition: filter .15s, transform .08s;
+}
+
+#insightBtn:hover,
+#resetBtn:hover:not(:disabled),
+#help-btn:hover {
+  filter: brightness(1.07);
+}
+
+#insightBtn:active,
+#resetBtn:active:not(:disabled),
+#help-btn:active {
+  transform: translateY(2px);
+}
+
+.stage-btn:focus-visible,
+#insightBtn:focus-visible,
+#resetBtn:focus-visible,
+#help-btn:focus-visible,
+.close:focus-visible {
+  outline: 4px solid #fff;
+  outline-offset: 4px;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Insights panel (design #insights)                                       */
+/* ---------------------------------------------------------------------- */
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  background: rgb(0 0 0 / 80%);
+  animation: fade-in .25s ease both;
+}
+
+#insightPanel {
+  position: absolute;
+  left: 35px;
+  top: 57px;
+  width: 1621px;
+  height: 970px;
+  padding: 50px 80px 0 64px;
+  background: #fff;
+  border: 6px solid var(--gold);
+  border-radius: 16px;
+  overflow: auto;
+}
+
+.ins {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ins li {
+  position: relative;
+  padding-left: 40px;
+  margin-bottom: 45px;
+  font-size: 34px;
+  font-weight: 400;
+  line-height: 45px;
+}
+
+.ins li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 15px;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: var(--gold);
+}
+
+.ins b {
+  font-weight: 700;
+}
+
+.close {
+  position: absolute;
+  left: 1602px;
+  top: 31px;
+  width: 88px;
+  height: 88px;
+  border-radius: 50% !important;
+  background: var(--close) !important;
+}
+
+.close svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: #fff;
+  stroke-width: 8;
+  stroke-linecap: round;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Help tour (same pattern as wg160 / wg220 / wg234 / wg257), wg192 colours */
+/* ---------------------------------------------------------------------- */
+
+.tour {
+  --u: min(calc(100vw / 1920), calc(100vh / 1080));
+  /* all from the wg192 design */
+  --tour-accent: #980ce9;   /* title tab */
+  --tour-main: #003776;     /* background blue */
+  --tour-ring: var(--cue);  /* Tap here yellow */
+  --tour-go: var(--insights);
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: none;
+  font-family: "Roboto", sans-serif;
+}
+
+.tour.is-open {
+  display: block;
+  animation: fade-in .3s ease both;
+}
+
+.tour-spot {
+  position: fixed;
+  border-radius: 14px;
+  pointer-events: none;
+  box-shadow: 0 0 0 200vmax rgb(0 20 50 / 78%);
+  outline: 3px solid var(--tour-ring);
+  outline-offset: 3px;
+  transition: left .45s cubic-bezier(.4, 0, .2, 1), top .45s cubic-bezier(.4, 0, .2, 1),
+              width .45s cubic-bezier(.4, 0, .2, 1), height .45s cubic-bezier(.4, 0, .2, 1);
+}
+
+.tour-spot[hidden] {
+  display: none;
+}
+
+.tour.no-anim .tour-spot,
+.tour.no-anim .tour-card {
+  transition: none;
+}
+
+.tour-demo {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.tour-card {
+  position: fixed;
+  z-index: 3;
+  width: min(max(320px, calc(640 * var(--u))), calc(100vw - 24px));
+  background: #fff;
+  color: #000;
+  border: 4px solid var(--tour-accent);
+  border-radius: 18px;
+  padding: max(14px, calc(26 * var(--u))) max(18px, calc(32 * var(--u))) max(12px, calc(22 * var(--u)));
+  box-shadow: 0 18px 40px rgba(0, 0, 0, .5);
+  transition: left .45s cubic-bezier(.4, 0, .2, 1), top .45s cubic-bezier(.4, 0, .2, 1);
+}
+
+.tour-count {
+  font-size: max(12px, calc(22 * var(--u)));
+  font-weight: 700;
+  color: var(--tour-accent);
+}
+
+.tour-card h2 {
+  margin: 4px 0 6px;
+  font-size: max(20px, calc(40 * var(--u)));
+  line-height: 1.25;
+  color: var(--tour-main);
+}
+
+.tour-card p {
+  margin: 0;
+  font-size: max(15px, calc(30 * var(--u)));
+  line-height: 1.5;
+  color: #000;
+}
+
+.tour-card p b {
+  color: var(--tour-accent);
+}
+
+.tour-card.enter .tour-count,
+.tour-card.enter h2,
+.tour-card.enter p {
+  animation: tour-rise .45s ease both;
+}
+
+.tour-card.enter h2 { animation-delay: .07s; }
+.tour-card.enter p { animation-delay: .15s; }
+
+@keyframes tour-rise {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+
+.tour-skip {
+  position: absolute;
+  top: -12px;
+  right: -12px;
+  width: max(36px, calc(56 * var(--u)));
+  height: max(36px, calc(56 * var(--u)));
+  padding: 0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--close);
+  color: #fff;
+  border: 3px solid #fff;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, .4);
+  cursor: pointer;
+  font-size: max(24px, calc(38 * var(--u)));
+  line-height: 1;
+}
+
+.tour-skip span {
+  display: block;
+  margin-top: -2px;
+}
+
+.tour-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: max(14px, calc(24 * var(--u)));
+  gap: 10px;
+}
+
+.tour-dots {
+  display: flex;
+  gap: 5px;
+}
+
+.tour-dots i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #c9d3e6;
+  transition: background .2s, width .2s;
+}
+
+.tour-dots i.on {
+  background: var(--tour-accent);
+  width: 20px;
+  border-radius: 4px;
+}
+
+.tour-btns {
+  display: flex;
+  gap: 8px;
+}
+
+.tour-btn {
+  font-family: inherit;
+  font-size: max(14px, calc(28 * var(--u)));
+  font-weight: 700;
+  padding: max(6px, calc(10 * var(--u))) max(14px, calc(26 * var(--u)));
+  border-radius: 999px;
+  cursor: pointer;
+  background: var(--tour-go);
+  color: #fff;
+  border: 2px solid var(--tour-go);
+}
+
+.tour-btn--ghost {
+  background: transparent;
+  color: var(--tour-main);
+  border-color: var(--tour-main);
+}
+
+.tour-btn[hidden] {
+  display: none;
+}
+
+.tour :focus-visible {
+  outline: 3px solid var(--tour-ring);
+  outline-offset: 2px;
+}
+
+.tour-hand {
+  position: fixed;
+  z-index: 5;
+  width: 0;
+  height: 0;
+}
+
+.tour-hand svg {
+  position: absolute;
+  left: -8px;
+  top: -4px;
+  filter: drop-shadow(0 3px 3px rgba(0, 0, 0, .45));
+  transition: transform .15s;
+}
+
+.tour-hand.is-press svg {
+  transform: scale(.85);
+}
+
+.tour-ripple {
+  position: fixed;
+  z-index: 4;
+  width: 14px;
+  height: 14px;
+  margin: -7px 0 0 -7px;
+  border-radius: 50%;
+  border: 3px solid var(--tour-ring);
+  animation: tour-ripple .7s ease-out forwards;
+}
+
+@keyframes tour-ripple {
+  to { transform: scale(4); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

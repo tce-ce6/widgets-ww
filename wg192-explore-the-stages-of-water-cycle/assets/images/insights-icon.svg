@@ -1,0 +1,618 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="62 993 56 58" width="56" height="58">
+  <!-- Generator: Adobe Illustrator 30.2.1, SVG Export Plug-In . SVG Version: 2.1.1 Build 1)  -->
+  <defs>
+    <style>
+      .st0 {
+        fill: aqua;
+      }
+
+      .st1 {
+        stroke: #e2a500;
+      }
+
+      .st1, .st2, .st3, .st4, .st5, .st6, .st7, .st8, .st9, .st10, .st11, .st12, .st13, .st14, .st15, .st16, .st17, .st18, .st19, .st20, .st21, .st22, .st23, .st24, .st25, .st26, .st27, .st28, .st29, .st30, .st31 {
+        fill: none;
+      }
+
+      .st1, .st18 {
+        stroke-width: 6px;
+      }
+
+      .st32 {
+        clip-path: url(#clippath-6);
+      }
+
+      .st33 {
+        clip-path: url(#clippath-7);
+      }
+
+      .st34 {
+        clip-path: url(#clippath-17);
+      }
+
+      .st2 {
+        stroke-miterlimit: 4;
+        stroke-width: 2px;
+      }
+
+      .st2, .st4, .st5, .st6, .st8, .st9, .st13, .st14, .st15, .st16, .st19, .st20, .st21, .st22, .st23, .st25, .st26, .st27, .st28, .st29, .st30, .st31 {
+        stroke: #fff;
+        stroke-linecap: round;
+      }
+
+      .st35 {
+        fill: #008957;
+      }
+
+      .st3 {
+        stroke: #00cbcb;
+      }
+
+      .st3, .st5, .st7, .st10, .st17, .st24 {
+        stroke-width: 4px;
+      }
+
+      .st3, .st10, .st17, .st24 {
+        stroke-dasharray: 5;
+      }
+
+      .st4 {
+        stroke-miterlimit: 4;
+        stroke-width: 2px;
+      }
+
+      .st36 {
+        fill: #46c72b;
+      }
+
+      .st37 {
+        fill: #010101;
+      }
+
+      .st38 {
+        clip-path: url(#clippath-15);
+      }
+
+      .st39 {
+        clip-path: url(#clippath-18);
+      }
+
+      .st40 {
+        clip-path: url(#clippath-4);
+      }
+
+      .st41 {
+        fill: #fdffb6;
+      }
+
+      .st6 {
+        stroke-miterlimit: 4;
+        stroke-width: 2px;
+      }
+
+      .st7 {
+        stroke: #022e61;
+      }
+
+      .st42 {
+        clip-path: url(#clippath-9);
+      }
+
+      .st8 {
+        stroke-miterlimit: 4;
+        stroke-width: 2px;
+      }
+
+      .st43 {
+        fill: #96d3f9;
+      }
+
+      .st44 {
+        clip-path: url(#clippath-10);
+      }
+
+      .st45 {
+        fill: #855b34;
+      }
+
+      .st46, .st47, .st48 {
+        fill: #fff;
+      }
+
+      .st49 {
+        fill: #f4df21;
+      }
+
+      .st9 {
+        stroke-width: 2px;
+      }
+
+      .st9, .st31 {
+        stroke-miterlimit: 4;
+      }
+
+      .st50 {
+        fill: #614326;
+      }
+
+      .st51 {
+        font-size: 15px;
+      }
+
+      .st51, .st52, .st53, .st54, .st55, .st47, .st56, .st57, .st58, .st59, .st60, .st61, .st48 {
+        isolation: isolate;
+      }
+
+      .st51, .st47, .st59, .st60, .st61, .st48 {
+        font-family: Roboto-Medium, Roboto;
+        font-weight: 500;
+      }
+
+      .st10 {
+        stroke: #e37e7e;
+      }
+
+      .st52 {
+        fill: #1383bf;
+        opacity: .1;
+      }
+
+      .st53 {
+        opacity: .8;
+      }
+
+      .st62 {
+        fill: #004d24;
+      }
+
+      .st54 {
+        fill: #2c074e;
+        opacity: .7;
+      }
+
+      .st63 {
+        clip-path: url(#clippath-11);
+      }
+
+      .st64 {
+        fill: #25bd06;
+      }
+
+      .st55 {
+        font-family: Roboto-Regular, Roboto;
+      }
+
+      .st55, .st58 {
+        font-size: 34px;
+      }
+
+      .st65 {
+        fill: #ff2c68;
+      }
+
+      .st47 {
+        font-size: 35px;
+      }
+
+      .st12 {
+        stroke: #236a83;
+        stroke-dasharray: 10;
+        stroke-width: 5px;
+      }
+
+      .st13 {
+        stroke-miterlimit: 4;
+        stroke-width: 2px;
+      }
+
+      .st66 {
+        fill: #ffadad;
+      }
+
+      .st67 {
+        fill: #339d5b;
+      }
+
+      .st14 {
+        stroke-miterlimit: 4;
+        stroke-width: 2px;
+      }
+
+      .st56 {
+        fill: #ffea31;
+        font-family: Roboto-Italic, Roboto;
+        font-size: 28.05px;
+        font-style: italic;
+      }
+
+      .st68 {
+        clip-path: url(#clippath-1);
+      }
+
+      .st69 {
+        fill: #4caf50;
+      }
+
+      .st15 {
+        stroke-miterlimit: 4;
+        stroke-width: 2px;
+      }
+
+      .st70 {
+        fill: #069892;
+      }
+
+      .st71 {
+        fill: #980ce9;
+      }
+
+      .st72 {
+        fill: #943d3d;
+      }
+
+      .st73 {
+        fill: #236a83;
+      }
+
+      .st74 {
+        clip-path: url(#clippath-5);
+      }
+
+      .st75 {
+        fill: #006943;
+      }
+
+      .st76 {
+        fill: #8f3553;
+      }
+
+      .st77 {
+        clip-path: url(#clippath-8);
+      }
+
+      .st16 {
+        stroke-miterlimit: 4;
+        stroke-width: 2px;
+      }
+
+      .st17 {
+        stroke: #9475cd;
+      }
+
+      .st58 {
+        font-family: Roboto-Bold, Roboto;
+        font-weight: 700;
+      }
+
+      .st78 {
+        fill: #cfb6ff;
+      }
+
+      .st79 {
+        fill: #facd36;
+      }
+
+      .st80 {
+        fill: #9effa7;
+      }
+
+      .st81 {
+        clip-path: url(#clippath-3);
+      }
+
+      .st82 {
+        fill: #0098e4;
+      }
+
+      .st83 {
+        fill: #00772b;
+      }
+
+      .st84 {
+        fill: #69dabe;
+      }
+
+      .st85 {
+        fill: #04c47d;
+      }
+
+      .st18 {
+        stroke: #f80;
+      }
+
+      .st19 {
+        stroke-width: 2px;
+      }
+
+      .st20 {
+        stroke-miterlimit: 4;
+        stroke-width: 2px;
+      }
+
+      .st86 {
+        fill: #e2a500;
+      }
+
+      .st87 {
+        clip-path: url(#clippath-12);
+      }
+
+      .st88 {
+        clip-path: url(#clippath-14);
+      }
+
+      .st21 {
+        stroke-miterlimit: 4;
+        stroke-width: 2px;
+      }
+
+      .st22 {
+        stroke-miterlimit: 4;
+        stroke-width: 2px;
+      }
+
+      .st89 {
+        fill: #00c1e2;
+      }
+
+      .st90 {
+        fill: #93b1ca;
+      }
+
+      .st91 {
+        clip-path: url(#clippath-19);
+      }
+
+      .st23 {
+        stroke-miterlimit: 4;
+        stroke-width: 2px;
+      }
+
+      .st92 {
+        fill: #003776;
+      }
+
+      .st93 {
+        fill: #2297d6;
+      }
+
+      .st94 {
+        fill: #199146;
+      }
+
+      .st95 {
+        fill: #b1fafc;
+      }
+
+      .st96 {
+        fill: #7e9ebd;
+      }
+
+      .st97 {
+        fill: #48e4c0;
+      }
+
+      .st59 {
+        font-size: 25.04px;
+      }
+
+      .st98 {
+        fill: #f6b42d;
+      }
+
+      .st24 {
+        stroke: #53b65c;
+      }
+
+      .st99 {
+        fill: #3fb2f2;
+      }
+
+      .st25 {
+        stroke-miterlimit: 4;
+        stroke-width: 2px;
+      }
+
+      .st100 {
+        fill: #044fa3;
+      }
+
+      .st26 {
+        stroke-miterlimit: 4;
+        stroke-width: 2px;
+      }
+
+      .st27 {
+        stroke-width: 4px;
+      }
+
+      .st27, .st29 {
+        stroke-miterlimit: 4;
+      }
+
+      .st101 {
+        clip-path: url(#clippath-16);
+      }
+
+      .st102 {
+        clip-path: url(#clippath-2);
+      }
+
+      .st103 {
+        fill: #969899;
+      }
+
+      .st28 {
+        stroke-width: 8px;
+      }
+
+      .st104 {
+        fill: #5e492c;
+      }
+
+      .st105 {
+        fill: #0064bf;
+      }
+
+      .st29 {
+        stroke-width: 2px;
+      }
+
+      .st106 {
+        fill: #fefefe;
+      }
+
+      .st107 {
+        clip-path: url(#clippath-13);
+      }
+
+      .st60 {
+        font-size: 15.02px;
+      }
+
+      .st108 {
+        fill: #008532;
+      }
+
+      .st61 {
+        font-size: 24.04px;
+      }
+
+      .st109 {
+        fill: #f6ff00;
+      }
+
+      .st110 {
+        fill: #0eb1a8;
+      }
+
+      .st30 {
+        stroke-miterlimit: 4;
+        stroke-width: 2px;
+      }
+
+      .st111 {
+        fill: #00e5ff;
+      }
+
+      .st112 {
+        clip-path: url(#clippath);
+      }
+
+      .st113 {
+        fill: #f7901e;
+      }
+
+      .st114 {
+        opacity: .08;
+      }
+
+      .st115 {
+        fill: #00ac6d;
+      }
+
+      .st31 {
+        stroke-width: 4px;
+      }
+
+      .st48 {
+        font-size: 35.06px;
+      }
+
+      .st116 {
+        fill: #70fffb;
+      }
+    </style>
+    <clipPath id="clippath">
+      <rect class="st11" x=".18" y="-1.78" width="1920" height="1081.78" />
+    </clipPath>
+    <clipPath id="clippath-1">
+      <rect class="st11" x=".18" y="749.6" width="1920" height="330.4" />
+    </clipPath>
+    <clipPath id="clippath-2">
+      <rect class="st11" x=".18" y="749.6" width="1920" height="330.4" />
+    </clipPath>
+    <clipPath id="clippath-3">
+      <rect class="st11" x=".18" y="749.6" width="1920" height="330.4" />
+    </clipPath>
+    <clipPath id="clippath-4">
+      <rect class="st11" x=".18" y="-1.78" width="1920" height="330.4" />
+    </clipPath>
+    <clipPath id="clippath-5">
+      <rect class="st11" x=".18" y="-1.78" width="1920" height="330.4" />
+    </clipPath>
+    <clipPath id="clippath-6">
+      <rect class="st11" x=".18" y="-1.78" width="1920" height="330.4" />
+    </clipPath>
+    <clipPath id="clippath-7">
+      <polygon class="st11" points="1446.93 516.97 1355.02 479.29 1370.23 442.07 1462.14 479.74 1446.93 516.97" />
+    </clipPath>
+    <clipPath id="clippath-8">
+      <polygon class="st11" points="1138.82 378.22 1068.28 512.39 1209.37 512.39 1138.82 378.22" />
+    </clipPath>
+    <clipPath id="clippath-9">
+      <polygon class="st11" points="1210.09 536.86 1118.18 499.19 1133.39 461.96 1225.3 499.64 1210.09 536.86" />
+    </clipPath>
+    <clipPath id="clippath-10">
+      <rect class="st11" x="1266.63" y="444.7" width="99.26" height="40.21" />
+    </clipPath>
+    <clipPath id="clippath-11">
+      <rect class="st11" x="1160.08" y="543.06" width="99.26" height="40.21" />
+    </clipPath>
+    <clipPath id="clippath-12">
+      <rect class="st11" x="766.81" y="530.16" width="81.48" height="33" />
+    </clipPath>
+    <clipPath id="clippath-13">
+      <rect class="st11" x="34.18" y="988.85" width="251" height="70.12" />
+    </clipPath>
+    <clipPath id="clippath-14">
+      <rect class="st11" x="118.61" y="1003.93" width="125.32" height="39.49" />
+    </clipPath>
+    <clipPath id="clippath-15">
+      <rect class="st11" x="118.61" y="1003.93" width="125.32" height="39.49" />
+    </clipPath>
+    <clipPath id="clippath-16">
+      <rect class="st11" width="1920" height="1080" />
+    </clipPath>
+    <clipPath id="clippath-17">
+      <rect class="st11" x="34" y="989" width="251" height="70" />
+    </clipPath>
+    <clipPath id="clippath-18">
+      <rect class="st11" x="118.43" y="1004.06" width="125.32" height="39.43" />
+    </clipPath>
+    <clipPath id="clippath-19">
+      <rect class="st11" x="118.43" y="1004.06" width="125.32" height="39.43" />
+    </clipPath>
+  </defs>
+  <g id="buttons">
+    <g id="Group_800">
+    </g>
+    <g id="Group_15-2">
+      <g class="st107">
+        <g id="Group_591">
+          <g id="Group_590" class="st57">
+            <g id="Group_589">
+              <g class="st88">
+                <g id="Group_588">
+                  <g id="Group_587" class="st57">
+                    <g id="Group_586">
+                      <g class="st38">
+                        <g id="Group_585">
+                        </g>
+                      </g>
+                    </g>
+                  </g>
+                </g>
+              </g>
+            </g>
+          </g>
+          <path id="Path_1030" class="st37" d="M80.27,995.91c8.94-.07,16.85,5.79,19.39,14.38,2.01,6.32.67,13.24-3.55,18.35-.22.29-.22.43.05.66.35.29.6.75.98.91s.83-.22,1.27-.3c1.55-.4,3.2.07,4.31,1.22,3.76,3.77,7.57,7.49,11.37,11.22,1.55,1.37,2.14,3.53,1.53,5.5-.54,2.04-2.22,3.56-4.29,3.9-1.81.45-3.72-.11-5.01-1.46-3.95-3.91-7.93-7.79-11.87-11.71-.99-1.1-1.3-2.66-.81-4.06.1-.41.25-.8.47-1.16.11-.14.09-.34-.05-.45,0,0-.02-.01-.03-.02-.34-.31-.63-.82-1.02-.92-.41-.11-.75.44-1.13.69-6.82,4.39-13.96,4.97-21.16,1.24-6.38-3.31-9.92-8.81-10.61-15.98-.99-10.78,6.7-20.42,17.42-21.84.91-.11,1.83-.17,2.75-.17" />
+          <path id="Path_1031" class="st49" d="M95.66,1015.99c.08,8.52-6.75,15.5-15.26,15.58-8.51.08-15.47-6.76-15.55-15.29-.08-8.52,6.75-15.5,15.26-15.58.15,0,.3,0,.45,0,8.36.11,15.08,6.91,15.1,15.28" />
+          <path id="Path_1032" class="st46" d="M90.37,1013.85c-.65,0-1.23-.43-1.44-1.05-1.18-3.07-3.92-5.26-7.16-5.74-1.31-.23-2.64-.2-3.94.08-.27.08-.55.11-.83.1-.65-.09-1.16-.62-1.24-1.28-.05-.69.38-1.33,1.04-1.54.67-.2,1.36-.33,2.06-.39,5.53-.62,10.79,2.52,12.86,7.69.36.73.06,1.62-.67,1.98-.21.11-.45.16-.69.15" />
+          <path id="Path_1033" class="st46" d="M69.38,1014.16c.81-.02,1.49.62,1.51,1.44,0,.05,0,.11,0,.16.01,1.59.4,3.16,1.11,4.59.47.95,1.12,1.8,1.93,2.49.68.44.87,1.35.43,2.03-.04.06-.08.12-.13.17-.58.65-1.58.7-2.23.12-.04-.03-.07-.06-.1-.1-2.18-1.98-3.56-4.68-3.9-7.61-.07-.6-.11-1.21-.1-1.82,0-.81.64-1.48,1.45-1.48.01,0,.02,0,.03,0" />
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>
