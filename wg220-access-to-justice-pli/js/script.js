@@ -131,14 +131,16 @@
 
   let muted = false; // reserved; sounds play with the scene
   const audioCache = new Map();
+  // Returns the playing element so the scene can stop it (footsteps last a few seconds).
   function playSound(src) {
-    if (muted) return;
+    if (muted) return null;
     try {
       let base = audioCache.get(src);
       if (!base) { base = new Audio(src); audioCache.set(src, base); }
       const a = base.cloneNode();
       a.play().catch(() => {});
-    } catch (e) { /* sound is optional */ }
+      return a;
+    } catch (e) { return null; /* sound is optional */ }
   }
 
   // One player per scene container.
@@ -151,11 +153,13 @@
       container: document.getElementById(containerId),
       renderer: 'svg', loop: false, autoplay: false, animationData: data
     });
-    const p = { anim, sounds, last: -1, done: false };
+    const p = { anim, sounds, last: -1, done: false, playing: [] };
     players.set(containerId, p);
 
     const fire = (f) => {
-      p.sounds.forEach((s) => { if (s.frame > p.last && s.frame <= f) playSound(s.src); });
+      p.sounds.forEach((s) => {
+        if (s.frame > p.last && s.frame <= f) { const a = playSound(s.src); if (a) p.playing.push(a); }
+      });
       if (opts.at && !p.atFired && f >= opts.at.frame) { p.atFired = true; opts.at.fn(); }
       p.last = f;
     };
@@ -179,7 +183,11 @@
 
   function stopScene(containerId) {
     const p = players.get(containerId);
-    if (p) { p.anim.destroy(); players.delete(containerId); }
+    if (p) {
+      p.playing.forEach((a) => { a.pause(); a.currentTime = 0; }); // no footsteps after the scene is gone
+      p.anim.destroy();
+      players.delete(containerId);
+    }
     const box = document.getElementById(containerId);
     if (box) box.innerHTML = '';
   }
