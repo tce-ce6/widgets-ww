@@ -32,7 +32,7 @@
       ],
       context: 'Arjun Nair is an environmental lawyer. He has documented the river’s decline for three years. He wants to file a PIL in the Supreme Court on behalf of everyone who depends on this river.',
       next: 'Explore Arjun’s petition options',
-      petitionText: 'A PIL petition must ask the court for something specific. What Arjun asks will determine what the court can do. Explore each option and see.',
+      petitionText: 'Arjun has two petition options. Explore each one and see what the court can do.',
       options: {
         A: {
           text: 'Order the factories to reduce industrial discharge into the river.',
@@ -56,11 +56,11 @@
       tag: 'The Right to Food',
       stats: [
         ['Millions', 'facing hunger across rural India.'],
-        ['Full', 'government grain godowns, grain stored and unused.']
+        ['Surplus', 'grain stored in government godowns.']
       ],
       context: 'Meera Devi is a social worker. She has documented hunger and malnutrition across three states. Grain is stored in government godowns. It is not reaching the people who need it. She wants to file a PIL in the Supreme Court.',
       next: 'Explore Meera’s petition options',
-      petitionText: 'The petition Meera files will shape what the court can address. Explore both options and see what the court can and cannot do.',
+      petitionText: 'Meera has two petition options. Explore each one and see what the court can do.',
       options: {
         A: {
           text: 'Order the government to distribute grain from state godowns to families facing hunger.',
