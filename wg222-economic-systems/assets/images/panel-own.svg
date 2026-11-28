@@ -1,0 +1,2201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="74 722 258 194" width="258" height="194">
+  <!-- Generator: Adobe Illustrator 30.8.2, SVG Export Plug-In . SVG Version: 2.1.4 Build 7)  -->
+  <defs>
+    <style>
+      .st0 {
+        fill: #36b37e;
+      }
+
+      .st1 {
+        fill: #d6d343;
+      }
+
+      .st2, .st3 {
+        fill: #4c9936;
+      }
+
+      .st4 {
+        fill: #191211;
+      }
+
+      .st5 {
+        fill: #c6a019;
+      }
+
+      .st6 {
+        fill: #b84c16;
+      }
+
+      .st6, .st7, .st8, .st9, .st10, .st11, .st12, .st13, .st14, .st15, .st16, .st17, .st18, .st19, .st20, .st21, .st22, .st23, .st24, .st25, .st26, .st27, .st28, .st29, .st30, .st31, .st32, .st33, .st34, .st35, .st36, .st37, .st38, .st39, .st40, .st41, .st42, .st43 {
+        fill-rule: evenodd;
+      }
+
+      .st44 {
+        fill: #23a88d;
+      }
+
+      .st45 {
+        fill: #129c9c;
+      }
+
+      .st46 {
+        fill: #fc0;
+      }
+
+      .st47 {
+        fill: #39b57b;
+      }
+
+      .st48 {
+        fill: #78909c;
+      }
+
+      .st49 {
+        fill: #f4b856;
+      }
+
+      .st50 {
+        fill: #5d827f;
+      }
+
+      .st51 {
+        fill: #40b975;
+      }
+
+      .st52 {
+        fill: #596176;
+      }
+
+      .st53 {
+        fill: #e1652f;
+      }
+
+      .st54 {
+        fill: #d8c266;
+      }
+
+      .st55 {
+        fill: #24a98c;
+      }
+
+      .st56 {
+        fill: #4d4751;
+      }
+
+      .st57 {
+        opacity: .69;
+      }
+
+      .st57, .st58, .st59, .st60, .st61, .st62, .st63, .st64, .st65, .st66, .st67, .st68, .st69, .st70, .st71, .st72, .st73, .st74, .st75, .st76, .st77, .st78, .st79, .st80, .st81, .st82, .st83, .st84, .st85, .st86, .st87 {
+        isolation: isolate;
+      }
+
+      .st57, .st88 {
+        fill: #d1d1d1;
+      }
+
+      .st89 {
+        fill: #b3e3d2;
+      }
+
+      .st58, .st60, .st72, .st80, .st86, .st87 {
+        font-family: Roboto-Regular, Roboto;
+      }
+
+      .st58, .st77, .st85 {
+        font-size: 28px;
+      }
+
+      .st90 {
+        fill: #292a2e;
+      }
+
+      .st91 {
+        fill: #564445;
+      }
+
+      .st59, .st61 {
+        font-size: 50px;
+      }
+
+      .st59, .st61, .st63, .st65, .st67, .st70, .st76, .st79, .st81, .st83 {
+        font-family: Roboto-Bold, Roboto;
+        font-weight: 700;
+      }
+
+      .st59, .st92, .st65, .st67, .st93, .st84, .st87 {
+        fill: #fff;
+      }
+
+      .st94 {
+        fill: #096b58;
+      }
+
+      .st95 {
+        fill: #ff8542;
+      }
+
+      .st96 {
+        fill: #3ea1ff;
+      }
+
+      .st97 {
+        clip-path: url(#clippath-6);
+      }
+
+      .st98 {
+        clip-path: url(#clippath-7);
+      }
+
+      .st99 {
+        clip-path: url(#clippath-17);
+      }
+
+      .st100 {
+        fill: #475324;
+      }
+
+      .st101 {
+        fill: #4a5461;
+      }
+
+      .st102 {
+        fill: #af3225;
+      }
+
+      .st103 {
+        fill: #169f98;
+      }
+
+      .st104 {
+        fill: #392a25;
+      }
+
+      .st105 {
+        fill: #42ba74;
+      }
+
+      .st106 {
+        fill: #eeff97;
+      }
+
+      .st107 {
+        fill: #454b5c;
+      }
+
+      .st60, .st65, .st79, .st80 {
+        font-size: 45px;
+      }
+
+      .st108 {
+        clip-path: url(#clippath-15);
+      }
+
+      .st109, .st110, .st111, .st112, .st113, .st114, .st115, .st116, .st117, .st118, .st119, .st120, .st121 {
+        fill: none;
+      }
+
+      .st109, .st116 {
+        stroke: #000;
+      }
+
+      .st122 {
+        fill: #fcdc59;
+      }
+
+      .st123 {
+        fill: #bfac86;
+      }
+
+      .st7, .st124 {
+        fill: #ffb300;
+      }
+
+      .st125 {
+        fill: #9bb3d0;
+      }
+
+      .st126 {
+        fill: #797979;
+      }
+
+      .st8 {
+        fill: #d32d21;
+      }
+
+      .st127 {
+        clip-path: url(#clippath-18);
+      }
+
+      .st128 {
+        fill: #188e92;
+      }
+
+      .st129 {
+        clip-path: url(#clippath-4);
+      }
+
+      .st130 {
+        fill: #50576b;
+      }
+
+      .st131 {
+        fill: #ea9c00;
+      }
+
+      .st132 {
+        fill: #a1580e;
+      }
+
+      .st133 {
+        fill: #8dc63f;
+      }
+
+      .st134 {
+        fill: #2caf86;
+      }
+
+      .st135 {
+        fill: #f15722;
+      }
+
+      .st136 {
+        fill: #2db084;
+      }
+
+      .st137 {
+        fill: #292f39;
+      }
+
+      .st138 {
+        fill: #22a98f;
+      }
+
+      .st139 {
+        fill: #2a425c;
+      }
+
+      .st140 {
+        fill: #d8cd2a;
+      }
+
+      .st141 {
+        fill: #fff829;
+      }
+
+      .st142 {
+        fill: #754c29;
+      }
+
+      .st143 {
+        fill: #a9e1d1;
+      }
+
+      .st144 {
+        fill: #f88729;
+      }
+
+      .st145 {
+        fill: #03607a;
+      }
+
+      .st146 {
+        fill: #159e99;
+      }
+
+      .st147 {
+        fill: #6b163c;
+      }
+
+      .st148 {
+        fill: #b76915;
+      }
+
+      .st149 {
+        fill: #efc307;
+      }
+
+      .st150 {
+        fill: #fed600;
+      }
+
+      .st151 {
+        fill: #cee1f5;
+      }
+
+      .st152 {
+        fill: #febd50;
+      }
+
+      .st153 {
+        fill: #f2fa1e;
+      }
+
+      .st154 {
+        fill: #f0e0da;
+      }
+
+      .st155 {
+        fill: #2c6fd8;
+      }
+
+      .st61 {
+        fill: #749185;
+      }
+
+      .st156 {
+        fill: #1960dd;
+      }
+
+      .st157 {
+        fill: #ffe2bb;
+      }
+
+      .st158 {
+        fill: #f4cb25;
+      }
+
+      .st159 {
+        fill: #e0a38b;
+      }
+
+      .st9, .st160 {
+        fill: #9b3b0b;
+      }
+
+      .st161 {
+        fill: #1fa892;
+      }
+
+      .st162 {
+        fill: #1aa2b1;
+      }
+
+      .st163 {
+        fill: #f9851b;
+      }
+
+      .st164 {
+        fill: #41499c;
+      }
+
+      .st165 {
+        fill: #d8d100;
+      }
+
+      .st166 {
+        fill: #7d7d7d;
+      }
+
+      .st167 {
+        fill: #2caf85;
+      }
+
+      .st168 {
+        fill: #f7941d;
+      }
+
+      .st110 {
+        stroke: #231f20;
+        stroke-miterlimit: 10;
+        stroke-width: .81px;
+      }
+
+      .st169 {
+        fill: #07678a;
+      }
+
+      .st62, .st77, .st84, .st85 {
+        font-weight: 500;
+      }
+
+      .st62, .st83 {
+        font-size: 35px;
+      }
+
+      .st62, .st84 {
+        font-family: Roboto-Medium, Roboto;
+      }
+
+      .st170 {
+        fill: #8fc6c3;
+      }
+
+      .st171 {
+        fill: #17a098;
+      }
+
+      .st10, .st172 {
+        fill: #f3f3f5;
+      }
+
+      .st173 {
+        fill: #3b404f;
+      }
+
+      .st174 {
+        fill: #b77646;
+      }
+
+      .st175 {
+        fill: #c1cee2;
+      }
+
+      .st176 {
+        opacity: .27;
+      }
+
+      .st177 {
+        fill: #9f9f9f;
+      }
+
+      .st11 {
+        fill: #ffc640;
+      }
+
+      .st178 {
+        fill: #f9a01b;
+      }
+
+      .st179 {
+        clip-path: url(#clippath-9);
+      }
+
+      .st180 {
+        fill: #4d4d4d;
+      }
+
+      .st181 {
+        fill: #b5b934;
+      }
+
+      .st182 {
+        fill: #ef6759;
+      }
+
+      .st12 {
+        fill: #002e45;
+      }
+
+      .st13, .st183 {
+        fill: #008799;
+      }
+
+      .st184 {
+        fill: #46bc70;
+      }
+
+      .st185 {
+        fill: #55656b;
+      }
+
+      .st186 {
+        fill: #1ca694;
+      }
+
+      .st187 {
+        clip-path: url(#clippath-10);
+      }
+
+      .st188 {
+        fill: #1da492;
+      }
+
+      .st189 {
+        fill: #b9ceff;
+      }
+
+      .st190 {
+        fill: #2bae87;
+      }
+
+      .st191 {
+        fill: #ff9634;
+      }
+
+      .st192 {
+        fill: #d2c018;
+      }
+
+      .st193, .st42 {
+        fill: #04748a;
+      }
+
+      .st63, .st70 {
+        font-size: 60px;
+      }
+
+      .st63, .st80 {
+        fill: #006618;
+      }
+
+      .st194 {
+        fill: #e78973;
+      }
+
+      .st195 {
+        fill: #35b37f;
+      }
+
+      .st196 {
+        fill: #626262;
+      }
+
+      .st197 {
+        fill: #0e7471;
+      }
+
+      .st198 {
+        fill: #f7d292;
+      }
+
+      .st199 {
+        fill: #3b3d42;
+      }
+
+      .st14 {
+        fill: #f90;
+      }
+
+      .st200 {
+        fill: #fcf2d9;
+      }
+
+      .st64 {
+        opacity: .8;
+      }
+
+      .st64, .st78, .st82 {
+        fill: #fffdee;
+      }
+
+      .st201 {
+        fill: #027064;
+      }
+
+      .st202 {
+        fill: #383838;
+      }
+
+      .st66 {
+        fill: #2c3c4a;
+      }
+
+      .st66, .st203, .st82 {
+        opacity: .4;
+      }
+
+      .st204 {
+        opacity: .46;
+      }
+
+      .st15 {
+        fill: #009eb3;
+      }
+
+      .st205 {
+        fill: #21a990;
+      }
+
+      .st206 {
+        fill: #139d9b;
+      }
+
+      .st207 {
+        fill: #5c6d7f;
+      }
+
+      .st208 {
+        fill: #3f7871;
+      }
+
+      .st209 {
+        fill: #7be382;
+      }
+
+      .st210 {
+        fill: #a6a6a6;
+      }
+
+      .st211 {
+        fill: #1aa295;
+      }
+
+      .st67, .st84, .st87 {
+        font-size: 32px;
+        letter-spacing: .01em;
+      }
+
+      .st212 {
+        fill: #054f46;
+      }
+
+      .st213 {
+        fill: #ffb534;
+      }
+
+      .st214 {
+        fill: #c6932c;
+      }
+
+      .st215 {
+        fill: #e2dac9;
+      }
+
+      .st216 {
+        fill: #cc6363;
+      }
+
+      .st217 {
+        fill: #fdffbb;
+      }
+
+      .st218 {
+        fill: #93486f;
+      }
+
+      .st219 {
+        fill: #3db778;
+      }
+
+      .st220 {
+        opacity: .15;
+      }
+
+      .st221 {
+        fill: #1ca493;
+      }
+
+      .st222 {
+        fill: #696c75;
+      }
+
+      .st223 {
+        fill: #a56b3f;
+      }
+
+      .st224 {
+        fill: #2fb083;
+      }
+
+      .st225 {
+        fill: #41b974;
+      }
+
+      .st226 {
+        clip-path: url(#clippath-11);
+      }
+
+      .st227 {
+        fill: #32b182;
+      }
+
+      .st228 {
+        opacity: .2;
+      }
+
+      .st229 {
+        fill: #f00000;
+      }
+
+      .st230, .st21 {
+        fill: #e7e6ec;
+      }
+
+      .st231 {
+        fill: #fde7d2;
+      }
+
+      .st232 {
+        fill: #434959;
+      }
+
+      .st233 {
+        fill: #055c75;
+      }
+
+      .st111 {
+        stroke: #40654a;
+        stroke-width: 12px;
+      }
+
+      .st234 {
+        fill: #078276;
+      }
+
+      .st235 {
+        fill: #1ba394;
+      }
+
+      .st236 {
+        fill: #ffc034;
+      }
+
+      .st237 {
+        fill: #007a82;
+      }
+
+      .st16 {
+        fill: #013c5a;
+      }
+
+      .st238 {
+        fill: #735a5b;
+      }
+
+      .st239 {
+        fill: #303030;
+      }
+
+      .st240 {
+        fill: #2fb182;
+      }
+
+      .st241 {
+        fill: #e0d2b3;
+      }
+
+      .st242 {
+        fill: #45bb71;
+      }
+
+      .st243 {
+        fill: #44bb72;
+      }
+
+      .st244 {
+        fill: #22a78e;
+      }
+
+      .st245 {
+        fill: #3c2415;
+      }
+
+      .st246 {
+        fill: #1ea792;
+      }
+
+      .st247 {
+        fill: #50726e;
+      }
+
+      .st248 {
+        fill: #55a198;
+      }
+
+      .st249 {
+        fill: #ee7e47;
+      }
+
+      .st250 {
+        fill: #881522;
+      }
+
+      .st251 {
+        fill: #ffd459;
+      }
+
+      .st68, .st73 {
+        opacity: .5;
+      }
+
+      .st68, .st252 {
+        fill: #e5fffe;
+      }
+
+      .st253 {
+        fill: #d9bd20;
+      }
+
+      .st254, .st26 {
+        fill: #d5f9f9;
+      }
+
+      .st255 {
+        fill: #26ab8b;
+      }
+
+      .st256 {
+        fill: #19a196;
+      }
+
+      .st257 {
+        fill: #6f8423;
+      }
+
+      .st69 {
+        fill: #171f26;
+        opacity: .7;
+      }
+
+      .st17, .st258 {
+        fill: #00b4cb;
+      }
+
+      .st259 {
+        fill: #efddb6;
+      }
+
+      .st260 {
+        fill: #657c12;
+      }
+
+      .st261 {
+        fill: #b2b2b2;
+      }
+
+      .st18 {
+        fill: #009bb3;
+      }
+
+      .st262 {
+        fill: #2b2f3b;
+      }
+
+      .st263 {
+        fill: #c9a065;
+      }
+
+      .st264 {
+        fill: #1fa690;
+      }
+
+      .st265 {
+        fill: #6f8337;
+      }
+
+      .st266 {
+        fill: #8ca4bd;
+      }
+
+      .st113 {
+        stroke: #008970;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 9px;
+      }
+
+      .st267 {
+        fill: #9dbcc4;
+      }
+
+      .st268 {
+        fill: #008970;
+      }
+
+      .st269 {
+        fill: #feffd9;
+      }
+
+      .st270 {
+        fill: #3ab67b;
+      }
+
+      .st271 {
+        fill: #f4651e;
+      }
+
+      .st272 {
+        fill: #57b75d;
+      }
+
+      .st273 {
+        fill: #159dcf;
+      }
+
+      .st274 {
+        fill: #acc941;
+      }
+
+      .st275 {
+        clip-path: url(#clippath-1);
+      }
+
+      .st19 {
+        fill: #ffa733;
+      }
+
+      .st276 {
+        opacity: .36;
+      }
+
+      .st93, .st117, .st3 {
+        stroke: #4c9936;
+      }
+
+      .st277 {
+        fill: #65bd6c;
+      }
+
+      .st278 {
+        fill: #e6faff;
+      }
+
+      .st20 {
+        fill: #d5d5d9;
+      }
+
+      .st279 {
+        fill: #fbfce6;
+      }
+
+      .st280 {
+        fill: #64ac69;
+      }
+
+      .st281 {
+        fill: #e2a100;
+      }
+
+      .st282 {
+        fill: #323f3f;
+      }
+
+      .st283 {
+        fill: #f99532;
+      }
+
+      .st284 {
+        fill: #a55351;
+      }
+
+      .st285 {
+        fill: #028193;
+      }
+
+      .st114 {
+        stroke: #189c12;
+      }
+
+      .st114, .st115 {
+        stroke-width: 4px;
+      }
+
+      .st286 {
+        fill: #70f0e7;
+      }
+
+      .st287 {
+        fill: #5e9627;
+      }
+
+      .st288, .st33 {
+        fill: #fff6ea;
+      }
+
+      .st289 {
+        fill: #fbb06b;
+      }
+
+      .st290 {
+        fill: #8e6555;
+      }
+
+      .st291 {
+        fill: #fffaee;
+      }
+
+      .st292 {
+        fill: #bcbec0;
+      }
+
+      .st293 {
+        fill: #231f20;
+      }
+
+      .st294 {
+        fill: #b4cbd9;
+      }
+
+      .st295 {
+        fill: #29ad89;
+      }
+
+      .st296 {
+        fill: #a0621f;
+      }
+
+      .st297 {
+        fill: #e2b15a;
+      }
+
+      .st298 {
+        fill: #4aa7cc;
+      }
+
+      .st299 {
+        fill: #fdf48c;
+      }
+
+      .st300 {
+        fill: #f9b800;
+      }
+
+      .st301 {
+        fill: #bb481b;
+      }
+
+      .st22 {
+        fill: #bddff0;
+      }
+
+      .st302 {
+        fill: #b4d873;
+      }
+
+      .st303 {
+        clip-path: url(#clippath-5);
+      }
+
+      .st115, .st118 {
+        stroke: #a20000;
+      }
+
+      .st304 {
+        fill: #909090;
+      }
+
+      .st305 {
+        fill: #636363;
+      }
+
+      .st306 {
+        fill: #8e794c;
+      }
+
+      .st23 {
+        fill: #eebe69;
+      }
+
+      .st307 {
+        fill: #7adcff;
+      }
+
+      .st72, .st76, .st81 {
+        font-size: 30px;
+      }
+
+      .st308 {
+        clip-path: url(#clippath-8);
+      }
+
+      .st309 {
+        fill: #5e3b1d;
+      }
+
+      .st310 {
+        fill: #d0b26c;
+      }
+
+      .st311 {
+        fill: #20354a;
+      }
+
+      .st312 {
+        fill: #c5b61d;
+      }
+
+      .st313 {
+        fill: #f5af36;
+      }
+
+      .st314 {
+        fill: #3cb779;
+      }
+
+      .st315 {
+        fill: #da8100;
+      }
+
+      .st316 {
+        fill: #1ea591;
+      }
+
+      .st317 {
+        fill: #ff8a8a;
+      }
+
+      .st318 {
+        fill: #27aae1;
+      }
+
+      .st319 {
+        fill: #109b9e;
+      }
+
+      .st320 {
+        fill: #b9ff15;
+      }
+
+      .st321 {
+        fill: #f4c892;
+      }
+
+      .st322 {
+        fill: #f1c085;
+      }
+
+      .st323 {
+        fill: #3eb877;
+      }
+
+      .st324 {
+        fill: #7ccec5;
+      }
+
+      .st325 {
+        fill: #878787;
+      }
+
+      .st326 {
+        fill: #829b1b;
+      }
+
+      .st327 {
+        fill: #01506d;
+      }
+
+      .st24 {
+        fill: #006993;
+      }
+
+      .st328 {
+        clip-path: url(#clippath-3);
+      }
+
+      .st329 {
+        fill: #ffc45c;
+      }
+
+      .st330 {
+        fill: #2b3038;
+      }
+
+      .st331 {
+        fill: #1da793;
+      }
+
+      .st25 {
+        fill: #f9f1dc;
+      }
+
+      .st332 {
+        fill: #c5a35c;
+      }
+
+      .st333 {
+        fill: #5c4b51;
+      }
+
+      .st334 {
+        fill: #f94675;
+      }
+
+      .st335 {
+        fill: #0e4c23;
+        opacity: .42;
+      }
+
+      .st336 {
+        fill: #f54a53;
+      }
+
+      .st337 {
+        fill: #9ea9ad;
+      }
+
+      .st338 {
+        fill: #ba9317;
+      }
+
+      .st73 {
+        fill: #141211;
+      }
+
+      .st339 {
+        fill: #28ac88;
+      }
+
+      .st340 {
+        fill: #25ab8c;
+      }
+
+      .st341 {
+        fill: #3a9de0;
+      }
+
+      .st342 {
+        fill: #ffe600;
+      }
+
+      .st343 {
+        fill: #f5edd8;
+      }
+
+      .st344 {
+        fill: #adeee6;
+      }
+
+      .st345 {
+        clip-path: url(#clippath-12);
+      }
+
+      .st346 {
+        fill: #bbffdf;
+      }
+
+      .st347 {
+        fill: #21a78f;
+      }
+
+      .st348 {
+        fill: #40654a;
+      }
+
+      .st349 {
+        fill: #e2762d;
+      }
+
+      .st350 {
+        fill: #27ab89;
+      }
+
+      .st351 {
+        fill: #31b183;
+      }
+
+      .st352 {
+        fill: #343635;
+      }
+
+      .st353 {
+        fill: #969696;
+      }
+
+      .st354 {
+        fill: #342f33;
+      }
+
+      .st355 {
+        fill: #f1ce5a;
+      }
+
+      .st27, .st356 {
+        fill: #fedc32;
+      }
+
+      .st357 {
+        fill: #af3a5f;
+      }
+
+      .st358 {
+        clip-path: url(#clippath-14);
+      }
+
+      .st359 {
+        fill: #2771a3;
+      }
+
+      .st28 {
+        fill: #9fe6e6;
+      }
+
+      .st360 {
+        fill: #524c4e;
+      }
+
+      .st116 {
+        stroke-dasharray: 6;
+      }
+
+      .st361 {
+        fill: #23aa8e;
+      }
+
+      .st362 {
+        fill: #f0bca8;
+      }
+
+      .st29, .st363 {
+        fill: #005371;
+      }
+
+      .st364 {
+        fill: #3e889e;
+      }
+
+      .st365 {
+        fill: #56baff;
+      }
+
+      .st366 {
+        fill: #33b281;
+      }
+
+      .st367 {
+        fill: #0f47be;
+      }
+
+      .st368 {
+        fill: #6a918d;
+      }
+
+      .st369 {
+        fill: #f9e7de;
+      }
+
+      .st370 {
+        fill: #005449;
+      }
+
+      .st371 {
+        fill: #e1b875;
+      }
+
+      .st372 {
+        fill: #86a0a8;
+      }
+
+      .st373 {
+        fill: #b2ac38;
+      }
+
+      .st374 {
+        fill: #00748b;
+      }
+
+      .st375 {
+        fill: #5b7682;
+      }
+
+      .st376 {
+        fill: #9dc1bc;
+      }
+
+      .st377 {
+        fill: #d17e11;
+      }
+
+      .st378 {
+        fill: #719b99;
+      }
+
+      .st379 {
+        fill: #149e9a;
+      }
+
+      .st117 {
+        stroke-width: 9px;
+      }
+
+      .st380 {
+        fill: #fe9;
+      }
+
+      .st381 {
+        fill: #34b280;
+      }
+
+      .st382 {
+        fill: #97bfbc;
+      }
+
+      .st383 {
+        fill: #2eb084;
+      }
+
+      .st384 {
+        fill: #119b9d;
+      }
+
+      .st385 {
+        fill: #0effe7;
+      }
+
+      .st74 {
+        fill: #9b5e1c;
+        opacity: .59;
+      }
+
+      .st386 {
+        fill: #e0cea2;
+      }
+
+      .st387 {
+        fill: #999;
+      }
+
+      .st75 {
+        fill: #69c670;
+        opacity: .62;
+      }
+
+      .st388 {
+        fill: #00a79d;
+      }
+
+      .st389 {
+        fill: #293b49;
+      }
+
+      .st390 {
+        fill: #43ba73;
+      }
+
+      .st391 {
+        fill: #515151;
+      }
+
+      .st392 {
+        fill: #ffcd36;
+      }
+
+      .st393 {
+        fill: #fc6760;
+      }
+
+      .st76 {
+        fill: #007914;
+      }
+
+      .st394 {
+        fill: #546868;
+      }
+
+      .st395 {
+        fill: #28ac8a;
+      }
+
+      .st396 {
+        fill: #939598;
+      }
+
+      .st397 {
+        fill: #aad4c8;
+      }
+
+      .st398 {
+        fill: #c75e00;
+      }
+
+      .st399 {
+        fill: #58595b;
+      }
+
+      .st77 {
+        letter-spacing: .06em;
+      }
+
+      .st77, .st85 {
+        font-family: Roboto-MediumItalic, Roboto;
+        font-style: italic;
+      }
+
+      .st400 {
+        fill: #fdd3a1;
+      }
+
+      .st401 {
+        fill: #ce915f;
+      }
+
+      .st402 {
+        fill: #3fb876;
+      }
+
+      .st78 {
+        opacity: .6;
+      }
+
+      .st403 {
+        fill: #c5d230;
+      }
+
+      .st404 {
+        fill: #f8ab3d;
+      }
+
+      .st405 {
+        fill: #bbfc86;
+      }
+
+      .st79 {
+        fill: #d9f100;
+      }
+
+      .st406 {
+        fill: #1d1d1b;
+      }
+
+      .st407 {
+        fill: #a8726c;
+      }
+
+      .st408 {
+        fill: #998868;
+      }
+
+      .st409 {
+        fill: #18a197;
+      }
+
+      .st410 {
+        fill: #ddcfb1;
+      }
+
+      .st411 {
+        fill: #604d3f;
+      }
+
+      .st412 {
+        fill: #076300;
+      }
+
+      .st413 {
+        fill: #97e33a;
+      }
+
+      .st414 {
+        fill: #ef402e;
+      }
+
+      .st415, .st43 {
+        fill: #823008;
+      }
+
+      .st416 {
+        fill: #5670cf;
+      }
+
+      .st417 {
+        fill: #2aad87;
+      }
+
+      .st418 {
+        fill: #c64817;
+      }
+
+      .st419 {
+        fill: #ffd634;
+      }
+
+      .st420 {
+        fill: #b85827;
+      }
+
+      .st421 {
+        fill: #ebebeb;
+      }
+
+      .st422 {
+        fill: #1c75bc;
+      }
+
+      .st423 {
+        fill: #34839b;
+      }
+
+      .st424 {
+        fill: #2aae88;
+      }
+
+      .st30 {
+        fill: #2ecee8;
+      }
+
+      .st425 {
+        fill: #52acaa;
+      }
+
+      .st426 {
+        fill: #01520e;
+      }
+
+      .st427 {
+        fill: #7fd0c8;
+      }
+
+      .st428 {
+        fill: #37b47d;
+      }
+
+      .st429 {
+        fill: #f4c500;
+      }
+
+      .st430 {
+        fill: #72c578;
+      }
+
+      .st431 {
+        fill: #2eb083;
+      }
+
+      .st432 {
+        fill: #4f484e;
+      }
+
+      .st433 {
+        fill: #ccc;
+      }
+
+      .st434 {
+        fill: #6c7989;
+      }
+
+      .st31 {
+        fill: #662505;
+      }
+
+      .st435 {
+        fill: #c1c1c1;
+      }
+
+      .st436 {
+        fill: #8f4300;
+      }
+
+      .st437 {
+        fill: #598c1f;
+      }
+
+      .st438 {
+        fill: #ddac66;
+      }
+
+      .st439 {
+        fill: #c13325;
+      }
+
+      .st440 {
+        fill: #4f4e4c;
+      }
+
+      .st441 {
+        opacity: .79;
+      }
+
+      .st442 {
+        fill: #2bae86;
+      }
+
+      .st443 {
+        fill: #424d5a;
+      }
+
+      .st444 {
+        fill: #ef4323;
+      }
+
+      .st445 {
+        fill: #b2e561;
+      }
+
+      .st446 {
+        fill: #aeaeae;
+      }
+
+      .st32, .st447 {
+        fill: #008ca0;
+      }
+
+      .st448 {
+        fill: #333439;
+      }
+
+      .st449 {
+        fill: #6aa5a0;
+      }
+
+      .st450 {
+        fill: #1e1a1e;
+      }
+
+      .st451 {
+        fill: #27ac8b;
+      }
+
+      .st452 {
+        fill: #e59f23;
+      }
+
+      .st453 {
+        fill: #c3ddda;
+      }
+
+      .st454 {
+        clip-path: url(#clippath-16);
+      }
+
+      .st455 {
+        fill: #a3a3a3;
+      }
+
+      .st456 {
+        fill: #4b5466;
+      }
+
+      .st457 {
+        fill: #f3ad5e;
+      }
+
+      .st458 {
+        clip-path: url(#clippath-2);
+      }
+
+      .st34 {
+        fill: #f79a05;
+      }
+
+      .st459 {
+        fill: #e7f5a3;
+      }
+
+      .st460 {
+        fill: #65c3e0;
+      }
+
+      .st461 {
+        fill: #a83732;
+      }
+
+      .st462 {
+        fill: #fcedc8;
+      }
+
+      .st35 {
+        fill: #ffdba7;
+      }
+
+      .st463 {
+        fill: #1cba9b;
+      }
+
+      .st464 {
+        fill: #b7ce76;
+      }
+
+      .st465 {
+        fill: #c36b11;
+      }
+
+      .st466 {
+        fill: #90ac3d;
+      }
+
+      .st118 {
+        stroke-width: 2px;
+      }
+
+      .st36 {
+        fill: #f5a82c;
+      }
+
+      .st467 {
+        fill: #d8c49a;
+      }
+
+      .st468 {
+        fill: #9ddfd0;
+      }
+
+      .st469 {
+        fill: #a4eddc;
+      }
+
+      .st470 {
+        fill: #6e828a;
+      }
+
+      .st471 {
+        fill: #8b5e3c;
+      }
+
+      .st472 {
+        fill: #0aa6b7;
+      }
+
+      .st473 {
+        fill: #f3c05e;
+      }
+
+      .st474 {
+        fill: #836b21;
+      }
+
+      .st37 {
+        fill: #86d9d9;
+      }
+
+      .st475 {
+        fill: #c97918;
+      }
+
+      .st38 {
+        fill: #b4f0f0;
+      }
+
+      .st476 {
+        fill: #535a6e;
+      }
+
+      .st477 {
+        fill: #66531a;
+      }
+
+      .st478 {
+        fill: #a9cad4;
+      }
+
+      .st479 {
+        fill: #e3452c;
+      }
+
+      .st480 {
+        fill: #ffdd29;
+      }
+
+      .st481 {
+        fill: #dd914b;
+      }
+
+      .st39 {
+        fill: #22b3b8;
+      }
+
+      .st482 {
+        fill: #6c758f;
+      }
+
+      .st483 {
+        clip-path: url(#clippath-13);
+      }
+
+      .st484 {
+        fill: #f6d724;
+      }
+
+      .st485 {
+        fill: #ffe4c0;
+      }
+
+      .st486 {
+        fill: #2eb283;
+      }
+
+      .st487 {
+        fill: #24aa8d;
+      }
+
+      .st488 {
+        fill: #2daf85;
+      }
+
+      .st489 {
+        fill: #141112;
+      }
+
+      .st490 {
+        fill: #b3d82b;
+      }
+
+      .st491 {
+        fill: #4b4d54;
+      }
+
+      .st492 {
+        fill: #ffda36;
+      }
+
+      .st493 {
+        fill: #20a891;
+      }
+
+      .st494 {
+        fill: #498a82;
+      }
+
+      .st495 {
+        fill: #082b70;
+      }
+
+      .st496 {
+        fill: #f39c5e;
+      }
+
+      .st497 {
+        fill: #83d4ed;
+      }
+
+      .st498 {
+        fill: #1f2023;
+      }
+
+      .st499 {
+        fill: #2d211f;
+      }
+
+      .st500 {
+        fill: #f1625c;
+      }
+
+      .st40 {
+        fill: #fab647;
+      }
+
+      .st501 {
+        fill: #b36c8e;
+      }
+
+      .st502 {
+        fill: #ffc13d;
+      }
+
+      .st503 {
+        fill: #82bfab;
+      }
+
+      .st504 {
+        fill: #3a996e;
+      }
+
+      .st505 {
+        fill: #34c9ff;
+      }
+
+      .st506 {
+        fill: #ffec00;
+      }
+
+      .st86 {
+        font-size: 25px;
+      }
+
+      .st507 {
+        fill: #f6e9c4;
+      }
+
+      .st508 {
+        fill: #005729;
+      }
+
+      .st509 {
+        fill: #26aa8a;
+      }
+
+      .st41 {
+        fill: #138a92;
+      }
+
+      .st510 {
+        fill: #e2b77f;
+      }
+
+      .st511 {
+        fill: #d7d8d9;
+      }
+
+      .st512 {
+        fill: #c43342;
+      }
+
+      .st513 {
+        fill: #8a97b8;
+      }
+
+      .st514 {
+        clip-path: url(#clippath);
+      }
+
+      .st515 {
+        fill: #e6e7e8;
+      }
+
+      .st516 {
+        fill: #12151a;
+      }
+
+      .st517 {
+        fill: #ffd18d;
+      }
+
+      .st518 {
+        fill: #29ad87;
+      }
+
+      .st519 {
+        fill: #216838;
+      }
+
+      .st119 {
+        stroke: #530000;
+        stroke-dasharray: 10 5;
+        stroke-width: 3px;
+      }
+
+      .st520 {
+        fill: #787878;
+      }
+
+      .st521 {
+        fill: #ffb9e3;
+      }
+
+      .st522 {
+        fill: #007a87;
+      }
+
+      .st523 {
+        fill: #bebebe;
+      }
+
+      .st120 {
+        stroke: #707070;
+      }
+
+      .st524 {
+        fill: #77a546;
+      }
+
+      .st525 {
+        fill: #30b281;
+      }
+
+      .st526 {
+        fill: #d1d3d4;
+      }
+
+      .st527 {
+        fill: #daeffa;
+      }
+
+      .st528 {
+        fill: #fffcae;
+      }
+
+      .st529 {
+        fill: #bda17a;
+      }
+
+      .st530 {
+        fill: #f79800;
+      }
+
+      .st531 {
+        fill: #3bb67a;
+      }
+
+      .st532 {
+        fill: #f3f3f3;
+      }
+
+      .st533 {
+        fill: #7b7e8a;
+      }
+
+      .st121 {
+        stroke: #cc6363;
+        stroke-width: 5px;
+      }
+
+      .st534 {
+        fill: #f0aa00;
+      }
+
+      .st535 {
+        fill: #25aa8b;
+      }
+
+      .st536 {
+        fill: #38b57c;
+      }
+
+      .st537 {
+        fill: #493a30;
+      }
+    </style>
+    <clipPath id="clippath">
+      <rect class="st112" width="1920" height="1080" />
+    </clipPath>
+    <clipPath id="clippath-1">
+      <rect class="st112" width="1920" height="1080" />
+    </clipPath>
+    <clipPath id="clippath-2">
+      <rect class="st112" x="54.01" y="1013.82" width="41.46" height="42.84" />
+    </clipPath>
+    <clipPath id="clippath-3">
+      <rect class="st112" width="1920" height="1080" />
+    </clipPath>
+    <clipPath id="clippath-4">
+      <rect class="st112" x="0" y="0" width="1920" height="1080" />
+    </clipPath>
+    <clipPath id="clippath-5">
+      <rect class="st112" x="1030" y="724" width="242" height="242" />
+    </clipPath>
+    <clipPath id="clippath-6">
+      <rect class="st112" x="1192.69" y="823.14" width="19.26" height="118.95" />
+    </clipPath>
+    <clipPath id="clippath-7">
+      <rect class="st112" x="1223.62" y="785.09" width="19.26" height="156.99" />
+    </clipPath>
+    <clipPath id="clippath-8">
+      <path class="st112" d="M1068.06,895.56l37.8-48.42c.23-.3.65-.39.99-.21l26.41,13.88c.34.18.75.09.99-.21l38.12-48.79c.25-.32.7-.4,1.04-.18l9.41,5.93c.35.22.81.13,1.05-.2l34.19-45.91c.26-.35.75-.42,1.1-.17l4.39,3.19c.35.26.85.18,1.1-.17.09-.12.14-.27.15-.42l1.48-24.63c.03-.43-.31-.81-.74-.83-.11,0-.23.01-.33.05l-23.51,9.26c-.41.16-.6.62-.44,1.02.05.14.14.25.26.34l4.61,3.47c.34.26.41.75.16,1.1l-25.85,34.33c-.26.34-.73.41-1.08.17l-9.1-6.32c-.35-.25-.84-.16-1.09.19l-37.22,51.87c-.23.32-.66.42-1.01.24l-25.86-13.76c-.37-.2-.84-.07-1.05.3l-37.26,63.98c-.21.38-.07.86.31,1.07.33.18.75.1.99-.19h0Z" />
+    </clipPath>
+    <clipPath id="clippath-9">
+      <path class="st112" d="M618.97,521.39l34.92,20.16c1.68.97,2.11,2.45,1.08,3.68l-4.24,5.08c-1.03,1.24-.6,2.71,1.08,3.68l29.22,16.87c1.97,1,4.25,1.22,6.37.62l8.79-2.45c2.13-.6,4.4-.38,6.37.62l34.92,20.16c6.22,3.59,6.22,9.41,0,13l-295.22,170.4c-6.22,3.59-16.3,3.59-22.52,0l-118.51-68.42c-6.22-3.59-6.22-9.41,0-13l295.23-170.4c6.22-3.59,16.3-3.59,22.52,0Z" />
+    </clipPath>
+    <clipPath id="clippath-10">
+      <path class="st112" d="M618.97,521.39l34.92,20.16c1.68.97,2.11,2.45,1.08,3.68l-4.24,5.08c-1.03,1.24-.6,2.71,1.08,3.68l29.22,16.87c1.97,1,4.25,1.22,6.37.62l8.79-2.45c2.13-.6,4.4-.38,6.37.62l34.92,20.16c6.22,3.59,6.22,9.41,0,13l-295.22,170.4c-6.22,3.59-16.3,3.59-22.52,0l-118.51-68.42c-6.22-3.59-6.22-9.41,0-13l295.23-170.4c6.22-3.59,16.3-3.59,22.52,0Z" />
+    </clipPath>
+    <clipPath id="clippath-11">
+      <polygon class="st112" points="742.33 749.67 742.33 755.13 725.36 764.92 725.36 759.47 742.33 749.67" />
+    </clipPath>
+    <clipPath id="clippath-12">
+      <rect class="st112" x="179" y="403" width="742" height="494" />
+    </clipPath>
+    <clipPath id="clippath-13">
+      <rect class="st112" x="428" y="403" width="494" height="247" />
+    </clipPath>
+    <clipPath id="clippath-14">
+      <rect class="st112" x="427" y="650" width="494" height="247" />
+    </clipPath>
+    <clipPath id="clippath-15">
+      <circle class="st112" cx="326.62" cy="761.01" r="104.38" transform="translate(-442.45 453.85) rotate(-45)" />
+    </clipPath>
+    <clipPath id="clippath-16">
+      <circle class="st112" cx="326.62" cy="538.38" r="104.38" transform="translate(-285.02 388.64) rotate(-45)" />
+    </clipPath>
+    <clipPath id="clippath-17">
+      <rect class="st112" x="54.01" y="1013.82" width="41.46" height="42.84" />
+    </clipPath>
+    <clipPath id="clippath-18">
+      <rect class="st112" width="1920" height="1080" />
+    </clipPath>
+  </defs>
+  <g id="resource_illustration">
+    <g id="Group_7272" class="st220">
+      <g id="_2606554_5889-2">
+        <g id="Object-3">
+          <g id="Group_3369-2">
+            <path id="Path_4701-2" class="st532" d="M180.2,745.45c0,12.45,10.1,22.54,22.55,22.54s22.54-10.1,22.53-22.55c0-12.45-10.1-22.54-22.55-22.54-12.45,0-22.55,10.1-22.54,22.55h0Z" />
+            <path id="Path_4702-2" class="st532" d="M189.69,770.12c-11.71,0-21.2,9.49-21.2,21.2h0v10.29h68.5v-10.29c0-11.71-9.49-21.2-21.19-21.2h-26.11ZM211.15,797.96h-16.8l-4.86-25.53c.48-.04.95-.07,1.44-.07h23.64c.49,0,.97.04,1.45.07l-4.86,25.53Z" />
+            <path id="Path_4703-2" class="st532" d="M205.4,780.8l2.61,17.16h3.14l4.86-25.53c-.48-.04-.95-.07-1.45-.07h-23.64c-.49,0-.96.04-1.44.07l4.86,25.53h3.13l2.61-17.16h.09l-2.56-4.71h10.26l-2.57,4.71h.1Z" />
+            <path id="Path_4704-2" class="st532" d="M197.48,797.96h10.53l-2.61-17.16h-.1l2.57-4.71h-10.26l2.56,4.71h-.09l-2.61,17.16Z" />
+            <path id="Path_4705-2" class="st532" d="M183.9,868.06c0,10.41,8.44,18.84,18.85,18.84s18.84-8.44,18.84-18.85c0-10.41-8.44-18.84-18.85-18.84h0c-10.41,0-18.84,8.44-18.84,18.85Z" />
+            <path id="Path_4706-2" class="st532" d="M191.84,888.69c-9.78,0-17.71,7.94-17.71,17.72v8.59h57.24v-8.59c0-9.78-7.93-17.72-17.71-17.72h-21.82ZM209.77,911.96h-2.62l-2.18-14.35h-.08l2.14-3.94h-8.58l2.15,3.94h-.08l-2.18,14.35h-2.61l-4.07-21.34c.4-.03.79-.06,1.2-.06h19.76c.41,0,.8.03,1.21.06l-4.06,21.34Z" />
+            <path id="Path_4707-2" class="st532" d="M204.97,897.61l2.18,14.35h2.62l4.07-21.34c-.41-.03-.8-.06-1.21-.06h-19.76c-.41,0-.8.03-1.2.06l4.06,21.34h2.61l2.18-14.35h.08l-2.15-3.94h8.58l-2.14,3.94h.08Z" />
+            <path id="Path_4708-2" class="st532" d="M283.63,868.06c0,10.41,8.44,18.84,18.85,18.84,10.41,0,18.84-8.44,18.84-18.85,0-10.41-8.44-18.84-18.84-18.84-10.41,0-18.84,8.44-18.84,18.85Z" />
+            <path id="Path_4709-2" class="st532" d="M291.56,888.69c-9.79,0-17.72,7.93-17.72,17.72h0v8.59h57.25v-8.59c0-9.78-7.93-17.72-17.71-17.72h-21.82ZM309.48,911.96h-2.61l-2.18-14.34h-.08l2.14-3.94h-8.58l2.15,3.94h-.08l-2.18,14.35h-2.62l-4.06-21.35c.4-.03.8-.06,1.21-.06h19.76c.4,0,.81.03,1.2.06l-4.06,21.34Z" />
+            <path id="Path_4710-2" class="st532" d="M304.69,897.61l2.18,14.35h2.61l4.07-21.34c-.4-.03-.8-.06-1.2-.06h-19.76c-.41,0-.8.03-1.21.06l4.07,21.34h2.61l2.18-14.35h.08l-2.15-3.94h8.58l-2.14,3.94h.08Z" />
+            <path id="Path_4711-2" class="st532" d="M84.18,868.06c0,10.41,8.44,18.85,18.85,18.85s18.85-8.44,18.85-18.85c0-10.41-8.44-18.85-18.85-18.85h0c-10.41,0-18.84,8.44-18.84,18.85Z" />
+            <path id="Path_4712-2" class="st532" d="M92.11,888.69c-9.78,0-17.71,7.94-17.71,17.72v8.59h57.25v-8.59c0-9.78-7.93-17.72-17.71-17.72h-21.82ZM110.04,911.96h-11.42l2.18-14.35-2.19,14.35h-2.61l-4.06-21.34c.4-.03.79-.06,1.2-.06h19.76c.41,0,.81.03,1.21.06l-4.07,21.34Z" />
+            <path id="Path_4713-2" class="st532" d="M105.24,897.61l2.18,14.35h2.62l4.07-21.34c-.4-.03-.8-.06-1.21-.06h-19.76c-.41,0-.8.03-1.2.06l4.06,21.34h2.61l2.19-14.35h.07l-2.14-3.94h8.58l-2.14,3.94h.07Z" />
+            <path id="Path_4714-2" class="st532" d="M98.62,911.96h8.8l-2.18-14.35h-.07l2.14-3.94h-8.58l2.14,3.94h-.07l-2.18,14.35Z" />
+            <path id="Path_4715-2" class="st532" d="M302.47,841.96c2.61,0,4.72-2.12,4.72-4.72v-11.98c0-2.6-2.11-4.71-4.72-4.71h-95.01v-7.26c0-2.61-2.11-4.72-4.71-4.73s-4.72,2.11-4.73,4.71h0v7.27h-95.01c-2.6,0-4.72,2.11-4.72,4.71h0v11.98c0,2.61,2.11,4.72,4.72,4.72s4.72-2.11,4.72-4.72h0v-7.26h90.28v7.26c0,2.61,2.11,4.72,4.71,4.73s4.72-2.11,4.73-4.71h0v-7.27h90.29v7.26c0,2.61,2.11,4.72,4.72,4.73h0Z" />
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

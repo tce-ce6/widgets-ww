@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Economic Systems</title>
+
+  <link rel="stylesheet" href="./css/global_style.css">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body id="es-widget">
+  <div class="container">
+    <div class="mainContainerOuter" id="outer">
+      <!-- Stage: 1920 x 1080, same coordinates as the design
+           (reference/Widget/AI/en_eco_9_wg222.svg). script.js scales it to fit. -->
+      <main id="stage">
+        <div class="wdgetTitle">
+          <h2>Economic Systems</h2>
+          <span id="versionId" class="versionText">b4_wg222_261127_01</span>
+        </div>
+
+        <!-- ============ Opening (design #home) ============ -->
+        <section class="screen" id="stage-intro">
+          <div class="card intro-card">
+            <img class="intro-art" src="./assets/images/intro.svg" alt="">
+            <h1>Economic Systems</h1>
+            <p>Economic systems are the ways a country organises how resources, goods and services are shared among its people.</p>
+            <p>They depend on the factors of production: capital, labour, natural resources, entrepreneurship and information. Let's explore the three major types of economy.</p>
+            <button class="pill go" id="go-build" type="button">Let's explore</button>
+          </div>
+        </section>
+
+        <!-- ============ Comparison table (design Layer_3, tabs, options …) ============ -->
+        <section class="screen" id="stage-build">
+          <p class="itext">Build the comparison. Tap the correct answer for each box.</p>
+
+          <div id="build-body">
+            <div class="card table-card">
+              <div class="colhead" style="left:28px;width:550px">Feature</div>
+              <div class="colhead" style="left:609px">Market</div>
+              <div class="colhead" style="left:1016px">Command</div>
+              <div class="colhead" style="left:1423px">Mixed</div>
+              <div id="table-wrap"></div>
+            </div>
+
+            <div id="ask">
+              <img id="ask-art" src="./assets/images/panel-own.svg" alt="">
+              <p id="ask-prompt" aria-live="polite"></p>
+              <div id="ask-opts"></div>
+            </div>
+            <p id="ask-feedback" aria-live="polite"></p>
+          </div>
+
+          <div id="build-complete-body" class="done-body" hidden>
+            <div class="card done-card">
+              <img class="done-art" src="./assets/images/complete.svg" alt="">
+              <h2>The comparison is complete.</h2>
+              <p>You filled every box by reasoning it out. Now use the table: read real situations and name the system behind each one.</p>
+            </div>
+            <button class="pill go" id="go-apply" type="button">Go to situations</button>
+          </div>
+
+          <div class="foot build-foot">
+            <button class="pill restart" id="build-restart" type="button">Restart</button>
+            <button class="pill reveal" id="build-reveal" type="button">Reveal answer</button>
+            <button class="pill skip" id="build-skip" type="button">Skip</button>
+          </div>
+        </section>
+
+        <!-- ============ Situations (design #bg, illus_1-4, buttons_main …) ============ -->
+        <section class="screen" id="stage-apply">
+          <p class="apply-tag">Apply it</p>
+          <p id="sit-count" aria-live="polite"></p>
+
+          <div id="apply-body">
+            <div class="card sit-left">
+              <p id="sit-story"></p>
+              <img id="sit-art" src="./assets/images/sit1.svg" alt="">
+            </div>
+            <div class="card sit-right">
+              <p class="sit-ask">Which system does this show? Decide, then check your reasoning.</p>
+              <div id="sit-opts"></div>
+            </div>
+            <div id="sit-reveal" aria-live="polite" hidden>
+              <p id="rv-name"></p>
+              <p id="rv-why"></p>
+            </div>
+          </div>
+
+          <div id="apply-done-body" class="done-body" hidden>
+            <div class="card done-card">
+              <img class="done-art" src="./assets/images/final.svg" alt="">
+              <h2>That is the full set.</h2>
+              <p>You named each system from the situation alone, using the table you built. That is the real skill: reading a case and recognising the system behind it.</p>
+            </div>
+            <button class="pill go" id="final-startover" type="button">Start over</button>
+          </div>
+
+          <div class="foot apply-foot">
+            <button class="pill restart" id="apply-restart" type="button">Restart</button>
+            <button class="pill skip" id="apply-skip" type="button">Skip</button>
+            <button class="pill reveal" id="apply-reveal" type="button">Reveal answer</button>
+            <button class="pill next" id="apply-next" type="button">Next</button>
+          </div>
+        </section>
+
+        <!-- Start over (home icon, bottom left; design Path_4819 …) -->
+        <button id="startover" type="button" aria-label="Start over">
+          <img src="./assets/images/home.svg" alt="">
+        </button>
+        <button id="help-btn" type="button" aria-label="Help: how to use this activity">
+          <span class="q" aria-hidden="true">?</span><span>Help</span>
+        </button>
+      </main>
+    </div>
+  </div>
+
+  <!-- How to use tour (opened by the Help button; js/how-to-play.js) -->
+  <div id="tour" class="tour" aria-hidden="true">
+    <div id="tourSpot" class="tour-spot"></div>
+    <div id="tourDemo" class="tour-demo"></div>
+    <div id="tourCard" class="tour-card" role="dialog" aria-modal="true" aria-labelledby="tourTitle">
+      <button id="tourSkip" class="tour-skip" type="button" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div id="tourCount" class="tour-count"></div>
+      <h2 id="tourTitle"></h2>
+      <p id="tourText"></p>
+      <div class="tour-nav">
+        <div id="tourDots" class="tour-dots"></div>
+        <div class="tour-btns">
+          <button id="tourBack" class="tour-btn tour-btn--ghost" type="button">Back</button>
+          <button id="tourNext" class="tour-btn" type="button">Next</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./js/script.js"></script>
+  <script src="./js/how-to-play.js"></script>
+</body>
+
+</html>
